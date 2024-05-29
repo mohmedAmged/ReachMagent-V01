@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Russo+One&display=swap');
+
+.mySidebar__handler {
+    background-color: var(--primary-white);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(226, 236, 249, 0.5);
+    transition: width 0.3s;
+    width: 25%;
+}
+
+.mySidebar__handler .logo__text {
+    font-size: 26px;
+    padding: 10px;
+    line-height: 21.69px;
+    font-weight: 400;
+    margin-bottom: 40px;
+}
+
+.mySidebar__handler .logo__text span {
+    color: var(--primary-hover-blue);
+}
+
+.mySidebar__handler ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mySidebar__handler ul.listItems__two {
+    margin-top: 60px;
+}
+
+.mySidebar__handler li {
+    margin: 10px 0;
+    padding: 5px 0;
+    transition: all .2s;
+}
+
+.mySidebar__handler li a img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    transition: all .2s;
+}
+
+.mySidebar__handler li a {
+    text-decoration: none;
+    color: var(--text-gray-color);
+    padding: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.mySidebar__handler li i {
+    transition: all .2s;
+    padding-right: 10px;
+}
+
+.mySidebar__handler li:hover,
+.mySidebar__handler li.active,
+.mySidebar__handler li.active a
+{
+    background-color: var(--primary-hover-blue);
+    border-radius: 8px;
+}
+
+.mySidebar__handler li:hover a,
+.mySidebar__handler li:hover i,
+.mySidebar__handler li.active i,
+.mySidebar__handler li.active a
+ {
+    color: var(--primary-white);
+}
+
+.mySidebar__handler li:hover a img,
+.mySidebar__handler li.active a img {
+    filter: brightness(0) invert(1);
+}
+
+.pro__banner__handler {
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    background: linear-gradient(107.91deg, rgb(1, 186, 233) 7.37%, #0D151E 95.19%);
+}
+
+.pro__banner__content {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    color: var(--primary-white);
+}
+
+.pro__banner__content a {
+    border-radius: 20px;
+    box-shadow: 2px 4px 4px 0px rgba(79, 42, 234, 0.17);
+    background: var(--primary-white);
+    font-size: 16px;
+    padding: 20px 0;
+    margin-top: 20px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: var(--primary-black);
+    transition: all .2s;
+}
+
+.pro__banner__content a:hover {
+    color: var(--primary-white);
+    background: var(--primary-black);
+}
+
+.main__content {
+    padding: 0 20px;
+    padding-bottom: 150px;
+    width: 70%; /* Adjust main content width for desktop view */
+}
+
+.sidebar-toggle {
+    background-color: var(--primary-black);
+    color: #fff;
+    border-radius: 8px;
+    margin-bottom: 50px !important;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 1100; 
+    display: none;
+}
+.sidebar-toggle:hover{
+    background-color: var(--primary-black) !important;
+    color: #fff;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 600px) {
+    .mySidebar__handler {
+        width: 20%;
+        padding: 6px;
+    }
+
+    .main__content {
+        width: 80%; 
+    }
+
+    .mySidebar__handler ul span{
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .mySidebar__handler .logo__text,
+    .mySidebar__handler .pro__banner__handler {
+        display: block;
+    }
+    .mySidebar__handler li a{
+        padding: 5px;
+    }
+    .mySidebar__handler li a img{
+        margin-right: 0;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 600px){
+    .mySidebar__handler {
+        width: 15%;
+        padding: 10px;
+    }
+
+    .main__content {
+        width: 80%; 
+    }
+
+    .mySidebar__handler ul span{
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .mySidebar__handler .logo__text,
+    .mySidebar__handler .pro__banner__handler {
+        display: block;
+    }
+    .mySidebar__handler li a{
+        padding: 5px;
+    }
+    .mySidebar__handler li a img{
+        margin-right: 0;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+}
+

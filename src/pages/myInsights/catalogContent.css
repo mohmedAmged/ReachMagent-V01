@@ -1,0 +1,120 @@
+.content__view__handler {
+    background: var(--primary-white);
+    box-shadow: 0px 10px 60px 0px rgba(226, 236, 249, 0.5);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.content__card__list {
+    margin-top: 70px;
+}
+
+.card__item {
+    /* padding: 10px; */
+    /* padding-bottom: 0; */
+    width: 315px;
+
+
+    border-radius: 20px;
+    background: var(--primary-white);
+    border: 1px solid var(--primary-white);
+    box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.08);
+
+}
+
+.card__image,
+.card__name {
+    padding: 10px;
+}
+
+.card__image img {
+    border-radius: 8px;
+    border: 1px solid rgba(229, 229, 229, 1)
+}
+
+.card__name h3 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21.78px;
+    text-align: left;
+    margin: 10px 0;
+}
+
+.card__btns button {
+    width: 100%;
+    border: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.36px;
+    text-align: center;
+    color: var(--primary-white);
+
+
+}
+
+.card__btns button.btn__D {
+    width: 158px;
+    height: 47px;
+    top: 509px;
+    left: 398px;
+    gap: 0px;
+    border-radius: 0px 0px 0px 20px;
+    background: rgba(213, 0, 18, 1);
+    border: 2px solid rgba(213, 0, 18, 1);
+    transition: ease-in-out .3s;
+}
+
+.card__btns button.btn__E {
+    width: 157px;
+    height: 47px;
+    top: 509px;
+    left: 556px;
+    gap: 0px;
+    border-radius: 0px 0px 20px 0px;
+    background: rgba(0, 158, 246, 1);
+    border: 2px solid rgba(0, 158, 246, 1);
+    transition: ease-in-out .3s;
+}
+
+.card__btns button.btn__D:hover {
+    color: rgba(213, 0, 18, 1);
+    background: var(--primary-white);
+}
+
+.card__btns button.btn__E:hover {
+    color: rgba(0, 158, 246, 1);
+    background: var(--primary-white);
+}
+
+.addNewItem__btn {
+    margin-top: 60px;
+    text-align: right;
+}
+
+.addNewItem__btn button {
+    width: Hug (137px)px;
+    height: Hug (35px)px;
+    top: 596px;
+    left: 398px;
+    padding: 8px 14px 8px 14px;
+    gap: 0px;
+    border-radius: 6px;
+    background: rgba(0, 158, 246, 1);
+    border: 2px solid rgba(0, 158, 246, 1);
+    color: var(--primary-white);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.36px;
+    transition: ease-in-out .3s;
+}
+.addNewItem__btn button:hover{
+    background: var(--primary-white);
+    color: rgba(0, 158, 246, 1);
+
+}
+
+@media screen and (max-width: 600px){
+    .card__item{
+        width: 100%;
+    }
+}
