@@ -10,6 +10,7 @@ import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemFo
 
 import MyNewSidebarDash from './components/myNewSidebarDash/MyNewSidebarDash';
 function App() {
+  /* Mohamed Fahim have Access to the project now */
   return (
     <>
       <div className='dashboard__handler d-flex'>
