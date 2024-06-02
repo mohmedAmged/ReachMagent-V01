@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Offcanvas, Button } from 'react-bootstrap';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Offcanvas } from 'react-bootstrap';
 import icon1 from '../../assets/sidebar-icons/key-square.svg';
 import icon2 from '../../assets/sidebar-icons/3d-square 1.svg';
 import icon3 from '../../assets/sidebar-icons/user-square 1.svg';
@@ -11,11 +11,22 @@ import icon7 from '../../assets/sidebar-icons/notification.svg';
 import icon8 from '../../assets/sidebar-icons/call-add.svg';
 import icon9 from '../../assets/sidebar-icons/discount-shape 1.svg';
 import icon10 from '../../assets/sidebar-icons/message-question 1.svg';
+
 export default function MyNewSidebarDash() {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
     const activePath = location.pathname;
+    const navigate = useNavigate();
+
+    const handleNavigationToSingleProfilePage = (pageName) => {
+        navigate(`${pageName}`)
+    }
+
+    const handleGettingLastRouteInPathName = () => {
+        const arrOfPathNames = location.pathname.split('/');
+        return `/${arrOfPathNames[arrOfPathNames.length - 1]}`
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,28 +41,34 @@ export default function MyNewSidebarDash() {
     const handleShow = () => setShow(true);
 
     const sidebarItems = [
-        { title: "Dashboard", link: "/dashboard", icon: icon1 },
-        { title: "Catalog", link: "/catalog", icon: icon2 },
-        { title: "Quotations", link: "/quotations", icon: icon3 },
-        { title: "Products", link: "/products", icon: icon4 },
-        { title: "Orders", link: "/orders", icon: icon4 },
-        { title: "Insights", link: "/insights", icon: icon5 },
-        { title: "Messages", link: "/messages", icon: icon6 },
-        { title: "Notifications", link: "/notifications", icon: icon7 },
-        { title: "Requests", link: "/requests", icon: icon8 }
+        { title: "Profile", link: "/profile", icon: icon1 },
+        { title: "Catalog", link: "/profile/catalog", icon: icon2 },
+        { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+        { title: "Products", link: "/profile/products", icon: icon4 },
+        { title: "Orders", link: "/profile/orders", icon: icon4 },
+        { title: "Insights", link: "/profile/insights", icon: icon5 },
+        { title: "Messages", link: "/profile/messages", icon: icon6 },
+        { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+        { title: "Requests", link: "/profile/requests", icon: icon8 }
     ];
 
     const sidebarItemsTwo = [
-        { title: "Promote", link: "/promote", icon: icon9 },
-        { title: "Help", link: "/help", icon: icon10 }
+        { title: "Promote", link: "/profile/promote", icon: icon9 },
+        { title: "Help", link: "/profile/help", icon: icon10 }
     ];
 
     const renderSidebarContent = () => (
         <>
             <ul>
                 {sidebarItems.map((el, index) => (
-                    <li key={index} className={`d-flex justify-content-between align-items-center ${location.pathname.startsWith(el.link) ? 'active' : ''} ${activePath === el.link ? 'active' : ''}`}>
-                        <Link to={el.link} onClick={isMobile ? handleClose : undefined}>
+                    <li 
+                    key={index} 
+                    className={`d-flex justify-content-between align-items-center 
+                    ${el.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''} 
+                    ${activePath === el.link ? 'active' : ''}`}
+                    onClick={()=>handleNavigationToSingleProfilePage(el.link)}
+                    >
+                        <Link onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
                             <span>{el.title}</span>
                         </Link>
@@ -61,7 +78,10 @@ export default function MyNewSidebarDash() {
             </ul>
             <ul className='listItems__two'>
                 {sidebarItemsTwo.map((el, index) => (
-                    <li key={index} className={`d-flex justify-content-between align-items-center ${activePath === el.link ? 'active' : ''}`}>
+                    <li 
+                    key={index} 
+                    className={`d-flex justify-content-between align-items-center 
+                    ${activePath === el.link ? 'active' : ''}`}>
                         <Link to={el.link} onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
                             <span>{el.title}</span>
