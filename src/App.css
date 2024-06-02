@@ -17,7 +17,7 @@
 }
 
 .mySidebar__handler .logo__text span {
-    color: var(--primary-hover-blue);
+    color: var(--main-blue-color);
 }
 
 .mySidebar__handler ul {
@@ -63,7 +63,7 @@
 .mySidebar__handler li.active,
 .mySidebar__handler li.active a
 {
-    background-color: var(--primary-hover-blue);
+    background-color: var(--main-blue-color);
     border-radius: 8px;
 }
 

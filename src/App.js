@@ -9,14 +9,24 @@ import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemFo
 import Home from './pages/homePage/Home';
 import MyNavBar from './components/myNavBar/MyNavBar';
 import MyFooter from './components/myFooter/MyFooter';
+import { useState } from 'react';
 
 function App() {
   const {pathname} = useLocation();
+  const [scrollToggle, setScrollToggle] = useState(false);
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 200) {
+      setScrollToggle(true);
+    } else {
+      setScrollToggle(false);
+    }
+  });
 
   return (
     <>
     {
-      pathname.includes('profile') ? <></> : <MyNavBar />
+      pathname.includes('profile') ? <></> : <MyNavBar scrollToggle={scrollToggle}/>
     }
       <Routes>
         {/* Page Routes */}
@@ -33,7 +43,7 @@ function App() {
       </Routes>
     
     {
-      pathname.includes('profile') ? <></> : <MyFooter />
+      // pathname.includes('profile') ? <></> : <MyFooter />
     }
     </>
   );

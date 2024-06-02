@@ -61,12 +61,12 @@ export default function MyNewSidebarDash() {
         <>
             <ul>
                 {sidebarItems.map((el, index) => (
-                    <li 
-                    key={index} 
-                    className={`d-flex justify-content-between align-items-center 
+                    <li
+                        key={index}
+                        className={`d-flex justify-content-between align-items-center 
                     ${el.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''} 
                     ${activePath === el.link ? 'active' : ''}`}
-                    onClick={()=>handleNavigationToSingleProfilePage(el.link)}
+                        onClick={() => handleNavigationToSingleProfilePage(el.link)}
                     >
                         <Link onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
@@ -78,9 +78,9 @@ export default function MyNewSidebarDash() {
             </ul>
             <ul className='listItems__two'>
                 {sidebarItemsTwo.map((el, index) => (
-                    <li 
-                    key={index} 
-                    className={`d-flex justify-content-between align-items-center 
+                    <li
+                        key={index}
+                        className={`d-flex justify-content-between align-items-center 
                     ${activePath === el.link ? 'active' : ''}`}>
                         <Link to={el.link} onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
@@ -135,7 +135,7 @@ export default function MyNewSidebarDash() {
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>
                                 <h1 className="logo__text">
-                                    <span>Reach</span>Magnet
+                                    ReachMag<span className='letter__color'>n</span>et
                                 </h1>
                             </Offcanvas.Title>
                         </Offcanvas.Header>
@@ -148,7 +148,7 @@ export default function MyNewSidebarDash() {
                 <div className="mySidebar__handler">
                     <div className="container">
                         <h1 className="logo__text">
-                            <span>Reach</span>Magnet
+                        ReachMag<span className='letter__color'>n</span>et
                         </h1>
                         {renderSidebarContent()}
                     </div>
