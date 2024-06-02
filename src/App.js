@@ -1,34 +1,42 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import MyDashboard from './pages/myDashboard/MyDashboard';
-import MyInsights from './pages/myInsights/MyInsights';
+import MyCatalog from './pages/myInsights/MyCatalog';
 import MyOrders from './pages/myOrders/MyOrders';
 import MyProducts from './pages/myProducts/MyProducts';
 import MyQutations from './pages/myQutations/MyQutations';
-import MainContentHeader from './components/mainContentHeader/MainContentHeader';
 import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemForm';
+import Home from './pages/homePage/Home';
+import MyNavBar from './components/myNavBar/MyNavBar';
+import MyFooter from './components/myFooter/MyFooter';
 
-import MyNewSidebarDash from './components/myNewSidebarDash/MyNewSidebarDash';
 function App() {
-  /* Mohamed Fahim have Access to the project now */
+  const {pathname} = useLocation();
+
   return (
     <>
-      <div className='dashboard__handler d-flex'>
-        <MyNewSidebarDash />
-        <div className='main__content container'>
-          <MainContentHeader />
-          <Routes>
-            <Route path='/' element={<MyDashboard />} />
-            <Route path='/catalog' element={<MyInsights />} />
-            <Route path='/catalog/:addNewItem' element={<NewCatalogItemForm />} />
-            <Route path='/quotations' element={<MyQutations />} />
-            <Route path='/products' element={<MyProducts />} />
-            <Route path='/orders' element={<MyOrders />} />
-          </Routes>
-        </div>
-      </div>
+    {
+      pathname.includes('profile') ? <></> : <MyNavBar />
+    }
+      <Routes>
+        {/* Page Routes */}
+        <Route path='/' element={<Home />} />
+
+        {/* Profile Routes */}
+        <Route path='/profile' element={<MyDashboard />} />
+        <Route path='/profile/catalog' element={<MyCatalog />} />
+        <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
+        <Route path='/profile/quotations' element={<MyQutations />} />
+        <Route path='/profile/products' element={<MyProducts />} />
+        <Route path='/profile/orders' element={<MyOrders />} />
+
+      </Routes>
+    
+    {
+      pathname.includes('profile') ? <></> : <MyFooter />
+    }
     </>
   );
-}
+};
 
 export default App;
