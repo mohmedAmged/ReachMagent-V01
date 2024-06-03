@@ -9,7 +9,7 @@
 }
 @media screen and (max-width: 600px) {
     .readyToBuySec__handler .listedNavigate{
-        gap: 5px;
+        gap: 0;
     }
     .readyToBuy__products{
         margin: 20px 0;

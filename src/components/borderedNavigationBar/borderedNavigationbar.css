@@ -17,3 +17,8 @@
     border-radius: 6px;
     color: var(--main-turquoise);
 }
+@media screen and (max-width: 600px) {
+    .borderdNavigateItem{
+        padding: 5px 10px;
+    }
+}
