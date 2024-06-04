@@ -5,6 +5,9 @@ import AboutReachSec from '../../components/aboutReachSec/AboutReachSec';
 import AllCategorySec from '../../components/allCategorySec/AllCategorySec';
 import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
 import ReadyToBuySec from '../../components/readyToBuySec/ReadyToBuySec';
+import TrendingCompanySec from '../../components/trendingCompanySec/TrendingCompanySec';
+import GrowBuisnessSec from '../../components/growBuisnessSec/GrowBuisnessSec';
+import LastMinuteDeals from '../../components/lastMinuteDeals/LastMinuteDeals';
 
 export default function Home() {
     const arrOfCateg = [
@@ -45,6 +48,9 @@ export default function Home() {
             btnTwoText='Explore Now'
             />
             <ReadyToBuySec />
+            <TrendingCompanySec />
+            <GrowBuisnessSec />
+            <LastMinuteDeals />
         </div>
     )
 }
