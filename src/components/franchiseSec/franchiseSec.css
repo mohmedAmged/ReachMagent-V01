@@ -7,18 +7,39 @@
     padding: 60px 0;
     color: var(--primary-white);
 }
-.franchiseSec__content h1{
+.franchiseSec__content-two {
+    background-image: url('../../assets/franchiseSec/d53597d3d4d9f203263363ce7db66d8d.jpeg');
+    background-size: cover;
+    background-position: center;
+    padding: 75px 0;
+    position: relative;
+}
+
+.franchiseSec__content h3 {
+    position: relative;
+    z-index: 15;
     font-size: 32px;
     font-weight: 500;
     line-height: 25px;
     margin-bottom: 25px;
     text-transform: capitalize;
 }
-.franchiseSec__content p{
+.franchiseSec__content-two h3 {
+    font-size: 40px;
+    font-weight: 500;
+}
+.franchiseSec__content p {
+    position: relative;
+    z-index: 15;
     font-size: 16px;
     font-weight: 300;
     line-height: 170%;
     margin-bottom: 30px;
+}
+.franchiseSec__content-two p {
+    font-size: 24px;
+    margin-bottom: 0;
+    font-weight: 400;
 }
 .franchise__actions{
     display: flex;
@@ -27,12 +48,21 @@
     gap: 20px;
 }
 .franchise__actions button{
+    position: relative;
     background: transparent;
     border: 1px solid var(--primary-white);
     color: var(--primary-white);
     padding: 10px 20px;
     border-radius: 8px;
     transition: ease-in-out .3s;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    -webkit-transition: ease-in-out .3s;
+    -moz-transition: ease-in-out .3s;
+    -ms-transition: ease-in-out .3s;
+    -o-transition: ease-in-out .3s;
 }
 .franchise__actions button:hover{
     background: var(--primary-white);

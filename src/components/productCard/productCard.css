@@ -37,7 +37,7 @@
 .product__info .sub__info p span.product__rate__num{
     color: rgba(0, 0, 0, 0.5);
 }
-.product__info .sub__info button{
+.pageMainBtnStyle{
     background: transparent;
     border: 1px solid var(--main-turquoise);
     color: var(--main-turquoise);
@@ -46,7 +46,7 @@
     text-transform: capitalize;
     transition: ease-in-out .3s;
 }
-.product__info .sub__info button:hover{
+.pageMainBtnStyle:hover{
     background: var(--main-turquoise);
     color: var(--primary-white);
 }

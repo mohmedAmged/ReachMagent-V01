@@ -12,6 +12,7 @@ import health from '../../assets/categoryIcons/health.png'
 import pets from '../../assets/categoryIcons/pets.png'
 import other from '../../assets/categoryIcons/other.png'
 import CategoryOctagonShape from '../categoryOctagonShape/CategoryOctagonShape'
+
 export default function AllCategorySec() {
     const categoryItems = [
         {
@@ -78,7 +79,10 @@ export default function AllCategorySec() {
                         categoryItems.map((el, index) => {
                             return (
                             <div key={index} className="col-lg-2 col-md-4 col-sm-6">
-                                <CategoryOctagonShape octagonIcon={el.img} iconName={el.title} iconLink={el.link}/>
+                                <CategoryOctagonShape 
+                                octagonIcon={el.img} 
+                                iconName={el.title} 
+                                iconLink={el.link}/>
                             </div>
                             )})
                         }

@@ -25,7 +25,7 @@ export default function ProductCard({ productImage, productName, productPrice, p
                             {productRateNum}
                         </span>
                     </p>
-                    <button>
+                    <button className='pageMainBtnStyle'>
                         buy more
                     </button>
                 </div>

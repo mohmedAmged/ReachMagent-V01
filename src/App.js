@@ -6,10 +6,13 @@ import MyOrders from './pages/myOrders/MyOrders';
 import MyProducts from './pages/myProducts/MyProducts';
 import MyQutations from './pages/myQutations/MyQutations';
 import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemForm';
-import Home from './pages/homePage/Home';
+import Home from './pages/Home/Home';
 import MyNavBar from './components/myNavBar/MyNavBar';
 import MyFooter from './components/myFooter/MyFooter';
 import { useState } from 'react';
+import Discover from './pages/discover/Discover';
+import Shop from './pages/Shop/Shop';
+import ProductDetails from './pages/productDetails/ProductDetails';
 
 function App() {
   const {pathname} = useLocation();
@@ -25,12 +28,20 @@ function App() {
 
   return (
     <>
+
     {
       pathname.includes('profile') ? <></> : <MyNavBar scrollToggle={scrollToggle}/>
     }
+
       <Routes>
+
         {/* Page Routes */}
         <Route path='/' element={<Home />} />
+
+        {/* Shop Routes */}
+        <Route path='/shop' element={<Shop />} />
+        <Route path='/shop/:singleProduct' element={<ProductDetails />} />
+        <Route path='/discover' element={<Discover />} />
 
         {/* Profile Routes */}
         <Route path='/profile' element={<MyDashboard />} />
@@ -41,10 +52,11 @@ function App() {
         <Route path='/profile/orders' element={<MyOrders />} />
 
       </Routes>
-    
+
     {
       // pathname.includes('profile') ? <></> : <MyFooter />
     }
+
     </>
   );
 };

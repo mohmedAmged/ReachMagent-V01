@@ -1,0 +1,10 @@
+.header_ofSec h3 {
+    font-size: 40px;
+    font-weight: 500;
+}
+.header_ofSec p {
+    margin: auto;
+    font-size: 20px ;
+    font-weight: 400;
+    max-width: 650px;
+}

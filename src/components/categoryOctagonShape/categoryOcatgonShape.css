@@ -11,6 +11,7 @@
     color: white;
     font-size: 1em;
     text-align: center;
+    cursor: pointer;
 }
 
 .octagon__shape img {
