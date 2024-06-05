@@ -8,7 +8,7 @@ import MyQutations from './pages/myQutationsPage/MyQutations';
 import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemForm';
 import Home from './pages/myHome/Home';
 import MyNavBar from './components/myNavBar/MyNavBar';
-import MyFooter from './components/myFooter/MyFooter';
+import MyFooter from './components/myFooterSec/MyFooter';
 import { useState } from 'react';
 import Discover from './pages/myDiscover/Discover';
 import Shop from './pages/myShop/Shop';
