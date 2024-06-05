@@ -1,8 +1,8 @@
 import React from 'react';
 import './discover.css';
-import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
-import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
-import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
+import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
+import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
+import ShopCategorySlider from '../../components/shopCategorySliderSec/ShopCategorySlider';
 import ShopSliderSec from '../../components/myShopSliderSec/ShopSliderSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 

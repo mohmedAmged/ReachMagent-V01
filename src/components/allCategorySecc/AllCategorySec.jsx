@@ -1,6 +1,6 @@
 import React from 'react'
 import './allCategorySec.css'
-import HeaderSec from '../headerSec/HeaderSec'
+import HeaderSec from '../myHeaderSec/HeaderSec'
 import furnitre from '../../assets/categoryIcons/furniture.png'
 import kitchen from '../../assets/categoryIcons/kitchen.png'
 import sport from '../../assets/categoryIcons/sports.png'
@@ -11,7 +11,7 @@ import makeUp from '../../assets/categoryIcons/make-up.png'
 import health from '../../assets/categoryIcons/health.png'
 import pets from '../../assets/categoryIcons/pets.png'
 import other from '../../assets/categoryIcons/other.png'
-import CategoryOctagonShape from '../categoryOctagonShape/CategoryOctagonShape'
+import CategoryOctagonShape from '../categoryOctagonShapeSec/CategoryOctagonShape'
 
 export default function AllCategorySec() {
     const categoryItems = [

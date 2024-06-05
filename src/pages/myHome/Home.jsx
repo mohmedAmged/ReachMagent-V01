@@ -1,13 +1,13 @@
 import React from 'react';
 import './home.css';
-import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
-import AboutReachSec from '../../components/aboutReachSec/AboutReachSec';
-import AllCategorySec from '../../components/allCategorySec/AllCategorySec';
-import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
-import ReadyToBuySec from '../../components/readyToBuySec/ReadyToBuySec';
-import TrendingCompanySec from '../../components/trendingCompanySec/TrendingCompanySec';
-import GrowBuisnessSec from '../../components/growBuisnessSec/GrowBuisnessSec';
-import LastMinuteDeals from '../../components/lastMinuteDeals/LastMinuteDeals';
+import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
+import AboutReachSec from '../../components/aboutReachSecc/AboutReachSec';
+import AllCategorySec from '../../components/allCategorySecc/AllCategorySec';
+import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
+import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec';
+import TrendingCompanySec from '../../components/trendingCompanySecc/TrendingCompanySec';
+import GrowBuisnessSec from '../../components/growBuisnessSecc/GrowBuisnessSec';
+import LastMinuteDeals from '../../components/lastMinuteDealsSec/LastMinuteDeals';
 
 export default function Home() {
     const arrOfCateg = [

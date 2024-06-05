@@ -6,8 +6,8 @@ import product6 from '../../assets/productImages/96543b544c123b92c0c24a73c4e460b
 import product7 from '../../assets/productImages/abd795b95507f5c05d0d3c1db701cbd5.jpeg'
 import product8 from '../../assets/productImages/c891684ea471c925ce468f16b1fa7765.png'
 import product9 from '../../assets/productImages/bf683bb83dd212553d6ec955a1e3572d.jpeg'
-import ShopProducts from '../../components/shopProducts/ShopProducts';
-import ProductDetailsSec from '../../components/productDetailsSec/ProductDetailsSec';
+import ShopProducts from '../../components/shopProductsSec/ShopProducts';
+import ProductDetailsSec from '../../components/productDetailsSecc/ProductDetailsSec';
 export default function ProductDetails() {
   const relatedProducts = [
     {

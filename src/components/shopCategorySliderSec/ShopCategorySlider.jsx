@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/autoplay";
 import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
-import CategoryOctagonShape from '../categoryOctagonShape/CategoryOctagonShape';
+import CategoryOctagonShape from '../categoryOctagonShapeSec/CategoryOctagonShape';
 import { Container } from 'react-bootstrap';
 
 export default function ShopCategorySlider() {

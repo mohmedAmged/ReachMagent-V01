@@ -1,10 +1,10 @@
 import React from 'react'
-import ContentViewHeader from '../../components/contentViewHeader/ContentViewHeader'
+import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
 import { NavLink } from 'react-router-dom'
 import { Table } from 'react-bootstrap';
 import chairImg from '../../assets/productsImages/chair.png'
 import './myProducts.css'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader';
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader';
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash';
 export default function MyProducts() {
   const productsData = [

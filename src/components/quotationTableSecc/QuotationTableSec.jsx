@@ -1,6 +1,6 @@
 import React from 'react'
 import './quotationTableSec.css'
-import ContentViewHeader from '../contentViewHeader/ContentViewHeader'
+import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
 import { Table } from 'react-bootstrap';
 export default function QuotationTableSec() {
     const tableData = [

@@ -1,7 +1,7 @@
 import React from 'react'
 import './newCatalogItemForm.css'
-import ContentViewHeader from '../contentViewHeader/ContentViewHeader'
-import MainContentHeader from '../mainContentHeader/MainContentHeader'
+import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
+import MainContentHeader from '../mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash'
 export default function NewCatalogItemForm() {
     return (

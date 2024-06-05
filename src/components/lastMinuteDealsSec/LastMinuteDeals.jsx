@@ -4,7 +4,7 @@ import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
 import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
-import LastMinuteCard from '../lastMinuteCard/LastMinuteCard'
+import LastMinuteCard from '../lastMinuteCardSec/LastMinuteCard'
 export default function LastMinuteDeals() {
     const productItems = [
         {

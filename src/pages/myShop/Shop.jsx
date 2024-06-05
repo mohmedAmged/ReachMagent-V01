@@ -1,9 +1,9 @@
 import React from 'react';
 import './shop.css';
-import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
-import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
-import FilterationBar from '../../components/filterationBar/FilterationBar';
-import ShopProducts from '../../components/shopProducts/ShopProducts';
+import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
+import ShopCategorySlider from '../../components/shopCategorySliderSec/ShopCategorySlider';
+import FilterationBar from '../../components/filterationBarSec/FilterationBar';
+import ShopProducts from '../../components/shopProductsSec/ShopProducts';
 import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
 import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'

@@ -1,7 +1,7 @@
 import React from 'react';
 import './productDetailsSec.css';
 import { Col, Container, Row } from 'react-bootstrap';
-import ProdDetailsSlider from '../prodDetailsSlider/ProdDetailsSlider';
+import ProdDetailsSlider from '../prodDetailsSliderSec/ProdDetailsSlider';
 
 
 export default function ProductDetailsSec() {

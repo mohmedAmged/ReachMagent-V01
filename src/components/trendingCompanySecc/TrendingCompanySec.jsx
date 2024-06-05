@@ -4,7 +4,7 @@ import cover1 from '../../assets/companyCards/cover 1.png'
 import cover2 from '../../assets/companyCards/cover 2.png'
 import cover3 from '../../assets/companyCards/cover 3.png'
 import profile from '../../assets/companyCards/profile.png'
-import CopmanyCard from '../companyCard/CopmanyCard'
+import CopmanyCard from '../companyCardSec/CopmanyCard'
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 export default function TrendingCompanySec() {
     const companyCardsItems = [

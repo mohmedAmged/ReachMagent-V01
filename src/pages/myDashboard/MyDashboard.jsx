@@ -1,6 +1,6 @@
 import React from 'react'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader'
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 export default function MyDashboard() {
   return (
     <>

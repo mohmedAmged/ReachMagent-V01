@@ -5,7 +5,7 @@ import MyCatalog from './pages/myInsights/MyCatalog';
 import MyOrders from './pages/myOrders/MyOrders';
 import MyProducts from './pages/myProductsPage/MyProducts';
 import MyQutations from './pages/myQutationsPage/MyQutations';
-import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemForm';
+import NewCatalogItemForm from './components/newCatalogItemFormSec/NewCatalogItemForm';
 import Home from './pages/myHome/Home';
 import MyNavBar from './components/myNavBarSec/MyNavBar';
 import MyFooter from './components/myFooterSec/MyFooter';

@@ -1,7 +1,7 @@
 import React from 'react'
-import QuotationStateSec from '../../components/quotationsStateSec/QuotationStateSec'
-import QuotationTableSec from '../../components/quotationTableSec/QuotationTableSec'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader'
+import QuotationStateSec from '../../components/quotationsStateSecc/QuotationStateSec'
+import QuotationTableSec from '../../components/quotationTableSecc/QuotationTableSec'
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 
 export default function MyQutations() {

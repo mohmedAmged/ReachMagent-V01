@@ -1,10 +1,10 @@
 import React from 'react'
 import './readyToBuySec.css'
-import BorderedNavigationBar from '../borderedNavigationBar/BorderedNavigationBar'
+import BorderedNavigationBar from '../borderedNavigationBarSec/BorderedNavigationBar'
 import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
 import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
-import ProductCard from '../productCard/ProductCard'
+import ProductCard from '../productCardSec/ProductCard'
 export default function ReadyToBuySec() {
     const listedNavigationItem = [
         {

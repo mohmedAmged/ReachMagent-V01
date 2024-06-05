@@ -18,7 +18,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/autoplay";
 import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
-import ShopMainCard from '../shopMainCard/ShopMainCard';
+import ShopMainCard from '../shopMainCardSec/ShopMainCard';
 
 export default function ShopSliderSec() {
   const items = [

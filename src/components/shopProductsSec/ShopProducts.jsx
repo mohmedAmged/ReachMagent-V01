@@ -2,7 +2,7 @@ import React from 'react';
 import './shopProducts.css';
 
 
-import ProductCard from '../productCard/ProductCard';
+import ProductCard from '../productCardSec/ProductCard';
 
 export default function ShopProducts({products}) {
 
