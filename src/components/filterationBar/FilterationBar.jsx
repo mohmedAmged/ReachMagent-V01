@@ -1,5 +1,5 @@
 import React from 'react';
-import "./FilterationBar.css";
+import "./filterationBar.css";
 import { Container } from 'react-bootstrap';
 
 export default function FilterationBar() {

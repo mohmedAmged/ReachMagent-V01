@@ -1,5 +1,5 @@
 import React from 'react';
-import './ShopMainCard.css';
+import './shopMainCard.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function ShopMainCard({link,imgSrc,cardHead,cardText,rate,buttonText,rateSpan}) {

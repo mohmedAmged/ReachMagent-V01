@@ -1,5 +1,5 @@
 import React from 'react';
-import './HeaderOfSec.css';
+import './headerOfSec.css';
 
 export default function HeaderOfSec({secHead,secText}) {
   return (

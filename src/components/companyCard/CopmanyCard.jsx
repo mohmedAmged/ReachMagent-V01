@@ -1,5 +1,5 @@
 import React from 'react'
-import './CompanyCard.css'
+import './companyCard.css'
 export default function CopmanyCard({coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc}) {
     return (
         <div className='companyCard__item'>

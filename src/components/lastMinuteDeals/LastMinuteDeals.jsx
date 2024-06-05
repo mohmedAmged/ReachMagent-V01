@@ -1,6 +1,6 @@
 import React from 'react'
 import './lastMinuteDeals.css'
-import HeaderOfSec from '../headerOfSec/HeaderOfSec'
+import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
 import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'

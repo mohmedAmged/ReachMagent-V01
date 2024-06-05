@@ -4,7 +4,7 @@ import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
 import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
 import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
 import ShopSliderSec from '../../components/myShopSliderSec/ShopSliderSec';
-import HeaderOfSec from '../../components/headerOfSec/HeaderOfSec';
+import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 
 export default function Discover() {
   const arrOfCateg = [

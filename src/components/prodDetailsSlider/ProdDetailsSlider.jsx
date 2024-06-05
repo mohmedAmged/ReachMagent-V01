@@ -5,7 +5,7 @@ import imgDetails3 from '../../assets/productImages/96543b544c123b92c0c24a73c4e4
 import imgDetails4 from '../../assets/productImages/abd795b95507f5c05d0d3c1db701cbd5.jpeg'
 import imgDetails5 from '../../assets/productImages/bf683bb83dd212553d6ec955a1e3572d.jpeg'
 
-import './ProdDetailsSlider.css';
+import './prodDetailsSlider.css';
 
 import { Col, Container, Row } from 'react-bootstrap';
 

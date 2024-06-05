@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './MyNavBar.css';
+import './myNavBar.css';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 

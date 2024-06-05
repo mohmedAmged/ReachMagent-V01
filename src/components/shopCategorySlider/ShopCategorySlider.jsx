@@ -1,5 +1,5 @@
 import React from 'react';
-import './ShopCategorySlider.css';
+import './shopCategorySlider.css';
 import furnitre from '../../assets/categoryIcons/furniture.png'
 import kitchen from '../../assets/categoryIcons/kitchen.png'
 import sport from '../../assets/categoryIcons/sports.png'
