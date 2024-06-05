@@ -57,6 +57,7 @@ export default function ProductDetails() {
     <>
       <ProductDetailsSec />
       <ShopProducts products={relatedProducts} />
+      {/* <div></div> */}
     </>
   );
 };
