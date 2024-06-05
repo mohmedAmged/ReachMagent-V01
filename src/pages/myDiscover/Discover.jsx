@@ -1,9 +1,9 @@
 import React from 'react';
-import './Discover.css';
+import './discover.css';
 import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
 import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
 import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
-import ShopSliderSec from '../../components/shopSliderSec/ShopSliderSec';
+import ShopSliderSec from '../../components/myShopSliderSec/ShopSliderSec';
 import HeaderOfSec from '../../components/headerOfSec/HeaderOfSec';
 
 export default function Discover() {

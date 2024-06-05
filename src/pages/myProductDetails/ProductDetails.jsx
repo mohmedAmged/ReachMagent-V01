@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProductDetails.css';
+import './productDetails.css';
 import product4 from '../../assets/productImages/5a38de872b5a9de89fce778c8020427c.jpeg'
 import product5 from '../../assets/productImages/8a93dc0202ae8257bb4156a4bf0933c1.jpeg'
 import product6 from '../../assets/productImages/96543b544c123b92c0c24a73c4e460b4.jpeg'

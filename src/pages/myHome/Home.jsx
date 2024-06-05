@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css';
+import './home.css';
 import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
 import AboutReachSec from '../../components/aboutReachSec/AboutReachSec';
 import AllCategorySec from '../../components/allCategorySec/AllCategorySec';

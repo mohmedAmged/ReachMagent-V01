@@ -3,16 +3,16 @@ import './App.css';
 import MyDashboard from './pages/myDashboard/MyDashboard';
 import MyCatalog from './pages/myInsights/MyCatalog';
 import MyOrders from './pages/myOrders/MyOrders';
-import MyProducts from './pages/myProducts/MyProducts';
-import MyQutations from './pages/myQutations/MyQutations';
+import MyProducts from './pages/myProductsPage/MyProducts';
+import MyQutations from './pages/myQutationsPage/MyQutations';
 import NewCatalogItemForm from './components/newCatalogItemForm/NewCatalogItemForm';
-import Home from './pages/Home/Home';
+import Home from './pages/myHome/Home';
 import MyNavBar from './components/myNavBar/MyNavBar';
 import MyFooter from './components/myFooter/MyFooter';
 import { useState } from 'react';
-import Discover from './pages/discover/Discover';
-import Shop from './pages/shop/Shop';
-import ProductDetails from './pages/productDetails/ProductDetails';
+import Discover from './pages/myDiscover/Discover';
+import Shop from './pages/myShop/Shop';
+import ProductDetails from './pages/myProductDetails/ProductDetails';
 
 function App() {
   const {pathname} = useLocation();

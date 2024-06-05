@@ -1,5 +1,5 @@
 import React from 'react';
-import './ShopSliderSec.css';
+import './shopSliderSec.css';
 import { Container} from 'react-bootstrap';
 import img1 from '../../assets/furnitureImages/0628742713786f4ad2af80b4b11e6013.png';
 import img2 from '../../assets/furnitureImages/0fba54bf2fab0de3aebec1f831b4e867.png';

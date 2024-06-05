@@ -1,5 +1,5 @@
 import React from 'react';
-import './Shop.css';
+import './shop.css';
 import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
 import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
 import FilterationBar from '../../components/filterationBar/FilterationBar';
