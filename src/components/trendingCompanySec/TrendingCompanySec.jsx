@@ -1,11 +1,11 @@
 import React from 'react'
 import './TrendingCompanySec.css'
-import HeaderOfSec from '../HeaderOfSec/HeaderOfSec'
 import cover1 from '../../assets/companyCards/cover 1.png'
 import cover2 from '../../assets/companyCards/cover 2.png'
 import cover3 from '../../assets/companyCards/cover 3.png'
 import profile from '../../assets/companyCards/profile.png'
 import CopmanyCard from '../companyCard/CopmanyCard'
+import HeaderOfSec from '../headerOfSec/HeaderOfSec'
 export default function TrendingCompanySec() {
     const companyCardsItems = [
         {
@@ -39,10 +39,12 @@ export default function TrendingCompanySec() {
             cardDesc: 'Lorem ipsum Dolor Sit Amet Consecteture Adipsciing Elit Tristique Hac Lectus Facillsi Convallis'
         },
     ]
+
     return (
         <div className='trendingCompany__handler'>
             <div className="container">
-                <HeaderOfSec secHead='Trending Companies'
+                <HeaderOfSec
+                    secHead='Trending Companies'
                     secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.' />
 
                 <div className="trendingCompany__cards mb-5">

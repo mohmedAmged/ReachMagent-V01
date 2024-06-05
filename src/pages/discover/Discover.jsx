@@ -3,8 +3,8 @@ import './Discover.css';
 import MyMainHeroSec from '../../components/myMainHeroSec/MyMainHeroSec';
 import FranchiseSec from '../../components/franchiseSec/FranchiseSec';
 import ShopCategorySlider from '../../components/shopCategorySlider/ShopCategorySlider';
-import HeaderOfSec from '../../components/HeaderOfSec/HeaderOfSec';
 import ShopSliderSec from '../../components/shopSliderSec/ShopSliderSec';
+import HeaderOfSec from '../../components/headerOfSec/HeaderOfSec';
 
 export default function Discover() {
   const arrOfCateg = [
@@ -36,16 +36,18 @@ export default function Discover() {
       categoryArr={arrOfCateg}
       />
       <ShopCategorySlider />
-      <HeaderOfSec 
-      secHead='Trending Products'
-      secText='There are many variations of passages of Lorem Ipsum available but the majority have suffered'
+      <HeaderOfSec
+        secHead='Trending Products'
+        secText='There are many variations of passages of Lorem Ipsum available but the majority have suffered'
+      />
+      <ShopSliderSec />
+
+      <FranchiseSec
+        pageName='discover'
+        headText='New Arrivals'
+        paraText='Check Our New Collection'
       />
       <ShopSliderSec 
-      />
-      <FranchiseSec
-      pageName='discover'
-      headText='New Arrivals'
-      paraText='Check Our New Collection'
       />
     </>
   );

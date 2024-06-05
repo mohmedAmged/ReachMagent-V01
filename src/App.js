@@ -11,7 +11,7 @@ import MyNavBar from './components/myNavBar/MyNavBar';
 import MyFooter from './components/myFooter/MyFooter';
 import { useState } from 'react';
 import Discover from './pages/discover/Discover';
-import Shop from './pages/Shop/Shop';
+import Shop from './pages/shop/Shop';
 import ProductDetails from './pages/productDetails/ProductDetails';
 
 function App() {

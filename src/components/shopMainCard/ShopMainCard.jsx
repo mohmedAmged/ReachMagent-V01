@@ -1,31 +1,38 @@
 import React from 'react';
 import './ShopMainCard.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function ShopMainCard({imgSrc,cardHead,cardText,rate,buttonText}) {
+export default function ShopMainCard({link,imgSrc,cardHead,cardText,rate,buttonText,rateSpan}) {
+  const navigate = useNavigate();
+
   return (
-    <div className='shopMain___card'>
-      <div className='shopMain__card-image'>
-        <img src={imgSrc ? imgSrc : ''} alt="" />
+    <div className='shopMain__card d-flex flex-column justify-content-around align-items-center'>
+      <div className='shopMain__card-image text-center'>
+        <img onClick={()=> navigate(`${link}`)} src={imgSrc ? imgSrc : ''} alt="" />
       </div>
       <div className='shopMain__card-body'>
-        <h4>
+        <h4 onClick={()=> navigate(`${link}`)} className='px-2'>
           {
             cardHead ? cardHead : ''
           }
         </h4>
-        <p>
+        <p className='px-2'>
           {
             cardText ? cardText : ''
           }
           $
         </p>
-        <div className='shopMain__card-body_bottom'>
-          <div className='shopMain__card-body_rate-holder'>
+        <div className='shopMain__card-body_bottom d-flex justify-content-between'>
+          <div className='shopMain__card-body_rate-holder d-flex justify-content-between me-3'>
             <i className="bi bi-star-fill"></i>
-            {
-              rate ? rate : ''
-            }
-
+            <p>
+              {
+                rate ? rate : ''
+              }
+              <span>
+                {rateSpan ? rateSpan : ''}
+              </span>
+            </p>
           </div>
           <div className='shopMain__card-body_button-holder'>
             <button className='pageMainBtnStyle'>
@@ -37,5 +44,5 @@ export default function ShopMainCard({imgSrc,cardHead,cardText,rate,buttonText})
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

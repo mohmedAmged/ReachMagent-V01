@@ -19,68 +19,68 @@ import CategoryOctagonShape from '../categoryOctagonShape/CategoryOctagonShape';
 import { Container } from 'react-bootstrap';
 
 export default function ShopCategorySlider() {
-    const categoryItems = [
+  const categoryItems = [
     {
         img: furnitre,
         title: 'furnitre',
-        link: '/profile',
+        link: '/Shop',
         id: 1
     },
     {
         img: kitchen,
         title: 'kitchen',
-        link: '/profile',
+        link: '/Shop',
         id: 2
     },
     {
         img: sport,
         title: 'sports',
-        link: '/profile',
+        link: '/Shop',
         id: 3
     },
     {
         img: lighting,
         title: 'lighting',
-        link: '/profile',
+        link: '/Shop',
         id: 4
     },
     {
         img: img1,
         title: 'decoration',
-        link: '/profile',
+        link: '/Shop',
         id: 5
     },
     {
         img: img2,
         title: 'kids',
-        link: '/profile',
+        link: '/Shop',
         id: 6
     },
     {
         img: img3,
         title: 'make-up',
-        link: '/profile',
+        link: '/Shop',
         id: 7
     },
     {
         img: img4,
         title: 'health',
-        link: '/profile',
+        link: '/Shop',
         id: 8
     },
     {
         img: img5,
         title: 'pets',
-        link: '/profile',
+        link: '/Shop',
         id: 9
     },
     {
         img: img6,
         title: 'other',
-        link: '/profile',
+        link: '/Shop',
         id: 10
     },
-]
+  ]
 
   return (
     <div className='shopCategory__SliderSec py-5 my-5'>
@@ -88,7 +88,6 @@ export default function ShopCategorySlider() {
         <Swiper
           className='mySwiper'
           modules={[Autoplay]}
-          spaceBetween={10}
           autoplay={{
             delay: 2500,
             pauseOnMouseEnter: true,
@@ -96,19 +95,19 @@ export default function ShopCategorySlider() {
           }}
           // loop
           breakpoints={{
-            320: {
-              slidesPerView: 6,
+            300: {
+              slidesPerView: 2,
               spaceBetween: 20
             },
-            480: {
-              slidesPerView: 6,
+            426: {
+              slidesPerView: 4.1,
               spaceBetween: 20
             },
-            600: {
-              slidesPerView: 6,
+            768: {
+              slidesPerView: 5.1,
               spaceBetween: 30
             },
-            640: {
+            995: {
               slidesPerView: 6,
               spaceBetween: 30
             },
