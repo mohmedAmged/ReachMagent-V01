@@ -57,10 +57,17 @@ export default function ProductDetails() {
         rateCount: '(850)'
     },
   ]
+  const items = [
+    { name: 'Details', active: true },
+    { name: 'Specification', active: false },
+    { name: 'Reviews', active: false },
+    { name: 'Seller Details', active: false },
+    // Add more items as needed
+  ];
   return (
     <div className='productDetailsPage'>
       <ProductDetailsSec />
-      <ProductDetailsFilterationBar />
+      <ProductDetailsFilterationBar items={items}/>
       <ProductDetailsDescriptionContent />
       <ProductDetailsOwnerOfCurrProduct />
       <ShopProducts products={relatedProducts} />

@@ -18,6 +18,10 @@
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     position: relative;
+    color: var(--primary-black);
+}
+.productDetailsFilterationBar-list .active{
+    color: #067FAD;
 }
 .productDetailsFilterationBar-list li:hover {
     color: #067FAD;

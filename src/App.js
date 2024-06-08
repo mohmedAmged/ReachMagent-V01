@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Discover from './pages/myDiscover/Discover';
 import Shop from './pages/myShop/Shop';
 import ProductDetails from './pages/myProductDetails/ProductDetails';
+import SingleCompany from './pages/singleCompanyPage/SingleCompany';
 
 function App() {
   const {pathname} = useLocation();
@@ -42,6 +43,7 @@ function App() {
         <Route path='/shop' element={<Shop />} />
         <Route path='/shop/:singleProduct' element={<ProductDetails />} />
         <Route path='/discover' element={<Discover />} />
+        <Route path='/company/:companyName' element={<SingleCompany />} />
 
         {/* Profile Routes */}
         <Route path='/profile' element={<MyDashboard />} />
