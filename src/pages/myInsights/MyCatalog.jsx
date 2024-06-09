@@ -1,9 +1,9 @@
 import React from 'react'
-import ContentViewHeader from '../../components/contentViewHeader/ContentViewHeader'
+import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
 import './catalogContent.css'
 import cardImg from '../../assets/card-images/Rectangle 4705.png'
 import { NavLink } from 'react-router-dom'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader'
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 export default function MyCatalog() {
   const cardListItems = [

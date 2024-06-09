@@ -1,0 +1,17 @@
+.readyToBuySec__handler .listedNavigate{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.readyToBuy__products{
+    margin: 40px 0;
+}
+@media screen and (max-width: 600px) {
+    .readyToBuySec__handler .listedNavigate{
+        gap: 0;
+    }
+    .readyToBuy__products{
+        margin: 20px 0;
+    }
+}

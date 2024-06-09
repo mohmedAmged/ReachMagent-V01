@@ -1,8 +1,6 @@
 import React from 'react'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader'
-import { NavLink } from 'react-router-dom';
-
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 export default function MyDashboard() {
   return (
     <>
@@ -11,9 +9,6 @@ export default function MyDashboard() {
       <div className='main__content container'>
         <MainContentHeader />
         <div>Profile</div>
-        <NavLink className='btn btn-outline-success py-3 px-4 mt-4' to='/'>
-          Back To Home Page
-        </NavLink>
       </div>
     </div>
     </>

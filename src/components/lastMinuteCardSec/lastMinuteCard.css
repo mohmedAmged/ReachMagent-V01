@@ -1,0 +1,25 @@
+.lastMinuteCard__handler{
+    background: var(--primary-white);
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid rgba(148, 21, 21, 1);
+}
+.lastMinuteCard__handler .product__info{
+    align-items: normal;
+}
+.lastMinuteCard__handler .deal__time{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.lastMinuteCard__handler .deal__time img{
+    width: 27px;
+    height: 29px;
+}
+.lastMinuteCard__handler .deal__time .deal__time__day{
+    /* margin-right: 10px; */
+    text-align: center;
+}
+.lastMinuteCard__handler .deal__time .deal__time__hour{
+    text-align: center;
+}

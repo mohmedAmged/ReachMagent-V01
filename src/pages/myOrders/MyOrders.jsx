@@ -1,5 +1,5 @@
 import React from 'react'
-import MainContentHeader from '../../components/mainContentHeader/MainContentHeader'
+import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 
 export default function MyOrders() {

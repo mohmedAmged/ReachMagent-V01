@@ -1,0 +1,99 @@
+.companyInfoCard__handler{
+    background: var(--primary-white);
+    border-radius: 24px;
+    padding: 60px 30px;
+    margin-top: -200px;
+    position: relative;
+    z-index: 10;
+    /* margin-bottom: 100px; */
+}
+.company__profile__img{
+    border: 1px solid rgba(145, 151, 179, 0.13);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 215px;
+    height: 215px;
+}
+.company__profile__img img{
+    width: 164px;
+    height: 86.86px;
+}
+.companyBoxItem{
+    /* padding: 0 20px; */
+}
+ .company__name{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.company__name h1{
+    font-size: 32px;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: var(--main-blue-color);
+}
+.company__name span img{
+    width: 32px;
+    height: 32px;
+}
+.company__boxInfo{
+    margin-bottom: 15px;
+}
+.companyinfo__Tit{
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: rgba(181, 181, 195, 1);
+}
+.companyinfo__subTit{
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.company__actions{
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+.btn__companyActions{
+    width: 121px;
+    height: 48px;
+    border-radius: 6px;
+    background: rgba(245, 248, 250, 1);
+    border: 1px solid rgba(245, 248, 250, 1);
+}
+.btn__companyActions img{
+    width: 24px;
+    height: 24px;
+}
+.btn__companyActions.online__btn{
+    position: relative;
+}
+.btn__companyActions.online__btn .online__circle{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(74, 209, 95, 1);
+}
+.companyFollow__btn{
+    margin-top: 40px;
+    text-align: right;
+}
+.btnColoredBlue{
+    width: 182px;
+    height: 48px;
+    border-radius: 6px;
+    color: var(--primary-white);
+    background: var(--main-blue-color);
+    border: 1px solid var(--main-blue-color);
+    transition: all ease-in-out .3s;
+}
+.btnColoredBlue:hover{
+    color: var(--main-blue-color);
+    background: var(--primary-white);
+}

@@ -1,0 +1,6 @@
+.singleCompany__handler{
+    height: 300vh;
+}
+.singleCompany__handler .productDetailsFilterationBar-list{
+    background: var(--primary-white) !important;
+}

@@ -7,7 +7,36 @@
     transition: width 0.3s;
     width: 25%;
 }
-
+.overlay20::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    background-color: #00000020;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+    -o-border-radius: 24px;
+}
+.overlay30::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    background-color: #00000030;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+    -o-border-radius: 24px;
+}
 .mySidebar__handler .logo__text {
     font-size: 26px;
     padding: 10px;
@@ -17,7 +46,7 @@
 }
 
 .mySidebar__handler .logo__text span {
-    color: var(--primary-hover-blue);
+    color: var(--main-blue-color);
 }
 
 .mySidebar__handler ul {
@@ -63,7 +92,7 @@
 .mySidebar__handler li.active,
 .mySidebar__handler li.active a
 {
-    background-color: var(--primary-hover-blue);
+    background-color: var(--main-blue-color);
     border-radius: 8px;
 }
 
@@ -85,6 +114,8 @@
     padding: 30px;
     border-radius: 20px;
     background: linear-gradient(107.91deg, rgb(1, 186, 233) 7.37%, #0D151E 95.19%);
+    /* background: linear-gradient(180deg, #08AAE8 0%,  #067FAD 50%,  #06264D 100%); */
+
 }
 
 .pro__banner__content {
@@ -92,12 +123,14 @@
     font-size: 16px;
     line-height: 21px;
     color: var(--primary-white);
+    /* font-weight: */
 }
 
 .pro__banner__content a {
     border-radius: 20px;
     box-shadow: 2px 4px 4px 0px rgba(79, 42, 234, 0.17);
     background: var(--primary-white);
+    /* background: linear-gradient(0% #08AAE8, 50% #067FAD, 100% #06264D); */
     font-size: 16px;
     padding: 20px 0;
     margin-top: 20px;
@@ -107,6 +140,11 @@
     text-align: center;
     color: var(--primary-black);
     transition: all .2s;
+
+    /* //////////////// */
+    color: rgba(37, 86, 117, 1);
+
+
 }
 
 .pro__banner__content a:hover {
