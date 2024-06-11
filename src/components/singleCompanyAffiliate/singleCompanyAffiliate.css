@@ -52,7 +52,6 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    
 }
 .leftAffiliate::after {
     content: '';
@@ -134,4 +133,36 @@
 .affiliateBtn:hover {
     background: linear-gradient(-72deg,#08aae8,#067fad 50%,#06264d);
     color: #ffffff;
+}
+@media (max-width: 991px) {
+    .leftAffiliate {
+        margin-block: 40px 70px;
+    }
+    .affiliate-card-top h5 {
+        font-size: 12px;
+    }
+    .affiliate-card-top p {
+        font-size: 10px;
+    }
+    .affiliate-innerContent .header_ofSec p {
+        font-size: 14px;
+    }
+    .singleCompany__affiliate .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    .singleCompany__affiliate .row {
+        margin: 0 !important;
+    }
+    .singleCompany__affiliate .col-12 {
+        padding: 0 !important;
+    }
+}
+@media (max-width: 767px) {
+    .affiliate-card {
+        max-width: 90% !important;
+    }
+    .affiliate-card:not(:last-child){
+        margin-bottom: 30px;
+    }
 }

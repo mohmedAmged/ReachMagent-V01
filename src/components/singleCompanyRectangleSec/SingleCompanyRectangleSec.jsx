@@ -70,12 +70,22 @@ export default function SingleCompanyRectangleSec() {
         </div>
         <div className="singleCompany__rectangleSec-slider">
           <Swiper
-            slidesPerView={3}
-            spaceBetween={30}
+            slidesPerView={1}
+            spaceBetween={10}
             pagination={{
               clickable: true,
             }}
             modules={[Pagination]}
+            breakpoints={{
+              470: {
+                slidesPerView: 2,
+                spaceBetween: 10
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 10
+              }
+            }}
             className="mySwiper"
           >
             {

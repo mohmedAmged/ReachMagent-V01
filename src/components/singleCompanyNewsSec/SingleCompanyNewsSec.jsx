@@ -43,7 +43,7 @@ export default function SingleCompanyNewsSec() {
   return (
     <Container className='my-5'>
       <Row className='justify-content-around'>
-      <Col lg={6}>
+      <Col lg={6} md={6}>
         <Swiper
           spaceBetween={30}
           pagination={{
@@ -86,7 +86,7 @@ export default function SingleCompanyNewsSec() {
           }
         </Swiper>
       </Col>
-      <Col lg={6}>
+      <Col lg={6} md={6}>
         <Swiper
           spaceBetween={30}
           pagination={{

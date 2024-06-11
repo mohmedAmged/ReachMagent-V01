@@ -51,3 +51,8 @@
 .news__card .swiper-pagination {
     bottom: -20px !important;
 }
+@media (max-width: 767px) {
+    .news__card {
+        margin-bottom: 40px;
+    }
+}

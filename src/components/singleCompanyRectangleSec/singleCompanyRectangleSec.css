@@ -86,3 +86,37 @@
     width: 10px !important;
     height: 10px !important;
 }
+@media (max-width: 991px) {
+    .singleCompany__rectangleSec-slide {
+        min-height: 200px;
+    }
+    .singleCompany__rectangleSec-slide h4 {
+        font-size: 14px;
+    }
+    .singleCompany__rectangleSec-head {
+        margin-top: 0px;
+    }
+    .singleCompany__rectangleSec {
+        min-height: 550px;
+    }
+    .singleCompany__rectangleSec .swiper-pagination  {
+        bottom: 80px !important;
+    }
+}
+@media (max-width: 470px) {
+    .singleCompany__rectangleSec-head p {
+        font-size: 12px;
+    }
+    .singleCompany__rectangleSec-head h3 {
+        font-size: 20px;
+    }
+    .singleCompany__rectangleSec-slide p {
+        font-size: 12px;
+    }
+    .rectangleBg {
+        display: none;
+    }
+    .singleCompany__rectangleSec {
+        background-color: #011F5B;
+    }
+}
