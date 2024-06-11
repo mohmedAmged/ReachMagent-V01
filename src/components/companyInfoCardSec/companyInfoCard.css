@@ -97,3 +97,13 @@
     color: var(--main-blue-color);
     background: var(--primary-white);
 }
+
+@media screen and (max-width: 600px){
+    .companyFollow__btn{
+        text-align: left;
+        margin-bottom: 40px;
+    }
+    .company__profile__img{
+        margin-bottom: 40px;
+    }
+}

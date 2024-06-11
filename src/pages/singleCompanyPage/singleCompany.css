@@ -1,6 +1,11 @@
-.singleCompany__handler{
-    height: 300vh;
-}
 .singleCompany__handler .productDetailsFilterationBar-list{
     background: var(--primary-white) !important;
+}
+.singleCompany__handler .header_ofSec p {
+    max-width: 400px ;
+    font-size: 14px ;
+}
+.singleCompany__handler .header_ofSec h3 {
+    font-size: 30px;
+    font-weight: 600;
 }

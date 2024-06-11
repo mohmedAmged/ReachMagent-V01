@@ -2,8 +2,7 @@
     width: 123px;
     height: 126.63px;
     background: var(--primary-white);
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%,
-            70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%,70% 100%, 30% 100%, 0% 70%, 0% 30%);
     border-radius: 55px;
     display: flex;
     justify-content: center;

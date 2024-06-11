@@ -39,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "formik": "^2.4.6",
+    "yup": "^1.4.0"
   }
 }

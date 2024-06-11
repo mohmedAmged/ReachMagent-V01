@@ -1,6 +1,7 @@
 import React from 'react';
 import './shopMainCard.css';
 import { useNavigate } from 'react-router-dom';
+import { scrollToTop } from '../../functions/scrollToTop';
 
 export default function ShopMainCard({link,imgSrc,cardHead,cardText,rate,buttonText,rateSpan}) {
   const navigate = useNavigate();
@@ -8,10 +9,18 @@ export default function ShopMainCard({link,imgSrc,cardHead,cardText,rate,buttonT
   return (
     <div className='shopMain__card d-flex flex-column justify-content-around align-items-center'>
       <div className='shopMain__card-image text-center'>
-        <img onClick={()=> navigate(`${link}`)} src={imgSrc ? imgSrc : ''} alt="" />
+        <img onClick={()=> {
+          navigate(`${link}`);
+          scrollToTop();
+          }} 
+          src={imgSrc ? imgSrc : ''} alt="" />
       </div>
       <div className='shopMain__card-body'>
-        <h4 onClick={()=> navigate(`${link}`)} className='px-2'>
+        <h4 onClick={()=> {
+          navigate(`${link}`);
+          scrollToTop();
+          }}
+          className='px-2'>
           {
             cardHead ? cardHead : ''
           }
