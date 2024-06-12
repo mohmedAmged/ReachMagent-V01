@@ -6,6 +6,11 @@ import ProductDetailsFilterationBar from '../../components/productDetailsFiltera
 import aboutMarkImage from '../../assets/companyImages/flat-color-icons_about.png'
 import workHourImg from '../../assets/companyImages/tabler_clock-hour-7-filled.png'
 import AboutCompany from '../../components/aboutCompanySec/AboutCompany'
+import SingleCompanyRectangleSec from '../../components/singleCompanyRectangleSec/SingleCompanyRectangleSec'
+import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec'
+import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec'
+import SingleCompanyAffiliate from '../../components/singleCompanyAffiliateSec/SingleCompanyAffiliate'
+import CompanyContact from '../../components/companyContactSec/CompanyContact'
 
 export default function SingleCompany() {
     const items = [
@@ -46,7 +51,17 @@ export default function SingleCompany() {
             <div className='my-5'>
                 <ProductDetailsFilterationBar items={items} />
             </div>
-            <AboutCompany company={companyData}/>
+            <div className='container'>
+                <AboutCompany company={companyData}/>
+            </div>
+            <SingleCompanyRectangleSec />
+            <HeaderOfSec 
+            secHead='News'
+            secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.'
+            />
+            <SingleCompanyNewsSec />
+            <SingleCompanyAffiliate />
+            <CompanyContact />
         </div>
     )
 }
