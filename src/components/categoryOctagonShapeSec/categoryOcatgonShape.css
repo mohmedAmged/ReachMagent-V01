@@ -45,3 +45,19 @@
 .octagonItem__handler {
     margin-bottom: 20px;
 }
+
+
+@media screen and (max-width: 600px) {
+    .octagon__shape{
+    width: 54px;
+    height: 55.19px;
+    }
+    .octagon__shape img{
+        width: 21px;
+    height: 21px;
+    }
+    .CategoryOctagonShape__handler span{
+        font-size: 10px;
+        font-weight: 400;
+    }
+}

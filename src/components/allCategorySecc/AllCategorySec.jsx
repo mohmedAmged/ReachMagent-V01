@@ -74,11 +74,11 @@ export default function AllCategorySec() {
                     />
                 </div>
                 <div className="allCategory__items mt-5">
-                    <div className="row justify-content-center">
+                    <div className="category__octagon__flex__box">
                         {
                         categoryItems.map((el, index) => {
                             return (
-                            <div key={index} className="col-lg-2 col-md-4 col-sm-6">
+                            <div key={index}>
                                 <CategoryOctagonShape 
                                 octagonIcon={el.img} 
                                 iconName={el.title} 

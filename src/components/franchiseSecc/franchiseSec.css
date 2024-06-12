@@ -50,7 +50,7 @@
 .franchise__actions button{
     position: relative;
     background: transparent;
-    border: 1px solid var(--primary-white);
+    border: 2px solid var(--primary-white);
     color: var(--primary-white);
     padding: 10px 20px;
     border-radius: 8px;
@@ -70,20 +70,23 @@
 }
 
 @media screen and (max-width: 600px) {
-    .franchiseSec__content h1{
-        /* line-height: normal; */
-        font-size: 25px;
-
+    .franchiseSec__content{
+        padding: 30px 0;
+    }
+    .franchiseSec__content h3{
+        font-size: 16px;
     }
     .franchiseSec__content p{
         line-height: normal;
-        font-size: 14px;
+        font-size: 12px;
         padding: 0 10px;
+        font-weight: 300;
     }
     .franchise__actions{
         gap: 10px;
     }
     .franchise__actions button{
-        padding: 10px 15px;
+        /* padding: 10px 15px; */
+        font-size: 12px;
     }
 }

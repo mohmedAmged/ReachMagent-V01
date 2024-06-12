@@ -55,6 +55,34 @@
 }
 @media screen and (max-width: 600px) {
     .companyCard__item{
+        width: 300px;
+        height: 218.38px;
+    }
+    
+.card__content .company__name h2{
+    font-size: 12px;
+}
+.company__name{
+    margin-bottom: 5px !important;
+}
+.card__content .company__data .compDataStyle h3{
+    font-size: 12px;
+}
+.pageMainBtnStyle{
+    font-size: 12px;
+}
+.companyCard__item .card__content{
+    padding: 10px 30px;
+}
+.companyCard__item .card__description{
+    padding: 0;
+    padding-bottom: 0;
+    padding-left: 30px;
+}
+.companyCard__item .card__description p{
+    font-size: 10px;
+}
+    .companyCard__item{
         margin-bottom: 30px;
     }
 }

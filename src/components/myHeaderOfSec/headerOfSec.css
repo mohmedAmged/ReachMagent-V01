@@ -18,10 +18,10 @@
 }
 @media (max-width: 500px) {
     .header_ofSec h3 {
-        font-size: 28px;
+        font-size: 16px;
     }
     .header_ofSec p {
-        font-size: 15px;
+        font-size: 12px;
         max-width: 90%;
     }
 }

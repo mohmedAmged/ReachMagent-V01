@@ -39,7 +39,7 @@ export default function LastMinuteCard({productImage, productName, dealTimeDay, 
                        {dealQuantity}
                     </p>
                     <button className='pageMainBtnStyle'>
-                        buy more
+                        Know more
                     </button>
                 </div>
             </div>

@@ -63,14 +63,26 @@
 }
 
 @media screen and (max-width: 600px) {
+    .growBuisness__handler{
+    margin: 0;
+    background-size: 370px;
+    height: 143px;
+    padding: 0;
+    }
+    .growBuisness__header{
+        top: 3px;
+    }
+    .gowBuisness__action{
+        bottom: 3px;
+    }
     .growBuisness__header p{
         font-size: 10px;
     }
     .growBuisness__header h1{
-        font-size: 16px;
+        font-size: 12px;
     }
     .linear__btn{
-        padding: 10px 30px;
-        font-size: 12px;
+        padding: 10px 20px;
+        font-size: 10px;
     }
 }
