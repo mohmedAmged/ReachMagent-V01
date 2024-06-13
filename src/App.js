@@ -56,7 +56,7 @@ function App() {
       </Routes>
 
     {
-      // pathname.includes('profile') ? <></> : <MyFooter />
+      pathname.includes('profile') ? <></> : <MyFooter />
     }
 
     </>

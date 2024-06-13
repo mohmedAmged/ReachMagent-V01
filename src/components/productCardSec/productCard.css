@@ -3,6 +3,11 @@
     padding: 10px;
     border-radius: 20px;
 }
+.productCard__item .product__image img{
+    /* width: 396.48px; */
+    height: 191px;
+    border-radius: 8px;
+}
 .product__info{
     display: flex;
     justify-content: space-between;
@@ -75,9 +80,15 @@
     .sub__info{
         text-align: end;
     }
+    .productCard__item .product__image img{
+        height: auto;
+    }
 }
 @media screen and (max-width: 1024px){
     .productCard__item{
         margin-bottom: 30px;
+    }
+    .productCard__item .product__image img{
+        height: 130px;
     }
 }
