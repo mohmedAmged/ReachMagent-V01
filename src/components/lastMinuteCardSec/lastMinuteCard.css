@@ -23,3 +23,25 @@
 .lastMinuteCard__handler .deal__time .deal__time__hour{
     text-align: center;
 }
+@media screen and (max-width: 600px) {
+    .product__info{
+        padding: 5px 0;
+    }
+    .lastMinuteCard__handler{
+        width: 300px;
+        height: 226.6px;
+    }
+    .product__info .sub__info p{
+        font-size: 12px;
+    }
+    .lastMinuteCard__handler .deal__time img{
+        width: 19.24px;
+        height: 20.67px;
+    }
+    .deal__time__day p{
+        font-size: 12px;
+    }
+    .deal__time__hour p{
+        font-size: 12px;
+    }
+}

@@ -10,12 +10,12 @@ export default function CompanyInfoCard() {
         <div className='container'>
             <div className="companyInfoCard__handler">
                 <div className="row">
-                    <div className="col-lg-3">
+                    <div className="col-lg-3 col-md-12 center__on__mobile">
                         <div className="company__profile__img">
                             <img src={profile} alt="profile" />
                         </div>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 col-md-12 ">
                         <div className="company__name">
                             <h1>
                                 Homzmart
@@ -25,7 +25,7 @@ export default function CompanyInfoCard() {
                             </span>
                         </div>
                         <div className="row">
-                            <div className="col-lg-4">
+                            <div className="col-lg-4 col-md-4 padding__on__md__screen">
                                 <div className="companyBoxItem">
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
@@ -54,7 +54,7 @@ export default function CompanyInfoCard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-4">
+                            <div className="col-lg-4 col-md-4 padding__on__md__screen">
                                 <div className="companyBoxItem">
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
@@ -75,7 +75,7 @@ export default function CompanyInfoCard() {
                                 </div>
 
                             </div>
-                            <div className="col-lg-4">
+                            <div className="col-lg-4 col-md-4 padding__on__md__screen">
                                 <div className="companyBoxItem">
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
@@ -105,15 +105,15 @@ export default function CompanyInfoCard() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
                             <button className='btnColoredBlue'>
                                 Request Quotation
                             </button>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
     )

@@ -2,7 +2,8 @@
     width: 123px;
     height: 126.63px;
     background: var(--primary-white);
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%,70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%,
+            70% 100%, 30% 100%, 0% 70%, 0% 30%);
     border-radius: 55px;
     display: flex;
     justify-content: center;
@@ -43,4 +44,20 @@
 
 .octagonItem__handler {
     margin-bottom: 20px;
+}
+
+
+@media screen and (max-width: 600px) {
+    .octagon__shape{
+    width: 54px;
+    height: 55.19px;
+    }
+    .octagon__shape img{
+        width: 21px;
+    height: 21px;
+    }
+    .CategoryOctagonShape__handler span{
+        font-size: 10px;
+        font-weight: 400;
+    }
 }

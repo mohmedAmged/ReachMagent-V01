@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import { Col, Container, Row } from 'react-bootstrap';
-import "./singleCompanyNewsSec.css";
+import "./singleCompanyNews.css";
 
 export default function SingleCompanyNewsSec() {
   const newsArr = [

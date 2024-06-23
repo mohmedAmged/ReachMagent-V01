@@ -9,18 +9,16 @@ export default function ShopMainCard({link,imgSrc,cardHead,cardText,rate,buttonT
   return (
     <div className='shopMain__card d-flex flex-column justify-content-around align-items-center'>
       <div className='shopMain__card-image text-center'>
-        <img onClick={()=> {
+        <img onClick={()=>{ 
           navigate(`${link}`);
           scrollToTop();
-          }} 
-          src={imgSrc ? imgSrc : ''} alt="" />
+          }} src={imgSrc ? imgSrc : ''} alt="" />
       </div>
       <div className='shopMain__card-body'>
-        <h4 onClick={()=> {
+        <h4 onClick={()=>{ 
           navigate(`${link}`);
           scrollToTop();
-          }}
-          className='px-2'>
+          }} className='px-2'>
           {
             cardHead ? cardHead : ''
           }

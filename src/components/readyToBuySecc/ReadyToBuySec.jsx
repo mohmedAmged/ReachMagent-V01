@@ -5,6 +5,7 @@ import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
 import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
 import ProductCard from '../productCardSec/ProductCard'
+import HeaderSec from '../myHeaderSec/HeaderSec'
 export default function ReadyToBuySec() {
     const listedNavigationItem = [
         {
@@ -48,7 +49,11 @@ export default function ReadyToBuySec() {
     return (
         <div className='readyToBuySec__handler'>
             <div className="container">
-                <div className="readyToBuy__navigationBar">
+                <div className="allCategory__header text-center mb-4">
+                    <HeaderSec title={'Ready-to-buy Products'}
+                    />
+                </div>
+                <div className="readyToBuy__navigationBar none__on__small__screen">
                     <ul className="listedNavigate">
                         {
                             listedNavigationItem.map((el, index) => {
@@ -59,13 +64,27 @@ export default function ReadyToBuySec() {
                         }
                     </ul>
                 </div>
+                <div className="readyToBuy__selectBar display__on__small__screen">
+                    <>
+                        <select name="" id="">
+                            {
+                                listedNavigationItem.map((el, index)=>{
+                                    return(
+                                        <option key={index}>{el.item}</option>
+                                    )
+                                })
+                            }
+                            
+                        </select>
+                    </>
+                </div>
                 <div className="readyToBuy__products">
                     <div className="row">
                         {
                             productItems.map((el, index) => {
                                 return (
-                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12">
-                                        <ProductCard productImage={el.img} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount}/>
+                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                                        <ProductCard productImage={el.img} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>
                                 )
                             })

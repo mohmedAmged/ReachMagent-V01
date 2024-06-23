@@ -1,0 +1,299 @@
+.signUpForm__mainContent {
+    background-color:  #ffffff;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+    -o-border-radius: 24px;
+    padding: 30px;
+}
+.signUpForm__head {
+    font-size: 50px;
+    font-weight: 400;
+    color: #00000091;
+    margin-bottom: 30px;
+}
+.signUpInput:hover ,
+.signUpInput:focus ,
+.signUpInput:focus-visible {
+    box-shadow: 0 4px 4px 0 #0000001A !important;
+    border: 0.5px solid #809DAD80;
+}
+.signUpInput:focus::placeholder {
+    color:transparent;
+}
+.signUpInput {
+    font-size: 14px;
+    background-color: #F1F4F8;
+    border: 0.5px solid #809DAD80;
+    box-shadow: 0 4px 4px 0 #0000001A !important;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    min-height: 42px;
+}
+.signUpInput::placeholder {
+    color: #809DAD;
+    font-size: 14px;
+}
+.phoneCode {
+    font-size: 12px !important;
+}
+.signUpForm__mainSec label {
+    font-weight: 500;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+.leftCountryFlag {
+    position: absolute;
+    left: 10px;
+    top: 52%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 25px;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+select.signUpCountry {
+    padding-inline-start: 65px;
+}
+.requiredStar {
+    color: #D3121C80;
+}
+.signUpAddressBtn span {
+    cursor: pointer;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    padding: 5px 20px;
+    background-color: #ffffff;
+    border: 1px solid #011F5B;
+    color: #011F5B;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    font-size: 14px;
+    margin-block: 20px 30px;
+}
+.signUpAddressBtn span:hover {
+    color: #ffffff;
+    background-color: #011F5B;
+}
+.signUp__submitBtn input {
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+    padding: 30px 70px;
+    background-color: #011F5B;
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    font-size: 25px;
+    font-weight: 600;
+    border: 2px solid #011F5B;
+    margin-bottom: 30px;
+}
+.signUp__submitBtn input:hover {
+    background-color: #ffffff;
+    color: #011F5B;
+}
+.leftShowPasssord {
+    position: absolute;
+    right: 15px;
+    top: 52%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+}
+.serviceTerms ,
+.signInNavigation {
+    font-size: 14px;
+    font-weight: 500;
+    margin-block: 40px;
+    text-align: center;
+    line-height: 1.86;
+}
+.serviceTerms p ,
+.signInNavigation {
+    color: #000000;
+    margin-bottom: 15px;
+}
+.serviceTerms p span ,
+.signInNavigation a {
+    color: #3a9efc;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+.serviceTerms p span:hover ,
+.signInNavigation a:hover {
+    color: #1877F2;
+}
+.optional {
+    color: #00000080;
+    font-size: 12px;
+}
+.signUpInput[type="file"] {
+    display: none;
+}
+.singUp__upLoadBtn {
+    background-color: #08AAE8;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 4px 25px;
+    box-shadow: 0 4px 4px 0 #0000001A;
+    margin-top: 37px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    border: 1px solid #08AAE8;
+}
+.singUp__upLoadBtn:hover {
+    color: #08AAE8;
+    background-color: #F1F4F8;
+}
+.signUpCostom-checkBox .signUpCheckBox[type="checkbox"] {
+    display: none;
+}
+.signUpCostom-checkBox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.signUpCostom-checkBox .checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: #D9D9D996;
+    border-radius: 4px;
+    position: relative;
+    margin-right: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+.signUpCostom-checkBox .signUpCheckBox[type="checkbox"]:checked + .checkmark {
+    background-color: #4285F4;
+}
+.signUpCostom-checkBox .checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+.signUpCostom-checkBox .signUpCheckBox[type="checkbox"]:checked + .checkmark::after {
+    display: block;
+}
+.checkBox-text {
+    cursor: pointer;
+    font-size: 13px;
+    margin-inline-start: -10px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.86;
+}
+.signUpOtherWays .businessPrivacy {
+    max-width: 500px;
+    text-align: center;
+    margin: 30px auto;
+}
+@media (max-width: 991px) {
+    .signUpForm__head {
+        font-size: 30px;
+        margin-bottom: 0px;
+    }
+    .signUp__submitBtn input {
+        padding: 25px 60px;
+        font-size: 22px;
+    }
+}
+@media (max-width: 768px) {
+    .singUp__upLoadBtn {
+        padding: 4px 20px;
+        font-size: 16px !important;
+    }
+    .signUp__submitBtn input {
+        padding: 20px 45px;
+        font-size: 18px;
+    }
+    .serviceTerms ,
+    .signInNavigation {
+        font-size: 12px;
+    }
+}
+@media (max-width: 576px) {
+    .signUpFullNameContent .col-md-6{
+        margin-bottom: 15px;
+    }
+    .signUpCostom-checkBox {
+        width: 15% !important;
+    }
+    .checkBox-text {
+        width: 85% !important;
+    }
+    .signUpForm__mainSec label {
+        font-size: 18px;
+    }
+}
+@media (max-width: 450px) {
+    .signUpCostom-checkBox  {
+        width: 20% !important;
+    }
+    .checkBox-text {
+        width: 80% !important;
+        font-size: 11px;
+    }
+    .serviceTerms ,
+    .signInNavigation {
+        font-size: 11px;
+    }
+    .signUp__submitBtn input {
+        padding: 15px 35px;
+        font-size: 16px;
+    }
+    .signUpForm__head {
+        font-size: 25px;
+    }
+    .signUpForm__mainSec label {
+        font-size: 16px;
+    }
+}

@@ -14,6 +14,8 @@ import Discover from './pages/myDiscover/Discover';
 import Shop from './pages/myShop/Shop';
 import ProductDetails from './pages/myProductDetails/ProductDetails';
 import SingleCompany from './pages/singleCompanyPage/SingleCompany';
+import PersonalSignUp from './pages/personalSignUp/PersonalSignUp';
+import BusinessSignUp from './pages/busnissSignUp/BusinessSignUp';
 
 function App() {
   const {pathname} = useLocation();
@@ -45,6 +47,10 @@ function App() {
         <Route path='/discover' element={<Discover />} />
         <Route path='/company/:companyName' element={<SingleCompany />} />
 
+        {/* Login & Regester Routes */}
+        <Route path='/personalsignUp' element={<PersonalSignUp />} />
+        <Route path='/business-signUp' element={<BusinessSignUp />} />
+
         {/* Profile Routes */}
         <Route path='/profile' element={<MyDashboard />} />
         <Route path='/profile/catalog' element={<MyCatalog />} />
@@ -56,7 +62,7 @@ function App() {
       </Routes>
 
     {
-      // pathname.includes('profile') ? <></> : <MyFooter />
+      !pathname.includes('profile') && <MyFooter />
     }
 
     </>

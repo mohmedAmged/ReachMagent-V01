@@ -52,7 +52,7 @@ export default function TrendingCompanySec() {
                         {
                             companyCardsItems.map((el, index) => {
                                 return (
-                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
+                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
                                         <CopmanyCard coverImg={el.cardCover} companyProfile={el.cardProfile} companyName={el.cardName} companyUser={el.cardUser} productsCount={el.productsCount} dealsCount={el.dealsCount} ownerCount={el.ownerCount} cardDesc={el.cardDesc}/>
                                     </div>
                                 )

@@ -17,7 +17,7 @@ export default function SingleCompanyAffiliate() {
               />
               <div className="row justify-content-around flex-wrap">
                 <Col lg={2} md={12}  className='leftAffiliate'>
-                  <div class="star">
+                  <div className="star">
                   </div>
                   <h4>
                     Affiliate

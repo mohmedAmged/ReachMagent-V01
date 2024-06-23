@@ -5,7 +5,6 @@
     margin-top: -200px;
     position: relative;
     z-index: 10;
-    /* margin-bottom: 100px; */
 }
 .company__profile__img{
     border: 1px solid rgba(145, 151, 179, 0.13);
@@ -19,9 +18,7 @@
     width: 164px;
     height: 86.86px;
 }
-.companyBoxItem{
-    /* padding: 0 20px; */
-}
+
  .company__name{
     display: flex;
     align-items: center;
@@ -55,7 +52,7 @@
 .company__actions{
     display: flex;
     gap: 10px;
-    margin-top: 30px;
+    margin-bottom: 15px;
 }
 .btn__companyActions{
     width: 121px;
@@ -81,8 +78,9 @@
     background: rgba(74, 209, 95, 1);
 }
 .companyFollow__btn{
-    margin-top: 40px;
-    text-align: right;
+    /* margin-top: 40px; */
+    margin-bottom: 15px;
+    text-align: left;
 }
 .btnColoredBlue{
     width: 182px;
@@ -101,9 +99,18 @@
 @media screen and (max-width: 600px){
     .companyFollow__btn{
         text-align: left;
-        margin-bottom: 40px;
     }
     .company__profile__img{
         margin-bottom: 40px;
+    }
+    .center__on__mobile{
+        display: flex;
+        justify-content: center;
+    }
+}
+@media screen and (min-width: 600px) and (max-width: 1024px){
+    .center__on__mobile{
+        display: flex;
+        justify-content: center;
     }
 }

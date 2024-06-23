@@ -1,24 +1,30 @@
 import React from 'react';
 import './companyContact.css';
-import { ContactSchema } from '../../validation/ContactSchema';
-import { useFormik } from 'formik';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CompanyContactSchema } from '../../validation/CompanyContactSchema';
+
 
 export default function CompanyContact() {
-
-  const onSubmit = async ( values , actions) => {
-    const isValid = await ContactSchema.validate(values);
-    };
-
-  const { values , errors , touched , handleBlur , handleChange , handleSubmit} = useFormik({
-    initialValues:{
-      name: "",
-      email: "",
-      phone: "",
-      description: ""
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState:{errors , isSubmitting}
+  } = useForm({
+    defaultValues:{
+      fullName: '',
+      phoneNumber: '',
+      email: '',
+      description: '',
     },
-    validationSchema: ContactSchema,
-    onSubmit,
+    resolver: zodResolver(CompanyContactSchema),
   });
+
+  const onSubmit = async (data) => {
+    await new Promise((resolve)=> setTimeout(resolve,1000));
+    console.log(data)
+  };
 
   return (
     <div className='contact__mainSec'>
@@ -42,21 +48,23 @@ export default function CompanyContact() {
               <h4>
                 If you would like to contact Homzmart please fill out the form below and someone from their department will reach out to you
               </h4>
-              <form onSubmit={handleSubmit} onBlur={handleBlur} method='POST' className='p-5'>
+              <form method='POST' className='p-5' onSubmit={handleSubmit(onSubmit)}>
                 <div className='mb-4'>
                   <label htmlFor="fullNameCompanyContact">
                     Full Name
                   </label>
                   <input 
-                  className={`w-100`}
+                  className={`w-100 ${errors.fullName ? 'inputError' : ''}`}
                   type="text" 
                   name='fullNameCompanyContact' 
                   id='fullNameCompanyContact'
-                  value={values.name}
-                  onChange={handleChange}
-                  placeholder='Full Name' 
+                  placeholder='Full Name'
+                  {...register('fullName')}
                   />
-                  {/* {<p className='text-danger text-capitalize'></p>} */}
+                  {
+                    errors.fullName &&
+                    <span className='errorMessage'>{errors.fullName.message}</span>
+                  }
                 </div>
 
                 <div className='mb-4'>
@@ -64,15 +72,17 @@ export default function CompanyContact() {
                     Phone Number
                   </label>
                   <input 
-                  className={`w-100`}
+                  className={`w-100 ${errors.phoneNumber ? 'inputError' : ''}`}
                   type="text" 
                   name="phoneNumberCompanyContact" 
                   id="phoneNumberCompanyContact"
-                  value={values.phone}
-                  onChange={handleChange}
                   placeholder='Phone Number'
+                  {...register('phoneNumber')}
                   />
-                  {/* { <p className='text-danger text-capitalize'></p>} */}
+                  {
+                    errors.phoneNumber &&
+                    <span className='errorMessage'>{errors.phoneNumber.message}</span>
+                  }
                 </div>
 
                 <div className='mb-4'>
@@ -80,15 +90,17 @@ export default function CompanyContact() {
                     E-mail Address
                   </label>
                   <input 
-                  className={`w-100`}
+                  className={`w-100 ${errors.email ? 'inputError' : ''}`}
                   type="email" 
                   name="emailCompanyContact" 
                   id="emailCompanyContact"
-                  value={values.email}
-                  onChange={handleChange}
                   placeholder='E-mail Addriss'
+                  {...register('email')}
                   />
-                  {/* { <p className='text-danger text-capitalize'></p>} */}
+                  {
+                    errors.email &&
+                    <span className='errorMessage'>{errors.email.message}</span>
+                  }
                 </div>
 
                 <div className='mb-4'>
@@ -96,25 +108,26 @@ export default function CompanyContact() {
                     Description
                   </label>
                   <textarea
-                  className={`w-100 `}
+                  className={`w-100 ${errors.description ? 'inputError' : ''}`}
                   name="description" 
                   id="descriptionCompanyContact"
-                  value={values.description}
-                  onChange={handleChange}
                   placeholder='Description'
+                  {...register('description')}
                   ></textarea>
-                  {/* { <p className='text-danger text-capitalize'></p>} */}
+                  {
+                    errors.description && 
+                    <span className='errorMessage'>{errors.description.message}</span>
+                  }
                 </div>
 
-                <button 
+                <input 
                 className='contactCompany__form-submitBtn' 
                 type='submit'
                 id="submitCompanyFormBtn"
                 name='submitCompanyFormBtn'
-                >
-                  submit
-                </button>
-
+                value={isSubmitting ? 'Sending ...' : 'Submit'}
+                disabled={isSubmitting}
+                />
               </form>
 
             </div>

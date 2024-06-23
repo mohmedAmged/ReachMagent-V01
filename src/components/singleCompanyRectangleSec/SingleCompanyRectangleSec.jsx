@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { Pagination } from 'swiper/modules';
-import './singleCompanyRectangleSec.css';
+import './singleCompanyRectangle.css';
 
 export default function SingleCompanyRectangleSec() {
   const questionsArr = [

@@ -36,7 +36,6 @@ export default function AboutReachSec() {
                                                 <p>
                                                     {el.title}
                                                 </p>
-                                                <span></span>
                                             </div>
 
                                         )

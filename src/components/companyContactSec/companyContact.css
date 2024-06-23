@@ -89,7 +89,7 @@
     height: 200px;
 }
 .contactCompany__form-submitBtn {
-    border: 1px solid #011F5B;
+    border: 1px solid #011F5B !important;
     outline: none;
     border-radius: 8px;
     -webkit-border-radius: 8px;
@@ -100,8 +100,8 @@
     width: 100%;
     padding: 10px 0;
     text-align: center;
-    background-color: #011F5B;
-    color: var(--primary-white);
+    background-color: #011F5B !important;
+    color: var(--primary-white) !important;
     font-size: 22px;
     font-weight: 500;
     transition: all 0.3s ease-in-out;
@@ -111,8 +111,8 @@
     -o-transition: all 0.3s ease-in-out;
 }
 .contactCompany__form-submitBtn:hover {
-    color: #011F5B;
-    background-color: var(--primary-white);
+    color: #011F5B !important;
+    background-color: var(--primary-white) !important;
 }
 @media (max-width: 767px) {
     .contactCompany-type li {
