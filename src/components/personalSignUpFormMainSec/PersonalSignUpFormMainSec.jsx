@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './signUpFormMain.css';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterSchema } from '../../validation/RegisterSchema';
 import { NavLink, useNavigate } from 'react-router-dom';
-import flagImg from '../../assets/productDetailsImgs/17e9aaa6c0d56bd5d83aa9c3524baa7b.png';
 import { scrollToTop } from '../../functions/scrollToTop';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
+import toast, { Toaster } from 'react-hot-toast';
 
-export default function PersonalSignUpFormMainSec() {
+export default function PersonalSignUpFormMainSec({countries,industries}) {
   const [showPassword,setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
@@ -16,312 +18,364 @@ export default function PersonalSignUpFormMainSec() {
     register,
     handleSubmit,
     setError,
+    watch,
+    setValue,
     reset,
     formState:{errors , isSubmitting}
   } = useForm({
-    defaultValues:{
-      firstName: '',
-      lastName: '',
-      country: '',
-      userName: '',
-      mobileNumber: '',
+    defaultValues: {
+      name: '',
       email: '',
+      phone: '',
       password: '',
-      addressLine1: '',
-      addressLine2: '',
-      city: '',
-      confirmPassword: '',
+      password_confirmation: '',
+      industry_id: '',
+      country_id: '',
+      city_id: '',
+      image: '',
+      address_one: '',
+      address_two: '',
     },
     resolver: zodResolver(RegisterSchema),
   });
 
-  const onSubmit = async (data) => {
-    await new Promise((resolve)=> setTimeout(resolve,1000));
-    console.log(data);
-    reset();
+  const [currentCitiesInsideCountry,setCurrentCitiesInsideCountry] = useState([]);
+  useEffect(()=>{
+    setCurrentCitiesInsideCountry([]);
+    let currentCountryId = watch('country_id');
+    const currentCountry = countries?.find(country => country?.id === +currentCountryId);
+    if(currentCountry){
+      const toastId = toast.loading('Loading Cities , Please Wait !');
+      const citiesInsideCurrentCountry = async () => {
+      const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
+        setCurrentCitiesInsideCountry(response?.data?.data?.cities);
+      };
+      citiesInsideCurrentCountry();
+      if(currentCitiesInsideCountry){
+        toast.success('Cities Loaded Successfully.',{
+          id: toastId,
+          duration: 2000
+        });
+      }else {
+        toast.error('Somthing Went Wrong Please Choose Your Country Again!',{
+          id: toastId,
+          duration: 2000
+        });
+        currentCountryId = ''
+      }
+    };
+  },[watch('country_id')]);
+
+  const onSubmit = async(data) => {
+    const toastId = toast.loading('Please Wait...');
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      if (key !== 'image') {
+        formData.append(key, data[key]);
+      }
+    });
+    await axios.post(`${baseURL}/user/register`, formData, {
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      }).then(response => {
+        toast.success(response?.data?.message,{
+          id: toastId,
+          duration: 2000
+        });
+        navigate('/SignIn');
+        reset();
+      })
+      .catch(error => {
+        Object.keys(error?.response?.data?.errors).forEach((key) => {
+          setError(key, {message: error?.response?.data?.errors[key][0]});
+        });
+        window.scrollTo({top: 550});
+        toast.error(error?.response?.data?.message,{
+          id: toastId,
+          duration: 2000
+        });
+      });
   };
 
-  const options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ];
-
   return (
-    <div className='signUpForm__mainSec py-5 mb-5'>
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="signUpForm__mainContent">
-              <div className="row">
-                <h3 className="col-12 text-center py-5 signUpForm__head">
-                  Personal Information
-                </h3>
-                <form onSubmit={handleSubmit(onSubmit)} className='row'>
-                  <div className="col-lg-6 mb-4">
-                      <label htmlFor="signUpFirstName">
-                        Full Name
+    <>
+      <Toaster
+        position="top-right"
+        reverseOrder={true}
+      />
+      <div className='signUpForm__mainSec py-5 mb-5'>
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="signUpForm__mainContent">
+                <div className="row">
+                  <h3 className="col-12 text-center py-5 signUpForm__head">
+                    Personal Information
+                  </h3>
+                  <form onSubmit={handleSubmit(onSubmit)} className='row'>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpFullName">
+                        Full Name <span className="requiredStar">*</span>
                       </label>
-                      <div className="row gap-sm-3 signUpFullNameContent">
-                        <div className="col-md-6">
+                      <input 
+                        type='text'
+                        id='signUpFullName'
+                        placeholder='Full Name'
+                        {...register('name')}
+                        className={`form-control signUpInput ${errors.name ? 'inputError' : ''}`}
+                      />
+                      {
+                        errors.name 
+                        &&
+                        (<span className='errorMessage'>{errors.name.message}</span>)
+                      }
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpEmailAddress">
+                        E-mail Address <span className="requiredStar">*</span>
+                      </label>
+                      <input 
+                        type='text'
+                        id='signUpEmailAddress'
+                        placeholder='ex: admin@gmail.com'
+                        {...register('email')}
+                        className={`form-control signUpInput ${errors.email ? 'inputError' : ''}`}
+                      />
+                      {
+                        errors.email
+                        &&
+                        (<span className='errorMessage'>{errors.email.message}</span>)
+                      }
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpMobileNumber">
+                        Mobile Number <span className="requiredStar">*</span>
+                      </label>
+                      <div className="row">
+                        <div className="col-3">
                           <input 
                             type='text'
-                            id='signUpFirstName'
-                            placeholder='First Name'
-                            {...register('firstName')}
-                            className={`form-control signUpInput ${errors.firstName ? 'inputError' : ''}`}
+                            value={`+962`}
+                            className={`form-control signUpInput`}
+                            disabled
                           />
-                          {
-                            errors.firstName 
-                            &&
-                            (<span className='errorMessage'>{errors.firstName.message}</span>)
-                          }
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-9">
                           <input 
                             type='text'
-                            id='signUpLastName'
-                            placeholder='Last Name'
-                            {...register('lastName')}
-                            className={`form-control signUpInput ${errors.lastName ? 'inputError' : ''}`}
+                            id='signUpMobileNumber'
+                            placeholder='Enter your phone number'
+                            {...register('phone')}
+                            className={`form-control signUpInput ${errors.phone ? 'inputError' : ''}`}
                           />
                           {
-                            errors.lastName 
+                            errors.phone 
                             &&
-                            (<span className='errorMessage'>{errors.lastName.message }</span>)
+                            (<span className='errorMessage'>{errors.phone.message}</span>)
                           }
                         </div>
                       </div>
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpCountry">
-                      Country / Region
-                    </label>
-                    <div className="position-relative">
-                      <select
-                      id="signUpCountry" 
-                      className={`form-select signUpInput signUpCountry ${errors.country ? 'inputError' : ''}`}
-                      {...register('country')} >
-                        <option value="" disabled>
-                          Select a Country
-                        </option>
-                        {options.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpCountry">
+                        Country / Region <span className="requiredStar">*</span>
+                      </label>
+                      <div className="position-relative">
+                        <select
+                        id="signUpCountry" 
+                        className={`form-select signUpInput ${errors.country_id ? 'inputError' : ''}`}
+                        {...register('country_id')} >
+                          <option value="" disabled>
+                            Select a Country
                           </option>
-                        ))}
-                      </select>
-                      <div className="leftCountryFlag">
-                        <img src={flagImg} alt='Current Country Flag' />
-                      </div>
-                    </div>
-                    {
-                      errors.country 
-                      &&
-                      (<span className='errorMessage'>{errors.country.message }</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpUserName">
-                      User Name
-                    </label>
-                    <input 
-                      type='text'
-                      id='signUpUserName'
-                      placeholder='ex: @fullname'
-                      {...register('userName')}
-                      className={`form-control signUpInput ${errors.userName ? 'inputError' : ''}`}
-                    />
-                    {
-                      errors.userName 
-                      &&
-                      (<span className='errorMessage'>{errors.userName.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpMobileNumber">
-                      Mobile Number
-                    </label>
-                    <div className="row">
-                      <div className="col-3">
-                        <input 
-                          type='text'
-                          value={`+962`}
-                          className={`form-control signUpInput`}
-                          disabled
-                        />
-                      </div>
-                      <div className="col-9">
-                        <input 
-                          type='text'
-                          id='signUpMobileNumber'
-                          placeholder='Enter your phone number'
-                          {...register('mobileNumber')}
-                          className={`form-control signUpInput ${errors.mobileNumber ? 'inputError' : ''}`}
-                        />
-                        {
-                          errors.mobileNumber 
-                          &&
-                          (<span className='errorMessage'>{errors.mobileNumber.message}</span>)
-                        }
-                      </div>
-                    </div>
+                          {countries?.map((country) => (
+                            <option key={country.id} value={country.id}>
+                              {country.name}
+                            </option>
+                          ))}
+                        </select>
 
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpPassword">
-                      Password
-                    </label>
-                    <div className="position-relative">
+                      </div>
+                      {
+                        errors.country_id 
+                        &&
+                        (<span className='errorMessage'>{errors.country_id.message}</span>)
+                      }
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpCity">
+                        City <span className="requiredStar">*</span>
+                      </label>
+                      <select
+                        id="signUpCity" 
+                        className={`form-select signUpInput ${errors.city_id ? 'inputError' : ''}`}
+                        {...register('city_id')} >
+                          <option value="" disabled>
+                            Select a City
+                          </option>
+                          {currentCitiesInsideCountry?.map((city) => (
+                            <option key={city.cityId} value={city.cityId}>
+                              {city.cityName}
+                            </option>
+                          ))}
+                        </select>
+                      {
+                        errors.city_id && 
+                        <span className="errorMessage">{errors.city_id.message}</span>
+                      }
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpaddress_one">
+                        Address Line 1  <span className="requiredStar">*</span>
+                      </label>
                       <input 
-                        type={`${showPassword ? 'text' : 'password'}`}
-                        id='signUpPassword'
-                        placeholder='Enter 8-digit password'
-                        {...register('password')}
-                        className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
+                        type='text'
+                        id='signUpaddress_one'
+                        placeholder='Street name, City , Zip Code'
+                        {...register('address_one')}
+                        className={`form-control signUpInput ${errors.address_one ? 'inputError' : ''}`}
                       />
-                      <div className="leftShowPasssord" onClick={()=>setShowPassword(!showPassword)}>
-                        {
-                          showPassword ?
-                          <i className="bi bi-eye-slash"></i>
-                          :
-                          <i className="bi bi-eye-fill"></i>
-                        }
-                      </div>
+                      {
+                        errors.address_one 
+                        &&
+                        (<span className='errorMessage'>{errors.address_one.message}</span>)
+                      }
                     </div>
-                    {
-                      errors.password
-                      &&
-                      (<span className='errorMessage'>{errors.password.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpEmailAddress">
-                      E-mail Address
-                    </label>
-                    <input 
-                      type='text'
-                      id='signUpEmailAddress'
-                      placeholder='ex: admin@gmail.com'
-                      {...register('email')}
-                      className={`form-control signUpInput ${errors.email ? 'inputError' : ''}`}
-                    />
-                    {
-                      errors.email
-                      &&
-                      (<span className='errorMessage'>{errors.email.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpConfirmPassword">
-                    Confirm Password
-                    </label>
-                    <div className="position-relative">
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpaddress_two">
+                        Address Line 2  <span className="optional">( Optional )</span>
+                      </label>
                       <input 
-                        type={`${showConfirmPassword ? 'text' : 'password'}`}
-                        id='signUpConfirmPassword'
-                        placeholder='Enter 8-digit password'
-                        {...register('confirmPassword')}
-                        className={`form-control signUpInput ${errors.confirmPassword ? 'inputError' : ''}`}
+                        type='text'
+                        id='signUpaddress_two'
+                        placeholder='Building no. , apt no. , etc'
+                        {...register('address_two')}
+                        className={`form-control signUpInput ${errors.address_two ? 'inputError' : ''}`}
                       />
-                      <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
-                        {
-                          showConfirmPassword ?
-                          <i className="bi bi-eye-slash"></i>
-                          :
-                          <i className="bi bi-eye-fill"></i>
-                        }
-                      </div>
+                      {
+                        errors.address_two 
+                        &&
+                        (<span className='errorMessage'>{errors.address_two.message}</span>)
+                      }
                     </div>
-                    {
-                      errors.confirmPassword
-                      &&
-                      (<span className='errorMessage'>{errors.confirmPassword.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-12 my-5">
-                    <h3 className='signUpForm__head mt-5 text-center'>
-                      Residential Information
-                    </h3>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className='row'>
-                      <div className="col-lg-12 mb-4">
-                        <label htmlFor="signUpAddress1">
-                          Address Line 1 <span className='requiredStar'>*</span>
-                        </label>
-                        <input 
-                          type="text" 
-                          id='signUpAddress1' 
-                          placeholder='Street name, City , Zip Code'
-                          {...register('addressLine1')}
-                          className={`form-control signUpInput ${errors.addressLine1 ? 'inputError' : ''}`}
-                        />
-                        {
-                          errors.addressLine1 &&
-                          <span className="errorMessage">{errors.addressLine1.message}</span>
-                        }
-                      </div>
-                      <div className="col-lg-12 mb-4">
-                        <label htmlFor="signUpAddress2">
-                          Address Line 2 <span className='optional'>(Optional)</span>
-                        </label>
-                        <input 
-                          type="text" 
-                          id='signUpAddress2'
-                          placeholder='Building no. , apt no. , etc'
-                          {...register('addressLine2')}
-                          className={`form-control signUpInput ${errors.addressLine2 ? 'inputError' : ''}`}
-                        />
-                        {
-                          errors.addressLine2 &&
-                          <span className="errorMessage">{errors.addressLine2.message}</span>
-                        }
-                      </div>
-                      <div className="col-lg-12 mb-4">
-                        <label htmlFor="signUpCity">
-                          City <span className="requiredStar">*</span>
-                        </label>
-                        <input 
-                          type="text" 
-                          id="signUpCity" 
-                          placeholder='City'
-                          {...register('city',{required: 'Required'})}
-                          className={`form-control signUpInput ${errors.city ? 'inputError' : ''}`}
-                        />
-                        {
-                          errors.city && 
-                          <span className="errorMessage">{errors.city.message}</span>
-                        }
-                      </div>
-                      <div className="signUpAddressBtn col-lg-12 text-center">
-                        <span>Save and continue</span>
-                      </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpindustry">
+                        Industry <span className="requiredStar">*</span>
+                      </label>
+                      <select
+                        id="signUpindustry" 
+                        className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
+                        {...register('industry_id')} >
+                          <option value="" disabled>
+                            Select an industry
+                          </option>
+                          {industries?.map((industry) => (
+                            <option key={industry.id} value={industry.id}>
+                              {industry.name}
+                            </option>
+                          ))}
+                        </select>
+                      {
+                        errors.industry_id && 
+                        <span className="errorMessage">{errors.industry_id.message}</span>
+                      }
                     </div>
-                  </div>
-                  <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
-                    <input disabled={isSubmitting} type="submit" value={'Sign Up'} />
-                  </div>
-                </form>
-                <div className="col-lg-12 signUpOtherWays text-center pe-4">
-                  <div className="serviceTerms">
-                    <p>
-                      By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy. 
-                    </p>
-                    <p className="businessQuestion">
-                      Are you a business? 
-                      <br />
-                      <span className="getStarted" onClick={()=>{
-                        navigate('/business-signup');
-                        scrollToTop();
-                      }}>
-                        Get started here!
-                      </span>
-                    </p>
-                  </div>
-                  <div className="signInNavigation mb-5">
-                    Already have an account?
-                    <NavLink className='nav-link d-inline ms-1' to='/signIn' onClick={()=>scrollToTop()}>Sign In</NavLink>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpPassword">
+                        Password <span className="requiredStar">*</span>
+                      </label>
+                      <div className="position-relative">
+                        <input 
+                          type={`${showPassword ? 'text' : 'password'}`}
+                          id='signUpPassword'
+                          placeholder='Enter 8-digit password'
+                          {...register('password')}
+                          className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
+                        />
+                        <div className="leftShowPasssord" onClick={()=>setShowPassword(!showPassword)}>
+                          {
+                            showPassword ?
+                            <i className="bi bi-eye-slash"></i>
+                            :
+                            <i className="bi bi-eye-fill"></i>
+                          }
+                        </div>
+                      </div>
+                      {
+                        errors.password
+                        &&
+                        (<span className='errorMessage'>{errors.password.message}</span>)
+                      }
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpConfirmPassword">
+                        Confirm Password <span className="requiredStar">*</span>
+                      </label>
+                      <div className="position-relative">
+                        <input 
+                          type={`${showConfirmPassword ? 'text' : 'password'}`}
+                          id='signUpConfirmPassword'
+                          placeholder='Enter 8-digit password'
+                          {...register('password_confirmation')}
+                          className={`form-control signUpInput ${errors.password_confirmation ? 'inputError' : ''}`}
+                        />
+                        <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
+                          {
+                            showConfirmPassword ?
+                            <i className="bi bi-eye-slash"></i>
+                            :
+                            <i className="bi bi-eye-fill"></i>
+                          }
+                        </div>
+                      </div>
+                      {
+                        errors.password_confirmation
+                        &&
+                        (<span className='errorMessage'>{errors.password_confirmation.message}</span>)
+                      }
+                    </div>
+                    <div className='col-lg-6 text-center'>
+                      <label htmlFor="signUpProfileImage" className='singUp__upLoadBtn'>
+                        Upload Profile Image
+                      </label>
+                      <input 
+                        type='file'
+                        id='signUpProfileImage'
+                        {...register('image')}
+                        className={`signUpInput ${errors.image ? 'inputError' : ''}`}
+                      />
+                      {
+                        errors.image
+                        &&
+                        (<p className='errorMessage'>{errors.image.message}</p>)
+                      }
+                    </div>
+                    <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
+                      <input disabled={isSubmitting} type="submit" value={'Sign Up'} />
+                    </div>
+                  </form>
+                  <div className="col-lg-12 signUpOtherWays text-center pe-4">
+                    <div className="serviceTerms">
+                      <p>
+                        By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy. 
+                      </p>
+                      <p className="businessQuestion">
+                        Are you a business? 
+                        <br />
+                        <span className="getStarted" onClick={()=>{
+                          navigate('/business-signup');
+                          scrollToTop();
+                        }}>
+                          Get started here!
+                        </span>
+                      </p>
+                    </div>
+                    <div className="signInNavigation mb-5">
+                      Already have an account?
+                      <NavLink className='nav-link d-inline ms-1' to='/logIn' onClick={()=>scrollToTop()}>Sign In</NavLink>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -329,6 +383,6 @@ export default function PersonalSignUpFormMainSec() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

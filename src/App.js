@@ -16,6 +16,9 @@ import ProductDetails from './pages/myProductDetails/ProductDetails';
 import SingleCompany from './pages/singleCompanyPage/SingleCompany';
 import PersonalSignUp from './pages/personalSignUp/PersonalSignUp';
 import BusinessSignUp from './pages/busnissSignUp/BusinessSignUp';
+import { useQuery } from 'react-query';
+import { getDataFromAPI } from './functions/fetchAPI';
+import MyLogin from './pages/myLoginPage/MyLogin';
 
 function App() {
   const {pathname} = useLocation();
@@ -29,6 +32,23 @@ function App() {
     }
   });
 
+  const countriesQuery = useQuery({
+    queryKey: ['countries'],
+    queryFn: ()=> getDataFromAPI('countries'),
+  });
+  const industriesQuery = useQuery({
+    queryKey: ['industries'],
+    queryFn: () => getDataFromAPI('industries'),
+  });
+  const mainCategoriesQuery = useQuery({
+    queryKey: ['main-categories'],
+    queryFn: () => getDataFromAPI('main-categories'),
+  });
+  const mainActivitiesQuery = useQuery({
+    queryKey: ['main-activities'],
+    queryFn: () => getDataFromAPI('main-activities'),
+  });
+
   return (
     <>
 
@@ -38,7 +58,7 @@ function App() {
 
       <Routes>
 
-        {/* Page Routes */}
+        {/* HomePage Route */}
         <Route path='/' element={<Home />} />
 
         {/* Shop Routes */}
@@ -48,8 +68,23 @@ function App() {
         <Route path='/company/:companyName' element={<SingleCompany />} />
 
         {/* Login & Regester Routes */}
-        <Route path='/personalsignUp' element={<PersonalSignUp />} />
-        <Route path='/business-signUp' element={<BusinessSignUp />} />
+        <Route 
+        path='/personalsignUp' 
+        element={
+          <PersonalSignUp 
+            countries={countriesQuery?.data?.countries}
+            industries={industriesQuery?.data?.industries} 
+          /> 
+        }/>
+        <Route path='/business-signUp' element={
+          <BusinessSignUp
+            countries={countriesQuery?.data?.countries}
+            industries={industriesQuery?.data?.industries} 
+            mainCategories={mainCategoriesQuery?.data?.mainCategories} 
+            mainActivities={mainActivitiesQuery?.data?.mainActivities} 
+          />
+        }/>
+        <Route path='/login' element={<MyLogin />} />
 
         {/* Profile Routes */}
         <Route path='/profile' element={<MyDashboard />} />

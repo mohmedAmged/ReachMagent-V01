@@ -19,6 +19,7 @@ body {
 *:before,
 *:after {
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -50,4 +51,15 @@ li {
 }
 .inputError {
     border-color: #ff2020 !important;
+}
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
 }

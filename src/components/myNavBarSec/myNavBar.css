@@ -22,7 +22,6 @@
     opacity: 0.9;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
-    /* color: var(--primary-white); */
 }
 
 .navTransformationDown {
@@ -81,15 +80,21 @@
     color: var(--main-blue-color) !important;
     font-weight: 500 !important;
 }
-.sign__in__btn{
+.sign__in__btn ,
+.sign__in__btn.nav-link.active {
     background: var(--main-blue-color);
     color: var(--primary-white) !important;
     padding: 6px 15px !important;
     border-radius: 8px;
     border: 1px solid var(--main-blue-color);
     transition: all ease-in-out .3s;
+    -webkit-transition: all ease-in-out .3s;
+    -moz-transition: all ease-in-out .3s;
+    -ms-transition: all ease-in-out .3s;
+    -o-transition: all ease-in-out .3s;
 }
-.sign__in__btn:hover{
+.sign__in__btn.nav-link.active:hover ,
+.sign__in__btn:hover {
     background: var(--primary-white);
     color: var(--main-blue-color) !important;
 }
@@ -101,7 +106,8 @@
     border: 1px solid var(--primary-white);
     margin-right: 5px !important;
 }
-.sign__up__btn:hover{
+.sign__up__btn.nav-link.active:hover ,
+.sign__up__btn:hover {
     background: var(--primary-black);
     color: var(--primary-white) !important;
 }

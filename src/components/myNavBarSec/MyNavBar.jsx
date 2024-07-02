@@ -5,7 +5,6 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
-import reachLogo from '../../assets/logos/testlogo 1.png'
 export default function MyNavBar({ scrollToggle }) {
 
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -19,19 +18,6 @@ export default function MyNavBar({ scrollToggle }) {
     };
     return (
         <>
-            {/* <Navbar expand="lg" className="bg-body-tertiary">
-            <Container>
-                <Navbar.Brand href="#home">Reach Magnet</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ms-auto">
-                    <NavLink to="/" className="nav-link">Home</NavLink>
-                    <NavLink to='/profile' className="nav-link">Profile</NavLink>
-                </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar> */}
-
             <Navbar expand="lg" className={`nav__Bg ${scrollToggle ? "nav__fixed py-3 navTransformationDown" : "nav__relative pb-3"} align-items-center`}>
                 <Container>
                     <Navbar.Brand className='d-flex align-items-center'>
@@ -115,7 +101,7 @@ export default function MyNavBar({ scrollToggle }) {
                                 }}
                                 aria-label="Close"
                                 className={`nav-link nav__link__style sign__up__btn`}
-                                to={`/profile`}
+                                to={`/personalSignUp`}
                             >
                                 sign up
                             </NavLink>
@@ -125,7 +111,7 @@ export default function MyNavBar({ scrollToggle }) {
                                 }}
                                 aria-label="Close"
                                 className={`nav-link nav__link__style sign__in__btn`}
-                                to={`/profile`}
+                                to={`/Login`}
                             >
                                 sign in
                             </NavLink>
@@ -221,7 +207,7 @@ export default function MyNavBar({ scrollToggle }) {
                                     }}
                                     aria-label="Close"
                                     className={`nav-link nav__link__style  sign__up__btn`}
-                                    to={`/profile`}>
+                                    to={`/personalSignUp`}>
                                     sign up
                                 </NavLink>
                                 <NavLink
@@ -231,7 +217,7 @@ export default function MyNavBar({ scrollToggle }) {
                                     }}
                                     aria-label="Close"
                                     className={`nav-link nav__link__style sign__in__btn`}
-                                    to={`/profile`}>
+                                    to={`/Login`}>
                                     sign in
                                 </NavLink>
                             </Nav>
