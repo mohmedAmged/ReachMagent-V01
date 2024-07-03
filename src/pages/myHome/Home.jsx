@@ -12,7 +12,8 @@ import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCo
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 
-export default function Home() {
+export default function Home({companies}) {
+  // console.log(companies);
   const arrOfCateg = [
     {
       name: 'All',
@@ -51,7 +52,7 @@ export default function Home() {
         btnTwoText='Explore Now'
       />
       <ReadyToBuySec />
-      <TrendingCompanySec />
+      <TrendingCompanySec companies={companies}/>
       <GrowBuisnessSec />
       <LastMinuteDeals />
       <div className='oneClickQuotation__handler'>

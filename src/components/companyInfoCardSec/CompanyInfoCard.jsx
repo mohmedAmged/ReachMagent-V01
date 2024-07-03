@@ -5,20 +5,21 @@ import verfuIcon from '../../assets/companyImages/Vector (3).png'
 import callIcon from '../../assets/companyImages/call.svg'
 import messageIcon from '../../assets/companyImages/messages-3.svg'
 import { NavLink } from 'react-router-dom'
-export default function CompanyInfoCard() {
+export default function CompanyInfoCard({showCompaniesQuery}) {
+    console.log(showCompaniesQuery);
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
                 <div className="row">
                     <div className="col-lg-3 col-md-12 center__on__mobile">
                         <div className="company__profile__img">
-                            <img src={profile} alt="profile" />
+                            <img src={showCompaniesQuery?.companyLogo} alt="profile" />
                         </div>
                     </div>
                     <div className="col-lg-6 col-md-12 ">
                         <div className="company__name">
                             <h1>
-                                Homzmart
+                            {showCompaniesQuery?.companyName}
                             </h1>
                             <span>
                                 <img src={verfuIcon} alt="icon" />
@@ -32,7 +33,7 @@ export default function CompanyInfoCard() {
                                             Headquarters:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            El Mokattam, Cairo
+                                        {showCompaniesQuery?.companyFullAddress}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -40,7 +41,7 @@ export default function CompanyInfoCard() {
                                             Verification Status:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            Verified
+                                        {showCompaniesQuery?.companyRegisterationStatus}
                                         </p>
                                     </div>
                                     <div className="company__actions">
@@ -61,7 +62,7 @@ export default function CompanyInfoCard() {
                                             industry:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            eCommerce
+                                        {showCompaniesQuery?.companyIndustries[0]?.industryName}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -82,7 +83,7 @@ export default function CompanyInfoCard() {
                                             type:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            Public Company
+                                        {showCompaniesQuery?.companyTypes[1]?.type}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">

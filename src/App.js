@@ -48,7 +48,11 @@ function App() {
     queryKey: ['main-activities'],
     queryFn: () => getDataFromAPI('main-activities'),
   });
-
+  const companiesQuery = useQuery({
+    queryKey: ['companies'],
+    queryFn: ()=> getDataFromAPI('companies'),
+  });
+// console.log(companiesQuery?.data);
   return (
     <>
 
@@ -59,13 +63,13 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data}/>} />
 
         {/* Shop Routes */}
         <Route path='/shop' element={<Shop />} />
         <Route path='/shop/:singleProduct' element={<ProductDetails />} />
         <Route path='/discover' element={<Discover />} />
-        <Route path='/company/:companyName' element={<SingleCompany />} />
+        <Route path='/show-company/:companyId' element={<SingleCompany />} />
 
         {/* Login & Regester Routes */}
         <Route 

@@ -14,6 +14,10 @@
     margin-top: -40px;
     /* margin-left: 30px; */
 }
+.card__content .company__profile img{
+    border-radius: 50%;
+
+}
 .card__content .company__name h2{
     font-size: 14px;
     font-weight: 600;
@@ -21,6 +25,9 @@
     color: var(--primary-black);
     text-transform: capitalize;
     margin-top: 10px;
+}
+.card__content .company__name h2:hover{
+    color: var(--main-blue-color);
 }
 .card__content .company__user h5{
     font-size: 10px;

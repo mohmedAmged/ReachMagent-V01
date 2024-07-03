@@ -11,8 +11,13 @@ import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec'
 import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec'
 import SingleCompanyAffiliate from '../../components/singleCompanyAffiliateSec/SingleCompanyAffiliate'
 import CompanyContact from '../../components/companyContactSec/CompanyContact'
+import { useParams } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { getDataFromAPI } from '../../functions/fetchAPI'
 
 export default function SingleCompany() {
+    const { companyId } = useParams();
+
     const items = [
         { name: 'Overview', active: true },
         { name: 'Services', active: false },
@@ -44,11 +49,14 @@ export default function SingleCompany() {
         ],
         mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2823585.1606278117!2d39.30088302422216!3d31.207963192810116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006f476664de99%3A0x8d285b0751264e99!2z2KfZhNij2LHYr9mG!5e0!3m2!1sar!2seg!4v1717936559294!5m2!1sar!2seg'
     };
-
+  const showCompaniesQuery = useQuery({
+    queryKey: ['show-company'],
+    queryFn: ()=> getDataFromAPI(`show-company/${companyId}`),
+  });
     return (
         <div className='singleCompany__handler'>
             <HeroOnlyCover />
-            <CompanyInfoCard />
+            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data}/>
             <div className='my-5'>
                 <ProductDetailsFilterationBar items={items} />
             </div>

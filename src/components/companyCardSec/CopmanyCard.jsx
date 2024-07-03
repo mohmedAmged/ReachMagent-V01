@@ -1,6 +1,8 @@
 import React from 'react'
 import './companyCard.css'
-export default function CopmanyCard({coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc}) {
+import { NavLink } from 'react-router-dom'
+import { scrollToTop } from '../../functions/scrollToTop';
+export default function CopmanyCard({ coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId }) {
     return (
         <div className='companyCard__item'>
             <div className="card__cover">
@@ -13,7 +15,12 @@ export default function CopmanyCard({coverImg, companyProfile, companyName, comp
                     </div>
                     <div className="company__name">
                         <h2>
-                            {companyName}
+                            <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }} to={`/show-company/${companyId}`} className={'nav-link'}>
+                                {companyName}
+                            </NavLink>
                         </h2>
                     </div>
                     <div className="company__user">
