@@ -291,3 +291,22 @@
 .chosen__choice:hover .chosen__choice-delete {
     color: #ff2020;
 }
+.input-readOnly {
+    cursor: default;
+    box-shadow: 0 4px 4px 0 #0000001A !important;
+    border: 0.5px solid #809DAD80 !important;
+    margin-bottom: 20px;
+}
+.mapLabel {
+    margin-top: 5px;
+}
+.input-readOnly:focus ,
+.input-readOnly:focus-visible ,
+.input-readOnly:hover {
+    box-shadow: 0 4px 4px 0 #0000001A !important;
+    border: 0.5px solid #809DAD80 !important;
+    outline: none;
+}
+.leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar{
+    display: none;
+}

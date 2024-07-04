@@ -6,10 +6,13 @@ import { LoginSchema } from '../../validation/LoginSchema';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+
+
 export default function SignInFormMainSec() {
-    const [showPassword,setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [showPassword,setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
@@ -34,23 +37,28 @@ export default function SignInFormMainSec() {
                 'Content-Type': 'application/json',
             },
         }).then(response => {
-            console.log(response)
-            toast.success(response?.data?.message,{
+            const token = response?.data?.data?.token;
+            if (token) {
+                Cookies.set('authToken', token, { expires: 30 });
+            };
+            toast.success(`${response?.data?.message}, will go to home page after 2 seconds !`,{
                 id: toastId,
                 duration: 2000
             });
-            navigate('/SignIn');
+            setTimeout(()=>{
+                navigate('/');
+            },2000)
             reset();
         })
         .catch(error => {
-            console.log(error)
-            Object.keys(error?.response?.data?.errors).forEach((key) => {
-            setError(key, {message: error?.response?.data?.errors[key][0]});
-            });
-            window.scrollTo({top: 550});
+            if (error?.response?.data?.errors) {
+                Object.keys(error.response.data.errors).forEach((key) => {
+                    setError(key, { message: error.response.data.errors[key][0] });
+                });
+            }
             toast.error(error?.response?.data?.message,{
                 id: toastId,
-                duration: 2000
+                duration: 2000,
             });
         });
     };
@@ -58,7 +66,7 @@ export default function SignInFormMainSec() {
     return (
         <div className='signUpForm__mainSec py-5 mb-5'>
             <Toaster
-                position="top-right"
+                position="top-center"
                 reverseOrder={false}
             />
             <div className="container">
@@ -134,5 +142,5 @@ export default function SignInFormMainSec() {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

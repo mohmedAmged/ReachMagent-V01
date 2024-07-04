@@ -7,6 +7,10 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { scrollToTop } from '../../functions/scrollToTop';
 
 let allTypes = [
   {
@@ -29,11 +33,55 @@ let allTypes = [
     id: 5,
     name: 'Raw Material Supplier',
   },
+  {
+    id: 6,
+    name: 'Company Offers Customizations',
+  },
 ];
 
-export default function BusinessSignUpFormMainSec({ countries, industries, mainCategories, mainActivities }) {
+const customIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
+});
 
-  const [showPassword, setShowPassword] = useState(false);
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
+const LocationMarker = ({ setLocation, initialPosition }) => {
+  const [position, setPosition] = useState(initialPosition);
+  const map = useMap();
+
+  useMapEvents({
+    click(e) {
+      setPosition(e.latlng);
+      setLocation(e.latlng);
+    },
+  });
+
+  useEffect(() => {
+    if (initialPosition) {
+      setPosition(initialPosition);
+      map.setView(initialPosition, 16);
+    }
+  }, [initialPosition, map]);
+
+  return position === null ? null : (
+    <Marker position={position} icon={customIcon}></Marker>
+  );
+};
+
+export default function BusinessSignUpFormMainSec({countries,industries,mainCategories,mainActivities}) {
+  const [initialPosition,setInitialPosition] = useState([0, 0]);
+  const [location, setLocation] = useState({ lat: initialPosition[0], lng: initialPosition[1] });
+  const [showPassword,setShowPassword] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -42,11 +90,14 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
     setValue,
     watch,
     reset,
-    formState: { errors, isSubmitting }
+    formState:{errors , isSubmitting}
   } = useForm({
-    defaultValues: {
+    defaultValues:{
       company_name: '',
       company_email: '',
+      phone_one: '',
+      phone_two: '',
+      referral_code: '',
       company_main_type: '',
       registeration_number: '',
       category_id: '',
@@ -59,7 +110,10 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
 
       company_country_id: '',
       company_city_id: '',
+      company_area_id: '',
       company_full_address: '',
+      longitude: '',
+      latitude: '',
 
       employee_name: '',
       employee_email: '',
@@ -77,22 +131,37 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
     resolver: zodResolver(BusinessRegisterSchema),
   });
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setInitialPosition([latitude, longitude]);
+          setLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          toast.error(`${error}`);
+        }
+      );
+    }
+  }, []);
+
   // BusinessTypes Logic
-  const [currentBusinessTypes, setCurrentBusinessTypes] = useState([]);
-  const [selectValue, setSelectValue] = useState('');
+  const [currentBusinessTypes , setCurrentBusinessTypes] = useState([]);
+  const [selectValue,setSelectValue] = useState('');
   const handleChangeBusinessType = (event) => {
     const toastId = toast.loading('Loading , Please Wait !');
     const chosenType = allTypes.find(el => el.id === +event?.target?.value);
-    if (!currentBusinessTypes.find(el => chosenType?.id === +el)) {
-      setCurrentBusinessTypes([...currentBusinessTypes, chosenType]);
-      allTypes = allTypes.filter(el => el.id !== +chosenType.id);
+    if(!currentBusinessTypes.find(el=> chosenType?.id === +el)){
+      setCurrentBusinessTypes([...currentBusinessTypes,chosenType]);
+      allTypes = allTypes.filter(el=>el.id !== +chosenType.id);
       setSelectValue('');
-      toast.success(`( ${chosenType.name} ) Added Successfully.`, {
+      toast.success(`( ${ chosenType.name } ) Added Successfully.`,{
         id: toastId,
         duration: 2000
       });
-    } else {
-      toast.success(`( ${chosenType.name} ) Added Before.`, {
+    }else {
+      toast.success(`( ${ chosenType.name } ) Added Before.`,{
         id: toastId,
         duration: 2000
       });
@@ -101,31 +170,32 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
   const handleDeleteBusinessType = (type) => {
     const toastId = toast.loading('Loading , Please Wait !');
     allTypes.push(type);
-    setCurrentBusinessTypes(currentBusinessTypes?.filter(el => +el?.id !== +type?.id));
-    toast.success(`( ${type.name} ) Removed Successfully.`, {
+    setCurrentBusinessTypes(currentBusinessTypes?.filter(el=> +el?.id !== +type?.id ));
+    toast.success(`( ${ type.name } ) Removed Successfully.`,{
       id: toastId,
       duration: 2000
     });
   };
 
   // getting SubCategory From MainCategory Logic
-  const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
-  useEffect(() => {
+  const [currentSubCategoriesInsideMainCategory,setCurrentSubCategoriesInsideMainCategory] = useState([]);
+  useEffect(()=>{
     setCurrentSubCategoriesInsideMainCategory([]);
     let currentCategoryId = watch('category_id');
     const currentCategory = mainCategories?.find(cat => cat?.mainCategoryId === +currentCategoryId);
-    if (currentCategory) {
+    if(currentCategory){
+      setValue('sub_category_id','');
       const toastId = toast.loading('Loading , Please Wait !');
       const subCatInsideCurrentMainCat = async () => {
         const response = await axios.get(`${baseURL}/main-categories/${currentCategory?.mainCategorySlug}`);
-        if (response?.status === 200) {
+        if(response?.status === 200) {
           setCurrentSubCategoriesInsideMainCategory(response?.data?.data?.subCategories);
-          toast.success(`( ${response?.data?.data?.mainCategoryName} )Category Added Successfully.`, {
+          toast.success(`( ${ response?.data?.data?.mainCategoryName } )Category Added Successfully.`,{
             id: toastId,
             duration: 2000
           });
-        } else {
-          toast.error(`${response?.data?.error[0]}`, {
+        }else {
+          toast.error(`${response?.data?.error[0]}`,{
             id: toastId,
             duration: 2000
           });
@@ -133,29 +203,28 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
         }
       };
       subCatInsideCurrentMainCat();
-      setValue('sub_category_id', '');
     };
-  }, [watch('category_id')]);
+  },[watch('category_id')]);
 
   // getting SubActivities From MainActivities Logic
-  const [allMainActivitiesChosen, setAllMainActivitiesChosen] = useState([]);
-  const [allSubActsInsideMainActsChosen, setAllSubActsInsideMainActsChosen] = useState([]);
-  const [chosenSubActivities, setChosenSubActivities] = useState([]);
+  const [allMainActivitiesChosen,setAllMainActivitiesChosen] = useState([]);
+  const [allSubActsInsideMainActsChosen,setAllSubActsInsideMainActsChosen] = useState([]);
+  const [chosenSubActivities,setChosenSubActivities] = useState([]);
   const handleChangeMainActivities = (event) => {
     const toastId = toast.loading('Loading Sub Categories , Please Wait !');
     const chosenActivity = mainActivities?.find(el => el?.mainActivityId === +event?.target?.value);
-    if (!allMainActivitiesChosen?.find(el => chosenActivity?.mainActivityId === el.mainActivityId)) {
-      setAllMainActivitiesChosen([...allMainActivitiesChosen, chosenActivity]);
+    if(!allMainActivitiesChosen?.find(el => chosenActivity?.mainActivityId === el.mainActivityId)){
+      setAllMainActivitiesChosen([...allMainActivitiesChosen,chosenActivity]);
       const subActsInsideCurrentMainActs = async () => {
         const response = await axios.get(`${baseURL}/main-activities/${chosenActivity?.mainActivitySlug}`);
-        if (response?.status === 200) {
-          setAllSubActsInsideMainActsChosen([...allSubActsInsideMainActsChosen, response?.data?.data]);
-          toast.success(`( ${chosenActivity?.mainActivityName} ) Sub Activities Loaded Successfully.`, {
+        if(response?.status === 200) { 
+          setAllSubActsInsideMainActsChosen([...allSubActsInsideMainActsChosen ,response?.data?.data]);
+          toast.success(`( ${chosenActivity?.mainActivityName} ) Sub Activities Loaded Successfully.`,{
             id: toastId,
             duration: 2000
           })
-        } else {
-          toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
+        }else{
+          toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`,{
             id: toastId,
             duration: 2000
           });
@@ -163,8 +232,8 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
       };
       subActsInsideCurrentMainActs();
       setSelectValue('');
-    } else {
-      toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
+    }else {
+      toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`,{
         id: toastId,
         duration: 2000
       });
@@ -172,7 +241,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
   };
   const handleDeleteMainActivity = (act) => {
     setAllMainActivitiesChosen(allMainActivitiesChosen.filter(el => +el?.mainActivityId !== +act?.mainActivityId));
-    const deletedActivity = allMainActivitiesChosen.filter(el => +el?.mainActivityId === +act?.mainActivityId);
+    const deletedActivity = allMainActivitiesChosen.filter(el=> +el?.mainActivityId === +act?.mainActivityId);
     const subActsInsideDeletedActivity = async () => {
       const response = await axios.get(`${baseURL}/main-activities/${deletedActivity[0].mainActivitySlug}`);
       const subActivitiesInsideDeletedActivity = [...response?.data?.data?.subActivities];
@@ -182,7 +251,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
     };
     subActsInsideDeletedActivity();
     setAllSubActsInsideMainActsChosen(
-      allSubActsInsideMainActsChosen.filter(el => +el?.mainActivityId !== +deletedActivity[0]?.mainActivityId)
+      allSubActsInsideMainActsChosen.filter(el=> +el?.mainActivityId !== +deletedActivity[0]?.mainActivityId)
     );
   };
   // getting SlectedArrOfSubActivities Logic
@@ -190,81 +259,110 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
     const toastId = toast.loading('Loading Sub Categories , Please Wait !');
     const chosenSubActivityArr = allSubActsInsideMainActsChosen?.map(el =>
       el?.subActivities?.find(subAct => +subAct?.subActivityId === +event?.target?.value));
-    const chosenSubActivity = chosenSubActivityArr.find(el => el && el);
-    if (!chosenSubActivities?.find(el => chosenSubActivity?.subActivityId === +el?.subActivityId)) {
-      setChosenSubActivities([...chosenSubActivities, chosenSubActivity]);
-      toast.success(`( ${chosenSubActivity?.subActivityName} ) Added Successfully`, {
+    const chosenSubActivity = chosenSubActivityArr.find(el=> el && el);
+    if(!chosenSubActivities?.find(el => chosenSubActivity?.subActivityId === +el?.subActivityId)){
+      setChosenSubActivities([...chosenSubActivities,chosenSubActivity]);
+      toast.success(`( ${chosenSubActivity?.subActivityName} ) Added Successfully`,{
         id: toastId,
         duration: 2000
       });
-    } else {
-      toast.error(`( ${chosenSubActivity?.subActivityName} ) were Added Before`, {
+    }else {
+      toast.error(`( ${chosenSubActivity?.subActivityName} ) were Added Before`,{
         id: toastId,
         duration: 2000
       });
     };
   };
   const handleDeleteSubActivity = (subAct) => {
-    setChosenSubActivities(chosenSubActivities.filter(el => +el?.subActivityId !== +subAct?.subActivityId));
+    setChosenSubActivities(chosenSubActivities.filter(el=>+el?.subActivityId !== +subAct?.subActivityId));
   };
 
   // Getting DocumentsArray
-  const [documents, setDocuments] = useState([]);
+  const [documents,setDocuments] = useState([]);
   const handleGettingFile = (event) => {
-    setDocuments([...documents, event?.target?.files]);
-    setValue('documents', ...documents);
+    setDocuments([...documents,event?.target?.files]);
+    setValue('documents',...documents);
   };
   const handleDeleteFile = (doc) => {
     setDocuments(documents.filter(document => document[0].name !== doc[0].name));
-    setValue('documents', ...documents);
+    setValue('documents',...documents);
   };
 
   // getting Cities InsideCurrentChosenCountry
-  const [currentCitiesInsideCountry, setCurrentCitiesInsideCountry] = useState([]);
-  useEffect(() => {
+  const [currentCitiesInsideCountry,setCurrentCitiesInsideCountry] = useState([]);
+  useEffect(()=>{
     setCurrentCitiesInsideCountry([]);
     let currentCountryId = watch('company_country_id');
     const currentCountry = countries?.find(country => country?.id === +currentCountryId);
-    if (currentCountry) {
+    if(currentCountry){
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
         const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
         setCurrentCitiesInsideCountry(response?.data?.data?.cities);
       };
       citiesInsideCurrentCountry();
-      if (currentCitiesInsideCountry) {
-        toast.success('Cities Loaded Successfully.', {
+      if(currentCitiesInsideCountry){
+        toast.success('Cities Loaded Successfully.',{
           id: toastId,
           duration: 2000
         });
-      } else {
-        toast.error('Somthing Went Wrong Please Choose Your Country Again!', {
+      }else {
+        toast.error('Somthing Went Wrong Please Choose Your Country Again!',{
           id: toastId,
           duration: 2000
         });
-        currentCountryId = ''
+        currentCountryId = '';
       }
     };
-  }, [watch('company_country_id')]);
+    setValue('company_city_id', '');
+  },[watch('company_country_id')]);
+
+  // getting Areas InsideCurrentChosenCity
+  const [currentAreasInsideCities,setCurrentAreasInsideCities] = useState([]);
+  useEffect(()=>{
+    setCurrentAreasInsideCities([]);
+    let currentCityId = +watch('company_city_id');
+    if(currentCityId){
+      const toastId = toast.loading('Loading Areas , Please Wait !');
+      const AreasInsideCurrentCities = async () => {
+        const response = await axios.get(`${baseURL}/cities/${currentCityId}`);
+        setCurrentAreasInsideCities(response?.data?.data?.areas);
+      };
+      AreasInsideCurrentCities();
+      if(currentAreasInsideCities){
+        toast.success('Areas Loaded Successfully.',{
+          id: toastId,
+          duration: 2000
+        });
+      }else {
+        toast.error('Somthing Went Wrong Please Choose Your City Again!',{
+          id: toastId,
+          duration: 2000
+        });
+        currentCityId = '';
+      }
+    };
+    setValue('company_area_id','');
+  },[watch('company_city_id')]);
 
   // getting Cities InsideCurrentChosenCountry For Employee
-  const [currentEmployeeCitiesInsideCountry, setCurrentEmployeeCitiesInsideCountry] = useState([]);
-  useEffect(() => {
+  const [currentEmployeeCitiesInsideCountry,setCurrentEmployeeCitiesInsideCountry] = useState([]);
+  useEffect(()=>{
     setCurrentEmployeeCitiesInsideCountry([]);
     let currentCountryId = watch('employee_country_id');
     const currentCountry = countries?.find(country => country?.id === +currentCountryId);
-    if (currentCountry) {
+    if(currentCountry){
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
         const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
-        if (response?.status === 200) {
+        if(response?.status === 200){
           setCurrentEmployeeCitiesInsideCountry(response?.data?.data?.cities);
-          toast.success('Cities Loaded Successfully.', {
+          toast.success('Cities Loaded Successfully.',{
             id: toastId,
             duration: 2000
           });
-        } else {
-          toast.error('Somthing Went Wrong Please Choose Your Country Again!', {
+        }else {
+          toast.error('Somthing Went Wrong Please Choose Your Country Again!',{
             id: toastId,
             duration: 2000
           });
@@ -273,64 +371,87 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
       };
       citiesInsideCurrentCountry();
     };
-  }, [watch('employee_country_id')]);
+  },[watch('employee_country_id')]);
 
-  useEffect(() => {
-    setValue('documents', documents);
-    setValue('sub_activity_id', chosenSubActivities.map(el => el?.subActivityId));
-    setValue('activity_id', allMainActivitiesChosen.map(el => el?.mainActivityId));
-    setValue('company_main_type', currentBusinessTypes?.map(el => el?.name));
-  }, [documents, chosenSubActivities, allMainActivitiesChosen, currentBusinessTypes]);
+  useEffect(()=>{
+    setValue('longitude',location.lng);
+    setValue('latitude',location.lat);
+    setValue('documents',documents);
+    setValue('sub_activity_id',chosenSubActivities.map(el=> el?.subActivityId));
+    setValue('activity_id',allMainActivitiesChosen.map(el=> el?.mainActivityId));
+    setValue('company_main_type',currentBusinessTypes?.map(el=> el?.name));
+    if(watch('comfirm_policies') === true){
+      setValue('comfirm_policies', 1);
+    }else if(watch('comfirm_policies') === false){
+      setValue('comfirm_policies', 0);
+    };
+    if(watch('is_benifical_owner') === true){
+      setValue('is_benifical_owner', 1);
+    }else if(watch('is_benifical_owner') === false){
+      setValue('is_benifical_owner', 0);
+    };
+  },[documents, 
+    chosenSubActivities,
+    allMainActivitiesChosen,
+    currentBusinessTypes,
+    watch('comfirm_policies'),
+    watch('is_benifical_owner')
+  ]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const toastId = toast.loading('Please Wait...');
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
-      if (key !== 'logo' && key !== 'official_id_or_passport' && !Array.isArray(data[key])) {
+      if (key !== 'logo' && key !== 'official_id_or_passport' && key !== 'documents' && !Array.isArray(data[key])) {
         formData.append(key, data[key]);
-      } else if (Array.isArray(data[key])) {
-        data[key].forEach((item) => {
-          formData.append(`${key}[]`, item);
+      } else if (Array.isArray(data[key]) && key !== 'documents') {
+        data[key].forEach((item, index) => {
+          formData.append(`${key}[${index}]`, item);
         });
-      };
+      } else if (key === 'documents') {
+        data[key].forEach((file, index) => {
+          formData.append(`documents[${index}]`, file[0]);
+        });
+      }
     });
-    formData.append('logo', data.logo[0]);
-    formData.append('official_id_or_passport', data.official_id_or_passport[0]);
-    for (let [key, value] of formData.entries()) {
-      console.log(key + ': ' + value);
+    if (data.logo) {
+      formData.append('logo', data.logo[0]);
+    }
+    if (data.official_id_or_passport) {
+      formData.append('official_id_or_passport', data.official_id_or_passport[0]);
     }
     await axios.post(`${baseURL}/company-registeration`, formData, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',
       },
-    }).then(response => {
-      toast.success(response?.data?.message, {
-        id: toastId,
-        duration: 2000
-      });
-      navigate('/SignIn');
-      reset();
-    })
+      }).then(response => {
+        toast.success(`${response?.data?.message}, will go to login Page after 2 seconds!`,{
+          id: toastId,
+          duration: 2000
+        });
+        setTimeout(()=>{
+          navigate('/logIn');
+        },2000);
+        scrollToTop();
+        reset();
+      })
       .catch(error => {
         Object.keys(error?.response?.data?.errors).forEach((key) => {
-          setError(key, { message: error?.response?.data?.errors[key][0] });
+          setError(key, {message: error?.response?.data?.errors[key][0]});
         });
-        window.scrollTo({ top: 550 });
-        toast.error(error?.response?.data?.message, {
+        window.scrollTo({top: 550});
+        toast.error(error?.response?.data?.message,{
           id: toastId,
           duration: 2000
         });
       });
   };
 
-
-
   return (
     <div className='signUpForm__mainSec py-5 mb-5'>
       <Toaster
-        position="top-right"
+        position="top-center"
         reverseOrder={true}
       />
       <div className="container">
@@ -340,14 +461,14 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
               <div className="row">
 
                 <h3 className="col-12 text-center py-5 signUpForm__head">
-                  Business Information
+                  Business Information 
                 </h3>
                 <form onSubmit={handleSubmit(onSubmit)} className='row'>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpcompany_name">
                       Company Name <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpcompany_name'
                       placeholder='Company’s Name'
@@ -355,7 +476,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.company_name ? 'inputError' : ''}`}
                     />
                     {
-                      errors.company_name
+                      errors.company_name 
                       &&
                       (<span className='errorMessage'>{errors.company_name.message}</span>)
                     }
@@ -364,7 +485,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpcompany_email">
                       E-mail Address <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpcompany_email'
                       placeholder='ex: admin@gmail.com'
@@ -378,10 +499,155 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpPhone_numberOne">
+                      First Phone Number 
+                      <span className="requiredStar"> *</span>
+                    </label>
+                    <input 
+                      type='number'
+                      id='signUpPhone_numberOne'
+                      placeholder="Company's First Phone Number"
+                      {...register('phone_one')}
+                      className={`form-control signUpInput ${errors.phone_one ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.phone_one 
+                      &&
+                      (<span className='errorMessage'>{errors.phone_one.message}</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpPhone_numberTwo">
+                      Second Phone Number 
+                      <span className="optional">(Optional)</span>
+                    </label>
+                    <input 
+                      type='number'
+                      id='signUpPhone_numberTwo'
+                      placeholder="Company's Second Phone Number"
+                      {...register('phone_two')}
+                      className={`form-control signUpInput ${errors.phone_two ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.phone_two 
+                      &&
+                      (<span className='errorMessage'>{errors.phone_two.message}</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpregisteration_number">
+                      Business Registration Number 
+                      <span className="requiredStar"> *</span>
+                    </label>
+                    <input 
+                      type='number'
+                      id='signUpregisteration_number'
+                      placeholder="Company's Registeration Number"
+                      {...register('registeration_number')}
+                      className={`form-control signUpInput ${errors.registeration_number ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.registeration_number 
+                      &&
+                      (<span className='errorMessage'>{errors.registeration_number.message}</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpreferral_code">
+                      Referral Code
+                      <span className="optional"> (Optional)</span>
+                    </label>
+                    <input 
+                      type='text'
+                      id='signUpreferral_code'
+                      placeholder="Referral Code"
+                      {...register('referral_code')}
+                      className={`form-control signUpInput ${errors.referral_code ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.referral_code 
+                      &&
+                      (<span className='errorMessage'>{errors.referral_code.message}</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                      <label htmlFor="signUpindustry_id">
+                        Industry <span className="requiredStar">*</span>
+                      </label>
+                      <select
+                        id="signUpindustry_id" 
+                        className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
+                        {...register('industry_id')} >
+                          <option value="" disabled>
+                            Select an industry
+                          </option>
+                          {industries?.map((industry) => (
+                            <option key={industry?.id} value={industry?.id}>
+                              {industry?.name}
+                            </option>
+                          ))}
+                        </select>
+                      {
+                        errors.industry_id && 
+                        <span className="errorMessage">{errors.industry_id.message}</span>
+                      }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpcategory_id">
+                      Main Business Category 
+                      <span className="requiredStar"> *</span>
+                    </label>
+                    <select
+                    id="signUpcategory_id" 
+                    defaultValue={''}
+                    className={`form-select signUpInput ${errors.category_id ? 'inputError' : ''}`}
+                    {...register('category_id')} >
+                      <option value="" disabled>
+                        Select a Category
+                      </option>
+                      {mainCategories?.map((cat) => (
+                        <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
+                          {cat?.mainCategoryName}
+                        </option>
+                      ))}
+                    </select>
+                    {
+                      errors.category_id 
+                      &&
+                      (<span className='errorMessage'>{errors.category_id.message }</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpsub_category_id">
+                      Business Sub-Category 
+                      <span className="requiredStar"> *</span>
+                    </label>
+                    <div className="position-relative">
+                      <select
+                        id="signUpsub_category_id" 
+                        className={`form-select signUpInput ${errors.sub_category_id ? 'inputError' : ''}`}
+                        {...register('sub_category_id')} >
+                        <option value="" disabled>
+                          Select a Sub-Category
+                        </option>
+                        {currentSubCategoriesInsideMainCategory?.map((subCat) => (
+                          <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
+                            {subCat?.subCategoryName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {
+                      errors.sub_category_id 
+                      &&
+                      (<span className='errorMessage'>{errors.sub_category_id.message }</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpCompany_main_types">
-                      Type of Business
+                      Type of Business 
                       <span className="requiredStar"> * </span>
-                      <span className="optional">(MultiChoice)</span>
+                      <span className="optional">(MultiChoice)</span> 
                     </label>
                     <select
                       onChange={handleChangeBusinessType}
@@ -401,101 +667,31 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <div>
                       {currentBusinessTypes.map((type) => (
                         <span className='chosen__choice' key={type.id}>
-                          {type.name}
-                          <i
-                            onClick={() => handleDeleteBusinessType(type)}
+                          {type.name} 
+                          <i 
+                            onClick={()=>handleDeleteBusinessType(type)}
                             className="bi bi-trash chosen__choice-delete"
                           ></i>
                         </span>
                       ))}
                     </div>
                     {
-                      errors.company_main_type
+                      errors.company_main_type 
                       &&
-                      (<span className='errorMessage'>{errors.company_main_type.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpregisteration_number">
-                      Business Registration Number
-                      <span className="requiredStar"> *</span>
-                    </label>
-                    <input
-                      type='number'
-                      id='signUpregisteration_number'
-                      placeholder="Company's Registeration Number"
-                      {...register('registeration_number')}
-                      className={`form-control signUpInput ${errors.registeration_number ? 'inputError' : ''}`}
-                    />
-                    {
-                      errors.registeration_number
-                      &&
-                      (<span className='errorMessage'>{errors.registeration_number.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpcategory_id">
-                      Main Business Category
-                      <span className="requiredStar">*</span>
-                    </label>
-                    <select
-                      id="signUpcategory_id"
-                      defaultValue={''}
-                      className={`form-select signUpInput ${errors.category_id ? 'inputError' : ''}`}
-                      {...register('category_id')} >
-                      <option value="" disabled>
-                        Select a Category
-                      </option>
-                      {mainCategories?.map((cat) => (
-                        <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
-                          {cat?.mainCategoryName}
-                        </option>
-                      ))}
-                    </select>
-                    {
-                      errors.category_id
-                      &&
-                      (<span className='errorMessage'>{errors.category_id.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpsub_category_id">
-                      Business Sub-Category
-                      <span className="requiredStar">*</span>
-                    </label>
-                    <div className="position-relative">
-                      <select
-                        defaultValue={''}
-                        id="signUpsub_category_id"
-                        className={`form-select signUpInput ${errors.sub_category_id ? 'inputError' : ''}`}
-                        {...register('sub_category_id')} >
-                        <option value="" disabled>
-                          Select a Sub-Category
-                        </option>
-                        {currentSubCategoriesInsideMainCategory?.map((subCat) => (
-                          <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
-                            {subCat?.subCategoryName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {
-                      errors.sub_category_id
-                      &&
-                      (<span className='errorMessage'>{errors.sub_category_id.message}</span>)
+                      (<span className='errorMessage'>{errors.company_main_type.message }</span>)
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpactivity_id">
                       Main Business Activity
                       <span className="requiredStar"> * </span>
-                      <span className="optional">(MultiChoice)</span>
+                      <span className="optional">(MultiChoice)</span> 
                     </label>
                     <select
-                      id="signUpactivity_id"
-                      value={selectValue}
-                      className={`form-select signUpInput ${errors.activity_id ? 'inputError' : ''}`}
-                      onChange={handleChangeMainActivities}
+                    id="signUpactivity_id" 
+                    value={selectValue}
+                    className={`form-select signUpInput ${errors.activity_id ? 'inputError' : ''}`}
+                    onChange={handleChangeMainActivities}
                     >
                       <option value="" disabled>
                         Select a Activity
@@ -509,8 +705,8 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <div>
                       {allMainActivitiesChosen.map((act) => (
                         <span className='chosen__choice' key={act?.mainActivityId}>
-                          {act.mainActivityName}
-                          <i
+                          {act.mainActivityName} 
+                          <i 
                             onClick={() => {
                               handleDeleteMainActivity(act);
                             }}
@@ -520,37 +716,37 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       ))}
                     </div>
                     {
-                      errors.activity_id
+                      errors.activity_id 
                       &&
-                      (<span className='errorMessage'>{errors.activity_id.message}</span>)
+                      (<span className='errorMessage'>{errors.activity_id.message }</span>)
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpsub_activity_id">
                       Business Sub-Activity
                       <span className="requiredStar"> * </span>
-                      <span className="optional">(MultiChoice)</span>
+                      <span className="optional">(MultiChoice)</span> 
                     </label>
                     <select
                       onChange={handleChangeSubActivity}
                       value={selectValue}
-                      id="signUpsub_activity_id"
+                      id="signUpsub_activity_id" 
                       className={`form-select signUpInput ${errors.sub_activity_id ? 'inputError' : ''}`}
                     >
                       <option value="" disabled>
-                        Select a Sub-Category
+                        Select a Sub-Activity
                       </option>
-                      {allSubActsInsideMainActsChosen?.map(activity => activity?.subActivities?.map((subAct) =>
-                        <option key={subAct?.subActivityId} value={subAct?.subActivityId}>
-                          {subAct?.subActivityName}
-                        </option>
-                      ))}
+                      {allSubActsInsideMainActsChosen?.map(activity=> activity?.subActivities?.map((subAct) =>
+                            <option key={subAct?.subActivityId} value={subAct?.subActivityId}>
+                              {subAct?.subActivityName}
+                            </option>
+                          ))}
                     </select>
                     <div>
                       {chosenSubActivities?.map((subAct) => (
                         <span className='chosen__choice' key={subAct?.subActivityId}>
-                          {subAct.subActivityName}
-                          <i
+                          {subAct.subActivityName} 
+                          <i 
                             onClick={() => {
                               handleDeleteSubActivity(subAct);
                             }}
@@ -560,48 +756,26 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       ))}
                     </div>
                     {
-                      errors.sub_activity_id
+                      errors.sub_activity_id 
                       &&
-                      (<span className='errorMessage'>{errors.sub_activity_id.message}</span>)
-                    }
-                  </div>
-                  <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpindustry_id">
-                      Industry <span className="requiredStar">*</span>
-                    </label>
-                    <select
-                      id="signUpindustry_id"
-                      className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
-                      {...register('industry_id')} >
-                      <option value="" disabled>
-                        Select an industry
-                      </option>
-                      {industries?.map((industry) => (
-                        <option key={industry?.id} value={industry?.id}>
-                          {industry?.name}
-                        </option>
-                      ))}
-                    </select>
-                    {
-                      errors.industry_id &&
-                      <span className="errorMessage">{errors.industry_id.message}</span>
+                      (<span className='errorMessage'>{errors.sub_activity_id.message }</span>)
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpBusinessdocuments" className='singUp__upLoadBtn'>
                       Company's Doucuments <span className='fs-6'>( MultiChoice )</span>
                     </label>
-                    <input
+                    <input 
                       onChange={handleGettingFile}
                       type='file'
                       id='signUpBusinessdocuments'
                       className={`signUpInput ${errors.documents ? 'inputError' : ''}`}
                     />
                     <div>
-                      {documents?.map((doc, idx) => (
+                      {documents?.map((doc,idx) => (
                         <span className='chosen__choice' key={doc[0]?.lastModified} title={doc[0]?.name}>
-                          {(doc[0]?.name)?.slice(0, 20)}
-                          <i
+                          {(doc[0]?.name)?.slice(0,20)} 
+                          <i 
                             onClick={() => {
                               handleDeleteFile(doc);
                             }}
@@ -620,7 +794,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpLogo" className='singUp__upLoadBtn'>
                       Company's Logo
                     </label>
-                    <input
+                    <input 
                       type='file'
                       id='signUpLogo'
                       className={`signUpInput ${errors.logo ? 'inputError' : ''}`}
@@ -639,50 +813,72 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     </h4>
                   </div>
                   <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpcompany_country_id">
-                      Country / Region <span className="requiredStar">*</span>
-                    </label>
-                    <div className="position-relative">
-                      <select
-                        id="signUpcompany_country_id"
+                      <label htmlFor="signUpcompany_country_id">
+                        Country / Region <span className="requiredStar">*</span>
+                      </label>
+                      <div className="position-relative">
+                        <select
+                        id="signUpcompany_country_id" 
                         className={`form-select signUpInput ${errors.company_country_id ? 'inputError' : ''}`}
                         {...register('company_country_id')} >
-                        <option value="" disabled>
-                          Select a Country
-                        </option>
-                        {countries?.map((country) => (
-                          <option key={country.id} value={country.id}>
-                            {country.name}
+                          <option value="" disabled>
+                            Select a Country
                           </option>
-                        ))}
-                      </select>
+                          {countries?.map((country) => (
+                            <option key={country.id} value={country.id}>
+                              {country.name}
+                            </option>
+                          ))}
+                        </select>
 
-                    </div>
-                    {
-                      errors.company_country_id
-                      &&
-                      (<span className='errorMessage'>{errors.company_country_id.message}</span>)
-                    }
+                      </div>
+                      {
+                        errors.company_country_id 
+                        &&
+                        (<span className='errorMessage'>{errors.company_country_id.message}</span>)
+                      }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpcompany_city_id">
                       City <span className="requiredStar">*</span>
                     </label>
                     <select
-                      id="signUpcompany_city_id"
+                      id="signUpcompany_city_id" 
                       className={`form-select signUpInput ${errors.company_city_id ? 'inputError' : ''}`}
                       {...register('company_city_id')} >
-                      <option value="" disabled>
-                        Select a City
-                      </option>
-                      {currentCitiesInsideCountry?.map((city) => (
-                        <option key={city.cityId} value={city.cityId}>
-                          {city.cityName}
+                        <option value="" disabled>
+                          Select a City
                         </option>
-                      ))}
-                    </select>
+                        {currentCitiesInsideCountry?.map((city) => (
+                          <option key={city.cityId} value={city.cityId}>
+                            {city.cityName}
+                          </option>
+                        ))}
+                      </select>
                     {
-                      errors.company_city_id &&
+                      errors.company_city_id && 
+                      <span className="errorMessage">{errors.company_city_id.message}</span>
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpcompany_area_id">
+                      Area <span className="requiredStar">*</span>
+                    </label>
+                    <select
+                      id="signUpcompany_area_id" 
+                      className={`form-select signUpInput ${errors.company_area_id ? 'inputError' : ''}`}
+                      {...register('company_area_id')} >
+                        <option value="" disabled>
+                          Select an Area
+                        </option>
+                        {currentAreasInsideCities?.map((area) => (
+                          <option key={area.areaId} value={area.areaId}>
+                            {area.areaName}
+                          </option>
+                        ))}
+                      </select>
+                    {
+                      errors.company_city_id && 
                       <span className="errorMessage">{errors.company_city_id.message}</span>
                     }
                   </div>
@@ -690,7 +886,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpcompany_full_address">
                       Company Full Address  <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpcompany_full_address'
                       placeholder='Street name, City , Zip Code ...'
@@ -698,10 +894,49 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.company_full_address ? 'inputError' : ''}`}
                     />
                     {
-                      errors.company_full_address
+                      errors.company_full_address 
                       &&
                       (<span className='errorMessage'>{errors.company_full_address.message}</span>)
                     }
+                  </div>
+                  <div className="col-lg-12 mb-4">
+                    <ul className='d-flex align-items-center gap-3 flex-wrap'>
+                      <li className='d-flex gap-2 flex-wrap'>
+                        <label className='mapLabel'>Latitude:</label>
+                        <input
+                          type="text"
+                          value={location.lat || ''}
+                          readOnly={true}
+                          className='signUpInput input-readOnly'
+                        />
+                        {
+                          errors.latitude 
+                          &&
+                          (<span className='errorMessage'>{errors.latitude.message}</span>)
+                        }
+                      </li>
+                      <li className='d-flex gap-2 flex-wrap'>
+                        <label className='mapLabel'>Longitude:</label>
+                        <input
+                          type="text"
+                          value={location.lng || ''}
+                          readOnly={true}
+                          className='signUpInput input-readOnly'
+                        />
+                        {
+                          errors.longitude 
+                          &&
+                          (<span className='errorMessage'>{errors.longitude.message}</span>)
+                        }
+                      </li>
+                    </ul>
+                    <MapContainer center={initialPosition} zoom={0} style={{ height: '400px', width: '100%', zIndex: '1' }}>
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      />
+                      <LocationMarker setLocation={setLocation} initialPosition={initialPosition} />
+                    </MapContainer>
                   </div>
 
                   <div className="col-lg-12 my-5">
@@ -713,7 +948,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpemployee_name">
                       Employee's Name <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpemployee_name'
                       placeholder='Employee Name'
@@ -721,7 +956,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.employee_name ? 'inputError' : ''}`}
                     />
                     {
-                      errors.employee_name
+                      errors.employee_name 
                       &&
                       (<span className='errorMessage'>{errors.employee_name.message}</span>)
                     }
@@ -730,7 +965,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpemployee_email">
                       Employee's E-mail <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpemployee_email'
                       placeholder='ex: employee@gmail.com'
@@ -747,36 +982,24 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpemployee_phone">
                       Employee's Mobile Number <span className="requiredStar"> * </span>
                     </label>
-                    <div className="row">
-                      <div className="col-3">
-                        <input
-                          type='text'
-                          value={`+962`}
-                          className={`form-control signUpInput`}
-                          disabled
-                        />
-                      </div>
-                      <div className="col-9">
-                        <input
-                          type='number'
-                          id='signUpemployee_phone'
-                          placeholder='Enter Employee phone number'
-                          {...register('employee_phone')}
-                          className={`form-control signUpInput ${errors.employee_phone ? 'inputError' : ''}`}
-                        />
-                        {
-                          errors.employee_phone
-                          &&
-                          (<span className='errorMessage'>{errors.employee_phone.message}</span>)
-                        }
-                      </div>
-                    </div>
+                    <input 
+                      type='number'
+                      id='signUpemployee_phone'
+                      placeholder='Enter Employee phone number'
+                      {...register('employee_phone')}
+                      className={`form-control signUpInput ${errors.employee_phone ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.employee_phone 
+                      &&
+                      (<span className='errorMessage'>{errors.employee_phone.message}</span>)
+                    }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpemployee_title">
                       Employee's Title <span className="requiredStar"> *</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpemployee_title'
                       placeholder="Employee's title in the company"
@@ -784,56 +1007,56 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.employee_title ? 'inputError' : ''}`}
                     />
                     {
-                      errors.employee_title
+                      errors.employee_title 
                       &&
                       (<span className='errorMessage'>{errors.employee_title.message}</span>)
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
-                    <label htmlFor="signUpemployee_country_id">
-                      Employee's <span className='fs-6'>(Country / Region)</span> <span className="requiredStar">*</span>
-                    </label>
-                    <div className="position-relative">
-                      <select
-                        id="signUpemployee_country_id"
+                      <label htmlFor="signUpemployee_country_id">
+                        Employee's <span className='fs-6'>(Country / Region)</span> <span className="requiredStar">*</span>
+                      </label>
+                      <div className="position-relative">
+                        <select
+                        id="signUpemployee_country_id" 
                         className={`form-select signUpInput ${errors.employee_country_id ? 'inputError' : ''}`}
                         {...register('employee_country_id')} >
-                        <option value="" disabled>
-                          Select a Country
-                        </option>
-                        {countries?.map((country) => (
-                          <option key={country.id} value={country.id}>
-                            {country.name}
+                          <option value="" disabled>
+                            Select a Country
                           </option>
-                        ))}
-                      </select>
+                          {countries?.map((country) => (
+                            <option key={country.id} value={country.id}>
+                              {country.name}
+                            </option>
+                          ))}
+                        </select>
 
-                    </div>
-                    {
-                      errors.employee_country_id
-                      &&
-                      (<span className='errorMessage'>{errors.employee_country_id.message}</span>)
-                    }
+                      </div>
+                      {
+                        errors.employee_country_id 
+                        &&
+                        (<span className='errorMessage'>{errors.employee_country_id.message}</span>)
+                      }
                   </div>
                   <div className="col-lg-6 mb-4">
                     <label htmlFor="signUpemployee_city_id">
                       Employee's City <span className="requiredStar">*</span>
                     </label>
                     <select
-                      id="signUpemployee_city_id"
+                      id="signUpemployee_city_id" 
                       className={`form-select signUpInput ${errors.employee_city_id ? 'inputError' : ''}`}
                       {...register('employee_city_id')} >
-                      <option value="" disabled>
-                        Select a City
-                      </option>
-                      {currentEmployeeCitiesInsideCountry?.map((city) => (
-                        <option key={city.cityId} value={city.cityId}>
-                          {city.cityName}
+                        <option value="" disabled>
+                          Select a City
                         </option>
-                      ))}
-                    </select>
+                        {currentEmployeeCitiesInsideCountry?.map((city) => (
+                          <option key={city.cityId} value={city.cityId}>
+                            {city.cityName}
+                          </option>
+                        ))}
+                      </select>
                     {
-                      errors.employee_city_id &&
+                      errors.employee_city_id && 
                       <span className="errorMessage">{errors.employee_city_id.message}</span>
                     }
                   </div>
@@ -841,7 +1064,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpemployee_full_address">
                       Employee's Full Address  <span className="requiredStar">*</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpemployee_full_address'
                       placeholder='Street name, City , Zip Code ...'
@@ -849,7 +1072,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.employee_full_address ? 'inputError' : ''}`}
                     />
                     {
-                      errors.employee_full_address
+                      errors.employee_full_address 
                       &&
                       (<span className='errorMessage'>{errors.employee_full_address.message}</span>)
                     }
@@ -858,7 +1081,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpemployee_citizenship">
                       Employee's Citizenship <span className="requiredStar"> *</span>
                     </label>
-                    <input
+                    <input 
                       type='text'
                       id='signUpemployee_citizenship'
                       placeholder="Enter Employee's CitizenShip"
@@ -866,7 +1089,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       className={`form-control signUpInput ${errors.employee_citizenship ? 'inputError' : ''}`}
                     />
                     {
-                      errors.employee_citizenship
+                      errors.employee_citizenship 
                       &&
                       (<span className='errorMessage'>{errors.employee_citizenship.message}</span>)
                     }
@@ -876,19 +1099,19 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       Employee's Password <span className="requiredStar"> *</span>
                     </label>
                     <div className="position-relative">
-                      <input
+                      <input 
                         type={`${showPassword ? 'text' : 'password'}`}
                         id='signUpemployee_password'
                         placeholder='Enter 8-digit password'
                         {...register('employee_password')}
                         className={`form-control signUpInput ${errors.employee_password ? 'inputError' : ''}`}
                       />
-                      <div className="leftShowPasssord" onClick={() => setShowPassword(!showPassword)}>
+                      <div className="leftShowPasssord" onClick={()=>setShowPassword(!showPassword)}>
                         {
                           showPassword ?
-                            <i className="bi bi-eye-slash"></i>
-                            :
-                            <i className="bi bi-eye-fill"></i>
+                          <i className="bi bi-eye-slash"></i>
+                          :
+                          <i className="bi bi-eye-fill"></i>
                         }
                       </div>
                     </div>
@@ -902,7 +1125,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     <label htmlFor="signUpofficial_id_or_passport" className='singUp__upLoadBtn'>
                       Employee's <span className="fs-6">(Official-Id / Passport)</span>
                     </label>
-                    <input
+                    <input 
                       type='file'
                       id='signUpofficial_id_or_passport'
                       {...register('official_id_or_passport')}
@@ -915,9 +1138,9 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     }
                   </div>
                   <div className="col-lg-8 mb-4">
-                    <label
-                      htmlFor="singUpcomfirm_policies"
-                      className='row justify-content-start align-items-start'>
+                    <label 
+                    htmlFor="singUpcomfirm_policies" 
+                    className='row justify-content-start align-items-start'>
                       <p className="signUpCostom-checkBox col-md-1 col-sm-2 mt-1">
                         <input
                           type="checkbox"
@@ -934,9 +1157,9 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     {errors.comfirm_policies && <p className='errorMessage'>{errors.comfirm_policies.message}</p>}
                   </div>
                   <div className="col-lg-8 mb-4">
-                    <label
-                      htmlFor="singUpis_benifical_owner"
-                      className='row justify-content-start align-items-start'>
+                    <label 
+                    htmlFor="singUpis_benifical_owner" 
+                    className='row justify-content-start align-items-start'>
                       <p className="signUpCostom-checkBox col-md-1 col-sm-2 mt-1">
                         <input
                           type="checkbox"
@@ -952,9 +1175,12 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                     </label>
                     {errors.is_benifical_owner && <p className='errorMessage'>{errors.is_benifical_owner.message}</p>}
                   </div>
+
+
                   <div className="col-lg-12">
                     <BusinessSignUpPackages />
                   </div>
+
                   <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                     <input disabled={isSubmitting} type="submit" value={'Submit For Review'} />
                   </div>
@@ -965,7 +1191,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                       Once you submit for review our Team will start reviewing all the details, you will be notified through your E-mail within 5-7 business days.
                     </p>
                     <p>
-                      By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy.
+                      By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy. 
                     </p>
                   </div>
                 </div>

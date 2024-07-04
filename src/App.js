@@ -19,8 +19,11 @@ import BusinessSignUp from './pages/busnissSignUp/BusinessSignUp';
 import { useQuery } from 'react-query';
 import { getDataFromAPI } from './functions/fetchAPI';
 import MyLogin from './pages/myLoginPage/MyLogin';
-
+import Cookies from 'js-cookie';
 function App() {
+
+  const token = Cookies.get('authToken');
+  console.log(token);
   const {pathname} = useLocation();
   const [scrollToggle, setScrollToggle] = useState(false);
 

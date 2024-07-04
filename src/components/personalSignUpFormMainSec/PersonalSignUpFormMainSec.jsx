@@ -74,17 +74,23 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
         formData.append(key, data[key]);
       }
     });
+    if (data.image && data.image[0]) {
+      formData.append('image', data.image[0]);
+    }
     await axios.post(`${baseURL}/user/register`, formData, {
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'multipart/form-data',
       },
       }).then(response => {
-        toast.success(response?.data?.message,{
+        toast.success(`${response?.data?.message}, will go to login Page after 2 seconds!`,{
           id: toastId,
           duration: 2000
         });
-        navigate('/SignIn');
+        setTimeout(()=>{
+          navigate('/logIn');
+        },2000);
+        scrollToTop();
         reset();
       })
       .catch(error => {
@@ -102,7 +108,7 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
   return (
     <>
       <Toaster
-        position="top-right"
+        position="top-center"
         reverseOrder={true}
       />
       <div className='signUpForm__mainSec py-5 mb-5'>
