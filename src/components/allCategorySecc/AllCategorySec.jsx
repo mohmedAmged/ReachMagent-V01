@@ -18,59 +18,59 @@ export default function AllCategorySec() {
         {
             img: furnitre,
             title: 'furnitre',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: kitchen,
             title: 'kitchen',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: sport,
             title: 'sports',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: lighting,
             title: 'lighting',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: decor,
             title: 'decoration',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: kids,
             title: 'kids',
-            link: '/profile'
+            link: '/user-profile'
         },
         {
             img: makeUp,
             title: 'make-up',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: health,
             title: 'health',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: pets,
             title: 'pets',
-            link: '/profile'
+            link: '/your-messages'
         },
         {
             img: other,
             title: 'other',
-            link: '/profile'
+            link: '/your-messages'
         },
     ]
     return (
         <div className='allCategorySec__handler'>
             <div className="container">
                 <div className="allCategory__header text-center">
-                    <HeaderSec title={'All Categories'}
+                    <HeaderSec title={'Browse By Industry'}
                     />
                 </div>
                 <div className="allCategory__items mt-5">

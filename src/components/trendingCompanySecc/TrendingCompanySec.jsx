@@ -56,7 +56,7 @@ export default function TrendingCompanySec({ companies }) {
             <div className="container">
                 <HeaderOfSec
                     secHead='Trending Companies'
-                    secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.' />
+                    secText='Explore a wide array of trending companies making headlines in the industry'/>
 
                 <div className="trendingCompany__cards mb-5">
                     <div className="row">

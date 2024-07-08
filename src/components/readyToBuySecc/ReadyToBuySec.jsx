@@ -6,20 +6,20 @@ import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
 import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
-export default function ReadyToBuySec() {
+export default function ReadyToBuySec({secMAinTitle}) {
     const listedNavigationItem = [
         {
-            item: 'Food product',
+            item: 'Featured Products',
             itemStyle: 'active'
         },
         {
-            item: 'most Sales'
+            item: 'Most Selling'
         },
         {
-            item: 'Plastic products'
+            item: 'Recent Items'
         },
         {
-            item: 'Metal products'
+            item: 'Trending Products'
         },
 
     ]
@@ -28,29 +28,29 @@ export default function ReadyToBuySec() {
             img: product1,
             title: 'Table Lamp',
             price: '$37',
-            rate: '4.8',
-            rateCount: '(850)'
+            // rate: '4.8',
+            // rateCount: '(850)'
         },
         {
             img: product2,
             title: 'Ceiling Lamp ',
             price: '$37',
-            rate: '4.8',
-            rateCount: '(850)'
+            // rate: '4.8',
+            // rateCount: '(850)'
         },
         {
             img: product3,
             title: 'Blue Wood Chair',
             price: '$37',
-            rate: '4.8',
-            rateCount: '(850)'
+            // rate: '4.8',
+            // rateCount: '(850)'
         },
     ]
     return (
         <div className='readyToBuySec__handler'>
             <div className="container">
                 <div className="allCategory__header text-center mb-4">
-                    <HeaderSec title={'Ready-to-buy Products'}
+                    <HeaderSec title={secMAinTitle}
                     />
                 </div>
                 <div className="readyToBuy__navigationBar none__on__small__screen">

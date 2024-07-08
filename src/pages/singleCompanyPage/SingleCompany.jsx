@@ -14,6 +14,7 @@ import CompanyContact from '../../components/companyContactSec/CompanyContact'
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { getDataFromAPI } from '../../functions/fetchAPI'
+import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec'
 
 export default function SingleCompany() {
     const { companyId } = useParams();
@@ -22,7 +23,9 @@ export default function SingleCompany() {
         { name: 'Overview', active: true },
         { name: 'Services', active: false },
         { name: 'Products', active: false },
-        // Add more items as needed
+        { name: 'Media', active: false },
+        { name: 'Network', active: false },
+        { name: 'Pranches', active: false },
     ];
     const companyData = {
         aboutMark: aboutMarkImage,
@@ -49,25 +52,31 @@ export default function SingleCompany() {
         ],
         mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2823585.1606278117!2d39.30088302422216!3d31.207963192810116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006f476664de99%3A0x8d285b0751264e99!2z2KfZhNij2LHYr9mG!5e0!3m2!1sar!2seg!4v1717936559294!5m2!1sar!2seg'
     };
-  const showCompaniesQuery = useQuery({
-    queryKey: ['show-company'],
-    queryFn: ()=> getDataFromAPI(`show-company/${companyId}`),
-  });
+    const showCompaniesQuery = useQuery({
+        queryKey: ['show-company'],
+        queryFn: () => getDataFromAPI(`show-company/${companyId}`),
+    });
+    console.log(showCompaniesQuery);
     return (
         <div className='singleCompany__handler'>
             <HeroOnlyCover />
-            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data}/>
+            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data} />
             <div className='my-5'>
                 <ProductDetailsFilterationBar items={items} />
             </div>
             <div className='container'>
-                <AboutCompany company={companyData}/>
+                <AboutCompany company={companyData} />
+
             </div>
+
             <SingleCompanyRectangleSec />
-            <HeaderOfSec 
-            secHead='News'
-            secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.'
+
+            <ReadyToBuySec secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.companyName}`} />
+            <HeaderOfSec
+                secHead='Company Insights'
+                secText='Stay informed with the latest updates, announcements, and specials from our company'
             />
+
             <SingleCompanyNewsSec />
             <SingleCompanyAffiliate />
             <CompanyContact />

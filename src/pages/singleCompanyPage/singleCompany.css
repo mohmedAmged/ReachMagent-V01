@@ -1,3 +1,6 @@
 .singleCompany__handler .productDetailsFilterationBar-list{
     background: var(--primary-white) !important;
 }
+.singleCompany__handler .readyToBuy__navigationBar{
+    display: none;
+}

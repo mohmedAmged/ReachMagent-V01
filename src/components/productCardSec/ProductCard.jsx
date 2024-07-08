@@ -16,8 +16,9 @@ export default function ProductCard({ productImage, productName, productPrice, p
                     </h5>
                 </div>
                 <div className="sub__info">
+                    
                     <p>
-                        <i className="bi bi-star-fill"></i>
+                        {/* <i className="bi bi-star-fill"></i> */}
                         <span className='prodcut_rate'>
                             {productRate}
                         </span>
@@ -26,7 +27,7 @@ export default function ProductCard({ productImage, productName, productPrice, p
                         </span>
                     </p>
                     <button className='pageMainBtnStyle'>
-                        buy more
+                        buy now
                     </button>
                 </div>
             </div>

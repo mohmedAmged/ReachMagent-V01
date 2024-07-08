@@ -102,6 +102,23 @@ export default function CompanyContact() {
                     <span className='errorMessage'>{errors.email.message}</span>
                   }
                 </div>
+                <div className='mb-4'>
+                  <label className='d-block' htmlFor="descriptionCompanyContact">
+                    Type of Query
+                  </label>
+                  <select className={`w-100 ${errors.email ? 'inputError' : ''}`} name="" id="">
+                    <option value="" disabled>Select type of query</option>
+                    <option value="">sales</option>
+                    <option value="">Recruitment </option>
+                    <option value="">Complaint  </option>
+                    <option value="">Feedback   </option>
+                    <option value="">Call-back request  </option>
+                  </select>
+                  {
+                    errors.description && 
+                    <span className='errorMessage'>{errors.description.message}</span>
+                  }
+                </div>
 
                 <div className='mb-4'>
                   <label htmlFor="descriptionCompanyContact">
@@ -119,6 +136,8 @@ export default function CompanyContact() {
                     <span className='errorMessage'>{errors.description.message}</span>
                   }
                 </div>
+
+               
 
                 <input 
                 className='contactCompany__form-submitBtn' 

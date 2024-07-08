@@ -10,7 +10,7 @@ export default function DownloadApp() {
             <div className="container">
                 <HeaderOfSec
                     secHead='Download our New Application'
-                    secText='Dicover The Next Wave in Digital Collectible : Unveiling an Sales Application Revolutionzingthe marketplace'
+                    secText='Enhance your experience: Download the app to stay notified and up-to-date on industries important to you, plus access many other features'
                 />
                 <div className="downloadAppSec__btnss">
                     <>

@@ -41,20 +41,20 @@ export default function MyNewSidebarDash() {
     const handleShow = () => setShow(true);
 
     const sidebarItems = [
-        { title: "Profile", link: "/profile", icon: icon1 },
-        { title: "Catalog", link: "/profile/catalog", icon: icon2 },
-        { title: "Quotations", link: "/profile/quotations", icon: icon3 },
-        { title: "Products", link: "/profile/products", icon: icon4 },
-        { title: "Orders", link: "/profile/orders", icon: icon4 },
-        { title: "Insights", link: "/profile/insights", icon: icon5 },
-        { title: "Messages", link: "/profile/messages", icon: icon6 },
-        { title: "Notifications", link: "/profile/notifications", icon: icon7 },
-        { title: "Requests", link: "/profile/requests", icon: icon8 }
+        { title: "Profile", link: "/user-profile", icon: icon1 },
+        { title: "Catalog", link: "/user-profile/catalog", icon: icon2 },
+        { title: "Quotations", link: "/user-profile/quotations", icon: icon3 },
+        { title: "Products", link: "/user-profile/products", icon: icon4 },
+        { title: "Orders", link: "/user-profile/orders", icon: icon4 },
+        { title: "Insights", link: "/user-profile/insights", icon: icon5 },
+        { title: "Messages", link: "/your-messages", icon: icon6 },
+        { title: "Notifications", link: "/user-profile/notifications", icon: icon7 },
+        { title: "Requests", link: "/user-profile/requests", icon: icon8 }
     ];
 
     const sidebarItemsTwo = [
-        { title: "Promote", link: "/profile/promote", icon: icon9 },
-        { title: "Help", link: "/profile/help", icon: icon10 }
+        { title: "Promote", link: "/user-profile/promote", icon: icon9 },
+        { title: "Help", link: "/user-profile/help", icon: icon10 }
     ];
 
     const renderSidebarContent = () => (

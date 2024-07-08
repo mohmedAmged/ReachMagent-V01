@@ -34,7 +34,7 @@ export default function LastMinuteDeals() {
         <div className='lastMinuteDeals__handler'>
             <div className="container">
                 <HeaderOfSec secHead='Last Minute Deals'
-                    secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.' />
+                    secText='Secure limited-time deals on large lots or specific quantities before they are gone' />
                 <div className="lastMinuteDeal__logo__img">
                     <img src={lastMinuteLogo} alt="lastMinute__logo" />
                 </div>

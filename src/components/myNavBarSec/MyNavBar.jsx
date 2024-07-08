@@ -42,37 +42,6 @@ export default function MyNavBar({ scrollToggle }) {
                                 to={`/`}>
                                 home
                             </NavLink>
-
-                            <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style`}
-                                to={`/service`}
-                            >
-                                Service
-                            </NavLink>
-                            <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style`}
-                                to={`/company`}
-                            >
-                                company
-                            </NavLink>
-                            <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style`}
-                                to={`/Discover`}
-                            >
-                                Discover
-                            </NavLink>
                             <NavLink
                                 onClick={() => {
                                     scrollToTop();
@@ -82,6 +51,36 @@ export default function MyNavBar({ scrollToggle }) {
                                 to={`/about-us`}
                             >
                                 About us
+                            </NavLink>
+                            <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }}
+                                aria-label="Close"
+                                className={`nav-link nav__link__style`}
+                                to={`/shop`}
+                            >
+                                Shop
+                            </NavLink>
+                            {/* <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }}
+                                aria-label="Close"
+                                className={`nav-link nav__link__style`}
+                                to={`/company`}
+                            >
+                                company
+                            </NavLink> */}
+                            <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }}
+                                aria-label="Close"
+                                className={`nav-link nav__link__style`}
+                                to={`/Discover`}
+                            >
+                                Discover
                             </NavLink>
                             <NavLink
                                 onClick={() => {
@@ -136,19 +135,7 @@ export default function MyNavBar({ scrollToggle }) {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="mx-auto" >
-                                
 
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                            closeOffcanvas();
-                                        }}
-                                        aria-label="Close"
-                                        className={`nav-link nav__link__style`}
-                                        to={`/`}>
-                                        home
-                                    </NavLink>
-                                
 
                                 <NavLink
                                     onClick={() => {
@@ -157,8 +144,19 @@ export default function MyNavBar({ scrollToggle }) {
                                     }}
                                     aria-label="Close"
                                     className={`nav-link nav__link__style`}
-                                    to={`/srevices`}>
-                                    srevices
+                                    to={`/`}>
+                                    home
+                                </NavLink>
+
+                                <NavLink
+                                    onClick={() => {
+                                        scrollToTop();
+                                        closeOffcanvas();
+                                    }}
+                                    aria-label="Close"
+                                    className={`nav-link nav__link__style`}
+                                    to={`/about-us`}>
+                                    About us
                                 </NavLink>
                                 <NavLink
                                     onClick={() => {
@@ -167,9 +165,10 @@ export default function MyNavBar({ scrollToggle }) {
                                     }}
                                     aria-label="Close"
                                     className={`nav-link nav__link__style`}
-                                    to={`/company`}>
-                                    company
+                                    to={`/shop`}>
+                                    Shop
                                 </NavLink>
+
                                 <NavLink
                                     onClick={() => {
                                         scrollToTop();
@@ -180,16 +179,7 @@ export default function MyNavBar({ scrollToggle }) {
                                     to={`/discover`}>
                                     discover
                                 </NavLink>
-                                <NavLink
-                                    onClick={() => {
-                                        scrollToTop();
-                                        closeOffcanvas();
-                                    }}
-                                    aria-label="Close"
-                                    className={`nav-link nav__link__style`}
-                                    to={`/about-us`}>
-                                    about us
-                                </NavLink>
+
                                 <NavLink
                                     onClick={() => {
                                         scrollToTop();

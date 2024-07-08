@@ -64,14 +64,14 @@ export default function SingleCompanyNewsSec() {
                       <h4>{el.newsHead}</h4>
                       <p>{el.newsQuote}</p>
                     </div>
-                    <div className="headOfNews__card-rightPart pt-4">
+                    {/* <div className="headOfNews__card-rightPart pt-4">
                     {[...Array(el.starsNum)].map((_, index) => (
                         <i key={index} className="bi bi-star-fill"></i>
                       ))}
                     {[...Array(el.maxStarsNum - el.starsNum)].map((_, index) => (
                         <i key={index} className="bi bi-star"></i>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="news__card-body">
                     <p>
@@ -107,14 +107,14 @@ export default function SingleCompanyNewsSec() {
                       <h4>{el.newsHead}</h4>
                       <p>{el.newsQuote}</p>
                     </div>
-                    <div className="headOfNews__card-rightPart pt-4">
+                    {/* <div className="headOfNews__card-rightPart pt-4">
                     {[...Array(el.starsNum)].map((_, index) => (
                         <i key={index} className="bi bi-star-fill"></i>
                       ))}
                     {[...Array(el.maxStarsNum - el.starsNum)].map((_, index) => (
                         <i key={index} className="bi bi-star"></i>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="news__card-body">
                     <p>

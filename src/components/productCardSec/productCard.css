@@ -2,6 +2,7 @@
     background: var(--primary-white);
     padding: 10px;
     border-radius: 20px;
+    width: 422px;
 }
 .productCard__item .product__image img{
     /* width: 396.48px; */

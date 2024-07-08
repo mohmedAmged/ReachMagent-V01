@@ -1,0 +1,124 @@
+.userChatSidebar__content{
+    border: 1px solid #CFD0D5;
+    border-radius: 24px;
+    padding: 30px 0;
+    min-height: 677px;
+    margin-bottom: 30px;
+
+}
+.userChatSidebar__content .yourMainInfo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.yourAvatarImage{
+    position: relative;
+}
+.yourAvatarImage span{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--primary-white);
+    border-radius: 50%;
+}
+.yourAvatarImage span.online{
+    background: #4AD15F;
+}
+.yourAvatarImage img{
+    width: 48px;
+    height: 48px;
+}
+.yourContactInfo h1{
+    font-size: 16px;
+    font-weight: 500;
+    color: #434343;
+    text-transform: capitalize;
+}
+.yourContactInfo p{
+    font-size: 10px;
+    font-weight: 500;
+    color: #959595;
+}
+.yourStatusInfo{
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.yourStatusInfo select{
+    border: 1px solid #CFD0D5;
+    border-radius: 8px;
+    padding: 4px 0;
+
+}
+.yourStatusInfo select option{
+    font-size: 12px;
+    font-weight: 500;
+}
+.yourSearchUsers{
+    margin-bottom: 20px;
+}
+.yourSearchUsers input{
+    border-radius: 8px;
+    border: 1px solid #CFD0D5;
+}
+.userChatSidebar__content .messageChatItem{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+    /* align-items: center; */
+}
+.userChatSidebar__content .messageChatItem.activeHover{
+    background: #F5F8FA;
+    border-radius: 12px;
+}
+.userChatSidebar__content .messageChatItem:hover{
+    background: #F5F8FA;
+    border-radius: 12px;
+}
+.messageChatMainInfo{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.messageChatItem .messageChatImg{
+    position: relative;
+}
+.messageChatItem .messageChatImg .chatStatuNow{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--primary-white);
+    border-radius: 50%;
+}
+.messageChatItem .messageChatImg .chatStatuNow.online{
+    background: #4AD15F;
+}
+.messageChatItem .messageChatImg .chatStatuNow.offline{
+    background: #D9D9D9;
+}
+.messageChatItem .messageChatImg img{
+    width: 32px;
+    height: 32px;
+}
+.messageChatName h3{
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.messageChatContent p{
+    font-size: 9px;
+    font-weight: 500;
+    color: #959595;
+}
+.timeOfMessage span{
+    font-size: 8px;
+    font-weight: 500;
+    color: #959595;
+}

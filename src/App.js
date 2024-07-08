@@ -20,6 +20,7 @@ import { useQuery } from 'react-query';
 import { getDataFromAPI } from './functions/fetchAPI';
 import MyLogin from './pages/myLoginPage/MyLogin';
 import Cookies from 'js-cookie';
+import MyMessage from './pages/myMessagePage/MyMessage';
 function App() {
 
   const token = Cookies.get('authToken');
@@ -93,13 +94,14 @@ function App() {
         }/>
         <Route path='/login' element={<MyLogin />} />
 
-        {/* Profile Routes */}
-        <Route path='/profile' element={<MyDashboard />} />
-        <Route path='/profile/catalog' element={<MyCatalog />} />
-        <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
-        <Route path='/profile/quotations' element={<MyQutations />} />
-        <Route path='/profile/products' element={<MyProducts />} />
-        <Route path='/profile/orders' element={<MyOrders />} />
+        {/* user Profile Routes */}
+        <Route path='/user-profile' element={<MyDashboard />} />
+        <Route path='/user-profile/catalog' element={<MyCatalog />} />
+        <Route path='/user-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
+        <Route path='/user-profile/quotations' element={<MyQutations />} />
+        <Route path='/user-profile/products' element={<MyProducts />} />
+        <Route path='/user-profile/orders' element={<MyOrders />} />
+        <Route path='/your-messages' element={<MyMessage />} />
 
       </Routes>
 

@@ -5,8 +5,7 @@ import verfuIcon from '../../assets/companyImages/Vector (3).png'
 import callIcon from '../../assets/companyImages/call.svg'
 import messageIcon from '../../assets/companyImages/messages-3.svg'
 import { NavLink } from 'react-router-dom'
-export default function CompanyInfoCard({showCompaniesQuery}) {
-    console.log(showCompaniesQuery);
+export default function CompanyInfoCard({ showCompaniesQuery }) {
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -19,7 +18,7 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                     <div className="col-lg-6 col-md-12 ">
                         <div className="company__name">
                             <h1>
-                            {showCompaniesQuery?.companyName}
+                                {showCompaniesQuery?.companyName}
                             </h1>
                             <span>
                                 <img src={verfuIcon} alt="icon" />
@@ -33,7 +32,7 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                                             Headquarters:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                        {showCompaniesQuery?.companyFullAddress}
+                                            {showCompaniesQuery?.companyFullAddress}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -41,7 +40,7 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                                             Verification Status:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                        {showCompaniesQuery?.companyRegisterationStatus}
+                                            {showCompaniesQuery?.companyRegisterationStatus}
                                         </p>
                                     </div>
                                     <div className="company__actions">
@@ -49,8 +48,10 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                                             <img src={callIcon} alt="call-icon" />
                                         </button>
                                         <button className='btn__companyActions online__btn'>
-                                            <img src={messageIcon} alt="message-icon" />
-                                            <span className='online__circle'></span>
+                                            <NavLink className={'nav-link'} to={'/your-messages'}>
+                                                <img src={messageIcon} alt="message-icon" />
+                                                <span className='online__circle'></span>
+                                            </NavLink>
                                         </button>
                                     </div>
                                 </div>
@@ -62,7 +63,7 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                                             industry:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                        {showCompaniesQuery?.companyIndustries[0]?.industryName}
+                                            {showCompaniesQuery?.companyIndustries[0]?.industryName}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -83,7 +84,7 @@ export default function CompanyInfoCard({showCompaniesQuery}) {
                                             type:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                        {showCompaniesQuery?.companyTypes[1]?.type}
+                                            {showCompaniesQuery?.companyTypes[1]?.type}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">

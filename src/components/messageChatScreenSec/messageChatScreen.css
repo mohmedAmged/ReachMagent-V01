@@ -1,0 +1,106 @@
+.messageChatScreen__handler {
+    border: 1px solid #cfd0d5;
+    border-radius: 24px;
+    padding: 30px 0;
+    background: #f5f8fa;
+    min-height: 677px;
+
+}
+
+.messageChat__mainInfo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #cfd0d5;
+    border-radius: 24px;
+    padding: 10px;
+    background: var(--primary-white);
+}
+.message__item__img {
+    border-radius: 50%;
+}
+.message__item__img img{
+    border-radius: 100%;
+    width: 36px;
+    height: 36px;
+}
+.mySendig__chat__messages {
+    display: flex;
+    justify-content: end;
+}
+
+.replaied__user__message {
+    display: flex;
+    justify-content: start;
+}
+
+.replaied__user__message .message__item p {
+    background: var(--primary-white);
+    border-radius: 22px;
+    margin-bottom: 10px;
+    width: 50%;
+    padding: 6px;
+    border: 1px solid #cfd0d5;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.mySendig__chat__messages .message__item p {
+    background: #02307e;
+    width: 80%;
+    border-radius: 22px;
+    margin-bottom: 10px;
+    color: var(--primary-white);
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 400;
+}
+.mySendig__chat__messages .timeOfMessage{
+    text-align: right;
+
+}
+.mySendig__chat__messages .timeOfMessage p,
+.replaied__user__message .timeOfMessage p
+{
+    font-size: 8px;
+    font-weight: 500;
+    color: #434343;
+}
+.chatApperance__contents .message__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.chatTextField__actions{
+    margin-top: 10px;
+}
+.chatFormContents{
+    display: flex;
+    gap: 10px;
+
+}
+.chatFormContents input{
+    width: 628px;
+    height: 48px;
+    border-radius: 34px;
+    background: var(--primary-white);
+    border: 0;
+}
+.chatFormContents .send__btn{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #02307E;
+    cursor: pointer;
+
+}
+.chatFormContents .send__btn img{
+    display: flex;
+    align-items: center;
+width: 24px;
+height: 24px;
+}

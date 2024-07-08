@@ -59,7 +59,10 @@
     cursor: pointer;
 }
 .contactCompany__form input ,
-.contactCompany__form textarea {
+.contactCompany__form textarea,
+.contactCompany__form select 
+
+{
     padding: 10px 15px;
     border: 1px solid #263F5B1A;
     background-color: #263F5B1A;

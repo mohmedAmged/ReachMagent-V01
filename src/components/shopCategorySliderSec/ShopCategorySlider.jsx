@@ -96,8 +96,8 @@ export default function ShopCategorySlider() {
           // loop
           breakpoints={{
             300: {
-              slidesPerView: 2,
-              spaceBetween: 20
+              slidesPerView: 5,
+              spaceBetween: 10
             },
             426: {
               slidesPerView: 4.1,

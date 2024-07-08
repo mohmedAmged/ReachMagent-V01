@@ -44,29 +44,30 @@ export default function Home({companies}) {
       />
       <AboutReachSec />
       <AllCategorySec />
-      <FranchiseSec
-        pageName='home'
-        headText='Franchise Opportunities'
-        paraText='Lorem ipsum dolor sit amet consectetur. Fermentum tortor tortor nisi laoreet cursus ultrices amet. Odio arcu ornare turpis '
-        btnOneText='Submit Your Brand'
-        btnTwoText='Explore Now'
-      />
-      <ReadyToBuySec />
-      <TrendingCompanySec companies={companies}/>
-      <GrowBuisnessSec />
-      <LastMinuteDeals />
       <div className='oneClickQuotation__handler'>
         <FranchiseSec
           pageName='discover'
           headText='One-click Quotation'
-          paraText='Lorem ipsum dolor sit amet consectetur.'
+          paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
           btnOneText='Start Now'
         />
       </div>
+
+      <ReadyToBuySec secMAinTitle={`Ready-To-Buy Products`}/>
+      <TrendingCompanySec companies={companies}/>
+      <GrowBuisnessSec />
+      <LastMinuteDeals />
+      <FranchiseSec
+        pageName='home'
+        headText='Franchise Opportunities'
+        paraText='Find secure and verified franchises, or attract franchisees for your current brand'
+        btnOneText='Submit Your Brand'
+        btnTwoText='Explore Now'
+      />
       <>
         <HeaderOfSec
-          secHead='News'
-          secText='Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.'
+          secHead='Companies Insights'
+          secText='Stay informed with the latest updates, announcements, and specials from top companies'
         />
         <SingleCompanyNewsSec />
       </>
