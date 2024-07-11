@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function SignInFormMainSec() {
+export default function SignInFormMainSec({loginType,setLoginType}) {
     const navigate = useNavigate();
     const [showPassword,setShowPassword] = useState(false);
     const {
@@ -29,9 +29,18 @@ export default function SignInFormMainSec() {
         resolver: zodResolver(LoginSchema),
     });
 
+    const handleChangeLoginType = () => {
+        if(loginType === 'user'){
+            localStorage.setItem('loginType','employee');
+        }else{
+            localStorage.setItem('loginType','user');
+        };
+        setLoginType(localStorage.getItem('loginType'));
+    };
+
     const onSubmit = async(data) => {
         const toastId = toast.loading('Please Wait...');
-        await axios.post(`${baseURL}/user/login`, data, {
+        await axios.post(`${baseURL}/${loginType}/login`, data, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -39,7 +48,22 @@ export default function SignInFormMainSec() {
         }).then(response => {
             const token = response?.data?.data?.token;
             if (token) {
-                Cookies.set('authToken', token, { expires: 30 });
+                Cookies.set('authToken', token, { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+                const slugCompletion = loginType === 'user' ? 'user/profile' : 'employee/show-profile';
+                const fetchData = async () => {
+                    try {
+                        const response = await axios.get(`${baseURL}/${slugCompletion}`, {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Authorization': `Bearer ${token}`,
+                            },
+                        });
+                        Cookies.set('currentEmployeeData', JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+                    } catch (error) {
+                        toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+                    }
+                };
+                fetchData();
             };
             toast.success(`${response?.data?.message}, will go to home page after 2 seconds !`,{
                 id: toastId,
@@ -47,7 +71,7 @@ export default function SignInFormMainSec() {
             });
             setTimeout(()=>{
                 navigate('/');
-            },2000)
+            },2000);
             reset();
         })
         .catch(error => {
@@ -74,10 +98,18 @@ export default function SignInFormMainSec() {
                     <div className="col-12">
                         <div className="signUpForm__mainContent">
                             <div className="row">
-                                <h3 className="col-12 text-center py-5 signUpForm__head">
-                                    Login Information
+                                <h3 className="col-12 text-center pt-5 signUpForm__head">
+                                    {loginType === 'user' ? 'User' : 'Employee' } Login
                                 </h3>
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
+                                    <div className="col-12 text-center pb-5">
+                                        <label className="toggle-switch">
+                                            <input type="checkbox"  onClick={handleChangeLoginType} />
+                                            <div className="toggle-switch-background">
+                                                <div className="toggle-switch-handle"></div>
+                                            </div>
+                                        </label>
+                                    </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInEmailAddress">
                                             E-mail Address <span className="requiredStar">*</span>

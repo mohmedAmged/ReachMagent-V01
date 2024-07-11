@@ -2,20 +2,47 @@ import React, { useState } from 'react';
 import './myNavBar.css';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
+import Cookies from 'js-cookie';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
-export default function MyNavBar({ scrollToggle }) {
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
+import toast from 'react-hot-toast';
 
+export default function MyNavBar({ scrollToggle ,token ,loginType}) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
+    const profileData = Cookies.get('currentEmployeeData');
 
     function handleOffcanvasToggle() {
         setShowOffcanvas((prevShowOffcanvas) => !prevShowOffcanvas);
-    }
+    };
 
     const closeOffcanvas = () => {
         setShowOffcanvas(false);
     };
+
+    const handleLogout = ()=>{
+        if(loginType === 'employee'){
+            const fetchData = async () => {
+                try {
+                    await axios.post(`${baseURL}/employee/logout`,{}, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+                    toast.success('Logout Successfully')
+                    window.location.reload();
+                    Cookies.remove('currentEmployeeData');
+                    Cookies.remove('authToken');
+                } catch (error) {
+                    toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+                }
+            };
+            fetchData();
+        };
+    };
+
     return (
         <>
             <Navbar expand="lg" className={`nav__Bg ${scrollToggle ? "nav__fixed py-3 navTransformationDown" : "nav__relative pb-3"} align-items-center`}>
@@ -62,16 +89,6 @@ export default function MyNavBar({ scrollToggle }) {
                             >
                                 Shop
                             </NavLink>
-                            {/* <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style`}
-                                to={`/company`}
-                            >
-                                company
-                            </NavLink> */}
                             <NavLink
                                 onClick={() => {
                                     scrollToTop();
@@ -94,26 +111,46 @@ export default function MyNavBar({ scrollToggle }) {
                             </NavLink>
                         </Nav>
                         <Nav>
-                            <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style sign__up__btn`}
-                                to={`/personalSignUp`}
-                            >
-                                sign up
-                            </NavLink>
-                            <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style sign__in__btn`}
-                                to={`/Login`}
-                            >
-                                sign in
-                            </NavLink>
+                            {
+                                token ?
+                                <>
+                                    <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
+                                        <i className="bi bi-box-arrow-left"></i>
+                                    </NavLink>
+                                    <NavLink onClick={()=>{
+                                            scrollToTop();
+                                        }}
+                                        className='nav-link nav__link__style nav__profileData'
+                                        to='/business-profile'
+                                        title='Profile'
+                                    >
+                                        <img src={JSON.parse(profileData)?.image} alt={`${JSON.parse(profileData)?.name}`} />
+                                    </NavLink>
+                                </>
+                                :
+                                <>
+                                    <NavLink
+                                        onClick={() => {
+                                            scrollToTop();
+                                        }}
+                                        aria-label="Close"
+                                        className={`nav-link nav__link__style sign__up__btn`}
+                                        to={`/personalSignUp`}
+                                    >
+                                        sign up
+                                    </NavLink>
+                                    <NavLink
+                                        onClick={() => {
+                                            scrollToTop();
+                                        }}
+                                        aria-label="Close"
+                                        className={`nav-link nav__link__style sign__in__btn`}
+                                        to={`/Login`}
+                                    >
+                                        sign in
+                                    </NavLink>
+                                </>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                     {/* end navbar min-width 992px */}
@@ -136,7 +173,23 @@ export default function MyNavBar({ scrollToggle }) {
                         <Offcanvas.Body>
                             <Nav className="mx-auto" >
 
-
+                                {
+                                    token && 
+                                    <>
+                                        <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
+                                            <i className="bi bi-box-arrow-left"></i>
+                                        </NavLink>
+                                        <NavLink onClick={()=>{
+                                                scrollToTop();
+                                            }}
+                                            className='nav-link nav__link__style nav__profileData'
+                                            to='/business-profile'
+                                            title='Profile'
+                                        >
+                                            <img src={JSON.parse(profileData)?.image} alt={`${JSON.parse(profileData)?.name}`} />
+                                        </NavLink>
+                                    </>
+                                }
                                 <NavLink
                                     onClick={() => {
                                         scrollToTop();
@@ -190,26 +243,33 @@ export default function MyNavBar({ scrollToggle }) {
                                     to={`/contact-us`}>
                                     contact us
                                 </NavLink>
-                                <NavLink
-                                    onClick={() => {
-                                        scrollToTop();
-                                        closeOffcanvas();
-                                    }}
-                                    aria-label="Close"
-                                    className={`nav-link nav__link__style  sign__up__btn`}
-                                    to={`/personalSignUp`}>
-                                    sign up
-                                </NavLink>
-                                <NavLink
-                                    onClick={() => {
-                                        scrollToTop();
-                                        closeOffcanvas();
-                                    }}
-                                    aria-label="Close"
-                                    className={`nav-link nav__link__style sign__in__btn`}
-                                    to={`/Login`}>
-                                    sign in
-                                </NavLink>
+                                {
+                                token ?
+                                ''
+                                :
+                                <>
+                                    <NavLink
+                                        onClick={() => {
+                                            scrollToTop();
+                                        }}
+                                        aria-label="Close"
+                                        className={`nav-link nav__link__style sign__up__btn`}
+                                        to={`/personalSignUp`}
+                                    >
+                                        sign up
+                                    </NavLink>
+                                    <NavLink
+                                        onClick={() => {
+                                            scrollToTop();
+                                        }}
+                                        aria-label="Close"
+                                        className={`nav-link nav__link__style sign__in__btn`}
+                                        to={`/Login`}
+                                    >
+                                        sign in
+                                    </NavLink>
+                                </>
+                            }
                             </Nav>
 
                         </Offcanvas.Body>

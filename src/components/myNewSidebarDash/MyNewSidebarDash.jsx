@@ -11,6 +11,7 @@ import icon7 from '../../assets/sidebar-icons/notification.svg';
 import icon8 from '../../assets/sidebar-icons/call-add.svg';
 import icon9 from '../../assets/sidebar-icons/discount-shape 1.svg';
 import icon10 from '../../assets/sidebar-icons/message-question 1.svg';
+import icon11 from '../../assets/sidebar-icons/people.svg';
 
 export default function MyNewSidebarDash() {
     const location = useLocation();
@@ -41,20 +42,21 @@ export default function MyNewSidebarDash() {
     const handleShow = () => setShow(true);
 
     const sidebarItems = [
-        { title: "Profile", link: "/user-profile", icon: icon1 },
-        { title: "Catalog", link: "/user-profile/catalog", icon: icon2 },
-        { title: "Quotations", link: "/user-profile/quotations", icon: icon3 },
-        { title: "Products", link: "/user-profile/products", icon: icon4 },
-        { title: "Orders", link: "/user-profile/orders", icon: icon4 },
-        { title: "Insights", link: "/user-profile/insights", icon: icon5 },
+        { title: "Profile", link: "/business-profile", icon: icon1 },
+        { title: "Followers", link: "/business-profile/followers", icon: icon11 },
+        { title: "Catalog", link: "/business-profile/catalog", icon: icon2 },
+        { title: "Quotations", link: "/business-profile/quotations", icon: icon3 },
+        { title: "Products", link: "/business-profile/products", icon: icon4 },
+        { title: "Orders", link: "/business-profile/orders", icon: icon4 },
+        { title: "Insights", link: "/business-profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
-        { title: "Notifications", link: "/user-profile/notifications", icon: icon7 },
-        { title: "Requests", link: "/user-profile/requests", icon: icon8 }
+        { title: "Notifications", link: "/business-profile/notifications", icon: icon7 },
+        { title: "Requests", link: "/business-profile/requests", icon: icon8 }
     ];
 
     const sidebarItemsTwo = [
-        { title: "Promote", link: "/user-profile/promote", icon: icon9 },
-        { title: "Help", link: "/user-profile/help", icon: icon10 }
+        { title: "Promote", link: "/business-profile/promote", icon: icon9 },
+        { title: "Help", link: "/business-profile/help", icon: icon10 }
     ];
 
     const renderSidebarContent = () => (

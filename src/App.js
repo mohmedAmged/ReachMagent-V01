@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { json, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import MyDashboard from './pages/myDashboard/MyDashboard';
 import MyCatalog from './pages/myInsights/MyCatalog';
@@ -9,7 +9,7 @@ import NewCatalogItemForm from './components/newCatalogItemFormSec/NewCatalogIte
 import Home from './pages/myHome/Home';
 import MyNavBar from './components/myNavBarSec/MyNavBar';
 import MyFooter from './components/myFooterSec/MyFooter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Discover from './pages/myDiscover/Discover';
 import Shop from './pages/myShop/Shop';
 import ProductDetails from './pages/myProductDetails/ProductDetails';
@@ -21,10 +21,21 @@ import { getDataFromAPI } from './functions/fetchAPI';
 import MyLogin from './pages/myLoginPage/MyLogin';
 import Cookies from 'js-cookie';
 import MyMessage from './pages/myMessagePage/MyMessage';
+import { baseURL } from './functions/baseUrl';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
+
 function App() {
+  // First Open website
+  useEffect(()=>{
+    if(!localStorage.getItem('loginType') === 'eployee'){
+      localStorage.setItem('loginType','user');
+    };
+  },[]);
 
   const token = Cookies.get('authToken');
-  console.log(token);
+  const [loginType,setLoginType] = useState(localStorage.getItem('loginType'));
   const {pathname} = useLocation();
   const [scrollToggle, setScrollToggle] = useState(false);
 
@@ -36,10 +47,15 @@ function App() {
     }
   });
 
+  // Webside dataQueries
   const countriesQuery = useQuery({
     queryKey: ['countries'],
     queryFn: ()=> getDataFromAPI('countries'),
   });
+  // const citiesQuery = useQuery({
+  //   queryKey: ['cities'],
+  //   queryFn: ()=> getDataFromAPI('cities'),
+  // });
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
@@ -54,15 +70,42 @@ function App() {
   });
   const companiesQuery = useQuery({
     queryKey: ['companies'],
-    queryFn: ()=> getDataFromAPI('companies'),
+    queryFn: () => getDataFromAPI('companies'),
   });
-// console.log(companiesQuery?.data);
+
+  // // Authentication queries
+  // useEffect(() => {
+  //   if (token) {
+  //     const slugCompletion = loginType === 'user' ? 'user/profile' : 'employee/show-profile';
+  //     const fetchData = async () => {
+  //       try {
+  //         const response = await axios.get(`${baseURL}/${slugCompletion}`, {
+  //           headers: {
+  //             'Accept': 'application/json',
+  //             'Authorization': `Bearer ${token}`,
+  //           },
+  //         });
+  //         Cookies.set('currentEmployeeData', JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+  //       } catch (error) {
+  //         toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+  //       }
+  //     };
+
+  //     fetchData();
+  //   }
+  // }, [loginType, token]);
+
   return (
     <>
 
     {
-      pathname.includes('profile') ? <></> : <MyNavBar scrollToggle={scrollToggle}/>
+      pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle}/>
     }
+
+    <Toaster
+        position="top-center"
+        reverseOrder={false}
+    />
 
       <Routes>
 
@@ -92,15 +135,30 @@ function App() {
             mainActivities={mainActivitiesQuery?.data?.mainActivities} 
           />
         }/>
-        <Route path='/login' element={<MyLogin />} />
+        <Route path='/login' element={
+          <MyLogin 
+            loginType={loginType}
+            setLoginType={setLoginType}
+          />} 
+        />
 
-        {/* user Profile Routes */}
-        <Route path='/user-profile' element={<MyDashboard />} />
-        <Route path='/user-profile/catalog' element={<MyCatalog />} />
-        <Route path='/user-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
-        <Route path='/user-profile/quotations' element={<MyQutations />} />
-        <Route path='/user-profile/products' element={<MyProducts />} />
-        <Route path='/user-profile/orders' element={<MyOrders />} />
+        {/* business Profile Routes */}
+        <Route path='/business-profile' element={
+          <MyDashboard 
+            countries={countriesQuery?.data?.countries}
+            loginType={loginType}
+            token={token} 
+          />} 
+        />
+        <Route path='/business-profile/followers' 
+        element={<CompanyFollowers 
+            loginType={loginType}
+            token={token} />} />
+        <Route path='/business-profile/catalog' element={<MyCatalog />} />
+        <Route path='/business-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
+        <Route path='/business-profile/quotations' element={<MyQutations />} />
+        <Route path='/business-profile/products' element={<MyProducts />} />
+        <Route path='/business-profile/orders' element={<MyOrders />} />
         <Route path='/your-messages' element={<MyMessage />} />
 
       </Routes>

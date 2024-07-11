@@ -50,7 +50,6 @@ export default function TrendingCompanySec({ companies }) {
     //     ...item,
     //     cardName: companies[index]?.companyName || item?.cardName 
     // }));
-    console.log(companies);
     return (
         <div className='trendingCompany__handler'>
             <div className="container">

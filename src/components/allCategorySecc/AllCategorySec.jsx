@@ -43,7 +43,7 @@ export default function AllCategorySec() {
         {
             img: kids,
             title: 'kids',
-            link: '/user-profile'
+            link: '/business-profile'
         },
         {
             img: makeUp,

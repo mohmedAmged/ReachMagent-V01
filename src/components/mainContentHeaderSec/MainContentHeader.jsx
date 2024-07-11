@@ -2,12 +2,12 @@ import React from 'react'
 import './mainContentHeader.css'
 import MySearchSec from '../mySearchSec/MySearchSec'
 import { NavLink } from 'react-router-dom'
-export default function MainContentHeader({ isSidebarExpanded }) {
+export default function MainContentHeader({ isSidebarExpanded ,currentUserLogin}) {
     return (
         <div className={`mainContentHeader__handler  ${isSidebarExpanded ? 'expanded' : ''}`}>
             <div className="content__header d-flex justify-content-between  align-items-center">
                 <h1>
-                    Hello Saeed 👋🏼,
+                    Hello {currentUserLogin?.name?.split(' ')[0]} 👋🏼,
                 </h1>
 
                 <div className='d-flex align-items-center'>
