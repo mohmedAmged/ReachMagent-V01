@@ -25,6 +25,7 @@ import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
+import CompanyMessage from './pages/companyMessagePage/CompanyMessage';
 
 function App() {
   // First Open website
@@ -159,6 +160,7 @@ function App() {
         <Route path='/business-profile/quotations' element={<MyQutations />} />
         <Route path='/business-profile/products' element={<MyProducts />} />
         <Route path='/business-profile/orders' element={<MyOrders />} />
+        <Route path='/company-messages' element={<CompanyMessage />} />
         <Route path='/your-messages' element={<MyMessage />} />
 
       </Routes>
