@@ -7,6 +7,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import defaultImage from '../../assets/images.png';
 
 export default function CompanyDashboardProfileForm({token,currentUserLogin,setProfileUpdateStatus,profileUpdateStatus,countries}) {
     const currentChosenCountry = countries?.find(el => el?.name === currentUserLogin?.country );
@@ -14,6 +15,8 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
     const [defaultChosenCity,setDefaultChosenCity] = useState(null);
     const [imgChanged,setImageChanged] = useState(false);
     const [currentImage,setCurrentImage] = useState(currentUserLogin?.image);
+    const loginType =localStorage.getItem('loginType');
+    const loginTypeEmployeeCondition =  loginType=== 'employee';
     const citiesInsideCurrentCountry = async (chosenCountry) => {
         try {
             const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}`);
@@ -32,8 +35,7 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
         setError,
         watch,
         setValue,
-        reset,
-        formState: { errors, isSubmitting }
+        formState: { errors , isSubmitting}
     } = useForm({
         defaultValues: {
             name: currentUserLogin?.name,
@@ -45,23 +47,43 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
             country_id: currentChosenCountry?.id,
             city_id: '',
             full_address: currentUserLogin?.fullAddress,
+            address_one: '',
+            address_two: '',
         },
         resolver: zodResolver(UpdateEmployeeProfileSchema),
     });
 
     useEffect(() => {
-        const savedData = Cookies.get('currentEmployeeData');
+        const savedData = Cookies.get('currentLoginedData');
         if (savedData) {
             const parsedData = JSON.parse(savedData);
-            Object.keys(parsedData).forEach(async key => {
-                if (key === 'fullAddress') {
-                    setValue('full_address', parsedData[key]);
-                } else if (key === 'city') {
-                    setValue('city_id', parsedData[key]);
-                } else if(key !== 'country' && key !== 'officialIdOrPassport' && key !== 'image' ){
-                    setValue(key, parsedData[key]);
-                };
-            });
+            loginTypeEmployeeCondition ?
+            (
+                Object.keys(parsedData).forEach(async key => {
+                    if (key === 'fullAddress') {
+                        setValue('full_address', parsedData[key]);
+                    } else if (key === 'city') {
+                        setValue('city_id', parsedData[key]);
+                    } else if(key !== 'country' && key !== 'officialIdOrPassport' && key !== 'image' ){
+                        setValue(key, parsedData[key]);
+                    };
+                })
+            )
+            :
+                (
+                    Object.keys(parsedData).forEach(async key => {
+                    if (key === 'addressOne') {
+                        setValue('address_one', parsedData[key]);
+                    } else if (key === 'addressTwo') {
+                        setValue('address_two', parsedData[key]);
+                    } else if (key === 'city') {
+                        setValue('city_id', parsedData[key]);
+                    } else if(key !== 'country' && key !== 'officialIdOrPassport' && key !== 'image' ){
+                        setValue(key, parsedData[key]);
+                    };
+                })
+            )
+
             setCurrentImage(parsedData?.image);
         };
     }, []);
@@ -73,7 +95,6 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
         if (defaultChosenCity) {
             setValue('city_id', defaultChosenCity);
         };
-
     }, [currentChosenCountry,defaultChosenCity]);
 
     useEffect(()=>{
@@ -103,13 +124,9 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
             };
         });
         if(imgChanged && data.image[0]){
-            console.log('imgCHangedslkdlkmfklsfm v')
             formData.append('image', data.image[0]);
         };
-        for (const pair of formData.entries()) {
-            console.log(`${pair[0]}: ${pair[1]}`);
-        }
-        await axios.post(`${baseURL}/employee/update-profile`, formData, {
+        await axios.post(`${baseURL}/${loginType}/update-profile`, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data',
@@ -118,8 +135,13 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
             }).then(response => {
                 toast.success(`${response?.data?.message}.`,{
                     id: toastId,
+                    duration: 1000,
                 });
-                Cookies.set('currentEmployeeData',JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+                loginType === 'employee' ?
+                    Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
+                :
+                    Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
+
                 localStorage.setItem('updatingProfile','notUpdating');
                 window.location.reload();
             })
@@ -136,7 +158,10 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
 
     return (
         <form className='row' onSubmit={handleSubmit(onSubmit)}>
-            <div className="col-12 fs-2 fw-boldx text-center mb-3 text-capitalize">{currentUserLogin?.role} of {currentUserLogin?.companyName} Company</div>
+            {
+                loginTypeEmployeeCondition &&
+                <div className="col-12 fs-2 fw-boldx text-center mb-3 text-capitalize">{currentUserLogin?.role} of {currentUserLogin?.companyName} Company</div>
+            }
             <div className="col-lg-6 mt-2">
                 <label htmlFor="dashboardEmployeeName">Full Name</label>
                 <input
@@ -153,7 +178,7 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
                 }
             </div>
             <div className="col-lg-6 text-end mt-2">
-                <img className='employeeImage' src={currentImage} alt={`employee ${watch('name')}`} />
+                <img className='employeeImage' src={currentImage || defaultImage} alt={`employee ${watch('name')}`} />
             </div>
             <div className="col-lg-6 mt-4">
                 <label htmlFor="dashboardEmployeeEmail">Email</label>
@@ -185,21 +210,25 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
                     (<span className='errorMessage'>{errors?.phone?.message}</span>)
                 }
             </div>
-            <div className="col-lg-6 mt-4">
-                <label htmlFor="dashboardEmployeecitizenship">Citizenship</label>
-                <input
-                    id='dashboardEmployeecitizenship'
-                    className={`form-control signUpInput mt-2 ${errors?.citizenship ? 'inputError' : ''}`}
-                    {...register('citizenship')}
-                    type="text"
-                    disabled={profileUpdateStatus === 'notUpdating'}
-                />
-                {
-                    errors?.citizenship
-                    &&
-                    (<span className='errorMessage'>{errors?.citizenship?.message}</span>)
-                }
-            </div>
+            {
+                loginTypeEmployeeCondition
+                &&
+                <div className="col-lg-6 mt-4">
+                    <label htmlFor="dashboardEmployeecitizenship">Citizenship</label>
+                    <input
+                        id='dashboardEmployeecitizenship'
+                        className={`form-control signUpInput mt-2 ${errors?.citizenship ? 'inputError' : ''}`}
+                        {...register('citizenship')}
+                        type="text"
+                        disabled={profileUpdateStatus === 'notUpdating'}
+                    />
+                    {
+                        errors?.citizenship
+                        &&
+                        (<span className='errorMessage'>{errors?.citizenship?.message}</span>)
+                    }
+                </div>
+            }
             <div className="col-lg-6 mt-4">
                 <label htmlFor="dashboardEmployeeCountry">Country</label>
                 {
@@ -267,21 +296,60 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
                         </>
                 }
             </div>
-            <div className="col-lg-6 mt-4">
-                <label htmlFor="dashboardEmployeefullAddress">Full Address</label>
-                <input
-                    id='dashboardEmployeefullAddress'
-                    className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
-                    {...register('full_address')}
-                    type="text"
-                    disabled={profileUpdateStatus === 'notUpdating'}
-                />
-                {
-                    errors?.full_address
-                    &&
-                    (<span className='errorMessage'>{errors?.full_address?.message}</span>)
-                }
-            </div>
+            {
+                loginTypeEmployeeCondition &&
+                <div className="col-lg-6 mt-4">
+                    <label htmlFor="dashboardEmployeefullAddress">Full Address</label>
+                    <input
+                        id='dashboardEmployeefullAddress'
+                        className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
+                        {...register('full_address')}
+                        type="text"
+                        disabled={profileUpdateStatus === 'notUpdating'}
+                    />
+                    {
+                        errors?.full_address
+                        &&
+                        (<span className='errorMessage'>{errors?.full_address?.message}</span>)
+                    }
+                </div>
+            }
+            {
+                !loginTypeEmployeeCondition &&
+                <div className="col-lg-6 mt-4">
+                    <label htmlFor="dashboardAddress_one">Address One</label>
+                    <input
+                        id='dashboardAddress_one'
+                        className={`form-control signUpInput mt-2 ${errors?.address_one ? 'inputError' : ''}`}
+                        {...register('address_one')}
+                        type="text"
+                        disabled={profileUpdateStatus === 'notUpdating'}
+                    />
+                    {
+                        errors?.address_one
+                        &&
+                        (<span className='errorMessage'>{errors?.address_one?.message}</span>)
+                    }
+                </div>
+            }
+            {
+                !loginTypeEmployeeCondition &&
+                <div className="col-lg-6 mt-4">
+                    <label htmlFor="dashboardAddress_two">Address Two</label>
+                    <input
+                        id='dashboardAddress_two'
+                        className={`form-control signUpInput mt-2 ${errors?.address_two ? 'inputError' : ''}`}
+                        {...register('address_two')}
+                        type="text"
+                        disabled={profileUpdateStatus === 'notUpdating'}
+                    />
+                    {
+                        errors?.address_two
+                        &&
+                        (<span className='errorMessage'>{errors?.address_two?.message}</span>)
+                    }
+                </div>
+            }
             <div className={`col-lg-12 mt-4 text-center ${profileUpdateStatus === 'notUpdating' ? 'd-none' : ''}`}>
                 <label className='singUp__upLoadBtn' htmlFor="dashboardEmployeeImage">Profile Image</label>
                 <input
@@ -297,16 +365,16 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
                     (<span className='errorMessage'>{errors?.image?.message}</span>)
                 }
             </div>
-            <div className="bottomContainer pt-5 text-center">
+            <div className={`bottomContainer pt-5 ${(profileUpdateStatus === 'notUpdating') && 'mt-4'} text-center`}>
                 {
                     (profileUpdateStatus === 'notUpdating') ?
-                        <span className='btn btn-success' onClick={() => {
+                        <span className='startUpdateBtn' onClick={() => {
                             scrollToTop();
                             localStorage.setItem('updatingProfile', 'updating');
                             setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
                         }}>Update Profile</span>
                         :
-                        <input type="submit" value="Submit Changes" className='btn btn-primary' />
+                        <input type="submit" disabled={isSubmitting} value="Submit Changes" className='updateBtn' />
                 }
             </div>
         </form>

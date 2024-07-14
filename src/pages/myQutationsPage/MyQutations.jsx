@@ -4,6 +4,7 @@ import QuotationTableSec from '../../components/quotationTableSecc/QuotationTabl
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 
+
 export default function MyQutations() {
   return (
     <>
@@ -18,6 +19,5 @@ export default function MyQutations() {
       </div>
     </div>
     </>
-
   )
 }

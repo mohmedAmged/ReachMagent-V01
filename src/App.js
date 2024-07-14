@@ -1,4 +1,4 @@
-import { json, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import MyDashboard from './pages/myDashboard/MyDashboard';
 import MyCatalog from './pages/myInsights/MyCatalog';
@@ -21,17 +21,16 @@ import { getDataFromAPI } from './functions/fetchAPI';
 import MyLogin from './pages/myLoginPage/MyLogin';
 import Cookies from 'js-cookie';
 import MyMessage from './pages/myMessagePage/MyMessage';
-import { baseURL } from './functions/baseUrl';
-import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
 import CompanyMessage from './pages/companyMessagePage/CompanyMessage';
 
 function App() {
   // First Open website
   useEffect(()=>{
-    if(!localStorage.getItem('loginType') === 'eployee'){
+    if(!(localStorage.getItem('loginType') === 'employee')){
       localStorage.setItem('loginType','user');
+      setLoginType(localStorage.getItem('loginType'));
     };
   },[]);
 
@@ -74,27 +73,7 @@ function App() {
     queryFn: () => getDataFromAPI('companies'),
   });
 
-  // // Authentication queries
-  // useEffect(() => {
-  //   if (token) {
-  //     const slugCompletion = loginType === 'user' ? 'user/profile' : 'employee/show-profile';
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get(`${baseURL}/${slugCompletion}`, {
-  //           headers: {
-  //             'Accept': 'application/json',
-  //             'Authorization': `Bearer ${token}`,
-  //           },
-  //         });
-  //         Cookies.set('currentEmployeeData', JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
-  //       } catch (error) {
-  //         toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }
-  // }, [loginType, token]);
+  // Logined User
 
   return (
     <>
@@ -121,13 +100,14 @@ function App() {
 
         {/* Login & Regester Routes */}
         <Route 
-        path='/personalsignUp' 
-        element={
-          <PersonalSignUp 
-            countries={countriesQuery?.data?.countries}
-            industries={industriesQuery?.data?.industries} 
-          /> 
-        }/>
+          path='/personalsignUp' 
+          element={
+            <PersonalSignUp 
+              countries={countriesQuery?.data?.countries}
+              industries={industriesQuery?.data?.industries} 
+            /> 
+          }
+        />
         <Route path='/business-signUp' element={
           <BusinessSignUp
             countries={countriesQuery?.data?.countries}
@@ -152,9 +132,11 @@ function App() {
           />} 
         />
         <Route path='/business-profile/followers' 
-        element={<CompanyFollowers 
+          element={<CompanyFollowers 
             loginType={loginType}
-            token={token} />} />
+            token={token} 
+          />} 
+        />
         <Route path='/business-profile/catalog' element={<MyCatalog />} />
         <Route path='/business-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
         <Route path='/business-profile/quotations' element={<MyQutations />} />

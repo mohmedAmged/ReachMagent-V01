@@ -1,38 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './companyFollowers.css'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
-import avatar4 from '../../assets/messageImages/avatar4.jpg'
-export default function CompanyFollowers({ loginType, token }) {
-    const followersItems = [
-        {
-            followerName: 'mohamed amged',
-            followerImg: avatar4,
-            userName: 'email1234@email.com'
-        },
-        {
-            followerName: 'ibrahim ahmed',
-            followerImg: avatar4,
-            userName: 'email1234@email.com'
-        },
-        {
-            followerName: 'hamada',
-            followerImg: avatar4,
-            userName: 'email1234@email.com'
-        },
-        {
-            followerName: 'ayman adel',
-            followerImg: avatar4,
-            userName: 'email1234@email.com'
-        },
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
+import Cookies from 'js-cookie'
 
-    ]
+export default function CompanyFollowers({ loginType, token}) {
+    const [followers,setFollowers] = useState([]);
+    const [currentUserLogin,setCurrentUserLogin] = useState(null);
+    
+    useEffect(() => {
+        const cookiesData = Cookies.get('currentLoginedData');
+        if (!currentUserLogin) {
+            const newShape = JSON.parse(cookiesData);
+            setCurrentUserLogin(newShape);
+        }
+    }, [Cookies.get('currentLoginedData'),currentUserLogin]);
+
+    useEffect(() => {
+        if (token) {
+            const slugCompletion = loginType === 'user' ? 'user//my-followed-companies' : 'employee/followers';
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`${baseURL}/${slugCompletion}`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+                    setFollowers(response?.data?.data?.followers);
+                } catch (error) {
+                    toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+                };
+            };
+            fetchData();
+        };
+    }, []);
+
+
     return (
         <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
             <div className='main__content container'>
-                <MainContentHeader />
+                <MainContentHeader currentUserLogin={currentUserLogin} />
                 <div className='content__view__handler company__follower__sec'>
                     <ContentViewHeader title={'All Followers'} />
                     <div className="follower__filter__search">
@@ -46,11 +59,11 @@ export default function CompanyFollowers({ loginType, token }) {
                         </div>
                         <div className='followerInfo__handler row'>
                             {
-                                followersItems?.map((el, index) => {
+                                followers?.map((el) => {
                                     return (
-                                        <div key={index} className="followerInfo__Item col-12">
+                                        <div key={el?.followerId} className="followerInfo__Item col-12">
                                             <div className="followerImage">
-                                                <img src={el?.followerImg} alt="avatar-1" />
+                                                <img src={el?.followerImg} alt={`${el?.followerName} avatar`} />
                                             </div>
                                             <div className="followerContactInfo">
                                                 <h1>
@@ -58,7 +71,7 @@ export default function CompanyFollowers({ loginType, token }) {
                                                 </h1>
                                                 <div className="follower__status">
                                                     <p>
-                                                        {el?.userName}
+                                                        {el?.followerEmail}
                                                     </p>
                                                     <p className='isUsersfollowed'>
                                                         follows you
@@ -75,5 +88,5 @@ export default function CompanyFollowers({ loginType, token }) {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

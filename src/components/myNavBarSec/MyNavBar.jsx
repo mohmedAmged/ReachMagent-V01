@@ -8,10 +8,11 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
+import defaultImage from '../../assets/images.png';
 
 export default function MyNavBar({ scrollToggle ,token ,loginType}) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
-    const profileData = Cookies.get('currentEmployeeData');
+    const profileData = Cookies.get('currentLoginedData');
 
     function handleOffcanvasToggle() {
         setShowOffcanvas((prevShowOffcanvas) => !prevShowOffcanvas);
@@ -22,25 +23,27 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
     };
 
     const handleLogout = ()=>{
-        if(loginType === 'employee'){
-            const fetchData = async () => {
-                try {
-                    await axios.post(`${baseURL}/employee/logout`,{}, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                        },
-                    });
-                    toast.success('Logout Successfully')
-                    window.location.reload();
-                    Cookies.remove('currentEmployeeData');
-                    Cookies.remove('authToken');
-                } catch (error) {
-                    toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
-                }
-            };
-            fetchData();
+        const toastId = toast.loading('Please Wait...');
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`${baseURL}/${loginType}/logout`,{}, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                toast.success(`${response?.data?.message}.`,{
+                    id: toastId,
+                    duration: 1000
+                });
+                window.location.reload();
+                Cookies.remove('currentLoginedData');
+                Cookies.remove('authToken');
+            } catch (error) {
+                toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+            }
         };
+        fetchData();
     };
 
     return (
@@ -49,7 +52,6 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                 <Container>
                     <Navbar.Brand className='d-flex align-items-center'>
                         <NavLink className='logo__text' to={`/`}>
-                            {/* <img className='logo__Width' src={reachLogo} alt="main__logo" /> */}
                             <>
                                 ReachMag<span className='letter__color'>n</span>et
                             </>
@@ -124,7 +126,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                         to='/business-profile'
                                         title='Profile'
                                     >
-                                        <img src={JSON.parse(profileData)?.image} alt={`${JSON.parse(profileData)?.name}`} />
+                                        <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
                                     </NavLink>
                                 </>
                                 :
@@ -163,7 +165,6 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title className='offCanvas__head' id="offcanvasNavbarLabel">
                                 <NavLink className='logo__text' to={`/`}>
-                                    {/* <img className='logo__Width' src={reachLogo} alt="main__logo" /> */}
                                     <>
                                         ReachMag<span className='letter__color'>n</span>et
                                     </>
@@ -186,7 +187,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                             to='/business-profile'
                                             title='Profile'
                                         >
-                                            <img src={JSON.parse(profileData)?.image} alt={`${JSON.parse(profileData)?.name}`} />
+                                            <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
                                         </NavLink>
                                     </>
                                 }

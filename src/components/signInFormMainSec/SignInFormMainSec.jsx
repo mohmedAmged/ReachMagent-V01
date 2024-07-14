@@ -58,23 +58,27 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                                 'Authorization': `Bearer ${token}`,
                             },
                         });
-                        Cookies.set('currentEmployeeData', JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+                        loginType === 'employee' ?
+                            Cookies.set('currentLoginedData', JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
+                        :
+                            Cookies.set('currentLoginedData', JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
                     } catch (error) {
                         toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
-                    }
+                    };
                 };
                 fetchData();
             };
-            toast.success(`${response?.data?.message}, will go to home page after 2 seconds !`,{
+            toast.success(`${response?.data?.message}.`,{
                 id: toastId,
-                duration: 2000
+                duration: 1000
             });
             setTimeout(()=>{
                 navigate('/');
-            },2000);
+            },1000);
             reset();
         })
         .catch(error => {
+            console.log(error)
             if (error?.response?.data?.errors) {
                 Object.keys(error.response.data.errors).forEach((key) => {
                     setError(key, { message: error.response.data.errors[key][0] });
@@ -86,6 +90,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
             });
         });
     };
+    console.log(errors)
 
     return (
         <div className='signUpForm__mainSec py-5 mb-5'>
@@ -104,7 +109,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
                                     <div className="col-12 text-center pb-5">
                                         <label className="toggle-switch">
-                                            <input type="checkbox"  onClick={handleChangeLoginType} />
+                                            <input type="checkbox" checked={loginType === 'employee'}  onClick={handleChangeLoginType} />
                                             <div className="toggle-switch-background">
                                                 <div className="toggle-switch-handle"></div>
                                             </div>
