@@ -52,7 +52,10 @@ li {
 .inputError {
     border-color: #ff2020 !important;
 }
-
+.replace__margin__with__padding .signUp__headSec{
+    margin: 0;
+    padding: 50px 0;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

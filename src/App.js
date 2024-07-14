@@ -24,19 +24,21 @@ import MyMessage from './pages/myMessagePage/MyMessage';
 import { Toaster } from 'react-hot-toast';
 import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
 import CompanyMessage from './pages/companyMessagePage/CompanyMessage';
+import EnterUrEmail from './pages/enterUrEmailPage/EnterUrEmail';
+import ResetPassword from './pages/resetPasswordPage/ResetPassword';
 
 function App() {
   // First Open website
-  useEffect(()=>{
-    if(!(localStorage.getItem('loginType') === 'employee')){
-      localStorage.setItem('loginType','user');
+  useEffect(() => {
+    if (!(localStorage.getItem('loginType') === 'employee')) {
+      localStorage.setItem('loginType', 'user');
       setLoginType(localStorage.getItem('loginType'));
     };
-  },[]);
+  }, []);
 
   const token = Cookies.get('authToken');
-  const [loginType,setLoginType] = useState(localStorage.getItem('loginType'));
-  const {pathname} = useLocation();
+  const [loginType, setLoginType] = useState(localStorage.getItem('loginType'));
+  const { pathname } = useLocation();
   const [scrollToggle, setScrollToggle] = useState(false);
 
   window.addEventListener("scroll", () => {
@@ -50,7 +52,7 @@ function App() {
   // Webside dataQueries
   const countriesQuery = useQuery({
     queryKey: ['countries'],
-    queryFn: ()=> getDataFromAPI('countries'),
+    queryFn: () => getDataFromAPI('countries'),
   });
   // const citiesQuery = useQuery({
   //   queryKey: ['cities'],
@@ -78,19 +80,19 @@ function App() {
   return (
     <>
 
-    {
-      pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle}/>
-    }
+      {
+        pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} />
+      }
 
-    <Toaster
+      <Toaster
         position="top-center"
         reverseOrder={false}
-    />
+      />
 
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data}/>} />
+        <Route path='/' element={<Home companies={companiesQuery?.data} />} />
 
         {/* Shop Routes */}
         <Route path='/shop' element={<Shop />} />
@@ -99,43 +101,47 @@ function App() {
         <Route path='/show-company/:companyId' element={<SingleCompany />} />
 
         {/* Login & Regester Routes */}
-        <Route 
-          path='/personalsignUp' 
+        <Route
+          path='/personalsignUp'
           element={
-            <PersonalSignUp 
+            <PersonalSignUp
               countries={countriesQuery?.data?.countries}
-              industries={industriesQuery?.data?.industries} 
-            /> 
+              industries={industriesQuery?.data?.industries}
+            />
           }
         />
         <Route path='/business-signUp' element={
           <BusinessSignUp
             countries={countriesQuery?.data?.countries}
-            industries={industriesQuery?.data?.industries} 
-            mainCategories={mainCategoriesQuery?.data?.mainCategories} 
-            mainActivities={mainActivitiesQuery?.data?.mainActivities} 
+            industries={industriesQuery?.data?.industries}
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            mainActivities={mainActivitiesQuery?.data?.mainActivities}
           />
-        }/>
+        } />
         <Route path='/login' element={
-          <MyLogin 
+          <MyLogin
             loginType={loginType}
             setLoginType={setLoginType}
-          />} 
+          />}
+        />
+        <Route path='/forget-password' element={<EnterUrEmail />}
         />
 
+        <Route path='/reset-password' element={<ResetPassword />}
+        />
         {/* business Profile Routes */}
         <Route path='/business-profile' element={
-          <MyDashboard 
+          <MyDashboard
             countries={countriesQuery?.data?.countries}
             loginType={loginType}
-            token={token} 
-          />} 
+            token={token}
+          />}
         />
-        <Route path='/business-profile/followers' 
-          element={<CompanyFollowers 
+        <Route path='/business-profile/followers'
+          element={<CompanyFollowers
             loginType={loginType}
-            token={token} 
-          />} 
+            token={token}
+          />}
         />
         <Route path='/business-profile/catalog' element={<MyCatalog />} />
         <Route path='/business-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
@@ -147,9 +153,9 @@ function App() {
 
       </Routes>
 
-    {
-      !pathname.includes('profile') && <MyFooter />
-    }
+      {
+        !pathname.includes('profile') && <MyFooter />
+      }
 
     </>
   );
