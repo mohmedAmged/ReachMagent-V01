@@ -7,8 +7,7 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate , NavLink } from 'react-router-dom';
 
 export default function SignInFormMainSec({loginType,setLoginType}) {
     const navigate = useNavigate();
@@ -78,12 +77,11 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
             reset();
         })
         .catch(error => {
-            console.log(error)
             if (error?.response?.data?.errors) {
                 Object.keys(error.response.data.errors).forEach((key) => {
                     setError(key, { message: error.response.data.errors[key][0] });
                 });
-            }
+            };
             toast.error(error?.response?.data?.message,{
                 id: toastId,
                 duration: 2000,
@@ -165,12 +163,19 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                                             type="submit"
                                             value={'Login'} 
                                         />
+                                        {
+                                        loginType === 'user' &&
+                                            <div className="resetPasswordNavigatinoLink text-end">
+                                                <NavLink className='gotoLoginLink' to='/forget-password'>Forget Password ?</NavLink>
+                                            </div>
+                                        }
                                     </div>
+                                    
                                     <div className="col-12 text-dark text-center">
                                         <span>Don't Have and account?</span>
-                                        <a className="gotoLoginLink ms-2" href="/personalsignUp">
+                                        <NavLink className="gotoLoginLink ms-2" to="/personalsignUp">
                                             Create New Account
-                                        </a>
+                                        </NavLink>
                                     </div>
                                 </form>
                             </div>

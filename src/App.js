@@ -124,11 +124,8 @@ function App() {
             setLoginType={setLoginType}
           />}
         />
-        <Route path='/forget-password' element={<EnterUrEmail />}
-        />
-
-        <Route path='/reset-password' element={<ResetPassword />}
-        />
+        <Route path='/forget-password' element={<EnterUrEmail />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
         {/* business Profile Routes */}
         <Route path='/business-profile' element={
           <MyDashboard

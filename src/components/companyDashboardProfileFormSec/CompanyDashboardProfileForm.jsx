@@ -374,7 +374,7 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
                             setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
                         }}>Update Profile</span>
                         :
-                        <input type="submit" disabled={isSubmitting} value="Submit Changes" className='updateBtn' />
+                        <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn' />
                 }
             </div>
         </form>

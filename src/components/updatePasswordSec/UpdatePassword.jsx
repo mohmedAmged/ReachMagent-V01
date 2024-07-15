@@ -15,8 +15,6 @@ export default function UpdatePassword({token , setUpdatingData}) {
     register,
     handleSubmit,
     setError,
-    watch,
-    setValue,
     reset,
     formState:{errors , isSubmitting}
 } = useForm({
@@ -33,16 +31,17 @@ export default function UpdatePassword({token , setUpdatingData}) {
     await axios.post(`${baseURL}/${loginType}/update-password`, data, {
       headers: {
           'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
       },
     }).then(response => {
       toast.success(`${response?.data?.message}.`,{
         id: toastId,
+        duration: 1000,
       });
       localStorage.setItem('updatingData','profile');
       setUpdatingData(localStorage.getItem('updatingData'));
-      window.location.reload();
+      reset();
     }).catch(error => {
       Object.keys(error?.response?.data?.errors).forEach((key) => {
         setError(key, {message: error?.response?.data?.errors[key][0]});
@@ -66,7 +65,7 @@ export default function UpdatePassword({token , setUpdatingData}) {
                 id='profilecurrent_password'
                 placeholder='Enter Your Current Password'
                 {...register('current_password')}
-                className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
+                className={`form-control signUpInput ${errors.current_password ? 'inputError' : ''}`}
             />
             <div className="leftShowPasssord" onClick={()=>setShowCurrentPassword(!showCurrentPassword)}>
             {
@@ -138,7 +137,7 @@ export default function UpdatePassword({token , setUpdatingData}) {
             }
       </div>
       <div className="col-lg-12 text-center">
-        <input type="submit" disabled={isSubmitting} value="Submit Changes" className='updateBtn' />
+        <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn' />
       </div>
     </form>
   )
