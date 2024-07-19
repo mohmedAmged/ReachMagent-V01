@@ -86,7 +86,7 @@ export default function CopmanyCard({ token , coverImg, companyProfile, companyN
             })();
         };
     },[loginType, token]);
-
+    console.log(currentFollowedCompanies)
     return (
         <div className='companyCard__item'>
             <div className="card__cover">
