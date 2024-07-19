@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './singleCompany.css'
 import HeroOnlyCover from '../../components/heroOnlyCoverSec/HeroOnlyCover'
 import CompanyInfoCard from '../../components/companyInfoCardSec/CompanyInfoCard'
@@ -15,9 +15,15 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { getDataFromAPI } from '../../functions/fetchAPI'
 import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec'
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
 
-export default function SingleCompany() {
+export default function SingleCompany({token}) {
     const { companyId } = useParams();
+    const loginType = localStorage.getItem('loginType');
+    const [formId,setFormId] = useState('1');
+    const [formInputs,setFormInputs] = useState({});
 
     const items = [
         { name: 'Overview', active: true },
@@ -48,19 +54,46 @@ export default function SingleCompany() {
             { day: 'Tuesday', from: '10 AM', to: '11 PM' },
             { day: 'Wednesday', from: '10 AM', to: '11 PM' },
             { day: 'Thursday', from: '10 AM', to: '11 PM' },
-            // Add more days as needed
         ],
         mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2823585.1606278117!2d39.30088302422216!3d31.207963192810116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006f476664de99%3A0x8d285b0751264e99!2z2KfZhNij2LHYr9mG!5e0!3m2!1sar!2seg!4v1717936559294!5m2!1sar!2seg'
     };
+
     const showCompaniesQuery = useQuery({
         queryKey: ['show-company'],
         queryFn: () => getDataFromAPI(`show-company/${companyId}`),
     });
-    console.log(showCompaniesQuery);
+
+    useEffect(()=>{
+        if(token){
+            (async () => {
+                const toastId = toast.loading('Loading Forms...');
+                await axios.post(`${baseURL}/${loginType}/show-form`,{
+                    form_id: `${formId}`,
+                    company_id: companyId
+                },{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then((response)=>{
+                    setFormInputs(response?.data?.data);
+                    toast.success(`Form Feilds Loaded Successfully.`,{
+                        id: toastId,
+                        duration: 1000,
+                    });
+                }).catch(errors=>{
+                    toast.error(`${errors?.response?.data?.message}`,{
+                        id: toastId,
+                        duration: 1000,
+                    })
+                })
+            })();
+        };
+    },[companyId, formId, loginType, token]);
+
     return (
         <div className='singleCompany__handler'>
             <HeroOnlyCover />
-            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data} />
+            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data} token={token} />
             <div className='my-5'>
                 <ProductDetailsFilterationBar items={items} />
             </div>
@@ -79,7 +112,13 @@ export default function SingleCompany() {
 
             <SingleCompanyNewsSec />
             <SingleCompanyAffiliate />
-            <CompanyContact />
+            {
+                (token && loginType === 'user') ?
+                    <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} formInputs={formInputs} companyId={companyId} formId={formId} setFormId={setFormId} />
+                : 
+                    ''
+            }
+            
         </div>
-    )
-}
+    );
+};

@@ -16,8 +16,6 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
         register,
         handleSubmit,
         setError,
-        watch,
-        setValue,
         reset,
         formState:{errors , isSubmitting}
     } = useForm({
@@ -88,7 +86,6 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
             });
         });
     };
-    console.log(errors)
 
     return (
         <div className='signUpForm__mainSec py-5 mb-5'>

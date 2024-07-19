@@ -26,9 +26,10 @@ import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
 import CompanyMessage from './pages/companyMessagePage/CompanyMessage';
 import EnterUrEmail from './pages/enterUrEmailPage/EnterUrEmail';
 import ResetPassword from './pages/resetPasswordPage/ResetPassword';
+import OtherCategories from './pages/otherCategoriesPage/OtherCategories';
+import SubCategoryMain from './pages/subCategoryMainPage/SubCategoryMain';
 
 function App() {
-  // First Open website
   useEffect(() => {
     if (!(localStorage.getItem('loginType') === 'employee')) {
       localStorage.setItem('loginType', 'user');
@@ -54,10 +55,6 @@ function App() {
     queryKey: ['countries'],
     queryFn: () => getDataFromAPI('countries'),
   });
-  // const citiesQuery = useQuery({
-  //   queryKey: ['cities'],
-  //   queryFn: ()=> getDataFromAPI('cities'),
-  // });
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
@@ -75,8 +72,6 @@ function App() {
     queryFn: () => getDataFromAPI('companies'),
   });
 
-  // Logined User
-
   return (
     <>
 
@@ -92,13 +87,25 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data} />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data} token={token} />} />
 
         {/* Shop Routes */}
         <Route path='/shop' element={<Shop />} />
         <Route path='/shop/:singleProduct' element={<ProductDetails />} />
         <Route path='/discover' element={<Discover />} />
-        <Route path='/show-company/:companyId' element={<SingleCompany />} />
+        <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
+
+        {/* all category routes */}
+        <Route path='/all-category' element={<OtherCategories />} />
+        <Route path='/all-category/Fashion&Apparel' element={<SubCategoryMain />} />
+        <Route path='/all-category/Beauty&PersonalCare' element={<SubCategoryMain />} />
+        <Route path='/all-category/Health&Wellness' element={<SubCategoryMain />} />
+        <Route path='/all-category/Automotive' element={<SubCategoryMain />} />
+        <Route path='/all-category/Packaging' element={<SubCategoryMain />} />
+        <Route path='/all-category/Retail' element={<SubCategoryMain />} />
+        <Route path='/all-category/Medical' element={<SubCategoryMain />} />
+        <Route path='/all-category/Technology' element={<SubCategoryMain />} />
+        <Route path='/all-category/Education' element={<SubCategoryMain />} />
 
         {/* Login & Regester Routes */}
         <Route

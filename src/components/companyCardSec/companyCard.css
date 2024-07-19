@@ -93,3 +93,11 @@
         margin-bottom: 30px;
     }
 }
+.unFollowCompanyBtn {
+    border-color: #ff2020;
+    color: #ff2020;
+}
+.unFollowCompanyBtn:hover {
+    color: var(--primary-white);
+    background-color: #ff2020;
+}

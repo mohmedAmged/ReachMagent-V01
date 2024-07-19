@@ -55,6 +55,7 @@ export default function CompanyDashboardProfileForm({token,currentUserLogin,setP
 
     useEffect(() => {
         const savedData = Cookies.get('currentLoginedData');
+        console.log(savedData)
         if (savedData) {
             const parsedData = JSON.parse(savedData);
             loginTypeEmployeeCondition ?

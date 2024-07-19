@@ -63,7 +63,7 @@ export default function AllCategorySec() {
         {
             img: other,
             title: 'other',
-            link: '/your-messages'
+            link: '/all-category'
         },
     ]
     return (

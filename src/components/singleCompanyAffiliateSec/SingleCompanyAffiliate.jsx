@@ -5,7 +5,7 @@ import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec';
 
 export default function SingleCompanyAffiliate() {
   return (
-    <div className='singleCompany__affiliate'>
+    <div className='singleCompany__affiliate mb-5'>
 
       <Container>
         <Row>
@@ -17,7 +17,7 @@ export default function SingleCompanyAffiliate() {
               />
               <div className="row justify-content-around flex-wrap">
                 <Col lg={2} md={12}  className='leftAffiliate'>
-                  <div class="star">
+                  <div className="star">
                   </div>
                   <h4>
                     Affiliate

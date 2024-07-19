@@ -1,11 +1,95 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './companyInfoCard.css'
-import profile from '../../assets/companyImages/Group (1).png'
 import verfuIcon from '../../assets/companyImages/Vector (3).png'
 import callIcon from '../../assets/companyImages/call.svg'
 import messageIcon from '../../assets/companyImages/messages-3.svg'
-import { NavLink } from 'react-router-dom'
-export default function CompanyInfoCard({ showCompaniesQuery }) {
+import { NavLink, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
+import { scrollToTop } from '../../functions/scrollToTop'
+export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
+    const loginType = localStorage.getItem('loginType');
+    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState([]);
+    const navigate = useNavigate();
+
+    const handleFollowCompany = async (id) => {
+        const currentCompanyWantedToFollow = {
+            company_id: `${id}`
+        };
+        const toastId = toast.loading('loading...');
+            await axios.post(`${baseURL}/${loginType}/follow-company`, 
+            currentCompanyWantedToFollow ,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization : `Bearer ${token}`
+                },
+            })
+            .then(response => {
+                setCurrentFollowedCompanies([...currentFollowedCompanies,{
+                    companyId: `${+id}`,
+                    companyName: showCompaniesQuery?.name,
+                    companyLogo: showCompaniesQuery?.logo,
+                }]);
+                toast.success(`${response?.data?.data?.message}`,{
+                    id: toastId,
+                    duration: 1000
+                });
+            })
+            .catch(errors =>{
+                toast.error(`${errors?.response?.data?.errors?.company_id || errors?.response?.data?.message}`,{
+                    id: toastId,
+                    duration: 1000
+                });
+            });
+    };
+
+    const handleUnFollowCompany = async (id) => {
+        const currentFollowId = currentFollowedCompanies?.find(el=> +el?.companyId === +id)?.id;
+        const currentCompanyWantedToFollow = {
+            follow_id: `${currentFollowId}`
+        };
+        const toastId = toast.loading('loading...');
+            await axios.post(`${baseURL}/${loginType}/unfollow-company`, 
+            currentCompanyWantedToFollow ,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization : `Bearer ${token}`
+                },
+            })
+            .then(response => {
+                setCurrentFollowedCompanies(currentFollowedCompanies.filter(el=> +el?.companyId === +id));
+                toast.success(`${response?.data?.message}`,{
+                    id: toastId,
+                    duration: 1000
+                });
+            })
+            .catch(errors =>{
+                toast.error(`${errors?.response?.data?.errors?.follow_id || errors?.response?.data?.message}`,{
+                    id: toastId,
+                    duration: 1000
+                });
+            });
+    };
+
+    // getting Current followed Companies
+    useEffect(() => {
+        if(token && loginType === 'user'){
+            (async () => {
+                const {data} = await axios.get(`${baseURL}/${loginType}/my-followed-companies`,{
+                    headers: {
+                        Authorization : `Bearer ${token}`
+                    },
+                });
+                setCurrentFollowedCompanies(data?.data?.followedCompanies);
+            })();
+        };
+    },[loginType, token]);
+
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -98,9 +182,40 @@ export default function CompanyInfoCard({ showCompaniesQuery }) {
                                         </p>
                                     </div>
                                     <div className="companyFollow__btn">
-                                        <button className='pageMainBtnStyle'>
+                                    {
+                                        (token && loginType === 'user') ?
+                                            !(currentFollowedCompanies === undefined && currentFollowedCompanies.length === 0) ? 
+                                                currentFollowedCompanies?.find(el=> +el?.companyId === +showCompaniesQuery?.companyId) ?
+                                                <button 
+                                                    className='pageMainBtnStyle unFollowCompanyBtn'
+                                                    onClick={()=> handleUnFollowCompany(+showCompaniesQuery?.companyId)}
+                                                >
+                                                    unFollow
+                                                </button>
+                                                :
+                                                <button 
+                                                    className='pageMainBtnStyle followCompanyBtn'
+                                                    onClick={() => handleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                >
+                                                    + follow
+                                                </button>
+                                            : ''
+                                        : 
+                                        <button 
+                                            className='pageMainBtnStyle followCompanyBtn'
+                                            onClick={()=> {
+                                                toast.error(`${loginType === 'user' ? 'You Should Login First!' : 'Only Users Can Follow Companies!'}`);
+                                                if(loginType === 'user'){
+                                                    setTimeout(()=>{
+                                                        navigate('/login');
+                                                        scrollToTop();
+                                                    },1000);
+                                                };
+                                            }}
+                                        >
                                             + follow
                                         </button>
+                                    }
                                     </div>
                                 </div>
 

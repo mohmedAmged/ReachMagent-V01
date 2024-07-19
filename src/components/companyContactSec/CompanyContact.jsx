@@ -1,30 +1,106 @@
 import React from 'react';
 import './companyContact.css';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CompanyContactSchema } from '../../validation/CompanyContactSchema';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
 
+export default function CompanyContact({loginType,token,formInputs,companyId,formId,setFormId,company}) {
+  const convertToUnderscore = (str) => {
+    return str.replace(/\s+/g, '_');
+  };
 
-export default function CompanyContact() {
   const {
     register,
     handleSubmit,
     setError,
-    formState:{errors , isSubmitting}
-  } = useForm({
-    defaultValues:{
-      fullName: '',
-      phoneNumber: '',
-      email: '',
-      description: '',
-    },
-    resolver: zodResolver(CompanyContactSchema),
-  });
+    reset ,
+    formState:{errors, isSubmitting}
+  } = useForm();
 
   const onSubmit = async (data) => {
-    await new Promise((resolve)=> setTimeout(resolve,1000));
-    console.log(data)
+    data.company_id = companyId;
+    data.form_id = `${formId}`;
+    const toastId = toast.loading('Please Wait...');
+    await axios.post(`${baseURL}/${loginType}/fill-form`, data, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    }).then(response => {
+      toast.success(`${response?.data?.message}.`,{
+          id: toastId,
+          duration: 1000
+      });
+      reset();
+    })
+    .catch(error => {
+      if (error?.response?.data?.errors) {
+        Object.keys(error.response.data.errors).forEach((key) => {
+            setError(key, { message: error.response.data.errors[key][0] });
+        });
+      };
+      toast.error(error?.response?.data?.message,{
+        id: toastId,
+        duration: 2000,
+      });
+    });
   };
+
+  const gettingInputData = (form) => {
+    const returnedData = [];
+    form?.formFields?.map((input) => {
+      const inputType = input?.type;
+      const inputName = convertToUnderscore(input?.name);
+
+      if(inputType === 'text' || inputType === 'email'){
+        returnedData.push( <div className='mb-4'>
+          <label htmlFor={`${inputName}CompanyContact`}>
+            {input?.name}
+          </label>
+          <input 
+          className={`w-100 ${errors[inputName] ? 'inputError' : ''}`}
+          type={inputType}
+          name={`${inputName}CompanyContact`}
+          id={`${inputName}CompanyContact`}
+          placeholder={input?.name}
+          {...register(inputName, {
+            required: `${inputName} is required`,
+          })}
+          />
+          {
+            errors[inputName] &&
+            <span className='errorMessage'>{errors[inputName].message }</span>
+          }
+        </div>);
+      }else if(inputType === 'textarea'){
+        returnedData.push(
+          <div className='mb-4'>
+          <label htmlFor={`${inputName}CompanyContact`}>
+            {input?.name}
+          </label>
+          <textarea
+            className={`w-100 ${errors[inputName] ? 'inputError' : ''}`}
+            type={inputType}
+            name={`${inputName}CompanyContact`}
+            id={`${inputName}CompanyContact`}
+            placeholder={input?.name}
+            {...register(inputName, {
+              required: `${inputName} is required`,
+            })}
+          ></textarea>
+          {
+            errors[inputName] && 
+            <span className='errorMessage'>{errors[inputName].message}</span>
+          }
+        </div>
+        );
+      };
+    });
+    return(returnedData);
+  };
+
 
   return (
     <div className='contact__mainSec'>
@@ -33,15 +109,15 @@ export default function CompanyContact() {
           <div className="col-lg-12">
             <div className="contactCompany-type">
               <ul className='d-flex flex-wrap'>
-                <li className='contactCompany-type-active'>
-                  Contact Homzmart
-                </li>
-                <li>
-                  Book an appointment
-                </li>
-                <li>
-                  Sample Request
-                </li>
+                {company?.data?.companyForms?.map((el)=>{
+                  return (
+                    <li key={el?.formId} onClick={()=>{
+                      setFormId(el?.formId);
+                    }} className={`${(+el?.formId === +formId) && 'contactCompany-type-active'}`}>
+                      {el?.formTitle}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
             <div className="contactCompany__form">
@@ -49,103 +125,14 @@ export default function CompanyContact() {
                 If you would like to contact Homzmart please fill out the form below and someone from their department will reach out to you
               </h4>
               <form method='POST' className='p-5' onSubmit={handleSubmit(onSubmit)}>
-                <div className='mb-4'>
-                  <label htmlFor="fullNameCompanyContact">
-                    Full Name
-                  </label>
-                  <input 
-                  className={`w-100 ${errors.fullName ? 'inputError' : ''}`}
-                  type="text" 
-                  name='fullNameCompanyContact' 
-                  id='fullNameCompanyContact'
-                  placeholder='Full Name'
-                  {...register('fullName')}
-                  />
-                  {
-                    errors.fullName &&
-                    <span className='errorMessage'>{errors.fullName.message}</span>
-                  }
-                </div>
-
-                <div className='mb-4'>
-                  <label htmlFor="phoneNumberCompanyContact">
-                    Phone Number
-                  </label>
-                  <input 
-                  className={`w-100 ${errors.phoneNumber ? 'inputError' : ''}`}
-                  type="text" 
-                  name="phoneNumberCompanyContact" 
-                  id="phoneNumberCompanyContact"
-                  placeholder='Phone Number'
-                  {...register('phoneNumber')}
-                  />
-                  {
-                    errors.phoneNumber &&
-                    <span className='errorMessage'>{errors.phoneNumber.message}</span>
-                  }
-                </div>
-
-                <div className='mb-4'>
-                  <label htmlFor="emailCompanyContact">
-                    E-mail Address
-                  </label>
-                  <input 
-                  className={`w-100 ${errors.email ? 'inputError' : ''}`}
-                  type="email" 
-                  name="emailCompanyContact" 
-                  id="emailCompanyContact"
-                  placeholder='E-mail Addriss'
-                  {...register('email')}
-                  />
-                  {
-                    errors.email &&
-                    <span className='errorMessage'>{errors.email.message}</span>
-                  }
-                </div>
-                <div className='mb-4'>
-                  <label className='d-block' htmlFor="descriptionCompanyContact">
-                    Type of Query
-                  </label>
-                  <select className={`w-100 ${errors.email ? 'inputError' : ''}`} name="" id="">
-                    <option value="" disabled>Select type of query</option>
-                    <option value="">sales</option>
-                    <option value="">Recruitment </option>
-                    <option value="">Complaint  </option>
-                    <option value="">Feedback   </option>
-                    <option value="">Call-back request  </option>
-                  </select>
-                  {
-                    errors.description && 
-                    <span className='errorMessage'>{errors.description.message}</span>
-                  }
-                </div>
-
-                <div className='mb-4'>
-                  <label htmlFor="descriptionCompanyContact">
-                    Description
-                  </label>
-                  <textarea
-                  className={`w-100 ${errors.description ? 'inputError' : ''}`}
-                  name="description" 
-                  id="descriptionCompanyContact"
-                  placeholder='Description'
-                  {...register('description')}
-                  ></textarea>
-                  {
-                    errors.description && 
-                    <span className='errorMessage'>{errors.description.message}</span>
-                  }
-                </div>
-
-               
-
+                {gettingInputData(formInputs)}
                 <input 
-                className='contactCompany__form-submitBtn' 
-                type='submit'
-                id="submitCompanyFormBtn"
-                name='submitCompanyFormBtn'
-                value={isSubmitting ? 'Sending ...' : 'Submit'}
-                disabled={isSubmitting}
+                  className='contactCompany__form-submitBtn' 
+                  type='submit'
+                  id="submitCompanyFormBtn"
+                  name='submitCompanyFormBtn'
+                  value={isSubmitting ? 'Sending ...' : 'Submit'}
+                  disabled={isSubmitting}
                 />
               </form>
 
@@ -155,4 +142,4 @@ export default function CompanyContact() {
       </div>
     </div>
   );
-}
+};

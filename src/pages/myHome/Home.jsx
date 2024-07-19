@@ -12,8 +12,7 @@ import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCo
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 
-export default function Home({companies}) {
-  // console.log(companies);
+export default function Home({companies,token}) {
   const arrOfCateg = [
     {
       name: 'All',
@@ -54,7 +53,7 @@ export default function Home({companies}) {
       </div>
 
       <ReadyToBuySec secMAinTitle={`Ready-To-Buy Products`}/>
-      <TrendingCompanySec companies={companies}/>
+      <TrendingCompanySec companies={companies} token={token} />
       <GrowBuisnessSec />
       <LastMinuteDeals />
       <FranchiseSec
