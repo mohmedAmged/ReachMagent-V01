@@ -32,7 +32,7 @@ export default function AllCategorySideBar() {
     const handleShow = () => setShow(true);
 
     const sidebarItems = [
-        { title: "Home & Garden", link: "/all-category", },
+        { title: "All Category", link: "/all-category", },
         { title: "Fashion & Apparel", link: "/all-category/Fashion&Apparel", },
         { title: "Beauty & Personal Care", link: "/all-category/Beauty&PersonalCare", },
         { title: "Health & Wellness", link: "/all-category/Health&Wellness", },
@@ -68,7 +68,7 @@ export default function AllCategorySideBar() {
         <>
             {isMobile ? (
                 <>
-                    <div className='mySidebar__handler'>
+                    <div className='mySidebar__handler myAllCategorySidebar__handler'>
                         <div className='container'>
                             <ul>
                                 <li onClick={handleShow} className="sidebar-toggle text-center">
@@ -86,7 +86,7 @@ export default function AllCategorySideBar() {
 
                     </div>
 
-                    <Offcanvas show={show} onHide={handleClose} className="mySidebar__handler">
+                    <Offcanvas show={show} onHide={handleClose} className="mySidebar__handler myAllCategorySidebar__handler">
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>
                                 <h1 className="logo__text">
@@ -100,7 +100,7 @@ export default function AllCategorySideBar() {
                     </Offcanvas>
                 </>
             ) : (
-                <div className="mySidebar__handler">
+                <div className="mySidebar__handler myAllCategorySidebar__handler">
                     <div className="container">
                         <h1 className="logo__text">
                             Filter by Category

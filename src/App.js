@@ -28,6 +28,8 @@ import EnterUrEmail from './pages/enterUrEmailPage/EnterUrEmail';
 import ResetPassword from './pages/resetPasswordPage/ResetPassword';
 import OtherCategories from './pages/otherCategoriesPage/OtherCategories';
 import SubCategoryMain from './pages/subCategoryMainPage/SubCategoryMain';
+import { baseURL } from './functions/baseUrl';
+import axios from 'axios';
 
 function App() {
   useEffect(() => {
@@ -69,9 +71,16 @@ function App() {
   });
   const companiesQuery = useQuery({
     queryKey: ['companies'],
-    queryFn: () => getDataFromAPI('companies'),
-  });
-
+    queryFn: async () => {
+      const response = await axios.get(`${baseURL}/companies`,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response?.data?.data;
+    },
+  });
+console.log(companiesQuery?.data);
   return (
     <>
 

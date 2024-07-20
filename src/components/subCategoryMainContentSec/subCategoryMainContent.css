@@ -1,3 +1,22 @@
 .subCategoryMainContent__handler{
     width: 70%;
 }
+.subCategory__item{
+    margin-bottom: 50px;
+}
+.subCategory__item .subImage{
+    margin-bottom: 20px;
+}
+.subCategory__item h1{
+    font-size: 32px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+@media screen and (max-width: 600px) {
+    .subCategory__item h1{
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+}

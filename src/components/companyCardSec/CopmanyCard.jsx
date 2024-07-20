@@ -36,7 +36,7 @@ export default function CopmanyCard({ token , coverImg, companyProfile, companyN
                 });
             })
             .catch(errors =>{
-                toast.error(`${errors?.response?.data?.errors?.company_id || errors?.response?.data?.message}`,{
+                toast.error(`${errors?.response?.data?.message}`,{
                     id: toastId,
                     duration: 1000
                 });
@@ -66,7 +66,7 @@ export default function CopmanyCard({ token , coverImg, companyProfile, companyN
                 });
             })
             .catch(errors =>{
-                toast.error(`${errors?.response?.data?.errors?.follow_id || errors?.response?.data?.message}`,{
+                toast.error(`${errors?.response?.data?.message}`,{
                     id: toastId,
                     duration: 1000
                 });
