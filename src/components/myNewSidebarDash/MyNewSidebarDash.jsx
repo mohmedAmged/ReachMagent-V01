@@ -63,7 +63,7 @@ export default function MyNewSidebarDash() {
             icon: icon9,
             submenu: [
                 { title: "Profile Settings", link: "/profile/profile-settings" },
-                { title: "Business Settings", link: "/profile/settings/business-settings" }
+                { title: "Business Settings", link: "/profile/business-settings" }
             ]
         }
     ];

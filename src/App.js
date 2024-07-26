@@ -31,6 +31,7 @@ import SubCategoryMain from './pages/subCategoryMainPage/SubCategoryMain';
 import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
 import MyProfileSettings from './pages/myProfileSettingsPage/MyProfileSettings';
+import MyBussinessSettings from './pages/myBusinessSettingsPage/MyBussinessSettings';
 
 function App() {
   useEffect(() => {
@@ -159,6 +160,10 @@ function App() {
         />
         <Route path='/profile/catalog' element={<MyCatalog />} />
         <Route path='/profile/profile-settings' element={<MyProfileSettings     countries={countriesQuery?.data?.countries}
+          loginType={loginType}
+          token={token} />} />
+          <Route path='/profile/business-settings' element={<MyBussinessSettings     
+          countries={countriesQuery?.data?.countries}
           loginType={loginType}
           token={token} />} />
         <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
