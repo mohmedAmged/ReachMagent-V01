@@ -54,7 +54,7 @@ export default function UpdatePassword({token , setUpdatingData}) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='row'>
+    <form onSubmit={handleSubmit(onSubmit)} className='row my-5'>
       <div className="col-lg-8 mb-4 m-auto">
         <label htmlFor="profilecurrent_password">
             Current Password

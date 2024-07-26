@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './myProfileSettings.css'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
@@ -7,12 +7,17 @@ import profile from '../../assets/signUpImages/profile.png'
 import camerIcon from '../../assets/signUpImages/camera-icon.png'
 import ProfileFilterBar from '../../components/profileFilterBarSec/ProfileFilterBar'
 import MyProfileForm from '../../components/myProfileFormSec/MyProfileForm'
-export default function MyProfileSettings() {
+import UpdatePassword from '../../components/updatePasswordSec/UpdatePassword'
+export default function MyProfileSettings({token, }) {
+    const [activeItem, setActiveItem] = useState('Account Settings');
     const items = [
-        { name: 'Account Settings', active: true },
-        { name: 'Password Settings', active: false },
+        { name: 'Account Settings', active: activeItem === 'Account Settings' },
+        { name: 'Password Settings', active: activeItem === 'Password Settings' },
         // Add more items as needed
     ];
+    const handleItemClick = (itemName) => {
+        setActiveItem(itemName);
+    };
     return (
         <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
@@ -48,10 +53,14 @@ export default function MyProfileSettings() {
                         </div>
                         <div className="right__settings__content col-lg-7">
                             <div className="profile__filter__bar">
-                                <ProfileFilterBar items={items} />
+                                <ProfileFilterBar items={items} onItemClick={handleItemClick}/>
                             </div>
                             <div className="profile__form__inputs mt-3">
-                                <MyProfileForm />
+                            {activeItem === 'Account Settings' && <MyProfileForm />}
+                            {activeItem === 'Password Settings' &&  <UpdatePassword
+                                token={token}
+                                // setUpdatingData={setUpdatingData}
+            />}
                             </div>
                         </div>
                     </div>
