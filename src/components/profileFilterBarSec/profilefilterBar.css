@@ -1,0 +1,8 @@
+.profileFilterbar__handler{
+    width: 100%;
+    
+}
+.profileFilterbar__handler .productDetailsFilterationBar-list{
+    background-color: #fff;
+    box-shadow: none;
+}

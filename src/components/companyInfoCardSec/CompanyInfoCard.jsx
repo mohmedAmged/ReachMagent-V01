@@ -7,18 +7,23 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
-import { scrollToTop } from '../../functions/scrollToTop'
+import { scrollToTop } from '../../functions/scrollToTop';
+import Cookies from 'js-cookie';
+
 export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
-    const loginType = localStorage.getItem('loginType');
-    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState([]);
+    const loginType = localStorage.getItem('loginType')
+    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState(() => {
+        const cookieValue = Cookies.get('CurrentFollowedCompanies');
+        return cookieValue ? JSON.parse(cookieValue) : [];
+    });
     const navigate = useNavigate();
 
-    const handleFollowCompany = async (id) => {
+    const handleToggleFollowCompany = async (id) => {
         const currentCompanyWantedToFollow = {
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-            await axios.post(`${baseURL}/${loginType}/follow-company`, 
+            await axios.post(`${baseURL}/${loginType}/control-follow-company`, 
             currentCompanyWantedToFollow ,
             {
                 headers: {
@@ -28,67 +33,20 @@ export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
                 },
             })
             .then(response => {
-                setCurrentFollowedCompanies([...currentFollowedCompanies,{
-                    companyId: `${+id}`,
-                    companyName: showCompaniesQuery?.name,
-                    companyLogo: showCompaniesQuery?.logo,
-                }]);
-                toast.success(`${response?.data?.data?.message}`,{
-                    id: toastId,
-                    duration: 1000
-                });
-            })
-            .catch(errors =>{
-                toast.error(`${errors?.response?.data?.errors?.company_id || errors?.response?.data?.message}`,{
-                    id: toastId,
-                    duration: 1000
-                });
-            });
-    };
-
-    const handleUnFollowCompany = async (id) => {
-        const currentFollowId = currentFollowedCompanies?.find(el=> +el?.companyId === +id)?.id;
-        const currentCompanyWantedToFollow = {
-            follow_id: `${currentFollowId}`
-        };
-        const toastId = toast.loading('loading...');
-            await axios.post(`${baseURL}/${loginType}/unfollow-company`, 
-            currentCompanyWantedToFollow ,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization : `Bearer ${token}`
-                },
-            })
-            .then(response => {
-                setCurrentFollowedCompanies(currentFollowedCompanies.filter(el=> +el?.companyId === +id));
+                Cookies.set('CurrentFollowedCompanies',JSON.stringify([...response?.data?.data?.followedCompanies]),{expires: 999999999999999999999999999999 * 99999999999999999999999999999999999 * 99999999999999999999999999999999});
+                setCurrentFollowedCompanies([...response?.data?.data?.followedCompanies]);
                 toast.success(`${response?.data?.message}`,{
                     id: toastId,
                     duration: 1000
                 });
             })
-            .catch(errors =>{
-                toast.error(`${errors?.response?.data?.errors?.follow_id || errors?.response?.data?.message}`,{
+            .catch(() =>{
+                toast.error(`Something Went Wrong Please try Again Later!`,{
                     id: toastId,
                     duration: 1000
                 });
             });
     };
-
-    // getting Current followed Companies
-    useEffect(() => {
-        if(token && loginType === 'user'){
-            (async () => {
-                const {data} = await axios.get(`${baseURL}/${loginType}/my-followed-companies`,{
-                    headers: {
-                        Authorization : `Bearer ${token}`
-                    },
-                });
-                setCurrentFollowedCompanies(data?.data?.followedCompanies);
-            })();
-        };
-    },[loginType, token]);
 
     return (
         <div className='container'>
@@ -184,18 +142,18 @@ export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
                                     <div className="companyFollow__btn">
                                     {
                                         (token && loginType === 'user') ?
-                                            !(currentFollowedCompanies === undefined && currentFollowedCompanies.length === 0) ? 
-                                                currentFollowedCompanies?.find(el=> +el?.companyId === +showCompaniesQuery?.companyId) ?
+                                            (currentFollowedCompanies) ? 
+                                                currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
                                                 <button 
                                                     className='pageMainBtnStyle unFollowCompanyBtn'
-                                                    onClick={()=> handleUnFollowCompany(+showCompaniesQuery?.companyId)}
+                                                    onClick={()=> handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
                                                 >
                                                     unFollow
                                                 </button>
                                                 :
                                                 <button 
                                                     className='pageMainBtnStyle followCompanyBtn'
-                                                    onClick={() => handleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                    onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
                                                 >
                                                     + follow
                                                 </button>

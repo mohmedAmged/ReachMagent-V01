@@ -39,6 +39,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                 window.location.reload();
                 Cookies.remove('currentLoginedData');
                 Cookies.remove('authToken');
+                Cookies.remove('CurrentFollowedCompanies');      
             } catch (error) {
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
             }
@@ -123,7 +124,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                             scrollToTop();
                                         }}
                                         className='nav-link nav__link__style nav__profileData'
-                                        to='/business-profile'
+                                        to='/profile'
                                         title='Profile'
                                     >
                                         <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />

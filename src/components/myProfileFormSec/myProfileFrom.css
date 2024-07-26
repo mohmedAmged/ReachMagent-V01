@@ -1,0 +1,13 @@
+.profileForm__handler{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.profileFormInputItem input{
+    background: transparent;
+}
+.profileForm__handler .startUpdateBtn{
+    border-radius: 7px !important;
+    padding: 10px 30px;
+}

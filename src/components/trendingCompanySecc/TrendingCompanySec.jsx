@@ -19,7 +19,7 @@ export default function TrendingCompanySec({ companies ,token }) {
                                     <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
                                         <CopmanyCard
 // ************* dynamic info
-                                            company={el}
+                                            companies={companies}
                                             token={token}
                                             companyProfile={el.companyLogo}
                                             companyName={el.companyName} 

@@ -30,6 +30,7 @@ import OtherCategories from './pages/otherCategoriesPage/OtherCategories';
 import SubCategoryMain from './pages/subCategoryMainPage/SubCategoryMain';
 import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
+import MyProfileSettings from './pages/myProfileSettingsPage/MyProfileSettings';
 
 function App() {
   useEffect(() => {
@@ -72,15 +73,15 @@ function App() {
   const companiesQuery = useQuery({
     queryKey: ['companies'],
     queryFn: async () => {
-      const response = await axios.get(`${baseURL}/companies`,{
-        headers:{
+      const response = await axios.get(`${baseURL}/companies`, {
+        headers: {
           Authorization: `Bearer ${token}`
         }
       });
       return response?.data?.data;
-    },
-  });
-console.log(companiesQuery?.data);
+    },
+  });
+  console.log(companiesQuery?.data);
   return (
     <>
 
@@ -143,24 +144,27 @@ console.log(companiesQuery?.data);
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         {/* business Profile Routes */}
-        <Route path='/business-profile' element={
+        <Route path='/profile' element={
           <MyDashboard
             countries={countriesQuery?.data?.countries}
             loginType={loginType}
             token={token}
           />}
         />
-        <Route path='/business-profile/followers'
+        <Route path='/profile/followers'
           element={<CompanyFollowers
             loginType={loginType}
             token={token}
           />}
         />
-        <Route path='/business-profile/catalog' element={<MyCatalog />} />
-        <Route path='/business-profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
-        <Route path='/business-profile/quotations' element={<MyQutations />} />
-        <Route path='/business-profile/products' element={<MyProducts />} />
-        <Route path='/business-profile/orders' element={<MyOrders />} />
+        <Route path='/profile/catalog' element={<MyCatalog />} />
+        <Route path='/profile/profile-settings' element={<MyProfileSettings     countries={countriesQuery?.data?.countries}
+          loginType={loginType}
+          token={token} />} />
+        <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
+        <Route path='/profile/quotations' element={<MyQutations />} />
+        <Route path='/profile/products' element={<MyProducts />} />
+        <Route path='/profile/orders' element={<MyOrders />} />
         <Route path='/company-messages' element={<CompanyMessage />} />
         <Route path='/your-messages' element={<MyMessage />} />
 

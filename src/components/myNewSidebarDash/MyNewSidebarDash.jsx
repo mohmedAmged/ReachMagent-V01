@@ -17,6 +17,7 @@ export default function MyNewSidebarDash() {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+    const [showSettingsSubmenu, setShowSettingsSubmenu] = useState(false);
     const activePath = location.pathname;
     const navigate = useNavigate();
 
@@ -40,24 +41,37 @@ export default function MyNewSidebarDash() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const toggleSettingsSubmenu = () => {
+        setShowSettingsSubmenu(!showSettingsSubmenu);
+
+    }
 
     const sidebarItems = [
-        { title: "Profile", link: "/business-profile", icon: icon1 },
-        { title: "Followers", link: "/business-profile/followers", icon: icon11 },
-        { title: "Catalog", link: "/business-profile/catalog", icon: icon2 },
-        { title: "Quotations", link: "/business-profile/quotations", icon: icon3 },
-        { title: "Products", link: "/business-profile/products", icon: icon4 },
-        { title: "Orders", link: "/business-profile/orders", icon: icon4 },
-        { title: "Insights", link: "/business-profile/insights", icon: icon5 },
+        { title: "Profile", link: "/profile", icon: icon1 },
+        { title: "Followers", link: "/profile/followers", icon: icon11 },
+        { title: "Catalog", link: "/profile/catalog", icon: icon2 },
+        { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+        { title: "Products", link: "/profile/products", icon: icon4 },
+        { title: "Orders", link: "/profile/orders", icon: icon4 },
+        { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
-        { title: "Notifications", link: "/business-profile/notifications", icon: icon7 },
-        { title: "Requests", link: "/business-profile/requests", icon: icon8 }
+        { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+        { title: "Requests", link: "/profile/requests", icon: icon8 },
+        {
+            title: "Settings",
+            link: "/profile/settings",
+            icon: icon9,
+            submenu: [
+                { title: "Profile Settings", link: "/profile/profile-settings" },
+                { title: "Business Settings", link: "/profile/settings/business-settings" }
+            ]
+        }
     ];
 
-    const sidebarItemsTwo = [
-        { title: "Promote", link: "/business-profile/promote", icon: icon9 },
-        { title: "Help", link: "/business-profile/help", icon: icon10 }
-    ];
+    // const sidebarItemsTwo = [
+    //     { title: "Promote", link: "/business-profile/promote", icon: icon9 },
+    //     { title: "Help", link: "/business-profile/help", icon: icon10 }
+    // ];
 
     const renderSidebarContent = () => (
         <>
@@ -66,19 +80,42 @@ export default function MyNewSidebarDash() {
                     <li
                         key={index}
                         className={`d-flex justify-content-between align-items-center 
-                    ${el.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''} 
-                    ${activePath === el.link ? 'active' : ''}`}
-                        onClick={() => handleNavigationToSingleProfilePage(el.link)}
+                            ${el.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''} 
+                            ${activePath === el.link && !showSettingsSubmenu ? 'active' : ''}
+                            ${el.submenu && showSettingsSubmenu ? 'active' : ''}`}
+                        onClick={() => {
+                            if (el.submenu) {
+                                toggleSettingsSubmenu();
+                                // if (!show && isMobile) {
+                                //     handleShow();
+                                // }
+                            } else {
+                                handleNavigationToSingleProfilePage(el.link);
+                            }
+                        }}
                     >
                         <Link onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
                             <span>{el.title}</span>
                         </Link>
-                        <i className="bi bi-chevron-right"></i>
+                        {el.submenu ? <i className={`bi ${showSettingsSubmenu ? 'bi-chevron-down' : 'bi-chevron-right'}`}></i> : <i className="bi bi-chevron-right"></i>}
+                    </li>
+                ))}
+                {showSettingsSubmenu && sidebarItems.find(el => el.title === "Settings").submenu.map((subEl, subIndex) => (
+                    <li
+                        key={subIndex}
+                        className={`d-flex justify-content-between align-items-center submenu 
+                            ${activePath === subEl.link ? 'active' : ''}`}
+                        onClick={() => handleNavigationToSingleProfilePage(subEl.link)}
+                        style={{ paddingLeft: '15px' }}
+                    >
+                        <Link to={subEl.link} onClick={isMobile ? handleClose : undefined}>
+                            <span>{subEl.title}</span>
+                        </Link>
                     </li>
                 ))}
             </ul>
-            <ul className='listItems__two'>
+            {/* <ul className='listItems__two'>
                 {sidebarItemsTwo.map((el, index) => (
                     <li
                         key={index}
@@ -91,7 +128,7 @@ export default function MyNewSidebarDash() {
                         <i className="bi bi-chevron-right"></i>
                     </li>
                 ))}
-            </ul>
+            </ul> */}
             <div className="pro__banner__handler text-center">
                 <div className="pro__banner__content">
                     <h3>Upgrade to PRO to get access to all Features!</h3>
@@ -120,7 +157,7 @@ export default function MyNewSidebarDash() {
                                     </li>
                                 ))}
                             </ul>
-                            <ul className='listItems__two'>
+                            {/* <ul className='listItems__two'>
                                 {sidebarItemsTwo.map((el, index) => (
                                     <li key={index} className={`d-flex justify-content-center align-items-center ${activePath === el.link ? 'active' : ''}`}>
                                         <Link to={el.link} onClick={isMobile ? handleClose : undefined}>
@@ -128,7 +165,7 @@ export default function MyNewSidebarDash() {
                                         </Link>
                                     </li>
                                 ))}
-                            </ul>
+                            </ul> */}
                         </div>
 
                     </div>
@@ -150,7 +187,7 @@ export default function MyNewSidebarDash() {
                 <div className="mySidebar__handler">
                     <div className="container">
                         <h1 className="logo__text">
-                        ReachMag<span className='letter__color'>n</span>et
+                            ReachMag<span className='letter__color'>n</span>et
                         </h1>
                         {renderSidebarContent()}
                     </div>

@@ -22,7 +22,7 @@ export default function CompanyFollowers({ loginType, token}) {
 
     useEffect(() => {
         if (token) {
-            const slugCompletion = loginType === 'user' ? 'user//my-followed-companies' : 'employee/followers';
+            const slugCompletion = loginType === 'user' ? 'user/my-followed-companies' : 'employee/followers';
             const fetchData = async () => {
                 try {
                     const response = await axios.get(`${baseURL}/${slugCompletion}`, {
@@ -31,7 +31,11 @@ export default function CompanyFollowers({ loginType, token}) {
                             'Authorization': `Bearer ${token}`,
                         },
                     });
-                    setFollowers(response?.data?.data?.followers);
+                    if(loginType === 'user'){
+                        setFollowers(response?.data?.data?.followedCompanies);
+                    }else if(loginType === 'employee'){
+                        setFollowers(response?.data?.data?.followers)
+                    }
                 } catch (error) {
                     toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
                 };
@@ -40,6 +44,7 @@ export default function CompanyFollowers({ loginType, token}) {
         };
     }, []);
 
+    console.log(followers);
 
     return (
         <div className='dashboard__handler d-flex'>
@@ -61,17 +66,17 @@ export default function CompanyFollowers({ loginType, token}) {
                             {
                                 followers?.map((el) => {
                                     return (
-                                        <div key={el?.followerId} className="followerInfo__Item col-12">
+                                        <div key={el?.id} className="followerInfo__Item col-12">
                                             <div className="followerImage">
-                                                <img src={el?.followerImg} alt={`${el?.followerName} avatar`} />
+                                                <img src={el?.userImage} alt={`${el?.userName} avatar`} />
                                             </div>
                                             <div className="followerContactInfo">
                                                 <h1>
-                                                    {el?.followerName}
+                                                    {el?.userName}
                                                 </h1>
                                                 <div className="follower__status">
                                                     <p>
-                                                        {el?.followerEmail}
+                                                        {el?.userEmail}
                                                     </p>
                                                     <p className='isUsersfollowed'>
                                                         follows you
