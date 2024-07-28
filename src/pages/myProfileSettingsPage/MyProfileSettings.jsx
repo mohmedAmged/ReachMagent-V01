@@ -1,28 +1,68 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './myProfileSettings.css'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import cover from '../../assets/signUpImages/cover.png'
-import profile from '../../assets/signUpImages/profile.png'
 import camerIcon from '../../assets/signUpImages/camera-icon.png'
 import ProfileFilterBar from '../../components/profileFilterBarSec/ProfileFilterBar'
 import MyProfileForm from '../../components/myProfileFormSec/MyProfileForm'
 import UpdatePassword from '../../components/updatePasswordSec/UpdatePassword'
-export default function MyProfileSettings({token, }) {
+import Cookies from 'js-cookie';
+
+localStorage.setItem('updatingProfile','notUpdating');
+
+export default function MyProfileSettings({token,countries}) {
+    const [profileUpdateStatus,setProfileUpdateStatus] = useState(localStorage.getItem('updatingProfile'));
+    const [currentUserLogin,setCurrentUserLogin] = useState(null);
+    const [currentImage,setCurrentImage] = useState(JSON.parse(Cookies.get('currentLoginedData'))?.image);
+    const [currnetImageUpdateFile,setCurrentImageUpdateFile] = useState(undefined);
+    const [currnetImageUpdateError,setCurrentImageUpdateError] = useState('');
+    const [imgChanged,setImageChanged] = useState(false);
+    const loginType = localStorage.getItem('loginType');
+
+    useEffect(() => {
+        const cookiesData = Cookies.get('currentLoginedData');
+        if (!currentUserLogin) {
+            const newShape = JSON.parse(cookiesData);
+            if(localStorage.getItem('loginType') === 'employee'){
+                setCurrentUserLogin(newShape);
+            }else if(localStorage.getItem('loginType') === 'user'){
+                setCurrentUserLogin(newShape);
+            };
+        };
+    }, [Cookies.get('currentLoginedData'),currentUserLogin]);
+
     const [activeItem, setActiveItem] = useState('Account Settings');
     const items = [
         { name: 'Account Settings', active: activeItem === 'Account Settings' },
         { name: 'Password Settings', active: activeItem === 'Password Settings' },
-        // Add more items as needed
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
+
+    const fileInputRef = useRef(null);
+    const handleImageClick = () => {
+        if(profileUpdateStatus !== 'notUpdating'){
+            fileInputRef.current.click();
+        }
+    };
+
+    const hangleChangeImage = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const newFileUrl = URL.createObjectURL(selectedFile);
+            setCurrentImage(newFileUrl);
+            setImageChanged(true);
+        };
+        setCurrentImageUpdateFile(event.target.files);
+    };
+
     return (
         <div className='dashboard__handler d-flex'>
-            <MyNewSidebarDash />
+            <MyNewSidebarDash loginType={loginType} />
             <div className='main__content container'>
-                <MainContentHeader />
+                <MainContentHeader currentUserLogin={currentUserLogin} />
                 <div className='content__view__handler'>
                     <div className="profileCoverImg">
                         <img src={cover} alt="" />
@@ -31,19 +71,30 @@ export default function MyProfileSettings({token, }) {
                         <div className="left__settings__content col-lg-4">
                             <div className="change__img__box">
                                 <div className="profile__image__box">
-                                    <img src={profile} alt="profile" />
+                                    <img src={currentImage} alt="profile" />
                                 </div>
-                                <div className="camera__icon">
-                                    <img src={camerIcon} alt="camera" />
+                                <div className={`camera__icon ${profileUpdateStatus === 'updating' && 'cursorPointer'}`}>
+                                    {
+                                        profileUpdateStatus !== 'notUpdating' && 
+                                        <input type="file" className='invisibleInput' ref={fileInputRef} onChange={hangleChangeImage} />
+                                    }
+                                    <img src={camerIcon} alt="camera" onClick={handleImageClick} />
                                 </div>
                             </div>
+                            {
+                                currnetImageUpdateError &&
+                                (<span className='errorMessage text-center d-block mb-3'>{currnetImageUpdateError}</span>)
+                            }
                             <div className="user__name__info">
                                 <h3>
-                                    Derrick Jackson
+                                    {currentUserLogin?.name}
                                 </h3>
-                                <p>
-                                    ReachMagnet
-                                </p>
+                                {
+                                    loginType !== 'user' &&
+                                    <p>
+                                        {currentUserLogin?.companyName}
+                                    </p>
+                                }
                             </div>
                             <div className="view__profile__btn">
                                 <button>
@@ -55,11 +106,22 @@ export default function MyProfileSettings({token, }) {
                             <div className="profile__filter__bar">
                                 <ProfileFilterBar items={items} onItemClick={handleItemClick}/>
                             </div>
-                            <div className="profile__form__inputs mt-3">
-                            {activeItem === 'Account Settings' && <MyProfileForm />}
+                            <div className="profile__form__inputs mt-3 pb-5">
+                            {activeItem === 'Account Settings' && 
+                            <MyProfileForm 
+                                imgChanged={imgChanged}
+                                currnetImageUpdateFile={currnetImageUpdateFile}
+                                setCurrentImageUpdateError={setCurrentImageUpdateError}
+                                setCurrentImage={setCurrentImage}
+                                setProfileUpdateStatus={setProfileUpdateStatus}
+                                currentUserLogin={currentUserLogin}
+                                setCurrentUserLogin={setCurrentUserLogin}
+                                profileUpdateStatus={profileUpdateStatus}
+                                countries={countries}
+                                token={token}
+                            />}
                             {activeItem === 'Password Settings' &&  <UpdatePassword
                                 token={token}
-                                // setUpdatingData={setUpdatingData}
                             />}
                             </div>
                         </div>

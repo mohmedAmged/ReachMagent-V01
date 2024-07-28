@@ -80,7 +80,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                     setError(key, { message: error.response.data.errors[key][0] });
                 });
             };
-            toast.error(error?.response?.data?.message,{
+            toast.error(error?.response?.data?.message?.password ||error?.response?.data?.message,{
                 id: toastId,
                 duration: 2000,
             });

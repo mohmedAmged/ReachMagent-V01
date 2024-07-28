@@ -1,0 +1,61 @@
+/* .my__roles__actions{
+    display: flex;
+    margin-left: 30px;
+    flex-wrap: wrap;
+}
+.my__roles__actions button{
+    border: 1px solid var(--main-blue-color);
+    padding: 12px 20px;
+    border-radius: 7px;
+    font-weight: 400;
+    font-size: 12px;
+}
+.my__roles__actions button.def__btn,
+.my__roles__actions button.rolesActiveBtn
+{
+    background-color: var(--main-blue-color);
+    color: #fff;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.my__roles__actions button.cust__btn{
+    background-color: #fff;
+    color: var(--main-blue-color);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+} */
+
+.my__roles__actions {
+    display: flex;
+    margin-left: 20px;
+    flex-wrap: wrap;
+}
+.my__roles__actions button {
+    border: 1px solid var(--main-blue-color);
+    padding: 12px 20px;
+    border-radius: 7px;
+    font-weight: 400;
+    font-size: 12px;
+    cursor: pointer;
+}
+.my__roles__actions button.def__btn {
+    background-color: #fff;
+    color: var(--main-blue-color);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.my__roles__actions button.cust__btn {
+    background-color: #fff;
+    color: var(--main-blue-color);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.my__roles__actions button.rolesActiveBtn {
+    background-color: var(--main-blue-color);
+    color: #fff;
+}
+@media screen and (max-width: 600px) {
+    .my__roles__actions{
+        margin-left: 0 !important;
+    }
+}

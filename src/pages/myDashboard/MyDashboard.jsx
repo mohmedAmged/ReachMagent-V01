@@ -37,7 +37,7 @@ export default function MyDashboard({token,countries}) {
   return (
     <>
     <div className='dashboard__handler d-flex signUpForm__mainSec'>
-      <MyNewSidebarDash />
+      <MyNewSidebarDash token={token}/>
       <div className='main__content container signUpForm__mainContent'>
         <MainContentHeader currentUserLogin={currentUserLogin} />
         <ul onClick={handleChangeUpdatingData} className="updatingToggler">

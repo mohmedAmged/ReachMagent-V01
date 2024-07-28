@@ -32,6 +32,7 @@ import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
 import MyProfileSettings from './pages/myProfileSettingsPage/MyProfileSettings';
 import MyBussinessSettings from './pages/myBusinessSettingsPage/MyBussinessSettings';
+import MyUsersManagement from './pages/myUsersManagementPage/MyUsersManagement';
 
 function App() {
   useEffect(() => {
@@ -159,13 +160,28 @@ function App() {
           />}
         />
         <Route path='/profile/catalog' element={<MyCatalog />} />
-        <Route path='/profile/profile-settings' element={<MyProfileSettings     countries={countriesQuery?.data?.countries}
-          loginType={loginType}
-          token={token} />} />
-          <Route path='/profile/business-settings' element={<MyBussinessSettings     
+
+        <Route path='/profile/profile-settings' 
+          element={<MyProfileSettings
           countries={countriesQuery?.data?.countries}
           loginType={loginType}
-          token={token} />} />
+          token={token} />} 
+        />
+
+          <Route path='/profile/business-settings' 
+          element={<MyBussinessSettings     
+          countries={countriesQuery?.data?.countries}
+          loginType={loginType}
+          token={token} />} 
+          />
+
+          <Route path='/profile/users-management' 
+          element={<MyUsersManagement     
+          countries={countriesQuery?.data?.countries}
+          loginType={loginType}
+          token={token} />} 
+          />
+          
         <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
         <Route path='/profile/quotations' element={<MyQutations />} />
         <Route path='/profile/products' element={<MyProducts />} />

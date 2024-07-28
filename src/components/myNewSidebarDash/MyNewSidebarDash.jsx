@@ -13,7 +13,7 @@ import icon9 from '../../assets/sidebar-icons/discount-shape 1.svg';
 import icon10 from '../../assets/sidebar-icons/message-question 1.svg';
 import icon11 from '../../assets/sidebar-icons/people.svg';
 
-export default function MyNewSidebarDash() {
+export default function MyNewSidebarDash({token}) {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
@@ -61,10 +61,11 @@ export default function MyNewSidebarDash() {
             title: "Settings",
             link: "/profile/settings",
             icon: icon9,
-            submenu: [
-                { title: "Profile Settings", link: "/profile/profile-settings" },
-                { title: "Business Settings", link: "/profile/business-settings" }
-            ]
+            // submenu: [
+            //     { title: "Profile Settings", link: "/profile/profile-settings" },
+            //     { title: "Business Settings", link: "/profile/business-settings" },
+            //     { title: "Users Management", link: "/profile/users-management" }
+            // ]
         }
     ];
 
@@ -72,7 +73,18 @@ export default function MyNewSidebarDash() {
     //     { title: "Promote", link: "/business-profile/promote", icon: icon9 },
     //     { title: "Help", link: "/business-profile/help", icon: icon10 }
     // ];
-
+    const userSubmenu = (localStorage.getItem('loginType') === 'user') ? [
+        { title: "Profile Settings", link: "/profile/profile-settings" }
+    ] : [
+        { title: "Profile Settings", link: "/profile/profile-settings" },
+        { title: "Business Settings", link: "/profile/business-settings" },
+        { title: "Users Management", link: "/profile/users-management" }
+    ];
+    const settingsIndex = sidebarItems.findIndex(item => item.title === "Settings");
+    if (settingsIndex !== -1) {
+        sidebarItems[settingsIndex].submenu = userSubmenu;
+    };
+    
     const renderSidebarContent = () => (
         <>
             <ul>

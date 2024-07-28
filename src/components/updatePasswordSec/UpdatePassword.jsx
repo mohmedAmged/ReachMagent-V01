@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function UpdatePassword({token , setUpdatingData}) {
+export default function UpdatePassword({token}) {
   const [showCurrentPassword,setShowCurrentPassword] = useState(false);
   const [showPassword,setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
@@ -40,12 +40,13 @@ export default function UpdatePassword({token , setUpdatingData}) {
         duration: 1000,
       });
       localStorage.setItem('updatingData','profile');
-      setUpdatingData(localStorage.getItem('updatingData'));
       reset();
     }).catch(error => {
-      Object.keys(error?.response?.data?.errors).forEach((key) => {
-        setError(key, {message: error?.response?.data?.errors[key][0]});
-      });
+      if(error?.response?.data?.errors){
+        Object.keys(error?.response?.data?.errors).forEach((key) => {
+          setError(key, {message: error?.response?.data?.errors[key][0]});
+        });
+      }
       toast.error(error?.response?.data?.message,{
         id: toastId,
         duration: 2000

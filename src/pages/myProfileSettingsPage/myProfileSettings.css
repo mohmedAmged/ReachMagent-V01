@@ -26,6 +26,10 @@
 }
 .profile__image__box{
     border-radius: 50%;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .camera__icon{
     position: absolute;
@@ -40,6 +44,9 @@
     justify-content: center;
     align-items: center;
     border: 4px solid #fff;
+}
+.cursorPointer {
+    cursor: pointer;
 }
 .user__name__info{
     text-align: center;
@@ -76,13 +83,15 @@
 .profile__filter__bar{
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+.invisibleInput {
+    display: none;
+}
 @media screen and (max-width: 600px){
     .change__img__box{
         width: 73px;
         height: 73px;
         position: relative;
         margin-bottom: 20px;
-        /* margin-left: 38px; */
         text-align: center;
     }
 }
