@@ -24,10 +24,10 @@ export default function MyBussinessSettings({token, }) {
             <MyNewSidebarDash />
             <div className='main__content container'>
                 <MainContentHeader />
-                <div className='content__view__handler'>
-                    <div className="profileCoverImg">
+                <div className="profileCoverImg">
                         <img src={cover} alt="" />
-                    </div>
+                </div>
+                <div className='content__view__handler'>
                     <div className="profile__settings__content row justify-content-center">
                         <div className="left__settings__content col-lg-4">
                             <div className="change__img__box">

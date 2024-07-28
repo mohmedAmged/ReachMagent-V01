@@ -59,7 +59,7 @@ export default function MyNewSidebarDash({token}) {
         { title: "Requests", link: "/profile/requests", icon: icon8 },
         {
             title: "Settings",
-            link: "/profile/settings",
+            link: "/profile/profile-settings",
             icon: icon9,
             // submenu: [
             //     { title: "Profile Settings", link: "/profile/profile-settings" },
@@ -84,7 +84,7 @@ export default function MyNewSidebarDash({token}) {
     if (settingsIndex !== -1) {
         sidebarItems[settingsIndex].submenu = userSubmenu;
     };
-    
+
     const renderSidebarContent = () => (
         <>
             <ul>

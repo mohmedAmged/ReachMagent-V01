@@ -124,7 +124,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                             scrollToTop();
                                         }}
                                         className='nav-link nav__link__style nav__profileData'
-                                        to='/profile'
+                                        to='/profile/profile-settings'
                                         title='Profile'
                                     >
                                         <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
@@ -185,7 +185,7 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                                 scrollToTop();
                                             }}
                                             className='nav-link nav__link__style nav__profileData'
-                                            to='/business-profile'
+                                            to='/profile/profile-settings'
                                             title='Profile'
                                         >
                                             <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
