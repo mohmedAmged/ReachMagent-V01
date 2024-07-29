@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './myUsersManagement.css'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import cover from '../../assets/signUpImages/cover.png'
 import ProfileFilterBar from '../../components/profileFilterBarSec/ProfileFilterBar'
 import MyAllRoles from '../../components/myAllRolesSec/MyAllRoles'
+import Cookies from 'js-cookie';
 
 export default function MyUsersManagement() {
+    const [currentUserLogin,setCurrentUserLogin] = useState(null);
+
+    useEffect(() => {
+        const cookiesData = Cookies.get('currentLoginedData');
+        if (!currentUserLogin) {
+            const newShape = JSON.parse(cookiesData);
+            if(localStorage.getItem('loginType') === 'employee'){
+                setCurrentUserLogin(newShape);
+            }else if(localStorage.getItem('loginType') === 'user'){
+                setCurrentUserLogin(newShape);
+            };
+        };
+    }, [Cookies.get('currentLoginedData'),currentUserLogin]);
+
     const [activeItem, setActiveItem] = useState('Roles');
     const items = [
         { name: 'Profiles', active: activeItem === 'Profiles' },
@@ -21,7 +36,7 @@ export default function MyUsersManagement() {
         <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
             <div className='main__content container'>
-                <MainContentHeader />
+                <MainContentHeader currentUserLogin={currentUserLogin} />
                 <div className="profileCoverImg">
                     <img src={cover} alt="" />
                 </div>
