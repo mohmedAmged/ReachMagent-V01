@@ -33,6 +33,7 @@ import axios from 'axios';
 import MyProfileSettings from './pages/myProfileSettingsPage/MyProfileSettings';
 import MyBussinessSettings from './pages/myBusinessSettingsPage/MyBussinessSettings';
 import MyUsersManagement from './pages/myUsersManagementPage/MyUsersManagement';
+import SingleCompanyQuote from './pages/singleCompanyQuotePage/SingleCompanyQuote';
 
 function App() {
   useEffect(() => {
@@ -106,6 +107,7 @@ function App() {
         <Route path='/shop/:singleProduct' element={<ProductDetails />} />
         <Route path='/discover' element={<Discover />} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
+        <Route path='/:companyName/request-quote' element={<SingleCompanyQuote token={token} />} />
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />

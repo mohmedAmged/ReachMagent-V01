@@ -1,0 +1,80 @@
+.singleCompanyQuote__handler .hero__form__bar{
+    display: none !important;
+}
+.singleCompanyQuote__handler h1{
+    margin-bottom: 30px;
+}
+.singleCompanyQuote__contents{
+    margin: 40px 0;
+}
+.singleCompanyQuote__headText h1{
+    font-size: 32px;
+    font-weight: 600;
+    color: #000;
+}
+.singleCompanyQuote__headText h1 span{
+    color: var(--main-blue-color);
+}
+.singleCompanyQuote__mainFrom{
+    margin-top: 30px;
+}
+.singleQuoteInput{
+    margin-bottom: 20px;
+}
+.singleQuoteInput label{
+    display: block;
+    font-weight: 500;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+.singleQuoteInput select{
+    font-size: 14px;
+    border: 0.5px solid #809DAD80;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-color: #fff;
+    width: 90%;
+    margin-top: 10px;
+    box-shadow: none;
+}
+.singleQuoteInput select:focus{
+    box-shadow: none!important;
+    border: 0.5px solid #809DAD80;
+    outline: 0;
+}
+.singleQuoteInput select option{
+    color: rgba(0, 0, 0, 0.5);
+}
+.singleCompanyQuote__headText p{
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+}
+.singleQuote__searchInput h3{
+    font-size: 32px;
+    font-weight: 600;
+    margin: 30px 0;
+}
+.singleQuote__searchInput input{
+    font-size: 14px;
+    border: 0.5px solid #809DAD80;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-color: #fff;
+    width: 70%;
+    margin-top: 10px;
+    box-shadow: none;
+    margin-bottom: 30px;
+    box-shadow: none;
+
+}
+.singleQuote__searchInput input:focus{
+    box-shadow: none!important;
+    border: 0.5px solid #809DAD80;
+    outline: 0;
+}
+.singleQuote__slideProducts .main__info,
+.singleQuote__slideProducts .sub__info{
+    display: flex;
+    flex-direction: column;
+}

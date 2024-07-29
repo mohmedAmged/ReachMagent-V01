@@ -10,9 +10,9 @@ import toast from 'react-hot-toast'
 import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
 
-export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
+export default function CompanyInfoCard({ showCompaniesQuery, token }) {
     const loginType = localStorage.getItem('loginType')
-    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState(() => {
+    const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
     });
@@ -23,25 +23,25 @@ export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-            await axios.post(`${baseURL}/${loginType}/control-follow-company`, 
-            currentCompanyWantedToFollow ,
+        await axios.post(`${baseURL}/${loginType}/control-follow-company`,
+            currentCompanyWantedToFollow,
             {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    Authorization : `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 },
             })
             .then(response => {
-                Cookies.set('CurrentFollowedCompanies',JSON.stringify([...response?.data?.data?.followedCompanies]),{expires: 999999999999999999999999999999 * 99999999999999999999999999999999999 * 99999999999999999999999999999999});
+                Cookies.set('CurrentFollowedCompanies', JSON.stringify([...response?.data?.data?.followedCompanies]), { expires: 999999999999999999999999999999 * 99999999999999999999999999999999999 * 99999999999999999999999999999999 });
                 setCurrentFollowedCompanies([...response?.data?.data?.followedCompanies]);
-                toast.success(`${response?.data?.message}`,{
+                toast.success(`${response?.data?.message}`, {
                     id: toastId,
                     duration: 1000
                 });
             })
-            .catch(() =>{
-                toast.error(`Something Went Wrong Please try Again Later!`,{
+            .catch(() => {
+                toast.error(`Something Went Wrong Please try Again Later!`, {
                     id: toastId,
                     duration: 1000
                 });
@@ -140,40 +140,40 @@ export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
                                         </p>
                                     </div>
                                     <div className="companyFollow__btn">
-                                    {
-                                        (token && loginType === 'user') ?
-                                            (currentFollowedCompanies) ? 
-                                                currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
-                                                <button 
-                                                    className='pageMainBtnStyle unFollowCompanyBtn'
-                                                    onClick={()=> handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
-                                                >
-                                                    unFollow
-                                                </button>
+                                        {
+                                            (token && loginType === 'user') ?
+                                                (currentFollowedCompanies) ?
+                                                    currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
+                                                        <button
+                                                            className='pageMainBtnStyle unFollowCompanyBtn'
+                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                        >
+                                                            unFollow
+                                                        </button>
+                                                        :
+                                                        <button
+                                                            className='pageMainBtnStyle followCompanyBtn'
+                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                        >
+                                                            + follow
+                                                        </button>
+                                                    : ''
                                                 :
-                                                <button 
+                                                <button
                                                     className='pageMainBtnStyle followCompanyBtn'
-                                                    onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                    onClick={() => {
+                                                        toast.error(`${loginType === 'user' ? 'You Should Login First!' : 'Only Users Can Follow Companies!'}`);
+                                                        if (loginType === 'user') {
+                                                            setTimeout(() => {
+                                                                navigate('/login');
+                                                                scrollToTop();
+                                                            }, 1000);
+                                                        };
+                                                    }}
                                                 >
                                                     + follow
                                                 </button>
-                                            : ''
-                                        : 
-                                        <button 
-                                            className='pageMainBtnStyle followCompanyBtn'
-                                            onClick={()=> {
-                                                toast.error(`${loginType === 'user' ? 'You Should Login First!' : 'Only Users Can Follow Companies!'}`);
-                                                if(loginType === 'user'){
-                                                    setTimeout(()=>{
-                                                        navigate('/login');
-                                                        scrollToTop();
-                                                    },1000);
-                                                };
-                                            }}
-                                        >
-                                            + follow
-                                        </button>
-                                    }
+                                        }
                                     </div>
                                 </div>
 
@@ -182,9 +182,12 @@ export default function CompanyInfoCard({ showCompaniesQuery ,token }) {
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            <button className='btnColoredBlue'>
-                                Request Quotation
-                            </button>
+                            <NavLink className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
+                                <button className='btnColoredBlue'>
+                                    Request Quotation
+                                </button>
+                            </NavLink>
+
                         </div>
                     </div>
                 </div>

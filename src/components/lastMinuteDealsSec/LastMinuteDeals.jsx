@@ -44,8 +44,18 @@ export default function LastMinuteDeals() {
                             productItems.map((el, index) => {
                                 return (
                                     <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center mb-4">
-                                        <LastMinuteCard productImage={el.img}
-                                            productName={el.title} dealTimeDay={el.dealDay} dealtimeHours={el.dealHours} dealQuantity={el.dealQuantity} />
+                                        {/* <LastMinuteCard productImage={el.img}
+                                            productName={el.title} dealTimeDay={el.dealDay} dealtimeHours={el.dealHours} dealQuantity={el.dealQuantity} /> */}
+                                        <LastMinuteCard
+                                            productImage={el.img}
+                                            productName={el.title}
+                                            dealTimeDay={el.dealDay}
+                                            dealtimeHours={el.dealHours}
+                                            dealQuantity={el.dealQuantity}
+                                            showCustomContent={false}
+                                            buttonLabel="Know more"
+                                            onKnowMoreClick={() => alert('Know more button clicked')}
+                                        />
                                     </div>
                                 )
                             })

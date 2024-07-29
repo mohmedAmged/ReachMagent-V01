@@ -29,7 +29,21 @@
     -ms-border-radius: 24px;
     -o-border-radius: 24px;
 }
-
+.singleCompany__quote{
+    background-image: url('../../assets/heroSec/singleCompanyQuote.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    padding: 80px 0;
+    text-align: center;
+    color: var(--primary-white);
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+    -o-border-radius: 24px;
+}
 .heroSec__container h1,
 .shopHeroSec__container h1 {
     font-weight: 600;
