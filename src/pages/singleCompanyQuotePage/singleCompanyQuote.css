@@ -154,12 +154,19 @@
 
 
 @media screen and (max-width: 600px) {
+    .selected__product__info .prod__text h3{
+        font-size: 12px;
+     }
+     .selected__product__info .prod__text p {
+        font-size: 10px;
+
+     }
     .selected__product__info {
         gap: 8px;
     }
     .selected__product__info .prod__img img{
-        width: 80px;
-        height: 100px;
+        width: 75px;
+        height: 90px;
     }
     .selected__product__action{
         gap: 30px;
