@@ -10,7 +10,8 @@ export default function LastMinuteCard({
     showCustomContent, // Flag to determine which content to render
     buttonLabel = 'Know more', // Default button label
     onKnowMoreClick, // Handler for 'Know more' button click
-    onAddClick // Handler for 'Add' button click
+    onAddClick, // Handler for 'Add' button click
+    borderColor = 'rgba(148, 21, 21, 1)'
 }) {
     // Function to handle button click based on buttonLabel
     const handleButtonClick = () => {
@@ -25,8 +26,10 @@ export default function LastMinuteCard({
         background: 'var(--primary-white)',
         padding: '10px',
         borderRadius: '20px',
-        border: showCustomContent && buttonLabel === 'Add' ? '1px solid rgba(0, 0, 0, 0.5)' : '2px solid rgba(148, 21, 21, 1)'
+        // border: showCustomContent && buttonLabel === 'Add' ? '1px solid rgba(0, 0, 0, 0.5)' : '2px solid rgba(148, 21, 21, 1)'
+         border: `2px solid ${borderColor}`
     };
+    const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
     return (
         // <>
         //     <div className='lastMinuteCard__handler'>
@@ -70,7 +73,7 @@ export default function LastMinuteCard({
         //     </div>
         // </>
         <>
-            <div className='lastMinuteCard__handler' style={cardStyles}>
+            <div className='lastMinuteCard__handler' style={cardStyles} >
                 <div className="product__image">
                     <img src={productImage} alt="product-imag" />
                 </div>
@@ -95,7 +98,7 @@ export default function LastMinuteCard({
                     </div>
                     <div className="sub__info">
                         <p>{dealQuantity}</p>
-                        <button className='pageMainBtnStyle' onClick={handleButtonClick}>
+                        <button className={`pageMainBtnStyle ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
                         </button>
                     </div>

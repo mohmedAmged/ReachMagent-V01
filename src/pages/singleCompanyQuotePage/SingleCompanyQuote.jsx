@@ -15,31 +15,37 @@ export default function SingleCompanyQuote({ token }) {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const productItems = [
         {
+            id: 1,
             img: product1,
             title: 'Table Lamp',
             dealQuantity: 'Customizable'
         },
         {
+            id: 2,
             img: product2,
             title: 'Ceiling Lamp ',
             dealQuantity: 'Customizable'
         },
         {
+            id: 3,
             img: product3,
             title: 'Blue Wood Chair',
             dealQuantity: 'Customizable'
         },
         {
+            id: 4,
             img: product1,
             title: 'Table Lamp',
             dealQuantity: 'Customizable'
         },
         {
+            id: 5,
             img: product2,
             title: 'Ceiling Lamp ',
             dealQuantity: 'Customizable'
         },
         {
+            id: 6,
             img: product3,
             title: 'Blue Wood Chair',
             dealQuantity: 'Customizable'
@@ -47,10 +53,8 @@ export default function SingleCompanyQuote({ token }) {
     ]
     // add product to selected products
     const handleAddProduct = (product) => {
-        if (!selectedProducts.includes(product)) {
-            setSelectedProducts([...selectedProducts, product]);
-        }
-    };
+        setSelectedProducts([...selectedProducts, product]);
+      };
     // remove product
     const handleRemoveProduct = (product) => {
         setSelectedProducts(selectedProducts.filter((p) => p !== product));
@@ -145,7 +149,7 @@ export default function SingleCompanyQuote({ token }) {
                                             // loop
                                             breakpoints={{
                                                 300: {
-                                                    slidesPerView: 1.2,
+                                                    slidesPerView: 1.1,
                                                     spaceBetween: 10
                                                 },
                                                 426: {
@@ -167,7 +171,7 @@ export default function SingleCompanyQuote({ token }) {
                                             }}
                                         >
                                             {productItems.map((el, index) => {
-                                                const isAdded = selectedProducts.includes(el)
+                                               const isAdded = selectedProducts.some((selectedProduct) => selectedProduct.id === el.id);
                                                 return (
                                                     <SwiperSlide className=' my-3' key={index}>
                                                         <LastMinuteCard
@@ -178,7 +182,7 @@ export default function SingleCompanyQuote({ token }) {
                                                             buttonLabel={isAdded ? "Added" : "Add"}
                                                             onAddClick={() => handleAddProduct(el)}
                                                             // Conditional border color
-                                                            borderColor={isAdded ? "rgba(1, 31, 91, 1)" : ""}
+                                                            borderColor={isAdded ? 'rgba(7, 82, 154, 1)' : 'rgba(0, 0, 0, 0.5)'}
                                                         />
                                                     </SwiperSlide>
                                                 )
