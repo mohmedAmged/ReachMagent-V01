@@ -6,8 +6,10 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import Cookies from 'js-cookie';
+import { scrollToTop } from '../../functions/scrollToTop';
+import { UpdateCompanyDataSchema } from '../../validation/UpdateCompanyDataSchema';
 
-let allTypes = [
+const allTypes =  [
   {
     id: 1,
     name: 'Selling Physical Products',
@@ -33,8 +35,20 @@ let allTypes = [
     name: 'Company Offers Customizations',
   },
 ];
+let allTypesRendered = allTypes;
 
-export default function CompanySettingsForm({token,mainCategories,imgChanged,currnetImageUpdateFile,setCurrentImageUpdateError,setCurrentImage,company,setProfileUpdateStatus,profileUpdateStatus,countries}) {
+export default function CompanySettingsForm(
+  {
+    token,
+    mainCategories,
+    imgChanged,coverChanged,
+    currnetImageUpdateFile, currnetCoverUpdateFile,
+    setCurrentImageUpdateError,setCurrentCoverUpdateError,
+    company,
+    setProfileUpdateStatus,
+    profileUpdateStatus
+  }
+) {
   const loginType =localStorage.getItem('loginType');
   const [subCategories,setSubCategories] = useState([]);
 
@@ -54,21 +68,22 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
         about_us: company?.about_us,
         logo: '',
         main_type: company?.companyTypes,
-        city_id: '',
-        address_one: '',
-        address_two: '',
+        cover: '',
+        website_link: company?.website_link,
+        linkedin_link: company?.linkedin_link,
+        founded: company?.founded,
     },
-    resolver: zodResolver(),
+    resolver: zodResolver(UpdateCompanyDataSchema),
   });
 
   const [currentBusinessTypes , setCurrentBusinessTypes] = useState([]);
   const [selectValue,setSelectValue] = useState('');
   const handleChangeBusinessType = (event) => {
     const toastId = toast.loading('Loading , Please Wait !');
-    const chosenType = allTypes.find(el => el.id === +event?.target?.value);
+    const chosenType = allTypesRendered.find(el => el.id === +event?.target?.value);
     if(!currentBusinessTypes.find(el=> chosenType?.id === +el)){
       setCurrentBusinessTypes([...currentBusinessTypes,chosenType]);
-      allTypes = allTypes.filter(el=>el.id !== +chosenType.id);
+      allTypesRendered = allTypesRendered.filter(el=>el.id !== +chosenType.id);
       toast.success(`( ${ chosenType.name } ) Added Successfully.`,{
         id: toastId,
         duration: 2000
@@ -83,7 +98,7 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
   };
   const handleDeleteBusinessType = (type) => {
     const toastId = toast.loading('Loading , Please Wait !');
-    allTypes.push(type);
+    allTypesRendered.push(type);
     setCurrentBusinessTypes(currentBusinessTypes?.filter(el=> +el?.id !== +type?.id ));
     toast.success(`( ${ type.name } ) Removed Successfully.`,{
       id: toastId,
@@ -91,25 +106,25 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
     });
   };
 
-
-
-
   useEffect( ()=>{
     setValue('email',company?.email);
     setValue('full_address',company?.full_address);
     setValue('about_us',company?.about_us);
+    setValue('website_link',company?.website_link);
+    setValue('linkedin_link',company?.linkedin_link);
+    setValue('founded',company?.founded);
     setValue('main_type',company?.companyTypes?.map(el => el?.type));
-    setValue('category_id', mainCategories?.find(cat => cat?.mainCategoryName === company?.category )?.mainCategoryId);
-    setValue('sub_category_id',subCategories?.find(cat => cat?.subCategoryName === company?.sub_category )?.subCategoryId);
+    setValue('category_id', `${mainCategories?.find(cat => cat?.mainCategoryName === company?.category )?.mainCategoryId}`);
+    setValue('sub_category_id',`${subCategories?.find(cat => cat?.subCategoryName === company?.sub_category )?.subCategoryId}`);
     setCurrentBusinessTypes(allTypes.filter(type => watch('main_type')?.includes(type.name)));
-    allTypes = allTypes.filter(type => !watch('main_type')?.includes(type.name));
-  },[company]);
-
-  console.log(company);
-
+    allTypesRendered = allTypesRendered.filter(type => !watch('main_type')?.includes(type.name));
+  },[company,Cookies.get('currentUpdatedCompanyData')]);
   useEffect(()=>{
     setValue('logo',currnetImageUpdateFile);
   },[currnetImageUpdateFile]);
+  useEffect(()=>{
+    setValue('cover',currnetCoverUpdateFile);
+  },[currnetCoverUpdateFile]);
 
   useEffect(() => {
     const currentChosenCategory = mainCategories?.find(cat => +cat?.mainCategoryId === +watch('category_id'));
@@ -126,52 +141,66 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
   },[watch('category_id')]);
 
   const onSubmit = async (data) => {
-    console.log(data);
-  // const toastId = toast.loading('Please Wait...');
-  // const formData = new FormData();
-  // Object.keys(data).forEach((key) => {
-  //     if (key !== 'image' && key !== 'official_id_or_passport') {
-  //         formData.append(key, data[key]);
-  //     };
-  // });
-  // if(imgChanged && data.image[0]){
-  //     formData.append('image', data.image[0]);
-  // };
-  // await axios.post(`${baseURL}/${loginType}/update-profile`, formData, {
-  //     headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'multipart/form-data',
-  //         'Authorization': `Bearer ${token}`,
-  //     },
-  //     }).then(response => {
-  //         toast.success(`${response?.data?.message}.`,{
-  //             id: toastId,
-  //             duration: 1000,
-  //         });
-  //         loginType === 'employee' ?
-  //             Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
-  //         :
-  //             Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
-
-  //         localStorage.setItem('updatingProfile','notUpdating');
-  //         window.location.reload();
-  //     })
-  //     .catch(error => {
-  //         Object.keys(error?.response?.data?.errors).forEach((key) => {
-  //             setError(key, {message: error?.response?.data?.errors[key][0]});
-  //         });
-  //         if(error?.response?.data?.errors.image){
-  //         };
-  //         toast.error(error?.response?.data?.message,{
-  //             id: toastId,
-  //             duration: 2000
-  //         });
-  //     });
+  const toastId = toast.loading('Please Wait...');
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    if (key !== 'logo' && key !== 'cover' && !Array.isArray(data[key])) {
+      formData.append(key, data[key]);
+    } else if (Array.isArray(data[key])) {
+      data[key].forEach((item, index) => {
+        formData.append(`${key}[${index}]`, item);
+      });
+    }
+  });
+  if(imgChanged && data.logo[0]){
+    formData.append('logo', data.logo[0]);
   };
+  if(coverChanged && data.cover[0]){
+    formData.append('cover', data.cover[0]);
+  };
+  await axios.post(`${baseURL}/${loginType}/update-company-data`, formData, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${token}`,
+    },
+    }).then(response => {
+      toast.success(`${response?.data?.message}.`,{
+        id: toastId,
+        duration: 1000,
+      });
+      Cookies.set('currentUpdatedCompanyData',JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+      localStorage.setItem('updatingCompany','notUpdating');
+      window.location.reload();
+    })
+    .catch(error => {
+      if(error?.response?.data?.errors){
+        Object.keys(error?.response?.data?.errors).forEach((key) => {
+          setError(key, {message: error?.response?.data?.errors[key][0]});
+        });
+      }
+      toast.error(error?.response?.data?.message,{
+        id: toastId,
+        duration: 2000
+      });
+    });
+  };
+  useEffect(()=>{
+    if(errors?.logo) {
+      setCurrentImageUpdateError(errors?.logo?.message);
+    }else {
+      setCurrentImageUpdateError(null)
+    }
+    if(errors?.cover) {
+      setCurrentCoverUpdateError(errors?.cover?.message);
+    }else {
+      setCurrentCoverUpdateError(null)
+    }
+  },[errors?.logo,errors?.cover]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4'>
-      <div className="mt-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem">
         <label htmlFor="dashboardCompanyEmail">Company E-Mail</label>
         <input
           id='dashboardCompanyEmail'
@@ -186,22 +215,52 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
           (<span className='errorMessage'>{errors?.email?.message}</span>)
         }
       </div>
-      <div className="mt-2 profileFormInputItem">
-        <label htmlFor="dashboardCompanyFullAddress">Company FullAddress</label>
+      <div className="mt-2 ms-2 profileFormInputItem">
+        <label htmlFor="dashboardCompanywebsite_link">Company Link</label>
         <input
-          id='dashboardCompanyFullAddress'
-          className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
-          {...register('full_address')}
+          id='dashboardCompanywebsite_link'
+          className={`form-control signUpInput mt-2 ${errors?.website_link ? 'inputError' : ''}`}
+          {...register('website_link')}
           type="text"
           disabled={profileUpdateStatus === 'notUpdating'}
         />
         {
-          errors?.full_address
+          errors?.website_link
           &&
-          (<span className='errorMessage'>{errors?.full_address?.message}</span>)
+          (<span className='errorMessage'>{errors?.website_link?.message}</span>)
         }
       </div>
-      <div className="mt-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem">
+        <label htmlFor="dashboardCompanylinkedin_link">LinkedIn Link</label>
+        <input
+          id='dashboardCompanylinkedin_link'
+          className={`form-control signUpInput mt-2 ${errors?.linkedin_link ? 'inputError' : ''}`}
+          {...register('linkedin_link')}
+          type="text"
+          disabled={profileUpdateStatus === 'notUpdating'}
+        />
+        {
+          errors?.linkedin_link
+          &&
+          (<span className='errorMessage'>{errors?.linkedin_link?.message}</span>)
+        }
+      </div>
+      <div className="mt-2 ms-2 profileFormInputItem">
+        <label htmlFor="dashboardCompanyfounded">Founded</label>
+        <input
+          id='dashboardCompanyfounded'
+          className={`form-control signUpInput mt-2 ${errors?.founded ? 'inputError' : ''}`}
+          {...register('founded')}
+          type="text"
+          disabled={profileUpdateStatus === 'notUpdating'}
+        />
+        {
+          errors?.founded
+          &&
+          (<span className='errorMessage'>{errors?.founded?.message}</span>)
+        }
+      </div>
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanyMainCategory">Main Category</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
@@ -216,11 +275,10 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
               <>
               <select
                 className={`form-select signUpInput mt-2 ${errors?.category_id ? 'inputError' : ''}`}
-                defaultValue={watch('category_id')}
                 {...register('category_id')}
                 id="dashboardCompanyMainCategory"
               >
-                <option disabled value="">Select Your Country</option>
+                <option disabled value="">Select Category</option>
                 {
                   mainCategories?.map(cat => (
                       <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>{cat?.mainCategoryName}</option>
@@ -235,7 +293,7 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
               </>
             }
       </div>
-      <div className="mt-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanySubCategory">Sub-Category</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
@@ -250,13 +308,13 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
               <>
               <select
                 className={`form-select signUpInput mt-2 ${errors?.sub_category_id ? 'inputError' : ''}`}
-                defaultValue={watch('sub_category_id')}
+                defaultValue={''}
                 {...register('sub_category_id')}
                 id="dashboardCompanySubCategory"
               >
-                <option disabled value="">Select Your Country</option>
+                <option disabled value="">Select Sub-Category</option>
                 {
-                  mainCategories?.map(cat => (
+                  subCategories?.map(cat => (
                       <option key={cat?.subCategoryId} value={cat?.subCategoryId}>{cat?.subCategoryName}</option>
                   ))
                 }
@@ -269,9 +327,24 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
               </>
             }
       </div>
-      <div className="mt-2 profileFormInputItem">
+      <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
+        <label htmlFor="dashboardCompanyFullAddress">Company FullAddress</label>
+        <textarea
+          id='dashboardCompanyFullAddress'
+          className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
+          {...register('full_address')}
+          type="text"
+          disabled={profileUpdateStatus === 'notUpdating'}
+        />
+        {
+          errors?.full_address
+          &&
+          (<span className='errorMessage'>{errors?.full_address?.message}</span>)
+        }
+      </div>
+      <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
         <label htmlFor="dashboardCompanyabout_us">About Company</label>
-        <input
+        <textarea
           id='dashboardCompanyabout_us'
           className={`form-control signUpInput mt-2 ${errors?.about_us ? 'inputError' : ''}`}
           {...register('about_us')}
@@ -284,7 +357,7 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
           (<span className='errorMessage'>{errors?.about_us?.message}</span>)
         }
       </div>
-      <div className={`mt-2 profileFormInputItem w-100 ${profileUpdateStatus === 'notUpdating' && 'ps-3'}`}>
+      <div className={`mt-2 profileFormInputItem w-100 pe-4 ms-2 ${profileUpdateStatus === 'notUpdating' && 'ps-3'}`}>
         <label htmlFor="dashboardCompanymainType">Company Types</label>
         {(profileUpdateStatus === 'notUpdating') ?
           <div >
@@ -304,7 +377,7 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
           >
           <option disabled value="">Select Company Types</option>
           {
-            allTypes?.map(type => (
+            allTypesRendered?.map(type => (
               <option key={type?.id} value={type?.id}>{type?.name}</option>
             ))
           }
@@ -324,6 +397,20 @@ export default function CompanySettingsForm({token,mainCategories,imgChanged,cur
             </span>
           ))}
         </>
+        }
+      </div>
+      <div className={`bottomContainer pt-5 
+          text-center m-auto
+        `}>
+        {
+          (profileUpdateStatus === 'notUpdating') ?
+            <span className={`startUpdateBtn ${isSubmitting && 'd-none'}`} onClick={() => {
+              scrollToTop();
+              localStorage.setItem('updatingProfile', 'updating');
+              setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
+          }}>Update</span>
+          :
+          <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn mt-0' />
         }
       </div>
     </form>

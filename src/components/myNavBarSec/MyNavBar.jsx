@@ -39,7 +39,13 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                 window.location.reload();
                 Cookies.remove('currentLoginedData');
                 Cookies.remove('authToken');
-                Cookies.remove('CurrentFollowedCompanies');      
+                Cookies.remove('CurrentFollowedCompanies');  
+                Cookies.remove('currentUpdatedCompanyData');
+                Cookies.remove('currentUpdatingActivities');
+                localStorage.removeItem('updatingData');
+                localStorage.removeItem('updatingCompany');
+                localStorage.removeItem('updatingProfile');
+                localStorage.removeItem('updatingCompanyActivities');    
             } catch (error) {
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
             }

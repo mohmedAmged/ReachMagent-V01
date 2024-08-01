@@ -1,0 +1,48 @@
+.activitiesSelect {
+    width: 40% !important;
+}
+.addMoreActivitiesBtn ,
+.removeMoreActivitiesBtn {
+    margin-top: 15px;
+    color: #198754;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 12px 20px !important;
+    border: 1px solid #198754;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    display: inline-block;
+    cursor: pointer;
+}
+.addMoreActivitiesBtn:hover {
+    color: var(--primary-white);
+    background-color: #198754;
+}
+.addMoreActivitiesBtn:focus ,
+.addMoreActivitiesBtn:focus-visible {
+    outline: none;
+}
+.removeMoreActivitiesBtn {
+    font-size: 16px;
+    border-radius: 50%;
+    margin-inline-end: 0px;
+    color: #ff2020;
+    border-color: #ff2020;
+    padding: 7px 11px !important;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+.removeMoreActivitiesBtn:hover {
+    color: var(--primary-white);
+    background-color: #ff2020;
+}
