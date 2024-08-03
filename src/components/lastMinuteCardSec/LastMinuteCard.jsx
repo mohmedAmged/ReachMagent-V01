@@ -27,7 +27,7 @@ export default function LastMinuteCard({
         padding: '10px',
         borderRadius: '20px',
         // border: showCustomContent && buttonLabel === 'Add' ? '1px solid rgba(0, 0, 0, 0.5)' : '2px solid rgba(148, 21, 21, 1)'
-         border: `2px solid ${borderColor}`
+        border: `2px solid ${borderColor}`
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
     return (

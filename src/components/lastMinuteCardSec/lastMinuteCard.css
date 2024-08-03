@@ -25,25 +25,28 @@
 }
 .addButtonStyle{
     background: transparent;
-    border: 1px solid var(--main-turquoise);
-    color: var(--main-turquoise);
+    border: 1px solid var(--main-blue-color);
+    color: var(--main-blue-color);
     border-radius: 8px;
     padding: 5px 10px;
     text-transform: capitalize;
     transition: ease-in-out .3s;
 }
 .addButtonStyle:hover{
-    background: var(--main-turquoise);
+    background: var(--main-blue-color);
     color: var(--primary-white);
 }
 .addedButtonStyle{
-    background: var(--main-turquoise);
-    border: 1px solid var(--main-turquoise);
+    background: var(--main-blue-color);
+    border: 1px solid var(--main-blue-color);
     color: var(--primary-white);
     border-radius: 8px;
     padding: 5px 10px;
     text-transform: capitalize;
     transition: ease-in-out .3s;
+}
+.addedButtonStyle:hover{
+    background: rgba(1, 31, 91, 0.813);
 }
 @media screen and (max-width: 600px) {
     .product__info{
