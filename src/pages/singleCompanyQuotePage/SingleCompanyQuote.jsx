@@ -13,7 +13,13 @@ import LastMinuteCard from '../../components/lastMinuteCardSec/LastMinuteCard';
 import CartProduct from '../../components/cartProductSec/CartProduct';
 export default function SingleCompanyQuote({ token }) {
     const { companyName } = useParams();
+    const [includeShipping, setIncludeShipping] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [customProduct, setCustomProduct] = useState({
+        title: '',
+        quantity: 0,
+        description: '',
+    });
     const productItems = [
         {
             id: 1,
@@ -80,6 +86,34 @@ export default function SingleCompanyQuote({ token }) {
     };
     const handleFormSubmit = (e) => {
         e.preventDefault();
+    };
+
+    const handleCheckboxChange = (e) => {
+        setIncludeShipping(e.target.checked);
+    };
+
+    const handleCustomProductChange = (e) => {
+        const { name, value } = e.target;
+        setCustomProduct(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleAddCustomProduct = () => {
+        if (customProduct.title && customProduct.quantity > 0) {
+            setSelectedProducts([...selectedProducts, {
+                ...customProduct,
+                id: Date.now(), // Generate a unique ID
+                img: '', // No image for custom products
+            }]);
+            // Clear the form
+            setCustomProduct({
+                title: '',
+                quantity: 0,
+                description: '',
+            });
+        }
     };
     return (
         <div className='singleCompanyQuote__handler'>
@@ -246,18 +280,34 @@ export default function SingleCompanyQuote({ token }) {
                                         <div className="customization__form row">
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
-                                                    <label htmlFor="">
+                                                    <label htmlFor="customTitle">
                                                         Title
                                                     </label>
-                                                    <input className='form-control' type="text" placeholder='L-Shape Sofa-Grey' />
+                                                    <input
+                                                        id="customTitle"
+                                                        name="title"
+                                                        className='form-control'
+                                                        type="text"
+                                                        placeholder='L-Shape Sofa-Grey'
+                                                        value={customProduct.title}
+                                                        onChange={handleCustomProductChange}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
-                                                    <label htmlFor="">
+                                                    <label htmlFor="customQuantity">
                                                         Quantity
                                                     </label>
-                                                    <input className='form-control' type="text" placeholder='5' />
+                                                    <input
+                                                        id="customQuantity"
+                                                        name="quantity"
+                                                        className='form-control'
+                                                        type="number"
+                                                        placeholder='5'
+                                                        value={customProduct.quantity}
+                                                        onChange={handleCustomProductChange}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-lg-12">
@@ -265,7 +315,15 @@ export default function SingleCompanyQuote({ token }) {
                                                     <label htmlFor="">
                                                         Description
                                                     </label>
-                                                    <textarea class="form-control" id="" rows="3" placeholder='The L-shaped sofa is the relax version of the long sofa. Its main feature is the extended terminal seat, which can be placed on the left or right side, on the basis of the living room design and the personal needs.'></textarea>
+                                                    <textarea
+                                                        id="customDescription"
+                                                        name="description"
+                                                        className="form-control"
+                                                        rows="3"
+                                                        placeholder='The L-shaped sofa is the relax version of the long sofa. Its main feature is the extended terminal seat, which can be placed on the left or right side, on the basis of the living room design and the personal needs.'
+                                                        value={customProduct.description}
+                                                        onChange={handleCustomProductChange}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-lg-6"
@@ -274,7 +332,11 @@ export default function SingleCompanyQuote({ token }) {
                                                     <button className='addedButtonStyle'>
                                                         Add files
                                                     </button>
-                                                    <button className='pageMainBtnStyle'>
+                                                    <button 
+                                                    type="button"
+                                                    className='pageMainBtnStyle'
+                                                    onClick={handleAddCustomProduct}
+                                                    >
                                                         Add to Quotation
                                                     </button>
                                                 </div>
@@ -283,61 +345,83 @@ export default function SingleCompanyQuote({ token }) {
                                     </div>
                                 </div>
                                 <div className="col-12">
-                                    <div className="destinationQuote__handler">
-                                        <h3>
-                                            Destination
-                                        </h3>
-                                        <form className="destinationQuote__form row">
-                                            <div className="col-lg-4 col-md-4">
-                                                <div className="singleQuoteInput">
-                                                    <label htmlFor="">
-                                                        Country
-                                                    </label>
-                                                    <select className='form-select' name="" id="" placeholder=''>
-                                                        <option value disabled selected>Choose your country</option>
-                                                        <option value="">2</option>
-                                                        <option value="">3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 col-md-4">
-                                                <div className="singleQuoteInput">
-                                                    <label htmlFor="">
-                                                        City
-                                                    </label>
-                                                    <select className='form-select' name="" id="">
-                                                        <option value disabled selected>Choose your city</option>
-                                                        <option value="">2</option>
-                                                        <option value="">3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-4 col-md-4">
-                                                <div className="singleQuoteInput">
-                                                    <label htmlFor="">
-                                                        Area
-                                                    </label>
-                                                    <select className='form-select' name="" id="">
-                                                        <option value disabled selected>Choose your area</option>
-                                                        <option value="">2</option>
-                                                        <option value="">3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                            <div className="singleQuoteInput">
-                                                    <label htmlFor="">
-                                                        Description
-                                                    </label>
-                                                    <textarea class="form-control" id="" rows="3" placeholder='Enter the address'></textarea>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    <div className="quotaionCheckInputs__handler mt-5">
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox"
+                                                value=""
+                                                checked={includeShipping}
+                                                onChange={handleCheckboxChange}
+                                                id="flexCheckDefault" />
+                                            <label className="form-check-label" for="flexCheckDefault">
+                                                Include Shipping
+                                            </label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault2" />
+                                            <label className="form-check-label" for="flexCheckDefault2">
+                                                Include Insurance
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
+                                {includeShipping && (
+                                    <div className="col-12">
+                                        <div className="destinationQuote__handler">
+                                            <h3>
+                                                Destination
+                                            </h3>
+                                            <form className="destinationQuote__form row">
+                                                <div className="col-lg-4 col-md-4">
+                                                    <div className="singleQuoteInput">
+                                                        <label htmlFor="">
+                                                            Country
+                                                        </label>
+                                                        <select className='form-select' name="" id="" placeholder=''>
+                                                            <option value disabled selected>Choose your country</option>
+                                                            <option value="">2</option>
+                                                            <option value="">3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-4 col-md-4">
+                                                    <div className="singleQuoteInput">
+                                                        <label htmlFor="">
+                                                            City
+                                                        </label>
+                                                        <select className='form-select' name="" id="">
+                                                            <option value disabled selected>Choose your city</option>
+                                                            <option value="">2</option>
+                                                            <option value="">3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-4 col-md-4">
+                                                    <div className="singleQuoteInput">
+                                                        <label htmlFor="">
+                                                            Area
+                                                        </label>
+                                                        <select className='form-select' name="" id="">
+                                                            <option value disabled selected>Choose your area</option>
+                                                            <option value="">2</option>
+                                                            <option value="">3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-6">
+                                                    <div className="singleQuoteInput">
+                                                        <label htmlFor="">
+                                                            Description
+                                                        </label>
+                                                        <textarea className="form-control" id="" rows="3" placeholder='Enter the address'></textarea>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="col-12">
                                     <button className='addedButtonStyle btnSubmitQuote mt-5'>
-                                    Submit quotation
+                                        Submit quotation
                                     </button>
                                 </div>
                             </form>
