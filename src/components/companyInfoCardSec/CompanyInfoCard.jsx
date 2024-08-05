@@ -182,7 +182,10 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            <NavLink className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
+                            <NavLink onClick={() => {
+                                scrollToTop();
+                            }}
+                                className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
                                 <button className='btnColoredBlue'>
                                     Request Quotation
                                 </button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './franchiseSec.css';
 import { NavLink } from 'react-router-dom';
+import { scrollToTop } from '../../functions/scrollToTop';
 
 export default function FranchiseSec({ pageName, headText, paraText, btnOneText, btnTwoText, btnOnelink }) {
     return (
@@ -16,7 +17,11 @@ export default function FranchiseSec({ pageName, headText, paraText, btnOneText,
                     <div className="franchise__actions">
                         {
                             btnOneText ?
-                                <NavLink to={btnOnelink} className='nav-link'>
+                                <NavLink  
+                                onClick={() => {
+                                    scrollToTop();
+                                }} 
+                                to={btnOnelink} className='nav-link'>
                                     <button>
                                         {btnOneText}
                                     </button>
