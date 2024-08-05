@@ -1,85 +1,25 @@
 import React, { useState } from 'react'
-import './singleCompanyQuote.css'
+import './oneClickQuotation.css'
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec'
-import { useParams } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import "swiper/css/autoplay";
-import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
-import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
-import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
-import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
-import LastMinuteCard from '../../components/lastMinuteCardSec/LastMinuteCard';
-import CartProduct from '../../components/cartProductSec/CartProduct';
+import CartProduct from '../../components/cartProductSec/CartProduct'
 import DestinationForm from '../../components/destinationFormSec/DestinationForm';
-export default function SingleCompanyQuote({ token }) {
-    const { companyName } = useParams();
-    const [includeShipping, setIncludeShipping] = useState(false);
+export default function OneClickQuotation() {
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [includeShipping, setIncludeShipping] = useState(false);
     const [customProduct, setCustomProduct] = useState({
         title: '',
         quantity: 0,
         description: '',
     });
-    const productItems = [
-        {
-            id: 1,
-            img: product1,
-            title: 'Table Lamp',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-        {
-            id: 2,
-            img: product2,
-            title: 'Ceiling Lamp ',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-        {
-            id: 3,
-            img: product3,
-            title: 'Blue Wood Chair',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-        {
-            id: 4,
-            img: product1,
-            title: 'Table Lamp',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-        {
-            id: 5,
-            img: product2,
-            title: 'Ceiling Lamp ',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-        {
-            id: 6,
-            img: product3,
-            title: 'Blue Wood Chair',
-            quantity: 0,
-            dealQuantity: 'Customizable'
-        },
-    ]
-    // add product to selected products
-    const handleAddProduct = (product) => {
-        setSelectedProducts([...selectedProducts, product]);
-    };
     // remove product
     const handleRemoveProduct = (productId) => {
         setSelectedProducts(selectedProducts.filter((product) => product.id !== productId));
     };
-
     const handleDecreaseQuantity = (productId) => {
         setSelectedProducts(selectedProducts.map(product =>
             product.id === productId ? { ...product, quantity: Math.max(product.quantity - 1, 0) } : product
         ));
     };
-
     const handleIncreaseQuantity = (productId) => {
         setSelectedProducts(selectedProducts.map(product =>
             product.id === productId ? { ...product, quantity: product.quantity + 1 } : product
@@ -100,7 +40,6 @@ export default function SingleCompanyQuote({ token }) {
             [name]: value
         }));
     };
-
     const handleAddCustomProduct = () => {
         if (customProduct.title && customProduct.quantity > 0) {
             setSelectedProducts([...selectedProducts, {
@@ -117,10 +56,10 @@ export default function SingleCompanyQuote({ token }) {
         }
     };
     return (
-        <div className='singleCompanyQuote__handler'>
+        <div className='oneClickQuotation__handler'>
             <MyMainHeroSec
                 heroSecContainerType='singleCompany__quote'
-                headText='Request an official Quote'
+                headText='Explore all options'
                 paraPartOne='Save  thousands to millions of bucks by using tool great skills, be a cool React Developer'
             />
             <>
@@ -128,10 +67,10 @@ export default function SingleCompanyQuote({ token }) {
                     <div className="container">
                         <div className="singleCompanyQuote__headText">
                             <h1>
-                                Quote from <span>{companyName}</span>
+                                One-click quotation
                             </h1>
                             <p>
-                                Request a Detailed {companyName} Quote
+                                Get an Instant Quote with One Click
                             </p>
                         </div>
                         <div className="singleCompanyQuote__mainFrom">
@@ -150,8 +89,19 @@ export default function SingleCompanyQuote({ token }) {
                                                 </select>
                                             </div>
                                         </div>
+                                        <div className="col-lg-6">
+                                            <div className="singleQuoteInput">
+                                                <label htmlFor="">
+                                                    Choose your region
+                                                </label>
+                                                <select className='form-select' name="" id="">
+                                                    <option value="">region 1</option>
+                                                    <option value="">region 2</option>
+                                                    <option value="">region 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="singleQuoteInput">
@@ -175,73 +125,6 @@ export default function SingleCompanyQuote({ token }) {
                                             <option value="">Catalog</option>
                                             <option value="">Services</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div className="col-12">
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="singleQuote__searchInput">
-                                                <h3>
-                                                    Want to add more products?
-                                                </h3>
-                                                <input className='form-control' type="text" placeholder='Search here' />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-12">
-                                    <div className="singleQuote__slideProducts ">
-
-                                        <Swiper
-                                            className='mySwiper'
-                                            modules={[Autoplay]}
-                                            autoplay={{
-                                                delay: 2500,
-                                                pauseOnMouseEnter: true,
-                                                disableOnInteraction: false
-                                            }}
-                                            // loop
-                                            breakpoints={{
-                                                300: {
-                                                    slidesPerView: 1.1,
-                                                    spaceBetween: 10
-                                                },
-                                                426: {
-                                                    slidesPerView: 1.2,
-                                                    spaceBetween: 20
-                                                },
-                                                600: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                768: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                995: {
-                                                    slidesPerView: 3.2,
-                                                    spaceBetween: 20
-                                                },
-                                            }}
-                                        >
-                                            {productItems.map((el, index) => {
-                                                const isAdded = selectedProducts.some((selectedProduct) => selectedProduct.id === el.id);
-                                                return (
-                                                    <SwiperSlide className=' my-3' key={index}>
-                                                        <LastMinuteCard
-                                                            productImage={el.img}
-                                                            productName={el.title}
-                                                            dealQuantity={el.dealQuantity}
-                                                            showCustomContent={true}
-                                                            buttonLabel={isAdded ? "Added" : "Add"}
-                                                            onAddClick={() => handleAddProduct(el)}
-                                                            // Conditional border color
-                                                            borderColor={isAdded ? 'rgba(7, 82, 154, 1)' : 'rgba(0, 0, 0, 0.5)'}
-                                                        />
-                                                    </SwiperSlide>
-                                                )
-                                            })}
-                                        </Swiper>
                                     </div>
                                 </div>
                                 <div className="col-12">
@@ -275,9 +158,6 @@ export default function SingleCompanyQuote({ token }) {
                                 </div>
                                 <div className="col-12">
                                     <div className="customizationQuote__handler">
-                                        <h3>
-                                            <span>{companyName}</span> Offers Customization
-                                        </h3>
                                         <div className="customization__form row">
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
@@ -333,10 +213,10 @@ export default function SingleCompanyQuote({ token }) {
                                                     <button className='addedButtonStyle'>
                                                         Add files
                                                     </button>
-                                                    <button 
-                                                    type="button"
-                                                    className='pageMainBtnStyle'
-                                                    onClick={handleAddCustomProduct}
+                                                    <button
+                                                        type="button"
+                                                        className='pageMainBtnStyle'
+                                                        onClick={handleAddCustomProduct}
                                                     >
                                                         Add to Quotation
                                                     </button>
@@ -370,6 +250,24 @@ export default function SingleCompanyQuote({ token }) {
                                         <DestinationForm />
                                     </div>
                                 )}
+                                <div className="col-12">
+                                    <div className="quotaionCheckInputs__handler mt-5">
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox"
+                                                value=""
+                                                id="flexCheckDefault3" />
+                                            <label className="form-check-label" for="flexCheckDefault3">
+                                                Hire ReachMagnet to inspect the items (50$/visit)
+                                            </label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault4" />
+                                            <label className="form-check-label" for="flexCheckDefault4">
+                                                Get insurance quotes
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="col-12">
                                     <button className='addedButtonStyle btnSubmitQuote mt-5'>
                                         Submit quotation

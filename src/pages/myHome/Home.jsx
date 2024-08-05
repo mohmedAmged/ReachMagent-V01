@@ -49,6 +49,7 @@ export default function Home({companies,token}) {
           headText='One-click Quotation'
           paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
           btnOneText='Start Now'
+          btnOnelink='/one-click-quotation'
         />
       </div>
 
