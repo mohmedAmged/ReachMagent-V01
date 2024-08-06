@@ -134,7 +134,9 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                             title='Profile'
                                         >
                                             <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
-                                                alt={`${JSON.parse(profileData)?.name}`} />
+                                                // alt={`${JSON.parse(profileData)?.name}`} 
+                                                alt='img-check'
+                                            />
                                         </NavLink>
                                     </>
                                     :
@@ -196,7 +198,9 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                             title='Profile'
                                         >
                                             <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
-                                                alt={`${JSON.parse(profileData)?.name}`} />
+                                                // alt={`${JSON.parse(profileData)?.name}`} 
+                                                alt='img-check'
+                                            />
                                         </NavLink>
                                     </>
                                 }
