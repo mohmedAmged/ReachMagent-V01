@@ -85,7 +85,10 @@ function App() {
       return response?.data?.data;
     },
   });
-  console.log(companiesQuery?.data);
+  // console.log(companiesQuery?.data);
+
+
+  
   return (
     <>
 
@@ -164,7 +167,7 @@ function App() {
             token={token}
           />}
         />
-        <Route path='/profile/catalog' element={<MyCatalog />} />
+        <Route path='/profile/catalog' element={<MyCatalog token={token}/>} />
 
         <Route path='/profile/profile-settings' 
           element={<MyProfileSettings

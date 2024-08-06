@@ -10,7 +10,7 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import defaultImage from '../../assets/images.png';
 
-export default function MyNavBar({ scrollToggle ,token ,loginType}) {
+export default function MyNavBar({ scrollToggle, token, loginType }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
 
@@ -22,30 +22,30 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
         setShowOffcanvas(false);
     };
 
-    const handleLogout = ()=>{
+    const handleLogout = () => {
         const toastId = toast.loading('Please Wait...');
         const fetchData = async () => {
             try {
-                const response = await axios.post(`${baseURL}/${loginType}/logout`,{}, {
+                const response = await axios.post(`${baseURL}/${loginType}/logout`, {}, {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
                 });
-                toast.success(`${response?.data?.message}.`,{
+                toast.success(`${response?.data?.message}.`, {
                     id: toastId,
                     duration: 1000
                 });
                 window.location.reload();
                 Cookies.remove('currentLoginedData');
                 Cookies.remove('authToken');
-                Cookies.remove('CurrentFollowedCompanies');  
+                Cookies.remove('CurrentFollowedCompanies');
                 Cookies.remove('currentUpdatedCompanyData');
                 Cookies.remove('currentUpdatingActivities');
                 localStorage.removeItem('updatingData');
                 localStorage.removeItem('updatingCompany');
                 localStorage.removeItem('updatingProfile');
-                localStorage.removeItem('updatingCompanyActivities');    
+                localStorage.removeItem('updatingCompanyActivities');
             } catch (error) {
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
             }
@@ -122,43 +122,44 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                         <Nav>
                             {
                                 token ?
-                                <>
-                                    <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
-                                        <i className="bi bi-box-arrow-left"></i>
-                                    </NavLink>
-                                    <NavLink onClick={()=>{
+                                    <>
+                                        <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
+                                            <i className="bi bi-box-arrow-left"></i>
+                                        </NavLink>
+                                        <NavLink onClick={() => {
                                             scrollToTop();
                                         }}
-                                        className='nav-link nav__link__style nav__profileData'
-                                        to='/profile/profile-settings'
-                                        title='Profile'
-                                    >
-                                        <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
-                                    </NavLink>
-                                </>
-                                :
-                                <>
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                        }}
-                                        aria-label="Close"
-                                        className={`nav-link nav__link__style sign__up__btn`}
-                                        to={`/personalSignUp`}
-                                    >
-                                        sign up
-                                    </NavLink>
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                        }}
-                                        aria-label="Close"
-                                        className={`nav-link nav__link__style sign__in__btn`}
-                                        to={`/Login`}
-                                    >
-                                        sign in
-                                    </NavLink>
-                                </>
+                                            className='nav-link nav__link__style nav__profileData'
+                                            to='/profile/profile-settings'
+                                            title='Profile'
+                                        >
+                                            <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
+                                                alt={`${JSON.parse(profileData)?.name}`} />
+                                        </NavLink>
+                                    </>
+                                    :
+                                    <>
+                                        <NavLink
+                                            onClick={() => {
+                                                scrollToTop();
+                                            }}
+                                            aria-label="Close"
+                                            className={`nav-link nav__link__style sign__up__btn`}
+                                            to={`/personalSignUp`}
+                                        >
+                                            sign up
+                                        </NavLink>
+                                        <NavLink
+                                            onClick={() => {
+                                                scrollToTop();
+                                            }}
+                                            aria-label="Close"
+                                            className={`nav-link nav__link__style sign__in__btn`}
+                                            to={`/Login`}
+                                        >
+                                            sign in
+                                        </NavLink>
+                                    </>
                             }
                         </Nav>
                     </Navbar.Collapse>
@@ -182,19 +183,20 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                             <Nav className="mx-auto" >
 
                                 {
-                                    token && 
+                                    token &&
                                     <>
                                         <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
                                             <i className="bi bi-box-arrow-left"></i>
                                         </NavLink>
-                                        <NavLink onClick={()=>{
-                                                scrollToTop();
-                                            }}
+                                        <NavLink onClick={() => {
+                                            scrollToTop();
+                                        }}
                                             className='nav-link nav__link__style nav__profileData'
                                             to='/profile/profile-settings'
                                             title='Profile'
                                         >
-                                            <img src={JSON.parse(profileData)?.image || defaultImage} alt={`${JSON.parse(profileData)?.name}`} />
+                                            <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
+                                                alt={`${JSON.parse(profileData)?.name}`} />
                                         </NavLink>
                                     </>
                                 }
@@ -252,32 +254,32 @@ export default function MyNavBar({ scrollToggle ,token ,loginType}) {
                                     contact us
                                 </NavLink>
                                 {
-                                token ?
-                                ''
-                                :
-                                <>
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                        }}
-                                        aria-label="Close"
-                                        className={`nav-link nav__link__style sign__up__btn`}
-                                        to={`/personalSignUp`}
-                                    >
-                                        sign up
-                                    </NavLink>
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                        }}
-                                        aria-label="Close"
-                                        className={`nav-link nav__link__style sign__in__btn`}
-                                        to={`/Login`}
-                                    >
-                                        sign in
-                                    </NavLink>
-                                </>
-                            }
+                                    token ?
+                                        ''
+                                        :
+                                        <>
+                                            <NavLink
+                                                onClick={() => {
+                                                    scrollToTop();
+                                                }}
+                                                aria-label="Close"
+                                                className={`nav-link nav__link__style sign__up__btn`}
+                                                to={`/personalSignUp`}
+                                            >
+                                                sign up
+                                            </NavLink>
+                                            <NavLink
+                                                onClick={() => {
+                                                    scrollToTop();
+                                                }}
+                                                aria-label="Close"
+                                                className={`nav-link nav__link__style sign__in__btn`}
+                                                to={`/Login`}
+                                            >
+                                                sign in
+                                            </NavLink>
+                                        </>
+                                }
                             </Nav>
 
                         </Offcanvas.Body>
