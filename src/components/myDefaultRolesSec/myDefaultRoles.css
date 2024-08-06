@@ -120,3 +120,68 @@
 .toggle-text {
     margin-left: 10px;
 }
+
+.deleteRuleBtn ,
+.updateRuleBtn {
+    margin-inline-end: 20px;
+    cursor: pointer;
+    color: #ff2020;
+    padding: 5px 15px;
+    border: 1px solid #00000012;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    background-color: var(--primary-white);
+}
+.deleteRuleBtn:hover ,
+.updateRuleBtn:hover {
+    text-decoration: underline;
+    border-color: #ff2020;
+    background-color: #ff2020;
+    color: var(--primary-white);
+}
+.updateRuleBtn {
+    color: rgb(0, 173, 14);
+}
+.updateRuleBtn:hover {
+    border-color: rgb(0, 173, 14);
+    background-color: rgb(0, 173, 14);
+}
+
+
+
+
+.permissionsLoader {
+    margin: auto;
+    border: 4px solid var(--main-blue-color);
+    border-left-color: transparent;
+    border-radius: 50%;
+}
+.permissionsLoader {
+    border: 4px solid var(--main-blue-color);
+    border-left-color: transparent;
+    width: 36px;
+    height: 36px;
+}
+.permissionsLoader {
+    border: 4px solid var(--main-blue-color);
+    border-left-color: transparent;
+    width: 36px;
+    height: 36px;
+    animation: spin89345 1s linear infinite;
+}
+@keyframes spin89345 {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

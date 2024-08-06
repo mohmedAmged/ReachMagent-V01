@@ -7,7 +7,7 @@ import ProfileFilterBar from '../../components/profileFilterBarSec/ProfileFilter
 import MyAllRoles from '../../components/myAllRolesSec/MyAllRoles'
 import Cookies from 'js-cookie';
 
-export default function MyUsersManagement() {
+export default function MyUsersManagement({token}) {
     const [currentUserLogin,setCurrentUserLogin] = useState(null);
 
     useEffect(() => {
@@ -27,11 +27,11 @@ export default function MyUsersManagement() {
         { name: 'Profiles', active: activeItem === 'Profiles' },
         { name: 'Roles', active: activeItem === 'Roles' },
         { name: 'Invitations', active: activeItem === 'Invitations' },
-        // Add more items as needed
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
+
     return (
         <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
@@ -46,7 +46,7 @@ export default function MyUsersManagement() {
                             <ProfileFilterBar items={items} onItemClick={handleItemClick} />
                         </div>
                         <div className="col-12 user__management__main__info mt-3">
-                        {activeItem === 'Roles' && <MyAllRoles />}
+                        {activeItem === 'Roles' && <MyAllRoles token={token} />}
                         </div>
                     </div>
                 </div>

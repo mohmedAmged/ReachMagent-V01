@@ -105,6 +105,7 @@ export default function BusinessSignUpFormMainSec({countries,industries,mainCate
       activity_id: '',
       sub_activity_id: '',
       industry_id: '',
+      website_link: '',
       documents: '',
       logo: '',
 
@@ -450,10 +451,6 @@ export default function BusinessSignUpFormMainSec({countries,industries,mainCate
 
   return (
     <div className='signUpForm__mainSec py-5 mb-5'>
-      <Toaster
-        position="top-center"
-        reverseOrder={true}
-      />
       <div className="container">
         <div className="row">
           <div className="col-12">
@@ -759,6 +756,24 @@ export default function BusinessSignUpFormMainSec({countries,industries,mainCate
                       errors.sub_activity_id 
                       &&
                       (<span className='errorMessage'>{errors.sub_activity_id.message }</span>)
+                    }
+                  </div>
+                  <div className="col-lg-6 mb-4">
+                    <label htmlFor="signUpwebsite_link">
+                      WebSite Link
+                      <span className="requiredStar"> *</span>
+                    </label>
+                    <input 
+                      type='text'
+                      id='signUpwebsite_link'
+                      placeholder="Company's Website Link"
+                      {...register('website_link')}
+                      className={`form-control signUpInput ${errors.website_link ? 'inputError' : ''}`}
+                    />
+                    {
+                      errors.website_link 
+                      &&
+                      (<span className='errorMessage'>{errors.website_link.message}</span>)
                     }
                   </div>
                   <div className="col-lg-6 mb-4">
