@@ -23,11 +23,16 @@
     color: rgba(41, 45, 50, 1);
     padding: 20px 15px;
 }
-
+.quotationTable__content table tbody td.adjust__flex{
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    flex-direction: row;
+}
 .quotationTable__content table tbody td .table__statu__btn {
-    width: Fixed (145px)px;
-    height: Hug (29px)px;
-    padding: 4px 12px 4px 12px;
+    /* width: Fixed (145px)px;
+    height: Hug (29px)px; */
+    padding: 4px 12px;
     border-radius: 4px ;
     background: var(--primary-white);
     border: 2px solid rgba(35, 11, 52, 1);
@@ -35,7 +40,7 @@
     text-transform: capitalize;
     transition: ease-in-out .3s;
     font-weight: 500;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 .quotationTable__content table tbody td .table__statu__btn.ignore__btn{
     background: rgba(255, 197, 197, 1);
@@ -55,14 +60,27 @@
     color: rgba(1, 186, 233, 1);
     background: var(--primary-white);
 }
-.quotationTable__content table tbody td .table__statu__btn.pending{
+.quotationTable__content table tbody td .table__statu__btn.Pending{
     color: var(--primary-white);
     background: var(--primary-black);
     border: 2px solid var(--primary-black);
 }
-.quotationTable__content table tbody td .table__statu__btn.pending:hover{
+
+.quotationTable__content table tbody td .table__statu__btn.Pending:hover{
     color: var(--primary-black);
     background: var(--primary-white);
+}
+.quotationTable__content table tbody td .table__statu__btn.show__btn{
+    
+    color: var(--main-blue-color);
+    background: var(--primary-white);
+    border: 2px solid var(--main-blue-color);
+    display: flex;
+    gap: 7px;
+}
+.quotationTable__content table tbody td .table__statu__btn.show__btn:hover{
+    color: var(--primary-white);
+    background: var(--main-blue-color);
 }
 .quotationTable__content table tbody td .table__statu__btn.submitted{
     background: var(--primary-white);

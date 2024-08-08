@@ -37,7 +37,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
 
     const onSubmit = async(data) => {
         const toastId = toast.loading('Please Wait...');
-        await axios.post(`${baseURL}/${loginType}/login`, data, {
+        await axios.post(`${baseURL}/${loginType}/login?t=${new Date().getTime()}`, data, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

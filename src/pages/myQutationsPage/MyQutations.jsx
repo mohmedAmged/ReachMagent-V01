@@ -5,7 +5,7 @@ import MainContentHeader from '../../components/mainContentHeaderSec/MainContent
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 
 
-export default function MyQutations() {
+export default function MyQutations({token}) {
   return (
     <>
     <div className='dashboard__handler d-flex'>
@@ -14,7 +14,7 @@ export default function MyQutations() {
         <MainContentHeader />
         <div className='myQuotations__handler '>
           <QuotationStateSec />
-          <QuotationTableSec />
+          <QuotationTableSec token={token}/>
         </div>
       </div>
     </div>

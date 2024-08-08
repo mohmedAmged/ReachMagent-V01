@@ -182,14 +182,19 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            <NavLink onClick={() => {
-                                scrollToTop();
-                            }}
-                                className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
-                                <button className='btnColoredBlue'>
-                                    Request Quotation
-                                </button>
-                            </NavLink>
+                            {loginType === 'user' &&
+                                <NavLink onClick={() => {
+                                    scrollToTop();
+                                    Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companyId);
+                                }}
+                                    className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
+
+                                    <button className='btnColoredBlue'>
+                                        Request Quotation
+                                    </button>
+
+                                </NavLink>
+                            }
 
                         </div>
                     </div>

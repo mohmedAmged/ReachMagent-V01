@@ -123,6 +123,7 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
         };
         setCurrentCoverUpdateFile(event.target.files);
     };
+console.log(mainCategories);
 
     return (
         <div className='dashboard__handler d-flex'>
@@ -184,6 +185,7 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
                             </div>
                             <div className="profile__form__inputs mt-3">
                                 {activeItem === 'Company Settings' 
+                                
                                 && 
                                 <CompanySettingsForm 
                                     token={token} 
@@ -198,6 +200,7 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
                                     profileUpdateStatus={profileUpdateStatus}
                                     mainCategories={mainCategories}
                                 />
+    
                                 }
                                 {activeItem === 'Company Activities' 
                                 && 

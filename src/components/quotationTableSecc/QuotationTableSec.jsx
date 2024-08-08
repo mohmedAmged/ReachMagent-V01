@@ -1,10 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './quotationTableSec.css'
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
 import { Table } from 'react-bootstrap';
-export default function QuotationTableSec() {
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
+export default function QuotationTableSec({ token }) {
+    const loginType = localStorage.getItem('loginType')
+    const [newData, setNewdata] = useState([])
+
+    const fetchAllQuotations = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/${loginType}/all-quotations?t=${new Date().getTime()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNewdata(response?.data?.data?.quotations);
+        } catch (error) {
+            setNewdata(error?.response?.data.message);
+        }
+    };
+    useEffect(() => {
+        fetchAllQuotations();
+    }, [loginType, token]);
+
+    console.log(loginType);
+    console.log(token);
+
+    console.log(newData);
+
     const tableData = [
-        { request: '15 AC Units include shipping', country: 'United States', status: 'accept',  statusStyle: 'accept'},
+        { request: '15 AC Units include shipping', country: 'United States', status: 'accept', statusStyle: 'accept' },
         { request: '12 Central AC', country: 'Jordan', status: 'Pending', statusStyle: 'pending' },
         { request: 'Spare part #23', country: 'Jordan', status: 'Submitted', statusStyle: 'submitted' },
     ];
@@ -21,16 +47,18 @@ export default function QuotationTableSec() {
                         </tr>
                     </thead>
                     <tbody>
-                        {tableData.map((row, index) => (
+                        {newData.map((row, index) => (
                             <tr className='' key={index}>
-                                <td>{row.request}</td>
-                                <td >{row.country}</td>
-                                <td >
-                                    <button className={`${row.statusStyle} table__statu__btn`}>
-                                        {row.status}
+                                <td>{row?.area}</td>
+                                <td >{row?.country}</td>
+                                <td className='adjust__flex'>
+                                    <button className={`${row?.user_status} table__statu__btn`}>
+                                        {row?.user_status}
                                     </button>
-                                    <button className={`table__statu__btn ignore__btn`}>
-                                        Ignore
+                                    <button className={`table__statu__btn show__btn`}>
+                                        <span>show</span>
+                                        <i className="bi bi-eye"></i>
+
                                     </button>
                                 </td>
                             </tr>

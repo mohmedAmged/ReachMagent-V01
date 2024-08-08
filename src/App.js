@@ -35,6 +35,8 @@ import MyBussinessSettings from './pages/myBusinessSettingsPage/MyBussinessSetti
 import MyUsersManagement from './pages/myUsersManagementPage/MyUsersManagement';
 import SingleCompanyQuote from './pages/singleCompanyQuotePage/SingleCompanyQuote';
 import OneClickQuotation from './pages/oneClickQuotationPage/OneClickQuotation';
+import MyService from './pages/myServicesPage/MyService';
+import NewServiceForm from './components/newServiceFormSec/NewServiceForm';
 
 function App() {
   useEffect(() => {
@@ -88,7 +90,7 @@ function App() {
   // console.log(companiesQuery?.data);
 
 
-  
+
   return (
     <>
 
@@ -111,7 +113,8 @@ function App() {
         <Route path='/shop/:singleProduct' element={<ProductDetails />} />
         <Route path='/discover' element={<Discover />} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
-        <Route path='/:companyName/request-quote' element={<SingleCompanyQuote token={token} />} />
+        <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}
+          token={token} />} />
         <Route path='/one-click-quotation' element={<OneClickQuotation />} />
 
 
@@ -167,31 +170,42 @@ function App() {
             token={token}
           />}
         />
-        <Route path='/profile/catalog' element={<MyCatalog token={token}/>} />
+        <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
+        <Route path='/profile/service' element={<MyService token={token} />} />
 
-        <Route path='/profile/profile-settings' 
+        <Route path='/profile/profile-settings'
           element={<MyProfileSettings
-          countries={countriesQuery?.data?.countries}
-          loginType={loginType}
-          token={token} />} 
+            countries={countriesQuery?.data?.countries}
+            loginType={loginType}
+            token={token} />}
         />
 
-          <Route path='/profile/business-settings' 
-          element={<MyBussinessSettings     
-          countries={countriesQuery?.data?.countries}
-          loginType={loginType}
-          token={token} />} 
-          />
+        <Route path='/profile/business-settings'
+          element={<MyBussinessSettings
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            countries={countriesQuery?.data?.countries}
+            loginType={loginType}
+            token={token} />}
+        />
 
-          <Route path='/profile/users-management' 
-          element={<MyUsersManagement     
-          countries={countriesQuery?.data?.countries}
-          loginType={loginType}
-          token={token} />} 
-          />
-          
-        <Route path='/profile/catalog/:addNewItem' element={<NewCatalogItemForm />} />
-        <Route path='/profile/quotations' element={<MyQutations />} />
+        <Route path='/profile/users-management'
+          element={<MyUsersManagement
+            countries={countriesQuery?.data?.countries}
+            loginType={loginType}
+            token={token} />}
+        />
+
+        <Route path='/profile/catalog/:addNewItem' element={
+          <NewCatalogItemForm
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            token={token}
+          />} />
+        <Route path='/profile/service/:addNewItem' element={
+          <NewServiceForm
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            token={token}
+          />} />
+        <Route path='/profile/quotations' element={<MyQutations  token={token}/>} />
         <Route path='/profile/products' element={<MyProducts />} />
         <Route path='/profile/orders' element={<MyOrders />} />
         <Route path='/company-messages' element={<CompanyMessage />} />

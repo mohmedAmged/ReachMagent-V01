@@ -48,7 +48,11 @@ export default function CompanySettingsForm(
     setProfileUpdateStatus,
     profileUpdateStatus
   }
-) {
+)
+
+{
+  console.log(mainCategories);
+  
   const loginType =localStorage.getItem('loginType');
   const [subCategories,setSubCategories] = useState([]);
 

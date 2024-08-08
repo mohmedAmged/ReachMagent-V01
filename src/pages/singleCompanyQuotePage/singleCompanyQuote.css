@@ -81,6 +81,13 @@
     display: flex;
     flex-direction: column;
 }
+.singleQuote__slideProducts .lastMinuteCard__handler .product__image {
+    height: 170px;
+}
+.singleQuote__slideProducts .lastMinuteCard__handler .product__image img{
+    height: 100%;
+    object-fit: cover;
+}
 .selectedProducts__handler{
     margin-top: 30px;
 }
@@ -137,3 +144,16 @@
     color: rgba(7, 82, 154, 1);
 }
 
+
+@media screen and (max-width: 600px) {
+    .singleQuote__slideProducts .lastMinuteCard__handler{
+        width: 300px;
+        height: 270px;
+    }
+}
+@media screen and (max-width: 992px){
+    .singleQuote__slideProducts .lastMinuteCard__handler{
+        width: 300px;
+        height: 300px;
+    }
+}

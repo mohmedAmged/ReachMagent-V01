@@ -98,9 +98,9 @@ export default function LastMinuteCard({
                     </div>
                     <div className="sub__info">
                         <p>{dealQuantity}</p>
-                        <button className={`pageMainBtnStyle ${buttonClass}`} onClick={handleButtonClick}>
+                        <span className={`pageMainBtnStyle ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
-                        </button>
+                        </span>
                     </div>
                 </div>
             </div>

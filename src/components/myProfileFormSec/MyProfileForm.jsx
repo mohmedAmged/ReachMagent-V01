@@ -121,7 +121,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
         if(imgChanged && data.image[0]){
             formData.append('image', data.image[0]);
         };
-        await axios.post(`${baseURL}/${loginType}/update-profile`, formData, {
+        await axios.post(`${baseURL}/${loginType}/update-profile?t=${new Date().getTime()}`, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data',

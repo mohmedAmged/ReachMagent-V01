@@ -1,53 +1,59 @@
 import React, { useEffect, useState } from 'react'
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
 import './catalogContent.css'
-import cardImg from '../../assets/card-images/Rectangle 4705.png'
 import { NavLink } from 'react-router-dom'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
-import { useQuery } from 'react-query'
-import { getDataFromAPI } from '../../functions/fetchAPI'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
+import { scrollToTop } from '../../functions/scrollToTop'
 export default function MyCatalog({ token }) {
-  const cardListItems = [
-    {
-      title: "Mirror 100x80 cm",
-      image: cardImg,
-      id: 1
-    },
-    {
-      title: "Mirror 100x80 cm",
-      image: cardImg,
-      id: 1
-    },
-    {
-      title: "Mirror 100x80 cm",
-      image: cardImg,
-      id: 1
-    },
-
-  ]
   const loginType = localStorage.getItem('loginType')
   const [newData, setNewdata] = useState([])
-  useEffect(() => {
-    (async () => {
-      await axios.get(`${baseURL}/${loginType}/all-catalogs`, {
+  const fetchCatalogs = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/${loginType}/all-catalogs?t=${new Date().getTime()}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }).then(response=>{
-        setNewdata(response?.data)
-      }).catch(error=>{
-        setNewdata(error?.response?.data.message)
-      })
-      
-    })()
-  }, [])
-  console.log(loginType);
-  console.log(token);
+      });
+      setNewdata(response?.data?.data?.catalogs);
+    } catch (error) {
+      setNewdata(error?.response?.data.message);
+    }
+  };
+  useEffect(() => {
+    fetchCatalogs();
+  }, [loginType, token]);
+  //             'Accept': 'application/json',
+  //             Authorization: `Bearer ${token}`
+  //         }
+  //     }).then((response) => {
 
-  console.log(newData);
+  //         toast.success(response?.data?.message);
+  //     }).catch(error=>{
+  //         toast.error(error?.response?.data?.message);
+  //     });
+  // };
+
+  const handleDeleteThisCatalog = async (id) => {
+    try {
+      const response = await axios?.delete(`${baseURL}/${loginType}/delete-catalog/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      toast.success(response?.data?.message);
+      // Optionally update the state to remove the deleted item from the UI
+      await fetchCatalogs()
+      // setNewdata(newData?.filter(item => item?.id !== id));
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
 
   return (
     <>
@@ -60,21 +66,21 @@ export default function MyCatalog({ token }) {
             <div className="content__card__list">
               <div className="row">
                 {
-                  cardListItems?.map((el) => {
+                  newData?.map((el) => {
                     return (
-                      <div className='col-lg-6 mb-3' key={el.id}>
+                      <div className='col-lg-6 d-flex justify-content-center mb-3' key={el?.id}>
                         <div className="card__item">
                           <div className="card__image">
-                            <img src={el.image} alt={el.title} />
+                            <img src={el?.media[0]?.image} alt={el?.title} />
                           </div>
                           <div className="card__name">
                             <h3>
-                              {el.title}
+                              {el?.title}
                             </h3>
                           </div>
                           <div className="card__btns d-flex">
                             <>
-                              <button className='btn__D'>
+                              <button onClick={() => handleDeleteThisCatalog(el?.id)} className='btn__D'>
                                 Delete
                               </button>
                             </>
@@ -92,11 +98,16 @@ export default function MyCatalog({ token }) {
               </div>
             </div>
             <div className='addNewItem__btn'>
-              <button>
-                <NavLink to='/profile/catalog/addNewItem' className='nav-link'>
-                  Add New Item
-                </NavLink>
-              </button>
+              <NavLink 
+                onClick={() => {
+                  scrollToTop();
+                }} 
+                to='/profile/catalog/addNewItem' className='nav-link'>
+                  <button >
+                    Add New Item
+                  </button>
+              </NavLink>
+
             </div>
           </div>
         </div>

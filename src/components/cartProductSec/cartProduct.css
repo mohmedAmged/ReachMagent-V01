@@ -18,8 +18,14 @@
     border-radius: 8px;
 }
 .selected__product__info .prod__text h3{
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+.selected__product__info .prod__text strong{
+    font-size: 14px;
     font-weight: 500;
-    font-size: 16px;
 }
 .selected__product__info .prod__text p{
     font-weight: 400;
@@ -46,7 +52,8 @@
     gap: 15px;
     align-items: center;
 }
-.selected__product__action .quantity__btns button{
+.selected__product__action .quantity__btns .increaseBtn ,
+.selected__product__action .quantity__btns .decreaseBtn {
     border: 2px solid rgba(0, 0, 0, 0.5);
     padding: 2px 8px;
     border-radius: 4px;
@@ -55,28 +62,28 @@
     cursor: pointer;
     transition: all ease-in-out .3s;
 }
-.selected__product__action .quantity__btns button.increaseBtn:hover{
+.selected__product__action .quantity__btns .increaseBtn:hover{
     background-color: rgba(13, 148, 136, 1);
     border: 2px solid rgba(13, 148, 136, 1);
     color: #fff;
 
 }
-.selected__product__action .quantity__btns button.decreaseBtn:hover{
+.selected__product__action .quantity__btns .decreaseBtn:hover{
     background-color: rgb(148, 21, 21);
     border: 2px solid rgb(148, 21, 21);
     color: #fff;
 }
-.selected__product__action .quantity__btns span{
-}
-
 
 @media screen and (max-width: 600px) {
     .selected__product__info .prod__text h3{
         font-size: 12px;
      }
-     .selected__product__info .prod__text p {
+     .selected__product__info .prod__text strong{
         font-size: 10px;
-
+        font-weight: 500;
+    }
+     .selected__product__info .prod__text p {
+        font-size: 8px;
      }
     .selected__product__info {
         gap: 8px;
