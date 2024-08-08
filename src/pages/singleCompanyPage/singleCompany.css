@@ -4,3 +4,17 @@
 .singleCompany__handler .readyToBuy__navigationBar{
     display: none;
 }
+/* .showCompany__Service .lastMinuteCard_handler .product_image {
+    height: 200px !important;
+} */
+.showCompany__Service .lastMinuteCard__handler{
+    height: 300px;
+}
+.showCompany__Service .product_image img{
+    height: 200px !important;
+    border-radius: 8px !important;
+    object-fit: cover !important;
+}
+.showCompany__Service .sub__info{
+    display: none !important;
+}

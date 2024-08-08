@@ -9,8 +9,11 @@ export default function QuotationTableSec({ token }) {
     const [newData, setNewdata] = useState([])
 
     const fetchAllQuotations = async () => {
+        const slug = loginType === 'user' ? `${loginType}/my-quotations` 
+        : 
+        `${loginType}/all-quotations`
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/all-quotations?t=${new Date().getTime()}`, {
+            const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -24,16 +27,6 @@ export default function QuotationTableSec({ token }) {
         fetchAllQuotations();
     }, [loginType, token]);
 
-    console.log(loginType);
-    console.log(token);
-
-    console.log(newData);
-
-    const tableData = [
-        { request: '15 AC Units include shipping', country: 'United States', status: 'accept', statusStyle: 'accept' },
-        { request: '12 Central AC', country: 'Jordan', status: 'Pending', statusStyle: 'pending' },
-        { request: 'Spare part #23', country: 'Jordan', status: 'Submitted', statusStyle: 'submitted' },
-    ];
     return (
         <div className='quotationTable__handler content__view__handler'>
             <ContentViewHeader title={'All Customers'} />

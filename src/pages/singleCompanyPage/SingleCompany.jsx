@@ -18,21 +18,17 @@ import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
-
-export default function SingleCompany({token}) {
+import LastMinuteCard from '../../components/lastMinuteCardSec/LastMinuteCard'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import "swiper/css/autoplay";
+import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
+export default function SingleCompany({ token }) {
     const { companyId } = useParams();
     const loginType = localStorage.getItem('loginType');
-    const [formId,setFormId] = useState('1');
-    const [formInputs,setFormInputs] = useState({});
+    const [formId, setFormId] = useState('1');
+    const [formInputs, setFormInputs] = useState({});
 
-    const items = [
-        { name: 'Overview', active: true },
-        { name: 'Services', active: false },
-        { name: 'Products', active: false },
-        { name: 'Media', active: false },
-        { name: 'Network', active: false },
-        { name: 'Pranches', active: false },
-    ];
     const companyData = {
         aboutMark: aboutMarkImage,
         briefDescription: 'Homzmart is a one stop shop where you purchase everything from furniture to household items and more!',
@@ -60,47 +56,165 @@ export default function SingleCompany({token}) {
 
     const showCompaniesQuery = useQuery({
         queryKey: ['show-company'],
-        queryFn: () => getDataFromAPI(`show-company/${companyId}`),
+        queryFn: () => getDataFromAPI(`show-company/${companyId}?t=${new Date().getTime()}`),
     });
+    const [activeItem, setActiveItem] = useState('Overview');
 
-    useEffect(()=>{
-        if(token){
+    const items = [
+        { name: 'Overview', active: activeItem === 'Overview' },
+        { name: 'Services', active: activeItem === 'Services' },
+        { name: 'Catalogs', active: activeItem === 'Catalogs' },
+        { name: 'Media', active: activeItem === 'Media' },
+        { name: 'Network', active: activeItem === 'Network' },
+        { name: 'Pranches', active: activeItem === 'Pranches' },
+    ]
+    const handleItemClick = (itemName) => {
+        setActiveItem(itemName);
+    };
+    useEffect(() => {
+        if (token && loginType === 'user') {
             (async () => {
                 const toastId = toast.loading('Loading Forms...');
-                await axios.post(`${baseURL}/${loginType}/show-form`,{
+                await axios.post(`${baseURL}/${loginType}/show-form?t=${new Date().getTime()}`, {
                     form_id: `${formId}`,
                     company_id: companyId
-                },{
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
-                }).then((response)=>{
+                }).then((response) => {
                     setFormInputs(response?.data?.data);
-                    toast.success(`Form Feilds Loaded Successfully.`,{
+                    toast.success(`Form Feilds Loaded Successfully.`, {
                         id: toastId,
                         duration: 1000,
                     });
-                }).catch(errors=>{
-                    toast.error(`${errors?.response?.data?.message}`,{
+                }).catch(errors => {
+                    toast.error(`${errors?.response?.data?.message}`, {
                         id: toastId,
                         duration: 1000,
                     })
                 })
             })();
         };
-    },[companyId, formId, loginType, token]);
+    }, [companyId, formId, loginType, token]);
 
     return (
         <div className='singleCompany__handler'>
             <HeroOnlyCover />
             <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data} token={token} />
             <div className='my-5'>
-                <ProductDetailsFilterationBar items={items} />
+                <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick}/>
             </div>
-            <div className='container'>
-                <AboutCompany company={companyData} />
-
-            </div>
+            {!showCompaniesQuery?.isLoading &&
+                <div className='container showCompany__Service'>
+                    {
+                        activeItem === 'Overview' &&
+                        <AboutCompany showCompaniesQuery={showCompaniesQuery?.data} company={companyData} />
+                    }
+                    {
+                        activeItem === 'Services' &&
+                        <>
+                            <Swiper
+                                className='mySwiper'
+                                modules={[Autoplay]}
+                                autoplay={{
+                                    delay: 2500,
+                                    pauseOnMouseEnter: true,
+                                    disableOnInteraction: false
+                                }}
+                                breakpoints={{
+                                    300: {
+                                        slidesPerView: 1.1,
+                                        spaceBetween: 10
+                                    },
+                                    426: {
+                                        slidesPerView: 1.2,
+                                        spaceBetween: 20
+                                    },
+                                    600: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    768: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    995: {
+                                        slidesPerView: 3.2,
+                                        spaceBetween: 20
+                                    },
+                                }}
+                            >
+                                {showCompaniesQuery?.data?.companyServices?.map((el) => {
+                                    return (
+                                        <SwiperSlide className=' my-3' key={el?.serviceId}>
+                                            <LastMinuteCard
+                                                productImage={el?.serviceImage }
+                                                productName={el?.serviceTitle}
+                                                // dealQuantity={''}
+                                                showCustomContent={true}
+                                                borderColor={'rgba(0, 0, 0, 0.5)'}
+                                                onAddClick={''}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+                            </Swiper>
+                        </>
+                    }
+                     {
+                        activeItem === 'Catalogs' &&
+                        <>
+                            <Swiper
+                                className='mySwiper'
+                                modules={[Autoplay]}
+                                autoplay={{
+                                    delay: 2500,
+                                    pauseOnMouseEnter: true,
+                                    disableOnInteraction: false
+                                }}
+                                breakpoints={{
+                                    300: {
+                                        slidesPerView: 1.1,
+                                        spaceBetween: 10
+                                    },
+                                    426: {
+                                        slidesPerView: 1.2,
+                                        spaceBetween: 20
+                                    },
+                                    600: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    768: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    995: {
+                                        slidesPerView: 3.2,
+                                        spaceBetween: 20
+                                    },
+                                }}
+                            >
+                                {showCompaniesQuery?.data?.companyCatalogs?.map((el) => {
+                                    return (
+                                        <SwiperSlide className=' my-3' key={el?.catalogId}>
+                                            <LastMinuteCard
+                                                productImage={el?.catalogImages[0].media }
+                                                productName={el?.catalogTitle}
+                                                // dealQuantity={''}
+                                                showCustomContent={true}
+                                                borderColor={'rgba(0, 0, 0, 0.5)'}
+                                                onAddClick={''}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+                            </Swiper>
+                        </>
+                    }
+                </div>
+            }
 
             <SingleCompanyRectangleSec />
 
@@ -115,10 +229,10 @@ export default function SingleCompany({token}) {
             {
                 (token && loginType === 'user') ?
                     <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} formInputs={formInputs} companyId={companyId} formId={formId} setFormId={setFormId} />
-                : 
+                    :
                     ''
             }
-            
+
         </div>
     );
 };

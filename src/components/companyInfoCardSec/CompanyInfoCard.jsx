@@ -23,7 +23,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-        await axios.post(`${baseURL}/${loginType}/control-follow-company`,
+        await axios.post(`${baseURL}/${loginType}/control-follow-company?t=${new Date().getTime()}`,
             currentCompanyWantedToFollow,
             {
                 headers: {
@@ -113,7 +113,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             founded:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            2019
+                                            {showCompaniesQuery?.companyFounded}
                                         </p>
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             Website:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            <NavLink to={'https://www.homzmart.com/'} className='nav-link'>
-                                                https://www.homzmart.com/
+                                            <NavLink to={`${showCompaniesQuery?.companyWebsiteLink}`} className='nav-link'>
+                                            {showCompaniesQuery?.companyWebsiteLink}
                                             </NavLink>
                                         </p>
                                     </div>
