@@ -8,12 +8,13 @@
     height: 200px !important;
 } */
 .showCompany__Service .lastMinuteCard__handler{
-    height: 300px;
+    height: 100%;
 }
-.showCompany__Service .product_image img{
+.showCompany__Service .product__image img{
     height: 200px !important;
     border-radius: 8px !important;
     object-fit: cover !important;
+    margin-bottom: 10px;
 }
 .showCompany__Service .sub__info{
     display: none !important;
