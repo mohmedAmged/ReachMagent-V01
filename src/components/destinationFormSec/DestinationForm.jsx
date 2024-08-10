@@ -30,7 +30,7 @@ export default function DestinationForm({distinationData,setDistinationData,coun
                         duration: 2000
                     });
                 }else {
-                    toast.error('Somthing Went Wrong Please Choose Your Country Again!',{
+                    toast.error('Please Choose Your Country Again!',{
                         id: toastId,
                         duration: 2000
                     });

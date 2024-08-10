@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import './singleCompanyQuote.css'
-import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec'
+import React, { useEffect, useState } from 'react';
+import './singleCompanyQuote.css';
+import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
 import { useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -177,8 +177,6 @@ export default function SingleCompanyQuote({ token, countries }) {
                 })
                 .then((response) => {
                     setCart(response?.data?.data?.cart);
-                    console.log(response?.data?.data);
-
                     toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
                         id: toastId,
                         duration: 1000
@@ -471,12 +469,12 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                 {(cart?.length === 0) ? (
                                                     <p>No products selected</p>
                                                 ) : (
-                                                    cart?.map((el) => (
-                                                        <CartProduct
+                                                    cart?.map((el) => {
+                                                        return <CartProduct
                                                             key={el?.item?.quotation_cart_id}
                                                             title={el?.item?.title}
                                                             description={el?.item?.description}
-                                                            notes={el?.item.notes}
+                                                            notes={el?.note}
                                                             imageSrc={el?.item?.image ? el?.item?.image : el?.item?.medias[0]?.media}
                                                             showImage={el?.item?.image ? !!el?.item?.image : !!el?.item?.medias[0]?.media}
                                                             quantity={el?.quantity}
@@ -485,7 +483,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                             token={token}
                                                             setCart={setCart}
                                                         />
-                                                    ))
+                                                    })
                                                 )}
                                             </div>
                                         </div>

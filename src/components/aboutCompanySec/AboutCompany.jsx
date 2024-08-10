@@ -42,7 +42,7 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
 };
 export default function AboutCompany({ company, showCompaniesQuery }) {
     
-    console.log(showCompaniesQuery);
+    // console.log(showCompaniesQuery);
     
     const [initialPosition,setInitialPosition] = useState([0, 0]);
     useEffect(()=>{

@@ -47,7 +47,8 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                 });
             });
     };
-
+    console.log(showCompaniesQuery);
+    
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">

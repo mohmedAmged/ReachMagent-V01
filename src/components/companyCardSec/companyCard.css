@@ -16,6 +16,8 @@
 }
 .card__content .company__profile img{
     border-radius: 50%;
+    width: 100%;
+    height: 100%;
 
 }
 .card__content .company__name h2{

@@ -109,7 +109,7 @@ export default function CompanyContact({loginType,token,formInputs,companyId,for
           <div className="col-lg-12">
             <div className="contactCompany-type">
               <ul className='d-flex flex-wrap'>
-                {company?.data?.companyForms?.map((el)=>{
+                {company?.data?.company?.companyForms?.map((el)=>{
                   return (
                     <li key={el?.formId} onClick={()=>{
                       setFormId(el?.formId);

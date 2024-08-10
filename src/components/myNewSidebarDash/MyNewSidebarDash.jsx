@@ -13,7 +13,7 @@ import icon9 from '../../assets/sidebar-icons/discount-shape 1.svg';
 import icon10 from '../../assets/sidebar-icons/message-question 1.svg';
 import icon11 from '../../assets/sidebar-icons/people.svg';
 
-export default function MyNewSidebarDash({token}) {
+export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
@@ -45,9 +45,10 @@ export default function MyNewSidebarDash({token}) {
         setShowSettingsSubmenu(!showSettingsSubmenu);
 
     }
+    const loginType = localStorage.getItem('loginType')
 
-    const sidebarItems = [
-        { title: "Profile", link: "/profile", icon: icon1 },
+    let sidebarItems = [
+        // { title: "Profile", link: "/profile", icon: icon1 },
         { title: "Followers", link: "/profile/followers", icon: icon11 },
         { title: "Catalog", link: "/profile/catalog", icon: icon2 },
         { title: "Services", link: "/profile/service", icon: icon2 },
@@ -69,7 +70,26 @@ export default function MyNewSidebarDash({token}) {
             // ]
         }
     ];
-
+    if (loginType === 'user') {
+        sidebarItems = [
+            // { title: "Profile", link: "/profile", icon: icon1 },
+            { title: "following", link: "/profile/followers", icon: icon11 },
+            // { title: "Catalog", link: "/profile/catalog", icon: icon2 },
+            // { title: "Services", link: "/profile/service", icon: icon2 },
+            { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+            // { title: "Products", link: "/profile/products", icon: icon4 },
+            { title: "Orders", link: "/profile/orders", icon: icon4 },
+            // { title: "Insights", link: "/profile/insights", icon: icon5 },
+            { title: "Messages", link: "/your-messages", icon: icon6 },
+            { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+            { title: "Requests", link: "/profile/requests", icon: icon8 },
+            {
+                title: "Settings",
+                link: "/profile/profile-settings",
+                icon: icon9,
+            }
+        ];
+    }
     // const sidebarItemsTwo = [
     //     { title: "Promote", link: "/business-profile/promote", icon: icon9 },
     //     { title: "Help", link: "/business-profile/help", icon: icon10 }

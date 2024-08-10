@@ -8,32 +8,32 @@ import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
 
-export default function CompanyFollowers({ loginType, token}) {
-    const [followers,setFollowers] = useState([]);
-    const [currentUserLogin,setCurrentUserLogin] = useState(null);
-    
+export default function CompanyFollowers({ loginType, token }) {
+    const [followers, setFollowers] = useState([]);
+    const [currentUserLogin, setCurrentUserLogin] = useState(null);
+
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
         if (!currentUserLogin) {
             const newShape = JSON.parse(cookiesData);
             setCurrentUserLogin(newShape);
         }
-    }, [Cookies.get('currentLoginedData'),currentUserLogin]);
+    }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
     useEffect(() => {
         if (token) {
             const slugCompletion = loginType === 'user' ? 'user/my-followed-companies' : 'employee/followers';
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`${baseURL}/${slugCompletion}`, {
+                    const response = await axios.get(`${baseURL}/${slugCompletion}?t=${new Date().getTime()}`, {
                         headers: {
                             'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
                         },
                     });
-                    if(loginType === 'user'){
+                    if (loginType === 'user') {
                         setFollowers(response?.data?.data?.followedCompanies);
-                    }else if(loginType === 'employee'){
+                    } else if (loginType === 'employee') {
                         setFollowers(response?.data?.data?.followers)
                     }
                 } catch (error) {
@@ -44,8 +44,17 @@ export default function CompanyFollowers({ loginType, token}) {
         };
     }, []);
 
-    console.log(followers);
 
+    const updatedFollowersAndFollowing = loginType === 'user'
+        ?
+        followers?.filter((el, index, self) =>
+            index === self.findIndex((t) => t.companyId === el.companyId)
+        )
+        :
+        followers?.filter((el, index, self) =>
+            index === self.findIndex((t) => t.userId === el.userId)
+        )
+    console.log(updatedFollowersAndFollowing);
     return (
         <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
@@ -64,22 +73,32 @@ export default function CompanyFollowers({ loginType, token}) {
                         </div>
                         <div className='followerInfo__handler row'>
                             {
-                                followers?.map((el) => {
+                                updatedFollowersAndFollowing?.map((el) => {
                                     return (
                                         <div key={el?.id} className="followerInfo__Item col-12">
                                             <div className="followerImage">
-                                                <img src={el?.userImage} alt={`${el?.userName} avatar`} />
+                                                <img src={el?.userImage || el?.companyLogo
+                                                } alt={`${el?.userName || el?.companyLogo} avatar`} />
                                             </div>
                                             <div className="followerContactInfo">
                                                 <h1>
-                                                    {el?.userName}
+                                                    {el?.userName || el?.companyName}
                                                 </h1>
                                                 <div className="follower__status">
                                                     <p>
-                                                        {el?.userEmail}
+                                                        {el?.userEmail || ''}
                                                     </p>
                                                     <p className='isUsersfollowed'>
-                                                        follows you
+                                                        {
+                                                            loginType === 'user' ?
+                                                            <>
+                                                            following
+                                                            </>
+                                                            :
+                                                            <>
+                                                            follows you
+                                                            </>
+                                                        }
                                                     </p>
                                                 </div>
 

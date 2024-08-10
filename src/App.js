@@ -79,7 +79,7 @@ function App() {
   const companiesQuery = useQuery({
     queryKey: ['companies'],
     queryFn: async () => {
-      const response = await axios.get(`${baseURL}/companies`, {
+      const response = await axios.get(`${baseURL}/companies?t=${new Date().getTime()}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ function App() {
       return response?.data?.data;
     },
   });
-  // console.log(companiesQuery?.data);
+  console.log(companiesQuery?.data);
 
 
 
@@ -106,7 +106,7 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data} token={token} />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} token={token} />} />
 
         {/* Shop Routes */}
         <Route path='/shop' element={<Shop />} />

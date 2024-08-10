@@ -26,6 +26,8 @@ export default function QuotationTableSec({ token }) {
     useEffect(() => {
         fetchAllQuotations();
     }, [loginType, token]);
+    console.log(newData);
+    
 
     return (
         <div className='quotationTable__handler content__view__handler'>
@@ -42,8 +44,8 @@ export default function QuotationTableSec({ token }) {
                     <tbody>
                         {newData.map((row, index) => (
                             <tr className='' key={index}>
-                                <td>{row?.area}</td>
-                                <td >{row?.country}</td>
+                                <td>{row?.area === 'N/A' ? (loginType === 'user' ? row?.company_name : row?.user_name)  : row?.area}</td>
+                                <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
                                 <td className='adjust__flex'>
                                     <button className={`${row?.user_status} table__statu__btn`}>
                                         {row?.user_status}

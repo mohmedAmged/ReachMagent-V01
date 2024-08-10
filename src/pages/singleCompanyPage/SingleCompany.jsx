@@ -97,11 +97,12 @@ export default function SingleCompany({ token }) {
             })();
         };
     }, [companyId, formId, loginType, token]);
+console.log(showCompaniesQuery);
 
     return (
         <div className='singleCompany__handler'>
             <HeroOnlyCover />
-            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data} token={token} />
+            <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
             <div className='my-5'>
                 <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick}/>
             </div>
@@ -109,7 +110,7 @@ export default function SingleCompany({ token }) {
                 <div className='container showCompany__Service'>
                     {
                         activeItem === 'Overview' &&
-                        <AboutCompany showCompaniesQuery={showCompaniesQuery?.data} company={companyData} />
+                        <AboutCompany showCompaniesQuery={showCompaniesQuery?.data?.company} company={companyData} />
                     }
                     {
                         activeItem === 'Services' &&
@@ -145,7 +146,7 @@ export default function SingleCompany({ token }) {
                                     },
                                 }}
                             >
-                                {showCompaniesQuery?.data?.companyServices?.map((el) => {
+                                {showCompaniesQuery?.data?.company?.companyServices?.map((el) => {
                                     return (
                                         <SwiperSlide className=' my-3' key={el?.serviceId}>
                                             <LastMinuteCard
@@ -196,7 +197,7 @@ export default function SingleCompany({ token }) {
                                     },
                                 }}
                             >
-                                {showCompaniesQuery?.data?.companyCatalogs?.map((el) => {
+                                {showCompaniesQuery?.data?.company?.companyCatalogs?.map((el) => {
                                     return (
                                         <SwiperSlide className=' my-3' key={el?.catalogId}>
                                             <LastMinuteCard
@@ -218,7 +219,7 @@ export default function SingleCompany({ token }) {
 
             <SingleCompanyRectangleSec />
 
-            <ReadyToBuySec secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.companyName}`} />
+            <ReadyToBuySec secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
             <HeaderOfSec
                 secHead='Company Insights'
                 secText='Stay informed with the latest updates, announcements, and specials from our company'

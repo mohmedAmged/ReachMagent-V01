@@ -1,12 +1,13 @@
-import React from 'react'
-import './cartProduct.css'
+import React, { useState } from 'react';
+import './cartProduct.css';
 import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
+
 export default function CartProduct({
     title,
     description,
-    notes = 'Add notes', 
+    notes , 
     imageSrc,
     showImage = true,
     cartId,
@@ -16,6 +17,9 @@ export default function CartProduct({
     token
 }) {
     const loginType = localStorage.getItem('loginType');
+    const [counter,setCounter] = useState(quantity);
+    const [note,setNote]= useState('');
+    const [currNotes,setCurrNotes]= useState(notes === 'N/A' ? '' : notes);
     const handleRemoveProduct = (id) => {
         (async () => {
             const toastId = toast.loading('Loading...');
@@ -38,7 +42,6 @@ export default function CartProduct({
                 });
             })
             .catch(error=>{
-                console.log(error);
                 toast.error(`${error?.response?.data?.message || 'Error!'}`,{
                     id: toastId,
                     duration: 1000
@@ -48,8 +51,12 @@ export default function CartProduct({
     };
 
     const handleDecreaseOrIncrease = (id,type) => {
+        if(type === 'increase'){
+            setCounter(prevCounter => prevCounter + 1);
+        }else if( type === 'decrease' && counter > 0){
+            setCounter(prevCounter => prevCounter - 1);
+        };
         (async () => {
-            const toastId = toast.loading('Loading...');
             await axios.post(`${baseURL}/${loginType}/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
             {
                 quotation_cart_id: `${id}`,
@@ -64,18 +71,74 @@ export default function CartProduct({
             })
             .then((response) => {
                 setCart(response?.data?.data?.cart);
-                toast.success(`${response?.data?.message || 'Added Successfully!'}`,{
-                    id: toastId,
-                    duration: 1000
-                });
             })
             .catch(error=>{
-                console.log(error);
-                toast.error(`${error?.response?.data?.message || 'Error!'}`,{
-                    id: toastId,
+                toast.error(`${error?.response?.data?.error?.quantity[0] || error?.response?.data?.message || 'Error!'}`,{
                     duration: 1000
                 });
             })
+        })();
+    };
+
+    const handleAddNoteToQuotation = (id) => {
+        const value = {
+            quotation_cart_id: id,
+            note: note,
+        };
+        (async () => {
+            const toastId = toast.loading('Loading...');
+            await axios.post(`${baseURL}/${loginType}/add-note-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                value
+                , {
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setCurrNotes(response?.data?.data?.cart[0].note);
+                    toast.success(`${response?.data?.message || 'Note Added Successfully!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+                .catch(error => {
+                    toast.error(`${error?.response?.data?.errors?.note[0] || error?.response?.data?.message || 'Error Adding Note!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                });
+        })();
+    };
+
+    const handleDeleteNoteFromQuotation = (id) => {
+        (async () => {
+            const toastId = toast.loading('Loading...');
+            await axios.post(`${baseURL}/${loginType}/remove-note-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                {
+                    quotation_cart_id: id,
+                }
+                ,{
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setCurrNotes('');
+                    toast.success(`${response?.data?.message || 'Note Removed Successfully!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+                .catch(error => {
+                    toast.error(`${error?.response?.data?.errors?.note || error?.response?.data?.message || 'Error Removing Note!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                });
         })();
     };
 
@@ -89,14 +152,33 @@ export default function CartProduct({
                 )}
                 <div className="prod__text">
                     <h3>{title}</h3>
-                    {description ? (
+                    {description && (
                         <div>
                             <strong>Description:</strong>
                             <p>{description}</p>
                         </div>
-                    ) : (
-                        <p>{notes}</p>
-                    )}
+                    ) }
+                    {
+                        (currNotes) ?
+                        <div className='showNotes mt-2 d-flex justify-content-between'>
+                            {currNotes}
+                            <i onClick={() => handleDeleteNoteFromQuotation(cartId)} className="bi bi-trash-fill"></i>
+                        </div>
+                        :
+                        <>
+                            <div className='addNotes mt-2'>
+                                <input
+                                    placeholder='Add Note...'
+                                    value={note}
+                                    type='text'
+                                    id='companyQuotationNote'
+                                    className='form-control showNotesInput'
+                                    onChange={(e)=> setNote(e.target.value)}
+                                />
+                            </div>
+                            <span onClick={()=> handleAddNoteToQuotation(cartId)} className='pageMainBtnStyle'>Add Note</span>
+                        </>
+                    }
                 </div>
             </div>
             <div className="selected__product__action">
@@ -105,7 +187,7 @@ export default function CartProduct({
                 </div>
                 <div className="quantity__btns">
                     <p className='decreaseBtn' onClick={()=> handleDecreaseOrIncrease(cartId,'decrease')}>-</p>
-                    <span>{quantity}</span>
+                    <span>{counter}</span>
                     <p  className='increaseBtn' onClick={()=> handleDecreaseOrIncrease(cartId,'increase')}>+</p>
                 </div>
             </div>
