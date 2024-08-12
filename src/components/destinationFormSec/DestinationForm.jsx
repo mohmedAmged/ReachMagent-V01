@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function DestinationForm({distinationData,setDistinationData,countries}) {
+export default function DestinationForm({distinationData,setDistinationData,countries,isOneClickQuotation}) {
     const [currentCities,setCurrentCities] = useState([]);
     const [defaultCityValue,setdefaultCityValue] = useState('');
     const [currentAreas,setCurrentAreas] = useState([]);
@@ -48,6 +48,45 @@ export default function DestinationForm({distinationData,setDistinationData,coun
         };
     };
 
+    const handleChangeInputOneClickQuotation = (e) => {
+        setDistinationData({...distinationData , [e.target.name]: e.target.value})
+        if(e.target.name === 'destination_country_id'){
+            setCurrentCities([]);
+            const chosenCountry = countries?.find(el => +el?.id === +e.target?.value);
+            if(chosenCountry){
+                setdefaultCityValue('');
+                setdefaultAreaValue('');
+                setDistinationData({...distinationData, 'destination_country_id': e.target.value , 'destination_city_id': '','destination_area_id': ''});
+                const toastId = toast.loading('Loading Cities , Please Wait !');
+                const citiesInsideCurrentCountry = async () => {
+                const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}?t=${new Date().getTime()}`);
+                    setCurrentCities(response?.data?.data?.cities);
+                };
+                citiesInsideCurrentCountry();
+                if(currentCities){
+                    toast.success('Cities Loaded Successfully.',{
+                        id: toastId,
+                        duration: 2000
+                    });
+                }else {
+                    toast.error('Please Choose Your Country Again!',{
+                        id: toastId,
+                        duration: 2000
+                    });
+                };
+            };
+        }if(e.target.name === 'destination_city_id'){
+            setdefaultCityValue(e.target.value);
+            const currentCity = currentCities?.find(city => +city?.cityId === +e.target.value);
+            if(currentCity){
+                setCurrentAreas(currentCity?.areas);
+                setdefaultAreaValue('');
+            };
+        }else if(e.target.name === 'destination_area_id'){
+            setdefaultAreaValue(e.target.value);
+        };
+    };
+
     return (
         <div className="destinationQuote__handler">
             <h3>
@@ -62,12 +101,17 @@ export default function DestinationForm({distinationData,setDistinationData,coun
                         <select
                             defaultValue={''}
                             className='form-select' 
-                            id="distinationCountry"
-                            name='country_id'
-                            onChange={handleChangeInput}
+                            id="distinationCountry" 
+                            name={isOneClickQuotation ? 'destination_country_id' :'country_id'}
+                            onChange={isOneClickQuotation? handleChangeInputOneClickQuotation : handleChangeInput}
                         >
                             <option value='' disabled>Choose your country</option>
                             {
+                                isOneClickQuotation ? 
+                                countries?.map(country =>(
+                                    <option key={country?.id} value={country?.id}>{country?.name}</option>
+                                ))
+                                :
                                 countries?.map(country =>(
                                     <option key={country?.id} value={country?.id}>{country?.name}</option>
                                 ))
@@ -82,10 +126,10 @@ export default function DestinationForm({distinationData,setDistinationData,coun
                         </label>
                         <select 
                             className='form-select'
-                            name="city_id"
+                            name={isOneClickQuotation ? 'destination_city_id' :'city_id'}
                             id="distinationCity"
                             value={defaultCityValue}
-                            onChange={handleChangeInput}
+                            onChange={isOneClickQuotation? handleChangeInputOneClickQuotation : handleChangeInput}
                         >
                             <option value={''} disabled>Choose your city</option>
                             {
@@ -105,10 +149,10 @@ export default function DestinationForm({distinationData,setDistinationData,coun
                         </label>
                         <select
                             className='form-select'
-                            name='area_id'
+                            name={isOneClickQuotation ? 'destination_area_id' :'area_id'}
                             id="distinationArea"
                             value={defaultAreaValue}
-                            onChange={handleChangeInput}
+                            onChange={isOneClickQuotation? handleChangeInputOneClickQuotation : handleChangeInput}
                         >
                             <option value={''} disabled>Choose your area</option>
                             {
@@ -129,7 +173,7 @@ export default function DestinationForm({distinationData,setDistinationData,coun
                             id="distinationAddress" 
                             rows="3" 
                             name={'address'}
-                            onChange={handleChangeInput}
+                            onChange={isOneClickQuotation? handleChangeInputOneClickQuotation : handleChangeInput}
                             placeholder='Enter the address'
                         ></textarea>
                     </div>

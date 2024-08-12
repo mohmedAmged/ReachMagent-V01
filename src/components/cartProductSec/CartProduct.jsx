@@ -20,34 +20,66 @@ export default function CartProduct({
     const [counter,setCounter] = useState(quantity);
     const [note,setNote]= useState('');
     const [currNotes,setCurrNotes]= useState(notes === 'N/A' ? '' : notes);
+
     const handleRemoveProduct = (id) => {
-        (async () => {
-            const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-            {
-                quotation_cart_id: `${id}`,
-            }
-            ,{
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
+        if(companyIdWantedToHaveQuoteWith){
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                {
+                    quotation_cart_id: `${id}`,
                 }
-            })
-            .then((response) => {
-                setCart(response?.data?.data?.cart);
-                toast.success(`${response?.data?.message || 'Added Successfully!'}`,{
-                    id: toastId,
-                    duration: 1000
-                });
-            })
-            .catch(error=>{
-                toast.error(`${error?.response?.data?.message || 'Error!'}`,{
-                    id: toastId,
-                    duration: 1000
-                });
-            })
-        })();
+                ,{
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setCart(response?.data?.data?.cart);
+                    toast.success(`${response?.data?.message || 'Added Successfully!'}`,{
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+                .catch(error=>{
+                    toast.error(`${error?.response?.data?.message || 'Error!'}`,{
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+            })();
+            
+        }else {
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/delete-item-from-one-click-quotation-cart?t=${new Date().getTime()}`,
+                {
+                    one_click_quotation_cart_id: `${id}`,
+                }
+                ,{
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setCart(response?.data?.data);
+                    toast.success(`${response?.data?.message || 'Added Successfully!'}`,{
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+                .catch(error=>{
+                    toast.error(`${error?.response?.data?.message || 'Error!'}`,{
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+            })();
+        }
     };
 
     const handleDecreaseOrIncrease = (id,type) => {
@@ -56,91 +88,185 @@ export default function CartProduct({
         }else if( type === 'decrease' && counter > 0){
             setCounter(prevCounter => prevCounter - 1);
         };
-        (async () => {
-            await axios.post(`${baseURL}/${loginType}/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-            {
-                quotation_cart_id: `${id}`,
-                quantity_type: `${type}`,
-            }
-            ,{
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setCart(response?.data?.data?.cart);
-            })
-            .catch(error=>{
-                toast.error(`${error?.response?.data?.error?.quantity[0] || error?.response?.data?.message || 'Error!'}`,{
-                    duration: 1000
-                });
-            })
-        })();
-    };
-
-    const handleAddNoteToQuotation = (id) => {
-        const value = {
-            quotation_cart_id: id,
-            note: note,
-        };
-        (async () => {
-            const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/add-note-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-                value
-                , {
-                    headers: {
-                        'Content-type': 'multipart/form-data',
-                        'Accept': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                .then((response) => {
-                    setCurrNotes(response?.data?.data?.cart[0].note);
-                    toast.success(`${response?.data?.message || 'Note Added Successfully!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                })
-                .catch(error => {
-                    toast.error(`${error?.response?.data?.errors?.note[0] || error?.response?.data?.message || 'Error Adding Note!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                });
-        })();
-    };
-
-    const handleDeleteNoteFromQuotation = (id) => {
-        (async () => {
-            const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/remove-note-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+        if(companyIdWantedToHaveQuoteWith){
+            (async () => {
+                await axios.post(`${baseURL}/${loginType}/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 {
-                    quotation_cart_id: id,
+                    quotation_cart_id: `${id}`,
+                    quantity_type: `${type}`,
                 }
                 ,{
                     headers: {
-                        'Content-type': 'multipart/form-data',
+                        'Content-type': 'application/json',
                         'Accept': 'application/json',
                         Authorization: `Bearer ${token}`
                     }
                 })
                 .then((response) => {
-                    setCurrNotes('');
-                    toast.success(`${response?.data?.message || 'Note Removed Successfully!'}`, {
-                        id: toastId,
+                    setCart(response?.data?.data?.cart);
+                })
+                .catch(error=>{
+                    toast.error(`${error?.response?.data?.error?.quantity[0] || error?.response?.data?.message || 'Error!'}`,{
                         duration: 1000
                     });
                 })
-                .catch(error => {
-                    toast.error(`${error?.response?.data?.errors?.note || error?.response?.data?.message || 'Error Removing Note!'}`, {
-                        id: toastId,
+            })();
+            
+        }else {
+            (async () => {
+                await axios.post(`${baseURL}/${loginType}/control-quantity-for-one-click-quotation-cart?t=${new Date().getTime()}`,
+                {
+                    one_click_quotation_cart_id: `${id}`,
+                    quantity_type: `${type}`,
+                }
+                ,{
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setCart(response?.data?.data);
+                })
+                .catch(error=>{
+                    toast.error(`${error?.response?.data?.message || 'Error!'}`,{
                         duration: 1000
                     });
-                });
-        })();
+                })
+            })();
+        }
     };
+
+    const handleAddNoteToQuotation = (id) => {
+        if(companyIdWantedToHaveQuoteWith){
+            const value = {
+                quotation_cart_id: id,
+                note: note,
+            };
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/add-note-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                    value
+                    , {
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            'Accept': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then((response) => {
+                        setCurrNotes(response?.data?.data?.cart[0].note);
+                        toast.success(`${response?.data?.message || 'Note Added Successfully!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    })
+                    .catch(error => {
+                        toast.error(`${error?.response?.data?.errors?.note[0] || error?.response?.data?.message || 'Error Adding Note!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    });
+            })();
+            
+        }else {
+            const value = {
+                one_click_quotation_cart_id: id,
+                note: note,
+            };
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/add-note-to-one-click-quotation-cart?t=${new Date().getTime()}`,
+                    value
+                    , {
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            'Accept': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then((response) => {
+                        setCart(response?.data?.data);
+                        setCurrNotes(response?.data?.data?.on_click_quotation_cart[0]?.note);
+                        toast.success(`${response?.data?.message || 'Note Added Successfully!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    })
+                    .catch(error => {
+                        toast.error(`${error?.response?.data?.errors?.one_click_quotation_cart_id || error?.response?.data?.message || 'Error Adding Note!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    });
+            })();
+        }
+    };
+
+    const handleDeleteNoteFromQuotation = (id) => {
+        if(companyIdWantedToHaveQuoteWith){
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/remove-note-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                    {
+                        quotation_cart_id: id,
+                    }
+                    ,{
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            'Accept': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then((response) => {
+                        setCart(response?.data?.data);
+                        setCurrNotes('');
+                        toast.success(`${response?.data?.message || 'Note Removed Successfully!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    })
+                    .catch(error => {
+                        toast.error(`${error?.response?.data?.errors?.note || error?.response?.data?.message || 'Error Removing Note!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    });
+            })();
+        }else {
+            (async () => {
+                const toastId = toast.loading('Loading...');
+                await axios.post(`${baseURL}/${loginType}/remove-note-from-one-click-quotation-cart?t=${new Date().getTime()}`,
+                    {
+                        one_click_quotation_cart_id: id,
+                    }
+                    ,{
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            'Accept': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then((response) => {
+                        setCart(response?.data?.data);
+                        setNote('');
+                        setCurrNotes('');
+                        toast.success(`${response?.data?.message || 'Note Removed Successfully!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    })
+                    .catch(error => {
+                        toast.error(`${error?.response?.data?.errors?.note || error?.response?.data?.message || 'Error Removing Note!'}`, {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    });
+            })();
+        }
+    };
+
 
     return (
         <div className="selected__product__item" >
@@ -173,6 +299,7 @@ export default function CartProduct({
                                     type='text'
                                     id='companyQuotationNote'
                                     className='form-control showNotesInput'
+                                    maxLength={20}
                                     onChange={(e)=> setNote(e.target.value)}
                                 />
                             </div>

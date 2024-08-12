@@ -33,7 +33,7 @@ export default function SingleCompanyQuote({ token, countries }) {
     const [customProduct, setCustomProduct] = useState({
         type: '',
         title: '',
-        quantity: 0,
+        quantity: '',
         description: '',
         image: ''
     });
@@ -86,7 +86,7 @@ export default function SingleCompanyQuote({ token, countries }) {
 
     useEffect(() => {
         if (token && loginType && companyIdWantedToHaveQuoteWith && requestIntries?.type) {
-            setDistinationData({ ...distinationData, type: requestIntries?.type })
+            setCustomProduct({ ...customProduct, type: requestIntries?.type });
             if (requestIntries?.title.length === 0 || requestIntries?.title.length >= 3) {
                 setloadingCart(true);
                 (async () => {
@@ -280,6 +280,13 @@ export default function SingleCompanyQuote({ token, countries }) {
                 })
                 .then((response) => {
                     setCart(response?.data?.data?.cart);
+                    setCustomProduct({
+                        type: '',
+                        title: '',
+                        quantity: '',
+                        description: '',
+                        image: ''
+                    });
                     toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
                         id: toastId,
                         duration: 1000
@@ -343,9 +350,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                 </select>
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="singleQuoteInput">
@@ -523,33 +528,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                             name="quantity"
                                                             className='form-control'
                                                             type="number"
-                                                            placeholder='5'
+                                                            placeholder='0'
+                                                            min={0}
                                                             value={customProduct?.quantity}
                                                             onChange={handleCustomProductChange}
                                                         />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12">
-                                                    <div className="singleQuoteInput">
-                                                        <label htmlFor="customProductType">
-                                                            Add Type
-                                                        </label>
-                                                        <select
-                                                            id="customProductType"
-                                                            name="type"
-                                                            className='form-select'
-                                                            value={customProduct?.type}
-                                                            onChange={handleCustomProductChange}
-                                                        >
-                                                            <option value="" disabled>Select Type</option>
-                                                            {
-                                                                typesOfQuotations?.map(type => (
-                                                                    <option className='text-capitalize' value={type?.name} key={type?.id}>
-                                                                        {type?.name}
-                                                                    </option>
-                                                                ))
-                                                            }
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-12">
@@ -621,7 +604,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                 </div>
                                 {distinationData?.include_shipping && (
                                     <div className="col-12">
-                                        <DestinationForm countries={countries} distinationData={distinationData} setDistinationData={setDistinationData} />
+                                        <DestinationForm isOneClickQuotation={false} countries={countries} distinationData={distinationData} setDistinationData={setDistinationData} />
                                     </div>
                                 )}
                                 <div className="col-12">

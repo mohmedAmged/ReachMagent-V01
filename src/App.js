@@ -37,6 +37,7 @@ import SingleCompanyQuote from './pages/singleCompanyQuotePage/SingleCompanyQuot
 import OneClickQuotation from './pages/oneClickQuotationPage/OneClickQuotation';
 import MyService from './pages/myServicesPage/MyService';
 import NewServiceForm from './components/newServiceFormSec/NewServiceForm';
+import ShowSingleQuotation from './components/showSingleQuotationsSec/ShowSingleQuotation';
 
 function App() {
   useEffect(() => {
@@ -87,8 +88,11 @@ function App() {
       return response?.data?.data;
     },
   });
-  console.log(companiesQuery?.data);
-
+  
+  const regionsQuery = useQuery({
+    queryKey: ['regions'],
+    queryFn: () => getDataFromAPI('regions'),
+  });
 
 
   return (
@@ -115,7 +119,12 @@ function App() {
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}
           token={token} />} />
-        <Route path='/one-click-quotation' element={<OneClickQuotation />} />
+        <Route path='/one-click-quotation' element={<OneClickQuotation 
+            regions={regionsQuery?.data?.regions}
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            countries={countriesQuery?.data?.countries}
+            token={token} 
+          />} />
 
 
         {/* all category routes */}
@@ -206,6 +215,7 @@ function App() {
             token={token}
           />} />
         <Route path='/profile/quotations' element={<MyQutations  token={token}/>} />
+        <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation  token={token}/>} />
         <Route path='/profile/products' element={<MyProducts />} />
         <Route path='/profile/orders' element={<MyOrders />} />
         <Route path='/company-messages' element={<CompanyMessage />} />

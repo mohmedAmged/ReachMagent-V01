@@ -4,14 +4,16 @@ import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { NavLink } from 'react-router-dom';
+import { scrollToTop } from '../../functions/scrollToTop';
 export default function QuotationTableSec({ token }) {
     const loginType = localStorage.getItem('loginType')
     const [newData, setNewdata] = useState([])
 
     const fetchAllQuotations = async () => {
-        const slug = loginType === 'user' ? `${loginType}/my-quotations` 
-        : 
-        `${loginType}/all-quotations`
+        const slug = loginType === 'user' ? `${loginType}/my-quotations`
+            :
+            `${loginType}/all-quotations`
         try {
             const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
                 headers: {
@@ -27,7 +29,7 @@ export default function QuotationTableSec({ token }) {
         fetchAllQuotations();
     }, [loginType, token]);
     console.log(newData);
-    
+
 
     return (
         <div className='quotationTable__handler content__view__handler'>
@@ -44,17 +46,20 @@ export default function QuotationTableSec({ token }) {
                     <tbody>
                         {newData.map((row, index) => (
                             <tr className='' key={index}>
-                                <td>{row?.area === 'N/A' ? (loginType === 'user' ? row?.company_name : row?.user_name)  : row?.area}</td>
+                                <td>{row?.area === 'N/A' ? (loginType === 'user' ? row?.company_name : row?.user_name) : row?.area}</td>
                                 <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
                                 <td className='adjust__flex'>
                                     <button className={`${row?.user_status} table__statu__btn`}>
                                         {row?.user_status}
                                     </button>
-                                    <button className={`table__statu__btn show__btn`}>
-                                        <span>show</span>
-                                        <i className="bi bi-eye"></i>
-
-                                    </button>
+                                    <NavLink className={'nav-link'}  onClick={() => {
+                                    scrollToTop();
+                                }} to={`/profile/quotations/${row?.id}`}>
+                                        <button className={`table__statu__btn show__btn`}>
+                                            <span>show</span>
+                                            <i className="bi bi-eye"></i>
+                                        </button>
+                                    </NavLink>
                                 </td>
                             </tr>
                         ))}
