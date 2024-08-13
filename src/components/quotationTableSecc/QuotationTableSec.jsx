@@ -6,8 +6,9 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
+
 export default function QuotationTableSec({ token }) {
-    const loginType = localStorage.getItem('loginType')
+    const loginType = localStorage.getItem('loginType');
     const [newData, setNewdata] = useState([])
 
     const fetchAllQuotations = async () => {
@@ -28,8 +29,6 @@ export default function QuotationTableSec({ token }) {
     useEffect(() => {
         fetchAllQuotations();
     }, [loginType, token]);
-    console.log(newData);
-
 
     return (
         <div className='quotationTable__handler content__view__handler'>
@@ -44,7 +43,7 @@ export default function QuotationTableSec({ token }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {newData.map((row, index) => (
+                        {newData?.map((row, index) => (
                             <tr className='' key={index}>
                                 <td>{row?.area === 'N/A' ? (loginType === 'user' ? row?.company_name : row?.user_name) : row?.area}</td>
                                 <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>

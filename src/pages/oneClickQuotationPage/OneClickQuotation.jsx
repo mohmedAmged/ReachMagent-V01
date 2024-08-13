@@ -15,8 +15,8 @@ export default function OneClickQuotation({token,mainCategories ,regions,countri
             country_id: '',
             city_id: '',
         });
-    const [includeShipping, setIncludeShipping] = useState(false);
     const [cart, setCart] = useState([]);
+    const [cartCompanies, setCartCompanies] = useState(0);
     const [loadingCart, setloadingCart] = useState(true);
     const [loadingSubmit, setloadingSubmit] = useState(false);
     const [errorCart, setErrorCart] = useState(null);
@@ -210,6 +210,7 @@ export default function OneClickQuotation({token,mainCategories ,regions,countri
                     );
                     const result = await response.json();
                     if (result?.status === 200) {
+                        setCartCompanies(result?.data?.company_count);
                         setCart(result?.data?.cart);
                         toast.success(result?.message || 'Loaded Successfully', {
                             id: toastId,
@@ -526,6 +527,7 @@ export default function OneClickQuotation({token,mainCategories ,regions,countri
                                                 <h3>
                                                     Selected Products
                                                 </h3>
+                                                <h4 className={'mt-3 fw-bold fs-5 mb-3'}>Number Of Companies: {cartCompanies || 0}</h4>
                                                 {(cart?.on_click_quotation_cart?.length === 0) ? (
                                                     <p>No products selected</p>
                                                 ) : (
@@ -650,7 +652,7 @@ export default function OneClickQuotation({token,mainCategories ,regions,countri
                                     </div>
                                 )}
                                 <div className="col-12">
-                                    <button disabled={loadingSubmit} className='addedButtonStyle btnSubmitQuote mt-5'>
+                                    <button disabled={loadingSubmit || cart?.on_click_quotation_cart?.length === 0} className='addedButtonStyle btnSubmitQuote mt-5'>
                                         Submit quotation
                                     </button>
                                 </div>

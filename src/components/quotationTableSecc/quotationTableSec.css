@@ -51,12 +51,12 @@
     background: rgba(223, 4, 4, 1);
     color: var(--primary-white);
 }
-.quotationTable__content table tbody td .table__statu__btn.accept{
+.quotationTable__content table tbody td .table__statu__btn.Accepted{
     color: var(--primary-white);
     background: rgba(1, 186, 233, 1);
     border: 2px solid rgba(1, 186, 233, 1)
 }
-.quotationTable__content table tbody td .table__statu__btn.accept:hover{
+.quotationTable__content table tbody td .table__statu__btn.Accepted:hover{
     color: rgba(1, 186, 233, 1);
     background: var(--primary-white);
 }

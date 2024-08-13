@@ -38,6 +38,9 @@ import OneClickQuotation from './pages/oneClickQuotationPage/OneClickQuotation';
 import MyService from './pages/myServicesPage/MyService';
 import NewServiceForm from './components/newServiceFormSec/NewServiceForm';
 import ShowSingleQuotation from './components/showSingleQuotationsSec/ShowSingleQuotation';
+import OneClickQuotationsDashboard from './pages/oneClickQuotationsDashboardPage/OneClickQuotationsDashboard';
+import ShowOneClickQuotation from './components/showOneClickQuotationSec/ShowOneClickQuotation';
+import OneClickNegotiationCompanies from './pages/oneClickNegotiationCompaniesPage/OneClickNegotiationCompanies';
 
 function App() {
   useEffect(() => {
@@ -92,7 +95,7 @@ function App() {
   const regionsQuery = useQuery({
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
-  });
+  });
 
 
   return (
@@ -123,8 +126,9 @@ function App() {
             regions={regionsQuery?.data?.regions}
             mainCategories={mainCategoriesQuery?.data?.mainCategories}
             countries={countriesQuery?.data?.countries}
-            token={token} 
-          />} />
+            token={token}
+            />} 
+          />
 
 
         {/* all category routes */}
@@ -215,7 +219,11 @@ function App() {
             token={token}
           />} />
         <Route path='/profile/quotations' element={<MyQutations  token={token}/>} />
-        <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation  token={token}/>} />
+        <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation token={token}/>} />
+        <Route path='/profile/companyoneclick-quotations/:quotationsId' element={<ShowSingleQuotation token={token}/>} />
+        <Route path='/profile/oneclick-quotations' element={<OneClickQuotationsDashboard token={token}/>} />
+        <Route path='/profile/oneclick-quotations/:negotiateId' element={<OneClickNegotiationCompanies token={token}/>} />
+        <Route path='/profile/oneclick-quotations/:negotiateId/:offerId' element={<ShowOneClickQuotation token={token}/>} />
         <Route path='/profile/products' element={<MyProducts />} />
         <Route path='/profile/orders' element={<MyOrders />} />
         <Route path='/company-messages' element={<CompanyMessage />} />

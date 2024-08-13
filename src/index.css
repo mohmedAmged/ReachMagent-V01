@@ -34,6 +34,16 @@ li {
     list-style: none;
 }
 
+.form-control:hover ,
+.form-control:focus ,
+.form-control:focus-visible ,
+.form-select:hover ,
+.form-select:focus ,
+.form-select:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
 :root {
     --primary-white: rgba(255, 255, 255, 1); 
     --primary-black: rgba(0, 0, 0, 1);

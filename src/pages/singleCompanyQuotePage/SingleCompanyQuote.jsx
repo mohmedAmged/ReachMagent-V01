@@ -127,6 +127,7 @@ export default function SingleCompanyQuote({ token, countries }) {
             setCurrentProd([]);
         };
     }, [requestIntries]);
+    
 
     const handleResetCurrentQuotation = () => {
         (async () => {
@@ -226,6 +227,8 @@ export default function SingleCompanyQuote({ token, countries }) {
                     });
                 })
                 .catch(error => {
+                    console.log(error?.response);
+                    
                     toast.error(`${error?.response?.data?.message || 'Error!'}`, {
                         id: toastId,
                         duration: 1000

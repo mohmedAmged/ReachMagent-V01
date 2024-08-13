@@ -110,7 +110,20 @@ padding: 15px 25px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.45);
 }
- @media screen and (max-width: 600px) {
+.updateBtn.reject {
+    background-color: var(--primary-white);
+    color: #ff2020;
+    border-color: #ff2020;
+}
+.updateBtn.reject:hover {
+    background-color: #ff2020;
+    color: var(--primary-white);
+}
+.product__item__content i {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
     .showSingleQuotation__handler .totals__text h5, 
     .showSingleQuotation__handler .totals__prices h5 {
         font-size: 12px;
@@ -129,9 +142,9 @@ padding: 15px 25px;
         font-size: 10px;
     }
     .showSingleQuotation__handler .requesterDetails__mainInfo .mainInfo__texts h5,
-     .showSingleQuotation__handler .requesterDetails__subInfo .mainInfo__texts h5{
+    .showSingleQuotation__handler .requesterDetails__subInfo .mainInfo__texts h5{
         font-size: 8px;
-     }
- }
+    }
+}
 
 
