@@ -209,6 +209,8 @@ export default function ShowSingleQuotation({ token }) {
             });
         })();
     };
+    console.log(acceptedSingleQuotations);
+console.log(acceptedSingleQuotations[0]?.image);
 
     return (
         <div className='dashboard__handler showSingleQuotation__handler d-flex'>
@@ -229,11 +231,18 @@ export default function ShowSingleQuotation({ token }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {                                    
                                     acceptedSingleQuotations?.map((row) => (
                                         <tr className='' key={row?.id}>
                                             <td className='product__item__content'>
-                                                <img src={row?.medias[0]?.media ? row?.medias[0]?.media : `${defaultProdImg}`} alt="" />
+                                                <img src=
+                                                {
+                                                    row?.medias?.[0]?.media 
+                                                    ? row.medias[0].media 
+                                                    : row?.image 
+                                                    ? row.image 
+                                                    : defaultProdImg
+                                                }  alt="" />
                                                 <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
                                             </td>
                                             <td>

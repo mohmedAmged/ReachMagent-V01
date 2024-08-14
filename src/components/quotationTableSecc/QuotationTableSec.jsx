@@ -29,6 +29,7 @@ export default function QuotationTableSec({ token }) {
     useEffect(() => {
         fetchAllQuotations();
     }, [loginType, token]);
+console.log(newData);
 
     return (
         <div className='quotationTable__handler content__view__handler'>

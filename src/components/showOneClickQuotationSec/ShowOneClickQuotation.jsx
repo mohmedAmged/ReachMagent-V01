@@ -231,7 +231,7 @@ export default function ShowOneClickQuotation({ token }) {
               }
             )
             .then((response) => {
-              navigate("/profile/quotations");
+              navigate(`/profile/oneclick-quotations/${negotiationId}`);
               toast.success(response?.data?.message || "Quotation Accepted!", {
                 id: toastId,
                 duration: 1000,

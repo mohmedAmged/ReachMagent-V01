@@ -41,6 +41,8 @@ import ShowSingleQuotation from './components/showSingleQuotationsSec/ShowSingle
 import OneClickQuotationsDashboard from './pages/oneClickQuotationsDashboardPage/OneClickQuotationsDashboard';
 import ShowOneClickQuotation from './components/showOneClickQuotationSec/ShowOneClickQuotation';
 import OneClickNegotiationCompanies from './pages/oneClickNegotiationCompaniesPage/OneClickNegotiationCompanies';
+import NewProductForm from './components/newProductItemForm/NewProductForm';
+import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
 
 function App() {
   useEffect(() => {
@@ -224,8 +226,15 @@ function App() {
         <Route path='/profile/oneclick-quotations' element={<OneClickQuotationsDashboard token={token}/>} />
         <Route path='/profile/oneclick-quotations/:negotiateId' element={<OneClickNegotiationCompanies token={token}/>} />
         <Route path='/profile/oneclick-quotations/:negotiateId/:offerId' element={<ShowOneClickQuotation token={token}/>} />
-        <Route path='/profile/products' element={<MyProducts />} />
+        <Route path='/profile/products' element={<MyProducts token={token} />} />
+        <Route path='/profile/products/show-one/:prodInfoId' element={<ShowOneProductInfoInDash token={token} />} />
+        <Route path='/profile/products/:addNewItem' element={
+          <NewProductForm
+            mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            token={token}
+          />} />
         <Route path='/profile/orders' element={<MyOrders />} />
+        
         <Route path='/company-messages' element={<CompanyMessage />} />
         <Route path='/your-messages' element={<MyMessage />} />
 

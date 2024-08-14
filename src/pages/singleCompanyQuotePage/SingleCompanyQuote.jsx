@@ -87,6 +87,7 @@ export default function SingleCompanyQuote({ token, countries }) {
     useEffect(() => {
         if (token && loginType && companyIdWantedToHaveQuoteWith && requestIntries?.type) {
             setCustomProduct({ ...customProduct, type: requestIntries?.type });
+            setDistinationData({ ...distinationData, type: requestIntries?.type });
             if (requestIntries?.title.length === 0 || requestIntries?.title.length >= 3) {
                 setloadingCart(true);
                 (async () => {
@@ -227,8 +228,6 @@ export default function SingleCompanyQuote({ token, countries }) {
                     });
                 })
                 .catch(error => {
-                    console.log(error?.response);
-                    
                     toast.error(`${error?.response?.data?.message || 'Error!'}`, {
                         id: toastId,
                         duration: 1000
@@ -479,7 +478,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                 ) : (
                                                     cart?.map((el) => {
                                                         return <CartProduct
-                                                            key={el?.item?.quotation_cart_id}
+                                                            key={el?.quotation_cart_id}
                                                             title={el?.item?.title}
                                                             description={el?.item?.description}
                                                             notes={el?.note}

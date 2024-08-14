@@ -30,7 +30,8 @@ export default function Home({companies,token}) {
       name: "Three",
       id: 4
     }
-  ]
+  ];
+  const loginType = localStorage.getItem('loginType');
 
   return (
     <div className='myHomeSec__handler'>
@@ -43,15 +44,18 @@ export default function Home({companies,token}) {
       />
       <AboutReachSec />
       <AllCategorySec />
-      <div className='oneClickQuotation__handler'>
-        <FranchiseSec
-          pageName='discover'
-          headText='One-click Quotation'
-          paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
-          btnOneText='Start Now'
-          btnOnelink='/one-click-quotation'
-        />
-      </div>
+      {
+        loginType === 'user' &&
+        <div className='oneClickQuotation__handler'>
+          <FranchiseSec
+            pageName='discover'
+            headText='One-click Quotation'
+            paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
+            btnOneText='Start Now'
+            btnOnelink='/one-click-quotation'
+          />
+        </div>
+      }
 
       <ReadyToBuySec secMAinTitle={`Ready-To-Buy Products`}/>
       <TrendingCompanySec companies={companies} token={token} />

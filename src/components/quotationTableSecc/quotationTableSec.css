@@ -51,6 +51,15 @@
     background: rgba(223, 4, 4, 1);
     color: var(--primary-white);
 }
+.quotationTable__content table tbody td .table__statu__btn.Rejected{
+    background: rgba(255, 197, 197, 1);
+    border: 2px solid rgba(223, 4, 4, 1);
+    color: rgba(223, 4, 4, 1);
+}
+.quotationTable__content table tbody td .table__statu__btn.Rejected:hover{
+    background: rgba(223, 4, 4, 1);
+    color: var(--primary-white);
+}
 .quotationTable__content table tbody td .table__statu__btn.Accepted{
     color: var(--primary-white);
     background: rgba(1, 186, 233, 1);
