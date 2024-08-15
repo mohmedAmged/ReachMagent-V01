@@ -106,28 +106,6 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
         }));
     };
 
-    //     e.preventDefault();
-    //     try {
-    //         const formDataToSend = {
-    //             ...formData,
-    //             images: formData.images, // Assuming images are handled correctly
-    //         };
-    //         const response = await axios.post(`${baseURL}/employee/add-catalog`, formDataToSend, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //         if (response.status === 200) {
-    //             toast.success('Catalog item added successfully');
-    //             // Reset form if needed
-    //         } else {
-    //             toast.error('Failed to add catalog item');
-    //         }
-    //     } catch (error) {
-    //         toast.error('Error adding catalog item.');
-    //     }
-    // };
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const submissionData = new FormData();

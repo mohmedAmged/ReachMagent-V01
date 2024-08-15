@@ -71,10 +71,6 @@ export default function ProdDetailsSlider() {
             <img src={currImg} alt="product Details" />
           </div>
         </Col>
-
-
-
-
         <Col lg={12} className='sliderOfProductDetails'>
         <Swiper
         style={{
