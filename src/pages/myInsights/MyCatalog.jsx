@@ -26,16 +26,6 @@ export default function MyCatalog({ token }) {
   useEffect(() => {
     fetchCatalogs();
   }, [loginType, token]);
-  //             'Accept': 'application/json',
-  //             Authorization: `Bearer ${token}`
-  //         }
-  //     }).then((response) => {
-
-  //         toast.success(response?.data?.message);
-  //     }).catch(error=>{
-  //         toast.error(error?.response?.data?.message);
-  //     });
-  // };
 
   const handleDeleteThisCatalog = async (id) => {
     try {
@@ -54,7 +44,6 @@ export default function MyCatalog({ token }) {
       toast.error(error?.response?.data?.message);
     }
   };
-  console.log(newData);
   
 
   return (

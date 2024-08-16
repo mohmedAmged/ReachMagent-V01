@@ -43,6 +43,8 @@ import ShowOneClickQuotation from './components/showOneClickQuotationSec/ShowOne
 import OneClickNegotiationCompanies from './pages/oneClickNegotiationCompaniesPage/OneClickNegotiationCompanies';
 import NewProductForm from './components/newProductItemForm/NewProductForm';
 import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
+import MyFaqs from './pages/myFaqsPage/MyFaqs';
+import NewFaqForm from './components/newFaqFromItem/NewFaqForm';
 
 function App() {
   useEffect(() => {
@@ -231,6 +233,11 @@ function App() {
         <Route path='/profile/products/:addNewItem' element={
           <NewProductForm
             mainCategories={mainCategoriesQuery?.data?.mainCategories}
+            token={token}
+          />} />
+        <Route path='/profile/faqs' element={<MyFaqs token={token} />} />
+        <Route path='/profile/faqs/:addNewItem' element={
+          <NewFaqForm
             token={token}
           />} />
         <Route path='/profile/orders' element={<MyOrders />} />
