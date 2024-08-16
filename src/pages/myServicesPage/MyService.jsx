@@ -55,40 +55,50 @@ export default function MyService({ token }) {
                     <div className='content__view__handler'>
                         <ContentViewHeader title={'Services'} />
                         <div className="content__card__list">
-                            <div className="row">
-                                {
-                                    newData?.map((el) => {
-                                        return (
-                                            <div className='col-lg-6 d-flex justify-content-center mb-3' key={el?.id}>
-                                                <div className="card__item">
-                                                    <div className="card__image">
-                                                        <img src={el?.image} alt={el?.title} />
+                            {
+                                newData?.length !== 0 ?
+                                    <div className="row">
+                                        {
+                                            newData?.map((el) => {
+                                                return (
+                                                    <div className='col-lg-6 d-flex justify-content-center mb-3' key={el?.id}>
+                                                        <div className="card__item">
+                                                            <div className="card__image">
+                                                                <img src={el?.image} alt={el?.title} />
+                                                            </div>
+                                                            <div className="card__name">
+                                                                <h3>
+                                                                    {el?.title}
+                                                                </h3>
+                                                            </div>
+                                                            <div className="card__btns d-flex">
+                                                                <>
+                                                                    <button
+                                                                        onClick={() => handleDeleteThisService(el?.id)}
+                                                                        className='btn__D'>
+                                                                        Delete
+                                                                    </button>
+                                                                </>
+                                                                <>
+                                                                    <button className='btn__E'>
+                                                                        Edit
+                                                                    </button>
+                                                                </>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="card__name">
-                                                        <h3>
-                                                            {el?.title}
-                                                        </h3>
-                                                    </div>
-                                                    <div className="card__btns d-flex">
-                                                        <>
-                                                            <button
-                                                                onClick={() => handleDeleteThisService(el?.id)}
-                                                                className='btn__D'>
-                                                                Delete
-                                                            </button>
-                                                        </>
-                                                        <>
-                                                            <button className='btn__E'>
-                                                                Edit
-                                                            </button>
-                                                        </>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    :
+                                    <div className='row'>
+                                        <div className="col-12 text-danger fs-5">
+                                            No Service Items Yet
+                                        </div>
+                                    </div>
+                            }
+
                         </div>
                         <div className='addNewItem__btn'>
                             <NavLink

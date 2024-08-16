@@ -99,71 +99,78 @@ export default function MyProducts({ token }) {
           <div className='myProducts__handler content__view__handler'>
             <ContentViewHeader title={'E-Commerce Products'} />
             <div className='addNewItem__btn text-lg-end'>
-              
-                <NavLink onClick={() => {
-                  scrollToTop();
-                }}
-                  to='/profile/products/addNewItem' className='nav-link'>
-                    <button>
-                      Add New Item
-                    </button>
-                </NavLink>
-              
+              <NavLink onClick={() => {
+                scrollToTop();
+              }}
+                to='/profile/products/addNewItem' className='nav-link'>
+                <button>
+                  Add New Item
+                </button>
+              </NavLink>
             </div>
-            <div className="productTable__content">
-              <Table responsive>
-                <thead>
-                  <tr className='table__default__header'>
-                    <th>
-                      {/* <input type="checkbox" /> */}
-                      product
-                    </th>
-                    <th className='text-center'>Category</th>
-                    <th className='text-center'>Status</th>
-                    <th className='text-center'>Price</th>
-                    <th className='text-center'>Show</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {newData?.map((row, index) => (
-                    <tr className='' key={index}>
-                      <td className='product__breif__detail d-flex '>
-                        <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(row?.id)}></i>
-                        <div className="product__img">
-                          <img src={row?.productImages[0]?.image} alt="product" />
-                        </div>
-                        <div className="product__info">
-                          <h2>
-                            {row?.title}
-                          </h2>
-                          <p>
-                            {row?.description}
-                          </p>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="product__created">
-                          {row?.category}
-                        </div>
-                      </td>
-                      <td>
-                        <div className={`product__statue ${row?.status}`}>
-                          {row?.status}
-                        </div>
-                      </td>
-                      <td>
-                        ${row?.price}
-                      </td>
-                      <td>
-                        <NavLink className={'nav-link'} to={`/profile/products/show-one/${row?.id}`}>
-                        <i className="bi bi-eye-fill showProd"></i>
-                        </NavLink>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
+            {
+              newData?.length !== 0 ?
+                <div className="productTable__content">
+                  <Table responsive>
+                    <thead>
+                      <tr className='table__default__header'>
+                        <th>
+                          {/* <input type="checkbox" /> */}
+                          product
+                        </th>
+                        <th className='text-center'>Category</th>
+                        <th className='text-center'>Status</th>
+                        <th className='text-center'>Price</th>
+                        <th className='text-center'>Show</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {newData?.map((row, index) => (
+                        <tr className='' key={index}>
+                          <td className='product__breif__detail d-flex '>
+                            <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(row?.id)}></i>
+                            <div className="product__img">
+                              <img src={row?.productImages[0]?.image} alt="product" />
+                            </div>
+                            <div className="product__info">
+                              <h2>
+                                {row?.title}
+                              </h2>
+                              <p>
+                                {row?.description}
+                              </p>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="product__created">
+                              {row?.category}
+                            </div>
+                          </td>
+                          <td>
+                            <div className={`product__statue ${row?.status}`}>
+                              {row?.status}
+                            </div>
+                          </td>
+                          <td>
+                            ${row?.price}
+                          </td>
+                          <td>
+                            <NavLink className={'nav-link'} to={`/profile/products/show-one/${row?.id}`}>
+                              <i className="bi bi-eye-fill showProd"></i>
+                            </NavLink>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+                :
+                <div className='row'>
+                  <div className="col-12 text-danger fs-5">
+                    No Product Items Yet
+                  </div>
+                </div>
+            }
           </div>
         </div>
       </div>

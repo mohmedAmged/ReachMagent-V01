@@ -54,6 +54,8 @@ export default function MyCatalog({ token }) {
       toast.error(error?.response?.data?.message);
     }
   };
+  console.log(newData);
+  
 
   return (
     <>
@@ -64,7 +66,9 @@ export default function MyCatalog({ token }) {
           <div className='content__view__handler'>
             <ContentViewHeader title={'Catalog'} />
             <div className="content__card__list">
-              <div className="row">
+              {
+                newData?.length !== 0 ?
+                <div className="row">
                 {
                   newData?.map((el) => {
                     return (
@@ -96,6 +100,14 @@ export default function MyCatalog({ token }) {
                   })
                 }
               </div>
+              :
+              <div className='row'>
+                <div className="col-12 text-danger fs-5">
+                  No Catalog Items Yet
+                </div>
+              </div>
+              }
+              
             </div>
             <div className='addNewItem__btn'>
               <NavLink 
