@@ -1,0 +1,19 @@
+.sidebarForItemsFilter__handler{
+    background: var(--primary-white);
+    padding: 15px 25px;
+    border-radius: 16px;
+}
+
+.price-filter {
+    display: flex;
+    align-items: center;
+  }
+  
+  .price-filter input[type="number"] {
+    width: 45%;
+  }
+  
+  .price-slider {
+    width: 100%;
+    margin-top: 10px;
+  }
