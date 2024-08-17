@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 export default function ShowSingleQuotation({ token }) {
     const loginType = localStorage.getItem('loginType')
     const { quotationsId } = useParams();
+    const [fullData, setFullData] = useState([]);
     const [newData, setNewdata] = useState([]);
     const [acceptedSingleQuotations,setAcceptedSingleQuotations] = useState([]);
     const [updatedOfferPrices,setUpdatedOfferPrices] = useState([]);
@@ -58,6 +59,7 @@ export default function ShowSingleQuotation({ token }) {
                         Authorization: `Bearer ${token}`
                     }
                 });
+                setFullData(response?.data?.data?.one_click_quotation);
                 setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation[0]);
                 setAcceptedSingleQuotations(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation[0]?.negotiate_one_click_quotation_details);
             } catch (error) {
@@ -117,7 +119,7 @@ export default function ShowSingleQuotation({ token }) {
             slug = 'update-quotation-status';
         }else {
             submitData.one_click_quotation_id = quotationsId;
-            submitData.negotiate_one_click_quotation_id = newData?.id;
+            submitData.negotiate_one_click_quotation_id = `${newData?.id}`;
             slug = 'update-one-click-quotation-status';
         };
         (async () => { 
@@ -200,6 +202,7 @@ export default function ShowSingleQuotation({ token }) {
                 });
             })
             .catch(error => {
+                console.log(error?.response?.data)
                 toast.error(
                     error?.response?.data?.message ||
                     'Error!',{
@@ -209,8 +212,6 @@ export default function ShowSingleQuotation({ token }) {
             });
         })();
     };
-    console.log(acceptedSingleQuotations);
-console.log(acceptedSingleQuotations[0]?.image);
 
     return (
         <div className='dashboard__handler showSingleQuotation__handler d-flex'>
@@ -265,10 +266,10 @@ console.log(acceptedSingleQuotations[0]?.image);
                                             <td>
                                                 <input
                                                     type="number"
-                                                    className={`form-control ${loginType !== 'user' && 'bg-white'}`}
+                                                    className={`form-control ${(loginType !== 'user' && newData?.company_status ===  'Pending') ? 'bg-white' : ''}`}
                                                     defaultValue={row?.offer_price !== 'N/A' ? row?.offer_price : 0}
                                                     onChange={(event) => handleChangeOfferPrices(event,row?.id)}
-                                                    disabled={loginType === 'user'}
+                                                    disabled={loginType === 'user' || newData?.company_status !==  'Pending'}
                                                 />
                                             </td>
                                         </tr>
@@ -315,7 +316,7 @@ console.log(acceptedSingleQuotations[0]?.image);
                                                     id='quotationShippingPrice'
                                                     className='form-control w-50'
                                                     maxLength={4}
-                                                    disabled={loginType === 'user'}
+                                                    disabled={loginType === 'user' || newData?.company_status !==  'Pending'}
                                                     onChange={handleChangeInput}
                                                 />
                                             </h5>
@@ -330,7 +331,7 @@ console.log(acceptedSingleQuotations[0]?.image);
                                                 id='quotationTaxPrice'
                                                 className='form-control w-50'
                                                 maxLength={4}
-                                                disabled={loginType === 'user'}
+                                                disabled={loginType === 'user' || newData?.company_status !==  'Pending'}
                                                 onChange={handleChangeInput}
                                             />
                                         </h5>
@@ -342,7 +343,7 @@ console.log(acceptedSingleQuotations[0]?.image);
                                                 id='quotationServicesPrice'
                                                 className='form-control w-50'
                                                 maxLength={4}
-                                                disabled={loginType === 'user'}
+                                                disabled={loginType === 'user' || newData?.company_status !==  'Pending'}
                                                 onChange={handleChangeInput}
                                             />
                                         </h5>
@@ -387,15 +388,14 @@ console.log(acceptedSingleQuotations[0]?.image);
                                     </div>
                                     <div className="mainInfo__texts">
                                         <h5 className='mb-4'>
-                                        {newData?.user_name
-                                            }
+                                        {newData?.user_name || fullData?.user_name}
                                         </h5>
                                         <h5 className='mb-4'>
-                                        {newData?.user_phone
+                                        {newData?.user_phone || fullData?.user_phone
                                             }
                                         </h5>
                                         <h5>
-                                        {newData?.address}
+                                        {newData?.address || fullData?.address}
                                         </h5>
                                     </div>
                                 </div>
@@ -405,7 +405,7 @@ console.log(acceptedSingleQuotations[0]?.image);
                                             City:
                                         </h5>
                                         <h5 className='mb-4'>
-                                            State/Region:
+                                            Area:
                                         </h5>
                                         <h5 className='mb-4'>
                                             Postal Code:
@@ -416,23 +416,34 @@ console.log(acceptedSingleQuotations[0]?.image);
                                     </div>
                                     <div className="mainInfo__texts">
                                         <h5 className='mb-4'>
-                                            {newData?.city}
+                                            {newData?.city || fullData?.destination_city}
                                         </h5>
                                         <h5 className='mb-4'>
-                                            {newData?.area}
+                                            {newData?.area || fullData?.destination_area}
                                         </h5>
                                         <h5 className='mb-4'>
-                                            {newData?.code}
+                                            {newData?.code || fullData?.code}
                                         </h5>
                                         <h5>
-                                            {newData?.country}
+                                            {newData?.country || fullData?.destination_country}
                                         </h5>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-12 d-flex justify-content-around">
-                                <span onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</span>
-                                <span onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</span>
+                                {
+                                    loginType === 'employee' ? 
+                                    newData?.company_status === 'Pending' &&
+                                    <>
+                                        <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
+                                        <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
+                                    </>
+                                    :
+                                    <>
+                                        <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
+                                        <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

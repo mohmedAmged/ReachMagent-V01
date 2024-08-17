@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 export default function ShowOneClickQuotation({ token }) {
   const loginType = localStorage.getItem("loginType");
   const { offerId } = useParams();
+  const [fullData, setFullData] = useState([]);
   const [newData, setNewdata] = useState([]);
   const [acceptedSingleQuotations, setAcceptedSingleQuotations] = useState([]);
   const [updatedOfferPrices, setUpdatedOfferPrices] = useState([]);
@@ -54,6 +55,7 @@ export default function ShowOneClickQuotation({ token }) {
           },
         }
       );
+      setFullData(response?.data?.data?.one_click_quotation);
       setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation);
     } catch (error) {
       setNewdata(error?.response?.data.message);
@@ -66,11 +68,13 @@ export default function ShowOneClickQuotation({ token }) {
 
   useEffect(() => {
     const currentNegotiationDetails = newData?.find(el => +el?.id === +offerId);
+    setShippingValue(currentNegotiationDetails?.shipping_price);
+    setTaxValue(currentNegotiationDetails?.tax);
+    setServicesValue(currentNegotiationDetails?.services);
     if (currentNegotiationDetails) {
       setAcceptedSingleQuotations(currentNegotiationDetails?.negotiate_one_click_quotation_details)
     };
   }, [newData]);
-
 
   useEffect(() => {
     if (updatedOfferPrices.length === 0) {
@@ -97,20 +101,6 @@ export default function ShowOneClickQuotation({ token }) {
       +submitionData?.total_price + +shippingValue + +taxValue + +servicesValue
     );
   }, [submitionData?.total_price, taxValue, shippingValue, servicesValue]);
-
-  const handleChangeInput = (event) => {
-    setSubmitionData({
-      ...submitionData,
-      [event?.target?.name]: `${event?.target?.value}`,
-    });
-    if (event.target.name === "shipping_price") {
-      setShippingValue(event?.target?.value);
-    } else if (event.target.name === "tax") {
-      setTaxValue(event.target.value);
-    } else if (event.target.name === "services") {
-      setServicesValue(event.target.value);
-    }
-  };
 
   const handleChangeOfferPrices = (e, id) => {
     const founded = updatedOfferPrices?.find((price) => +price?.id === +id);
@@ -264,8 +254,6 @@ export default function ShowOneClickQuotation({ token }) {
     };
   };
 
-  console.log(newData);
-
   return (
     <div className="dashboard__handler showSingleQuotation__handler d-flex">
       <MyNewSidebarDash />
@@ -342,57 +330,16 @@ export default function ShowOneClickQuotation({ token }) {
                   </div>
                   <div className="totals__prices">
                     <h5 className="mb-4">${submitionData?.total_price}</h5>
-                    {newData?.include_shipping === "Yes" ? (
+                    {(newData?.include_shipping === "Yes") && (
                       <h5 className="mb-4">
-                        <input
-                          defaultValue={
-                            newData?.shipping_price === "N/A"
-                              ? 0
-                              : newData?.shipping_price
-                          }
-                          name="shipping_price"
-                          type="number"
-                          id="quotationShippingPrice"
-                          className="form-control w-50"
-                          maxLength={4}
-                          disabled={loginType === "user"}
-                          onChange={handleChangeInput}
-                        />
+                        {shippingValue}
                       </h5>
-                    ) : (
-                      newData?.shipping_price
-                    )}
-                    <h5 className="mb-4">
-                      <input
-                        defaultValue={newData?.tax === "N/A" ? 0 : newData?.tax}
-                        name="tax"
-                        type="number"
-                        id="quotationTaxPrice"
-                        className="form-control w-50"
-                        maxLength={4}
-                        disabled={loginType === "user"}
-                        onChange={handleChangeInput}
-                      />
-                    </h5>
-                    <h5 className="mb-4">
-                      <input
-                        defaultValue={
-                          newData?.services === "N/A" ? 0 : newData?.services
-                        }
-                        name="services"
-                        type="number"
-                        id="quotationServicesPrice"
-                        className="form-control w-50"
-                        maxLength={4}
-                        disabled={loginType === "user"}
-                        onChange={handleChangeInput}
-                      />
-                    </h5>
+                    ) }
+                    <h5 className="mb-4">${taxValue}</h5>
+                    <h5 className="mb-4">${servicesValue}</h5>
                     <h5>
                       $
-                      {newData?.total_price === "N/A"
-                        ? totalPrice
-                        : newData?.total_price}
+                      {totalPrice}
                     </h5>
                   </div>
                 </div>
@@ -415,28 +362,28 @@ export default function ShowOneClickQuotation({ token }) {
                 <div className="col-lg-12 requesterDetails__content">
                   <div className="requesterDetails__mainInfo">
                     <div className="mainInfo__title">
-                      <h5 className="mb-4">Full Name:</h5>
-                      <h5 className="mb-4">Phone Number:</h5>
+                      <h5 className="mb-4">Company Name:</h5>
+                      <h5 className="mb-4">Quotation Type:</h5>
                       <h5>Street address:</h5>
                     </div>
                     <div className="mainInfo__texts">
-                      <h5 className="mb-4">{newData?.user_name}</h5>
-                      <h5 className="mb-4">{newData?.user_phone}</h5>
-                      <h5>{newData?.address}</h5>
+                      <h5 className="mb-4">{fullData?.company_name}</h5>
+                      <h5 className="mb-4">{fullData?.type}</h5>
+                      <h5>{fullData?.address}</h5>
                     </div>
                   </div>
                   <div className="requesterDetails__subInfo">
                     <div className="mainInfo__title">
-                      <h5 className="mb-4">City:</h5>
-                      <h5 className="mb-4">State/Region:</h5>
+                      <h5 className="mb-4">Your City:</h5>
+                      <h5 className="mb-4">Your Area:</h5>
                       <h5 className="mb-4">Postal Code:</h5>
-                      <h5>Country:</h5>
+                      <h5>Your Country:</h5>
                     </div>
                     <div className="mainInfo__texts">
-                      <h5 className="mb-4">{newData?.city}</h5>
-                      <h5 className="mb-4">{newData?.area}</h5>
-                      <h5 className="mb-4">{newData?.code}</h5>
-                      <h5>{newData?.country}</h5>
+                      <h5 className="mb-4">{fullData?.destination_city}</h5>
+                      <h5 className="mb-4">{fullData?.destination_area}</h5>
+                      <h5 className="mb-4">{fullData?.code}</h5>
+                      <h5>{fullData?.destination_country}</h5>
                     </div>
                   </div>
                 </div>

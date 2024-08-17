@@ -65,9 +65,9 @@ export default function AllCategorySec() {
             title: 'other',
             link: '/all-category'
         },
-    ]
+    ];
     return (
-        <div className='allCategorySec__handler'>
+        <div className='allCategorySec__handler mb-5'>
             <div className="container">
                 <div className="allCategory__header text-center">
                     <HeaderSec title={'Browse By Industry'}

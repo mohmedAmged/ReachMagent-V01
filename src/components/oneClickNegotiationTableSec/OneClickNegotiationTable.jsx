@@ -35,8 +35,6 @@ export default function OneClickNegotiationTable({ token }) {
     fetchShowQuotations();
   }, [loginType, token]);
 
-  console.log(newData)
-
   return (
     <div className="quotationTable__handler content__view__handler">
       <ContentViewHeader title={"All Customers"} />
@@ -55,8 +53,8 @@ export default function OneClickNegotiationTable({ token }) {
                 {row?.company_name}
                 </td>
                 <td className="adjust__flex">
-                  <button className={`${loginType === 'user' && row?.user_status} ${loginType === 'employee' && row?.company_status} table__statu__btn`}>
-                    {loginType === 'user' ? row?.user_status : row?.company_status }
+                  <button className={`${loginType === 'user' && row?.company_status} table__statu__btn`}>
+                    {row?.company_status}
                   </button>
                   <NavLink
                     className={"nav-link"}
@@ -65,10 +63,13 @@ export default function OneClickNegotiationTable({ token }) {
                     }}
                     to={`/profile/oneclick-quotations/${negotiateId}/${row?.id}`}
                   >
-                    <button className={`table__statu__btn show__btn`}>
-                      <span>show</span>
-                      <i className="bi bi-eye"></i>
-                    </button>
+                    {
+                      (row?.company_status === 'Accepted') &&
+                      <button className={`table__statu__btn show__btn`}>
+                        <span>show</span>
+                        <i className="bi bi-eye"></i>
+                      </button>
+                    }
                   </NavLink>
                 </td>
               </tr>

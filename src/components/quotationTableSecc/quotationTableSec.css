@@ -79,8 +79,27 @@
     color: var(--primary-black);
     background: var(--primary-white);
 }
+
+.quotationTable__content table tbody td .table__statu__btn.Awarded{
+    color: var(--primary-white);
+    background: rgb(8, 219, 8);
+    border: 2px solid rgb(8, 219, 8);
+}
+.quotationTable__content table tbody td .table__statu__btn.Awarded:hover{
+    color: rgb(8, 219, 8);
+    background: var(--primary-white);
+}
+.quotationTable__content table tbody td .table__statu__btn.Disqualified{
+    color: var(--primary-white);
+    background: #ff5420;
+    border: 2px solid #ff5420;
+}
+.quotationTable__content table tbody td .table__statu__btn.Disqualified:hover{
+    color: #ff5420;
+    background: var(--primary-white);
+}
+
 .quotationTable__content table tbody td .table__statu__btn.show__btn{
-    
     color: var(--main-blue-color);
     background: var(--primary-white);
     border: 2px solid var(--main-blue-color);

@@ -9,7 +9,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 
 export default function QuotationTableSec({ token }) {
     const loginType = localStorage.getItem('loginType');
-    const [newData, setNewdata] = useState([])
+    const [newData, setNewdata] = useState([]);
 
     const fetchAllQuotations = async () => {
         const slug = loginType === 'user' ? `${loginType}/my-quotations`
@@ -29,7 +29,6 @@ export default function QuotationTableSec({ token }) {
     useEffect(() => {
         fetchAllQuotations();
     }, [loginType, token]);
-console.log(newData);
 
     return (
         <div className='quotationTable__handler content__view__handler'>
@@ -49,16 +48,19 @@ console.log(newData);
                                 <td>{row?.area === 'N/A' ? (loginType === 'user' ? row?.company_name : row?.user_name) : row?.area}</td>
                                 <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
                                 <td className='adjust__flex'>
-                                    <button className={`${row?.user_status} table__statu__btn`}>
+                                    <button className={`${ row?.user_status } table__statu__btn`}>
                                         {row?.user_status}
                                     </button>
                                     <NavLink className={'nav-link'}  onClick={() => {
                                     scrollToTop();
                                 }} to={`/profile/quotations/${row?.id}`}>
-                                        <button className={`table__statu__btn show__btn`}>
-                                            <span>show</span>
-                                            <i className="bi bi-eye"></i>
-                                        </button>
+                                        {
+                                            row?.user_status === 'Pending' &&
+                                            <button className={`table__statu__btn show__btn`}>
+                                                <span>show</span>
+                                                <i className="bi bi-eye"></i>
+                                            </button>
+                                        }
                                     </NavLink>
                                 </td>
                             </tr>

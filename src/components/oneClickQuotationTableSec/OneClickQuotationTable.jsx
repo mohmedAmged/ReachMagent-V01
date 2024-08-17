@@ -33,8 +33,6 @@ export default function OneClickQuotationTable({ token }) {
     fetchAllQuotations();
   }, [loginType, token]);
 
-
-
   return (
     <div className="quotationTable__handler content__view__handler">
       <ContentViewHeader title={"All Customers"} />
@@ -48,8 +46,10 @@ export default function OneClickQuotationTable({ token }) {
             </tr>
           </thead>
           <tbody>
-            {newData?.map((row, index) => (
-              <tr className="" key={index}>
+            {newData?.map((row, index) => {
+              return (
+                (row?.user_status !== 'Rejected') &&
+                <tr className="" key={index}>
                 <td>
                   {loginType === 'user'?
                       row?.type 
@@ -81,8 +81,9 @@ export default function OneClickQuotationTable({ token }) {
                     </button>
                   </NavLink>
                 </td>
-              </tr>
-            ))}
+                </tr>
+              )
+            })}
           </tbody>
         </Table>
       </div>
