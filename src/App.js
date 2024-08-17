@@ -45,6 +45,8 @@ import NewProductForm from './components/newProductItemForm/NewProductForm';
 import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
 import MyFaqs from './pages/myFaqsPage/MyFaqs';
 import NewFaqForm from './components/newFaqFromItem/NewFaqForm';
+import MyPosts from './pages/myPostsPage/MyPosts';
+import NewPostForm from './components/newPostFormItem/NewPostForm';
 
 function App() {
   useEffect(() => {
@@ -240,6 +242,12 @@ function App() {
           <NewFaqForm
             token={token}
           />} />
+        <Route path='/profile/posts' element={<MyPosts token={token} />} />
+        <Route path='/profile/posts/:addNewItem' element={
+          <NewPostForm
+            token={token}
+          />} />
+
         <Route path='/profile/orders' element={<MyOrders />} />
         
         <Route path='/company-messages' element={<CompanyMessage />} />

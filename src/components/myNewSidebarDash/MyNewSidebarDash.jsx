@@ -54,6 +54,7 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Services", link: "/profile/service", icon: icon2 },
         { title: "Products", link: "/profile/products", icon: icon4 },
         { title: "FAQS", link: "/profile/faqs", icon: icon5 },
+        { title: "Posts", link: "/profile/posts", icon: icon5 },
         { title: "Quotations", link: "/profile/quotations", icon: icon3 },
         { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
         { title: "Orders", link: "/profile/orders", icon: icon4 },

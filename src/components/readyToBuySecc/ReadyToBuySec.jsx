@@ -6,7 +6,7 @@ import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
 import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
 import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
-export default function ReadyToBuySec({secMAinTitle}) {
+export default function ReadyToBuySec({secMAinTitle, showCompaniesQuery}) {
     const listedNavigationItem = [
         {
             item: 'Featured Products',
@@ -81,10 +81,11 @@ export default function ReadyToBuySec({secMAinTitle}) {
                 <div className="readyToBuy__products">
                     <div className="row">
                         {
-                            productItems.map((el, index) => {
+                            showCompaniesQuery?.companyProducts?.map((el, index) => {
                                 return (
                                     <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
-                                        <ProductCard productImage={el.img} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
+                                        <ProductCard 
+                                        productImage={el.productMedias[0]?.image} productName={el.productTitle} productPrice={el.productPrice} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>
                                 )
                             })

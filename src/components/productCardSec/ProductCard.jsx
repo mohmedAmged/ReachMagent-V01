@@ -12,7 +12,7 @@ export default function ProductCard({ productImage, productName, productPrice, p
                         {productName}
                     </h3>
                     <h5>
-                        {productPrice}
+                        ${productPrice}
                     </h5>
                 </div>
                 <div className="sub__info">

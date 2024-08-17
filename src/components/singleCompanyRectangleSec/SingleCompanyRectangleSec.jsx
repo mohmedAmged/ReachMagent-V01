@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import './singleCompanyRectangle.css';
 
-export default function SingleCompanyRectangleSec() {
+export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
   const questionsArr = [
     {
       id: 1,
@@ -55,6 +55,7 @@ export default function SingleCompanyRectangleSec() {
       answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
     },
   ];
+console.log(showCompaniesQuery?.companyFaqs);
 
   return (
     <div className='singleCompany__rectangleSec'>
@@ -89,11 +90,11 @@ export default function SingleCompanyRectangleSec() {
             className="mySwiper"
           >
             {
-              questionsArr.map(question=>{
+              showCompaniesQuery?.companyFaqs?.map(question=>{
                 return(
                   <SwiperSlide key={question.id} className='singleCompany__rectangleSec-slide'>
-                    <h4>{question.question}</h4>
-                    <p>{question.answer}</p>
+                    <h4>{question?.question}</h4>
+                    <p>{question?.answer}</p>
                   </SwiperSlide>
                 )
               })

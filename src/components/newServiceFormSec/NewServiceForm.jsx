@@ -22,7 +22,6 @@ export default function NewServiceForm({ mainCategories, token }) {
         status: 'active',
         image: '',
     });
-    console.log(formData);
     
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
 

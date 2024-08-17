@@ -64,8 +64,8 @@ export default function SingleCompany({ token }) {
         { name: 'Overview', active: activeItem === 'Overview' },
         { name: 'Services', active: activeItem === 'Services' },
         { name: 'Catalogs', active: activeItem === 'Catalogs' },
+        { name: 'Products', active: activeItem === 'Products' },
         { name: 'Media', active: activeItem === 'Media' },
-        { name: 'Network', active: activeItem === 'Network' },
         { name: 'Pranches', active: activeItem === 'Pranches' },
     ]
     const handleItemClick = (itemName) => {
@@ -97,7 +97,6 @@ export default function SingleCompany({ token }) {
             })();
         };
     }, [companyId, formId, loginType, token]);
-console.log(showCompaniesQuery);
 
     return (
         <div className='singleCompany__handler'>
@@ -163,7 +162,7 @@ console.log(showCompaniesQuery);
                             </Swiper>
                         </>
                     }
-                     {
+                    {
                         activeItem === 'Catalogs' &&
                         <>
                             <Swiper
@@ -214,12 +213,63 @@ console.log(showCompaniesQuery);
                             </Swiper>
                         </>
                     }
+                    {
+                        activeItem === 'Products' &&
+                        <>
+                            <Swiper
+                                className='mySwiper'
+                                modules={[Autoplay]}
+                                autoplay={{
+                                    delay: 2500,
+                                    pauseOnMouseEnter: true,
+                                    disableOnInteraction: false
+                                }}
+                                breakpoints={{
+                                    300: {
+                                        slidesPerView: 1.1,
+                                        spaceBetween: 10
+                                    },
+                                    426: {
+                                        slidesPerView: 1.2,
+                                        spaceBetween: 20
+                                    },
+                                    600: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    768: {
+                                        slidesPerView: 2.2,
+                                        spaceBetween: 15
+                                    },
+                                    995: {
+                                        slidesPerView: 3.2,
+                                        spaceBetween: 20
+                                    },
+                                }}
+                            >
+                                {showCompaniesQuery?.data?.company?.companyProducts?.map((el) => {
+                                    return (
+                                        <SwiperSlide className=' my-3' key={el?.productId}>
+                                            <LastMinuteCard
+                                                productImage={el?.productMedias[0].image }
+                                                productName={el?.productTitle}
+                                                // dealQuantity={''}
+                                                showCustomContent={true}
+                                                borderColor={'rgba(0, 0, 0, 0.5)'}
+                                                onAddClick={''}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+                            </Swiper>
+                        </>
+                    }
                 </div>
             }
 
-            <SingleCompanyRectangleSec />
+            <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company}/>
 
-            <ReadyToBuySec secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
+            <ReadyToBuySec showCompaniesQuery={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
             <HeaderOfSec
                 secHead='Company Insights'
                 secText='Stay informed with the latest updates, announcements, and specials from our company'
