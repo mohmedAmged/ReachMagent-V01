@@ -1,19 +1,80 @@
 .sidebarForItemsFilter__handler{
-    background: var(--primary-white);
-    padding: 15px 25px;
-    border-radius: 16px;
+  background: var(--primary-white);
+  padding: 15px 25px;
+  border-radius: 16px;
 }
 
 .price-filter {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+.price-filter input[type="number"] {
+  width: 45%;
+}
+
+/* .price-slider {
+  width: 100%;
+  margin-top: 10px;
+
+} */
+
+.catalog__new__input input.price-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: rgba(245, 248, 250, 1); /*Line color*/
+  outline: none;
+  /* background: rgba(1, 31, 91, 1); Circle (thumb) color */
+  border-radius: 5px;
+}
+
+/* The thumb (slider handle) */
+.catalog__new__input input.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: rgba(245, 248, 250, 1);
+
+  background: rgba(1, 31, 91, 1); /*Circle (thumb) color*/
+  cursor: pointer;
+}
+
+.catalog__new__input input.price-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: rgba(245, 248, 250, 1);
+  background: rgba(245, 248, 250, 1); /* Circle (thumb) color */
+  cursor: pointer;
+}
+
+.sidebarForItemsFilter__handler .sidebarItemFilter .clearFilterBtn{
+  width: 100%;
+  border: 2px solid var(--main-blue-color);
+  background: rgba(245, 248, 250, 1);
+  color: var(--main-blue-color);
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all .2s ease-in-out ;
+}
+.sidebarForItemsFilter__handler .sidebarItemFilter .clearFilterBtn:hover{
+  background: var(--main-blue-color);
+  color: rgba(245, 248, 250, 1);
+}
+
+@media screen and (max-width: 992px) {
+  .sidebarForItemsFilter__handler .catalog__new__input input::placeholder,
+  .catalog__new__input select{
+    font-size: 12px;
   }
-  
-  .price-filter input[type="number"] {
-    width: 45%;
-  }
-  
-  .price-slider {
-    width: 100%;
-    margin-top: 10px;
-  }
+  .sidebarForItemsFilter__handler .catalog__new__input label{
+    font-size: 14px;
+  } 
+}

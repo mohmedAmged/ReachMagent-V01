@@ -1,6 +1,6 @@
 import React from 'react'
 import './productCard.css'
-export default function ProductCard({ productImage, productName, productPrice, productRate, productRateNum }) {
+export default function ProductCard({ productImage, productName, productPrice, companyName }) {
     return (
         <div className='productCard__item'>
             <div className="product__image">
@@ -20,10 +20,7 @@ export default function ProductCard({ productImage, productName, productPrice, p
                     <p>
                         {/* <i className="bi bi-star-fill"></i> */}
                         <span className='prodcut_rate'>
-                            {productRate}
-                        </span>
-                        <span className='product__rate__num'>
-                            {productRateNum}
+                            {companyName ? companyName : ''}
                         </span>
                     </p>
                     <button className='pageMainBtnStyle'>

@@ -22,6 +22,7 @@ export default function NewPostForm({ token }) {
         status: 'active',
         type: ''  /* news || discount || announcement */
     });
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({

@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './shopProducts.css';
-
-import searchIcon from '../../assets/icons/search.svg'
 import ProductCard from '../productCardSec/ProductCard';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
+import toast from 'react-hot-toast';
 
-export default function ShopProducts({ products }) {
-
+export default function ShopProducts({token}) {
+  const loginType = localStorage.getItem('loginType');
   const [minPrice, setMinPrice] = useState(100);
   const [maxPrice, setMaxPrice] = useState(20000);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState(20000);
+  
+  const [products,setProducts] = useState([]);
 
   const handleSliderChange = (e) => {
     setSelectedMaxPrice(Number(e.target.value));
@@ -18,18 +21,61 @@ export default function ShopProducts({ products }) {
     const value = Number(e.target.value);
     if (value >= minPrice && value <= maxPrice) {
       setSelectedMaxPrice(value);
-    }
+    };
   };
+
+  // const getCurrentProducts = async () => {
+  //   const toastId = toast.loading('Loading Products...');
+  //   await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //   .then(response => {
+  //     setProducts(response?.data?.data?.products);
+  //     toast?.success(response?.data?.message || 'Products Loaded Successfully!',{
+  //       id: toastId,
+  //       duration: 1000
+  //     });
+  //   })
+  //   .catch(error=>{
+  //     toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
+  //       id: toastId,
+  //       duration: 1000
+  //     });
+  //   });
+  // };
+
+  // const getCurrentAllowedCountries = async () => {
+  //   await axios.get(`${baseURL}/user/allowed-companies?t=${new Date().getTime()}`,{
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //   .then(response => {
+  //     console.log(response?.data?.data?.allowed_companies);
+  //   })
+  //   .catch(error =>{
+  //     toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
+  //       duration: 1000,
+  //     });
+  //   });
+  // };
+
+  // useEffect(()=>{
+  //   getCurrentProducts();
+  //   getCurrentAllowedCountries();
+  // },[loginType,token]);
 
   return (
     <div className='container'>
       <div className="readyToBuy__products">
         <div className="row">
-          <div className="col-lg-3">
+          <div className="col-lg-3 col-md-4 ">
             <div className="sidebarForItemsFilter__handler">
               <div className="sidebarItemFilter">
                 <div className="catalog__new__input">
-                  <label htmlFor="type" className='d-flex justify-content-between align-items-center'>
+                  <label htmlFor="type" className='d-flex justify-content-between align-items-center mb-3'>
                     <span>
                       Sorting Type
                     </span>
@@ -145,15 +191,20 @@ export default function ShopProducts({ products }) {
                   />
                 </div>
               </div>
+              <div className="sidebarItemFilter">
+                <button className='clearFilterBtn'>
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
-          <div className="col-lg-9">
+          <div className="col-lg-9 col-md-8">
             <div className="row">
               {
-                products.map((el, index) => {
+                products?.map((el) => {
                   return (
-                    <div key={index} className="col-lg-6 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                      <ProductCard productImage={el.img} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
+                    <div key={el?.id} className="col-lg-3 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
+                      <ProductCard productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} productRateNum={el.rateCount} />
                     </div>
                   )
                 })

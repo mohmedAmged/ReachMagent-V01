@@ -11,6 +11,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import CompanyWorkHourForm from '../../components/companyWorkHourFormItem/CompanyWorkHourForm';
 
 localStorage.setItem('updatingCompany','notUpdating');
 localStorage.setItem('updatingCompanyActivities','notUpdating');
@@ -87,6 +88,7 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
     const items = [
         { name: 'Company Settings', active: activeItem === 'Company Settings' },
         { name: 'Company Activities', active: activeItem === 'Company Activities' },
+        { name: 'Company Work Hours', active: activeItem === 'Company Work Hours' },
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
@@ -205,6 +207,12 @@ console.log(mainCategories);
                                 {activeItem === 'Company Activities' 
                                 && 
                                 <CompanyActivitiesForm
+                                    token={token}
+                                />
+                                }
+                                {activeItem === 'Company Work Hours' 
+                                && 
+                                <CompanyWorkHourForm
                                     token={token}
                                 />
                                 }
