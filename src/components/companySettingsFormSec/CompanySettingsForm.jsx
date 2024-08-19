@@ -204,7 +204,7 @@ export default function CompanySettingsForm(
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4'>
-      <div className="mt-2 ms-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanyEmail">Company E-Mail</label>
         <input
           id='dashboardCompanyEmail'
@@ -219,7 +219,7 @@ export default function CompanySettingsForm(
           (<span className='errorMessage'>{errors?.email?.message}</span>)
         }
       </div>
-      <div className="mt-2 ms-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanywebsite_link">Company Link</label>
         <input
           id='dashboardCompanywebsite_link'
@@ -234,7 +234,7 @@ export default function CompanySettingsForm(
           (<span className='errorMessage'>{errors?.website_link?.message}</span>)
         }
       </div>
-      <div className="mt-2 ms-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanylinkedin_link">LinkedIn Link</label>
         <input
           id='dashboardCompanylinkedin_link'
@@ -249,7 +249,7 @@ export default function CompanySettingsForm(
           (<span className='errorMessage'>{errors?.linkedin_link?.message}</span>)
         }
       </div>
-      <div className="mt-2 ms-2 profileFormInputItem">
+      <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
         <label htmlFor="dashboardCompanyfounded">Founded</label>
         <input
           id='dashboardCompanyfounded'

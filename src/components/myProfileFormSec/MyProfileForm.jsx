@@ -156,7 +156,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4' >
-        <div className="mt-2 profileFormInputItem">
+        <div className="mt-2 profileFormInputItem cityContainerProfileForm">
             <label htmlFor="dashboardEmployeeName">First Name</label>
             <input
                 id='dashboardEmployeeName'
@@ -171,7 +171,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                 (<span className='errorMessage'>{errors?.name?.message}</span>)
             }
         </div>
-        <div className="mt-2 profileFormInputItem">
+        <div className="mt-2 profileFormInputItem cityContainerProfileForm">
             <label htmlFor="dashboardEmployeePhone">Phone Number</label>
             <input
                 id='dashboardEmployeePhone'
@@ -186,7 +186,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                 (<span className='errorMessage'>{errors?.phone?.message}</span>)
             }
         </div>
-        <div className="mt-2 profileFormInputItem">
+        <div className="mt-2 profileFormInputItem cityContainerProfileForm">
             <label htmlFor="dashboardEmployeeEmail">Email Address</label>
             <input
                 id='dashboardEmployeeEmail'
@@ -201,7 +201,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                 (<span className='errorMessage'>{errors?.email?.message}</span>)
             }
         </div>
-        <div className="mt-2 profileFormInputItem">
+        <div className="mt-2 profileFormInputItem cityContainerProfileForm">
             <label htmlFor="dashboardEmployeeCountry">Country</label>
             {
                 (profileUpdateStatus === 'notUpdating') ?
@@ -268,10 +268,11 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     </>
             }
         </div>
+        {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut, deserunt nam explicabo iusto nisi fuga laudantium et libero. Ipsam laboriosam sint ex eaque minus id nulla quasi ipsa optio error. */}
         {
             (localStorage.getItem('loginType') === 'user') ? 
             <>
-            <div className="mt-2 profileFormInputItem">
+            <div className="mt-2 profileFormInputItem cityContainerProfileForm">
                 <label htmlFor="dashboardAddress_one">Address One</label>
                 <input
                     id='dashboardAddress_one'
@@ -286,7 +287,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     (<span className='errorMessage'>{errors?.address_one?.message}</span>)
                 }
             </div>
-            <div className="mt-2 profileFormInputItem">
+            <div className="mt-2 profileFormInputItem cityContainerProfileForm">
                 <label htmlFor="dashboardAddress_two">Address Two</label>
                 <input
                     id='dashboardAddress_two'
@@ -303,7 +304,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
             </div>
             </>
             :
-            <div className="mt-2 profileFormInputItem">
+            <div className="mt-2 profileFormInputItem cityContainerProfileForm">
                 <label htmlFor="dashboardFullAddress">Full Address</label>
                 <input
                     id='dashboardFullAddress'

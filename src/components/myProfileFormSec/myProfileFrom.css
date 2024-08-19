@@ -17,3 +17,8 @@
     -ms-border-radius: 7px !important;
     -o-border-radius: 7px !important;
 }
+@media screen and (max-width: 600px) {
+    .cityContainerProfileForm {
+        width: 100%;
+    } 
+}

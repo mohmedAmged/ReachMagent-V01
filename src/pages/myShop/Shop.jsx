@@ -34,7 +34,7 @@ export default function Shop({token}) {
       paraPartTwo='in your region, from a needle to whatever you need'
       categoryArr={arrOfCateg}
       />
-      <ShopCategorySlider />
+      {/* <ShopCategorySlider /> */}
       {/* <FilterationBar /> */}
       <ShopProducts token={token} />
     </>

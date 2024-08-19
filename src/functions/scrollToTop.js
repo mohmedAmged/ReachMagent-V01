@@ -1,11 +1,5 @@
-export const scrollToTop = ()=>{
+export const scrollToTop = (num)=>{
     window.scrollTo({
-        top: 0,
+        top: num ? num : 0,
     });
 };
-// const arr = [1, 2, 3, 4, 5, 6]   //row  //elastic  //2D //index=column
-
-// let arwr = [
-//     [1, 2, 3, 4, 5, 6],
-//     [1, 2, 3, 4, 5, 6],
-// ]   

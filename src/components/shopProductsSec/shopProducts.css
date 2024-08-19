@@ -13,24 +13,20 @@
   width: 45%;
 }
 
-/* .price-slider {
-  width: 100%;
-  margin-top: 10px;
-
-} */
-
 .catalog__new__input input.price-slider {
   width: 100%;
   -webkit-appearance: none;
   appearance: none;
   height: 8px;
-  background: rgba(245, 248, 250, 1); /*Line color*/
+  background: rgba(245, 248, 250, 1);
   outline: none;
-  /* background: rgba(1, 31, 91, 1); Circle (thumb) color */
   border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 
-/* The thumb (slider handle) */
 .catalog__new__input input.price-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -38,9 +34,12 @@
   height: 16px;
   border-radius: 50%;
   color: rgba(245, 248, 250, 1);
-
-  background: rgba(1, 31, 91, 1); /*Circle (thumb) color*/
+  background: rgba(1, 31, 91, 1);
   cursor: pointer;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 
 .catalog__new__input input.price-slider::-moz-range-thumb {
@@ -48,7 +47,7 @@
   height: 16px;
   border-radius: 50%;
   color: rgba(245, 248, 250, 1);
-  background: rgba(245, 248, 250, 1); /* Circle (thumb) color */
+  background: rgba(245, 248, 250, 1); 
   cursor: pointer;
 }
 
@@ -68,7 +67,6 @@
   background: var(--main-blue-color);
   color: rgba(245, 248, 250, 1);
 }
-
 @media screen and (max-width: 992px) {
   .sidebarForItemsFilter__handler .catalog__new__input input::placeholder,
   .catalog__new__input select{

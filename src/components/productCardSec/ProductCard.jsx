@@ -1,6 +1,10 @@
 import React from 'react'
 import './productCard.css'
-export default function ProductCard({ productImage, productName, productPrice, companyName }) {
+import { useNavigate } from 'react-router-dom';
+export default function ProductCard({ productImage, productName, productPrice, companyName , prodSlug }) {
+    const navigate = useNavigate();
+    const handleAddProductToCart = ()=>{};
+
     return (
         <div className='productCard__item'>
             <div className="product__image">
@@ -18,13 +22,12 @@ export default function ProductCard({ productImage, productName, productPrice, c
                 <div className="sub__info">
                     
                     <p>
-                        {/* <i className="bi bi-star-fill"></i> */}
-                        <span className='prodcut_rate'>
+                        <span className='prodcut_rate' onClick={()=> navigate(`/shop/${prodSlug}`)}>
                             {companyName ? companyName : ''}
                         </span>
                     </p>
-                    <button className='pageMainBtnStyle'>
-                        buy now
+                    <button className='pageMainBtnStyle' onClick={handleAddProductToCart}>
+                        Add To Cart
                     </button>
                 </div>
             </div>

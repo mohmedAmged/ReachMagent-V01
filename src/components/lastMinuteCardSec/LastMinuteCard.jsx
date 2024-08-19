@@ -5,7 +5,7 @@ export default function LastMinuteCard({
     productImage,
     productName,
     dealTimeDay,
-    dealtimeHours,
+    dealTotPrice,
     dealQuantity,
     showCustomContent, // Flag to determine which content to render
     buttonLabel = 'Know more', // Default button label
@@ -86,18 +86,19 @@ export default function LastMinuteCard({
                             <div className="deal__time">
                                 <img src={timeImg} alt="time" />
                                 <div className="deal__time__day">
+                                    <p>Limit Date</p>
                                     <p>{dealTimeDay}</p>
-                                    <p>Day</p>
                                 </div>
-                                <div className="deal__time__hour">
+                                {/* <div className="deal__time__hour">
                                     <p>{dealtimeHours}</p>
                                     <p>hours</p>
-                                </div>
+                                </div> */}
                             </div>
                         )}
                     </div>
                     <div className="sub__info">
                         <p>{dealQuantity}</p>
+                        {/* <p>{dealTotPrice}</p> */}
                         <span className={`pageMainBtnStyle ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
                         </span>

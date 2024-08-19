@@ -8,6 +8,16 @@
     height: 97.55px;
     margin-bottom: 4px;
 }
+.lastMinuteDeals__handler .lastMinuteDeals__cards .product__image img{
+    width: 330px;
+    height: 190px;
+}
+.lastMinuteDeals__handler .lastMinuteDeals__cards .product__info .sub__info p{
+    text-align: right;
+}
+.lastMinuteDeals__handler .lastMinuteDeals__cards .deal__time .deal__time__day{
+    text-align: left;
+}
 
 @media screen and (max-width: 600px) {
     .lastMinuteDeal__logo__img {
