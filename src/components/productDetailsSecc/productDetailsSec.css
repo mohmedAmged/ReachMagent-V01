@@ -118,6 +118,11 @@
 .producDetails__quantitiy p i {
     color: #B5B5C3;
 }
+.productDetails__addToCartBtn{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
 .productDetails__addToCartBtn .addToCartBtn {
     border: none;
     outline: none;
@@ -137,8 +142,21 @@
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
+    width: 70%;
 }
 .productDetails__addToCartBtn .addToCartBtn:hover {
     background-color: var(--primary-white);
     color: var(--main-blue-color);
+}
+.productDetails__addToCartBtn .addToCartBtn i{
+    margin-left: 5px;
+}
+.productDetails__addToCartBtn .addToCartBtn.addToWishlist{
+    background-color: var(--main-turquoise);
+    border: 1px solid var(--main-turquoise);
+
+}
+.productDetails__addToCartBtn .addToCartBtn.addToWishlist:hover{
+    background-color: var(--primary-white);
+    color: var(--main-turquoise);
 }

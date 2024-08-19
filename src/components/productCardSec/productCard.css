@@ -3,11 +3,31 @@
     padding: 10px;
     border-radius: 20px;
     width: 422px;
+    position: relative;
 }
 .productCard__item .product__image img{
     height: 191px;
     border-radius: 8px;
     cursor: pointer;
+}
+.productCard__item .product__image .card__wishlist{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 20;
+}
+.productCard__item .product__image .card__wishlist i{
+    color: #fff;
+    background: #0000004d;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px 15px;
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+}
+.productCard__item .product__image .card__wishlist i:hover{
+    color: rgba(213, 0, 18, 1);
 }
 .product__info{
     display: flex;

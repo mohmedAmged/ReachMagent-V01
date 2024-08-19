@@ -48,10 +48,13 @@ export default function ProductDetailsSec({product,token}) {
                 <strong>{product?.company_name}</strong>
               </span>
             </p>
-            <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3'>
+            <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-2 flex-wrap gap-3'>
               <div className="productDetails__addToCartBtn">
+                <button className="addToCartBtn addToWishlist" >
+                  ADD TO WISHLIST <i className="bi bi-heart-fill"></i>
+                </button>
                 <button className="addToCartBtn" onClick={handleAddProductToCart}>
-                  ADD TO CART
+                  ADD TO CART <i className="bi bi-cart-plus-fill"></i>
                 </button>
               </div>
             </div>

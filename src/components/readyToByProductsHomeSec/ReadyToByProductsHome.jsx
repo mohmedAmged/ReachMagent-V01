@@ -74,8 +74,9 @@ export default function ReadyToByProductsHome({ secMAinTitle }) {
                         {
                             (newData?.length > 3 ? newData.slice(0, 3) : newData)?.map((el, index) => {
                                 return (
-                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
-                                        <ProductCard 
+                                    <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                                        <ProductCard
+                                        itemType={'product'}  prodSlug={el?.slug} 
                                         productImage={el.productImages[0]?.image} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>
                                 )

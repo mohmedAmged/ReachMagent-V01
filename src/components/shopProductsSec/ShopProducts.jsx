@@ -330,7 +330,7 @@ export default function ShopProducts({token}) {
                 products?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                      <ProductCard token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })

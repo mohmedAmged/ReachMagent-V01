@@ -123,7 +123,7 @@ function App() {
 
         {/* Shop Routes */}
         <Route path='/shop' element={<Shop token={token} />} />
-        <Route path='/shop/:singleProduct' element={<ProductDetails />} />
+        <Route path='/shop/:singleProduct' element={<ProductDetails token={token}/>} />
         <Route path='/discover' element={<Discover />} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}

@@ -84,7 +84,7 @@ export default function ProductDetails({token}) {
                 relatedProducts?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-3 col-md-4 col-sm-12 my-2 d-flex justify-content-center px-4 mb-5">
-                      <ProductCard prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })
