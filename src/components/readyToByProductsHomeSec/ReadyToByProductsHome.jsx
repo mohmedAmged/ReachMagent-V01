@@ -1,14 +1,12 @@
-import React from 'react'
-import './readyToBuySec.css'
+import React, { useEffect, useState } from 'react'
 import BorderedNavigationBar from '../borderedNavigationBarSec/BorderedNavigationBar'
-import product1 from '../../assets/productImages/Rectangle 4705 (1).png'
-import product2 from '../../assets/productImages/Rectangle 4705 (2).png'
-import product3 from '../../assets/productImages/Rectangle 4705 (3).png'
+
 import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
-export default function ReadyToBuySec({secMAinTitle, showCompaniesQuery}) {
-    console.log(showCompaniesQuery);
-    
+import { baseURL } from '../../functions/baseUrl'
+import axios from 'axios'
+export default function ReadyToByProductsHome({ secMAinTitle }) {
+
     const listedNavigationItem = [
         {
             item: 'Featured Products',
@@ -25,29 +23,20 @@ export default function ReadyToBuySec({secMAinTitle, showCompaniesQuery}) {
         },
 
     ]
-    const productItems = [
-        {
-            img: product1,
-            title: 'Table Lamp',
-            price: '$37',
-            // rate: '4.8',
-            // rateCount: '(850)'
-        },
-        {
-            img: product2,
-            title: 'Ceiling Lamp ',
-            price: '$37',
-            // rate: '4.8',
-            // rateCount: '(850)'
-        },
-        {
-            img: product3,
-            title: 'Blue Wood Chair',
-            price: '$37',
-            // rate: '4.8',
-            // rateCount: '(850)'
-        },
-    ]
+    const [newData, setNewdata] = useState([])
+    const fetchAllProducts = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`);
+            setNewdata(response?.data?.data?.products?.products);
+        } catch (error) {
+            setNewdata(error?.response?.data.message);
+        }
+    };
+    useEffect(() => {
+        fetchAllProducts();
+    }, []);
+    console.log(newData);
+    
     return (
         <div className='readyToBuySec__handler'>
             <div className="container">
@@ -70,24 +59,24 @@ export default function ReadyToBuySec({secMAinTitle, showCompaniesQuery}) {
                     <>
                         <select name="" id="">
                             {
-                                listedNavigationItem.map((el, index)=>{
-                                    return(
+                                listedNavigationItem.map((el, index) => {
+                                    return (
                                         <option key={index}>{el.item}</option>
                                     )
                                 })
                             }
-                            
+
                         </select>
                     </>
                 </div>
                 <div className="readyToBuy__products">
                     <div className="row">
                         {
-                            showCompaniesQuery?.companyProducts?.map((el, index) => {
+                            (newData?.length > 3 ? newData.slice(0, 3) : newData)?.map((el, index) => {
                                 return (
                                     <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
                                         <ProductCard 
-                                        productImage={el.productMedias[0]?.image} productName={el.productTitle} productPrice={el.productPrice} productRate={el.rate} productRateNum={el.rateCount} />
+                                        productImage={el.productImages[0]?.image} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>
                                 )
                             })

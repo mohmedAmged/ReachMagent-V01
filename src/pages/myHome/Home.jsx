@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './home.css';
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
 import AboutReachSec from '../../components/aboutReachSecc/AboutReachSec';
@@ -11,6 +11,9 @@ import LastMinuteDeals from '../../components/lastMinuteDealsSec/LastMinuteDeals
 import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
+import { baseURL } from '../../functions/baseUrl';
+import axios from 'axios';
+import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 
 export default function Home({companies,token}) {
   const arrOfCateg = [
@@ -32,6 +35,7 @@ export default function Home({companies,token}) {
     }
   ];
   const loginType = localStorage.getItem('loginType');
+
 
   return (
     <div className='myHomeSec__handler'>
@@ -57,7 +61,7 @@ export default function Home({companies,token}) {
         </div>
       }
 
-      <ReadyToBuySec secMAinTitle={`Ready-To-Buy Products`}/>
+      <ReadyToByProductsHome secMAinTitle={`Ready-To-Buy Products`}/>
       <TrendingCompanySec companies={companies} token={token} />
       <GrowBuisnessSec />
       <LastMinuteDeals />
