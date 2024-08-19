@@ -58,7 +58,7 @@ export default function ShopProducts({token}) {
       setFilterationObj({...filterationObj , [e?.target?.name]: e.target.value});
     } else {
       const value = Number(e.target.value);
-      if (value >= minPrice && value <= maxPrice) {
+      if (value >= minPrice && value <= maxPrice +10) {
         setSelectedMaxPrice(value);
       };
     };
@@ -163,7 +163,6 @@ export default function ShopProducts({token}) {
     )();
   },[slugURLObj]);
 
-  console.log(products)
 
   return (
     <div className='container'>
@@ -300,7 +299,7 @@ export default function ShopProducts({token}) {
                     name='price_to'
                     className={`price-slider`}
                     min={minPrice}
-                    max={maxPrice}
+                    max={maxPrice + 10}
                     value={selectedMaxPrice}
                     onChange={handleChangeFilterInputs}
                     onMouseUp={handleMouseUpOnRange}
@@ -330,8 +329,8 @@ export default function ShopProducts({token}) {
               {
                 products?.map((el) => {
                   return (
-                    <div key={el?.id} className="col-lg-3 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                      <ProductCard prodSlug={el?.slug} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} productRateNum={el.rateCount} />
+                    <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
+                      <ProductCard token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })

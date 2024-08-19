@@ -2,74 +2,35 @@ import React from 'react';
 import './productDetailsDescriptionContent.css';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import img1 from '../../assets/productDetailsImgs/b8f44adf9c2b95c8b1f57774ba7a2304.jpeg'
-import img2 from '../../assets/productDetailsImgs/c400e64324a8a1118957bb80444a42c9.jpeg'
-
-export default function ProductDetailsDescriptionContent() {
+export default function ProductDetailsDescriptionContent({product}) {
+  console.log(product)
   return (
     <Container>
       <Row>
-        <Col lg={6}>
-          <div className='productDetails__content my-4'>
-            <h4 className='productDetails__contentHead'>
+        <Col lg={12}>
+          <div className='productDetails__content mb-5'>
+            <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>
               Description
             </h4>
-            <p className='productDetails__contentDescription'>
-              Pro- Wireless Bluetooth Stereo Earphones Microphone Noise Cancelling In-Ear Design In-Ear Bluetooth Earbuds - PRO_White
+            <p className='mt-3 mb-4 fs-5'>
+              {product?.description}
             </p>
-            <div className="product__description row">
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  Brand
-                </h5>
-                <p>
-                  Generic
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  Model Name
-                </h5>
-                <p>
-                  Pro White
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  Color
-                </h5>
-                <p>
-                  Pure White
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  From Factor
-                </h5>
-                <p>
-                  In Ear
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  Material
-                </h5>
-                <p>
-                  Plastic
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-6 my-2">
-                <h5>
-                  Noise Control
-                </h5>
-                <p>
-                  Active Noise Cancellation
-                </p>
-              </div>
+            <p className='fw-bold fs-2'>{product?.productAttribute === 'N/A' ? '' : product?.productAttribute}</p>
+            <div class="row">
+              {
+                product?.productAttributeValues?.map(prod => (
+                  <div class="col-lg-12">
+                    <p className='fw-bold fs-5'>
+                      value:
+                      <span className='fw-medium fs-6'> {prod?.value ? prod?.value : ''}</span>
+                    </p>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </Col>
-        <Col lg={12}>
+        {/* <Col lg={12}>
           <div className="frequentlyTogether">
               <h4>
                 Frequently Bought Together
@@ -97,7 +58,7 @@ export default function ProductDetailsDescriptionContent() {
                 </div>
               </div>
             </div>
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );

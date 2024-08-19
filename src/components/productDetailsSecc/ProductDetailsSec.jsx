@@ -2,81 +2,55 @@ import React from 'react';
 import './productDetailsSec.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import ProdDetailsSlider from '../prodDetailsSliderSec/ProdDetailsSlider';
+import toast from 'react-hot-toast';
 
-import img1 from './../../assets/productDetailsImgs/17e9aaa6c0d56bd5d83aa9c3524baa7b.png'
+export default function ProductDetailsSec({product,token}) {
+  const loginType = localStorage.getItem('loginType');
+  const handleAddProductToCart = ()=>{
+    if(token){
+      if(loginType === 'employee'){
+        toast.error(`Employees Can't Add to Cart!
+          You Must be A user.
+          `);
+      }else {
 
-export default function ProductDetailsSec() {
+      };
+    }else {
+      toast.error('You Should Login First');
+    };
+  };
+
   return (
-    <Container className='productDetails__sec mb-5 mt-3 pb-5'>
+    <Container className='productDetails__sec mb-5 mt-3'>
       <Row>
         <Col lg={8}>
-          <ProdDetailsSlider/>
+          <ProdDetailsSlider productImgs={product?.productImages} />
         </Col>
         <Col lg={4}>
           <div className='productDetails__description mt-md-4'>
-            <h2 className='productDetails__head'>
-              L-Shape Sofa
+            <h2 className='productDetails__head text-capitalize'>
+              {product?.title ? product?.title : ''}
             </h2>
-            <p className='productDetails__rate d-flex gap-1'>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star"></i>
+            <p className='mt-3 mb-4 fs-5 text-capitalize'>
+              {product?.description}
             </p>
-            <p className='productDetails__price'>
-              299 EGP
+            <p className='productDetails__price mb-3'>
+              {product?.price ? product?.price + product?.currency_symbol : ''}
             </p>
-            <p className='productDetails__delPrice d-flex gap-3 align-items-center'>
+            <p className='productDetails__delPrice d-flex gap-3 align-items-center mb-4'>
               <span className='productDetails__deletedPrice'>
-                400 EGP
-              </span>
-              <span className='productDetails__priceOffer'>
-                -30%
+                {product?.discountPrice ? product?.price + product?.discountPrice : ''}{product?.currency_symbol}
               </span>
             </p>
-              <div className="productDetails__sizePart d-flex flex-column gap-2 align-items-start my-4">
-                <h4 className='productDetails__sizeHead'>
-                  Size
-                </h4>
-                <p className='productDetails__size1'>
-                  200x50 cm
-                </p>
-                <p className='productDetails__size2'>
-                  250x50 cm
-                </p>
-              </div>
-            <p className='productDetails__soldBy d-flex gap-2 align-items-center mb-3'>
+            <p className='productDetails__soldBy d-flex gap-2 align-items-center mb-3 mb-4'>
               <span>
                 Sold by 
-                <strong>Tasaheel</strong>
+                <strong>{product?.company_name}</strong>
               </span>
-              <img src={img1} alt='country of Seller Man' className="productDetails__countryOfSeller" />
             </p>
-            <p className='productDetails__deleveringDate'>
-              Delivery between  
-              <strong>
-                Mon, 29 May - Tue, 30 May
-              </strong>
-            </p>
-            <p className='productDetails__deleveringCondition d-flex gap-1 mt-2'>
-              <i className="bi bi-geo-alt"></i>
-              Delivering all over Jordan only
-            </p>
-            <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-3 flex-wrap gap-3'>
-              <div className="productDetails__quantitiy d-flex align-items-center">
-                <p className="productDetails__decrease">
-                  <i className="bi bi-dash"></i>
-                </p>
-                <p className="productDetails__counter">
-                  1
-                </p>
-                <p className="productDetails__increase">
-                  <i className="bi bi-plus"></i>
-                </p>
-              </div>
+            <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3'>
               <div className="productDetails__addToCartBtn">
-                <button className="addToCartBtn">
+                <button className="addToCartBtn" onClick={handleAddProductToCart}>
                   ADD TO CART
                 </button>
               </div>

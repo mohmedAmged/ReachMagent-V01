@@ -1,5 +1,5 @@
 .productDetails__head {
-    font-size: 30px;
+    font-size: 50px;
     font-weight: 600;
     color: var(--primary-black);
     margin: 10px 0;
@@ -16,13 +16,13 @@
 }
 .productDetails__price {
     margin: 10px 0 0;
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 700;
     color: var(--main-blue-color);
 }
 .productDetails__deletedPrice {
     color: #CBDAEB;
-    font-size: 22px;
+    font-size: 25px;
     position: relative;
 } 
 .productDetails__deletedPrice::after {

@@ -7,6 +7,7 @@
 .productCard__item .product__image img{
     height: 191px;
     border-radius: 8px;
+    cursor: pointer;
 }
 .product__info{
     display: flex;
@@ -19,6 +20,15 @@
     font-weight: 500;
     color: var(--primary-black);
     margin-bottom: 20px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.product__info .main__info  h3:hover {
+    color: var(--main-turquoise);
 }
 .product__info .main__info h5{
     font-size: 18px;
@@ -38,15 +48,6 @@
     font-size: 14px;
     font-weight: 700;
     color: var(--primary-black);
-    transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    cursor: pointer;
-}
-.product__info .sub__info p:hover span {
-    color: var(--main-turquoise);
 }
 .product__info .sub__info p span.product__rate__num{
     color: rgba(0, 0, 0, 0.5);
