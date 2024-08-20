@@ -1,11 +1,14 @@
 import React from 'react'
 import './lastMinuteCard.css'
 import timeImg from '../../assets/lastMinuteCardImgs/mdi_timer-sand.png'
+import { NavLink } from 'react-router-dom';
+import { scrollToTop } from '../../functions/scrollToTop';
 export default function LastMinuteCard({
     productImage,
     productName,
     dealTimeDay,
     dealTotPrice,
+    productLink,
     dealQuantity,
     showCustomContent, // Flag to determine which content to render
     buttonLabel = 'Know more', // Default button label
@@ -79,7 +82,12 @@ export default function LastMinuteCard({
                 </div>
                 <div className="product__info">
                     <div className="main__info">
-                        <h3>{productName}</h3>
+                        <NavLink className={'nav-link'} to={productLink ? productLink : ''} onClick={() => {
+                                    scrollToTop();
+                                }}>
+                            <h3>{productName}</h3>
+
+                        </NavLink>
                         {showCustomContent ? (
                             <p>Price on Request</p>
                         ) : (

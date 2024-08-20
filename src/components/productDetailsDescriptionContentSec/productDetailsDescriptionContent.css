@@ -84,6 +84,14 @@
 .frequentlyTogether {
     max-width: 650px;
 }
+.prodDetailsChangeColorSpan p span{
+    /* color: rgba(132, 132, 132, 1); */
+    color: #949497;
+    /* color: rgba(128, 157, 173, 1); */
+}
+.limitedP{
+    color: rgba(213, 0, 18, 1) !important;
+}
 @media (max-width: 767px) {
     .frequentlyTogether-offer {
         justify-content: center !important;

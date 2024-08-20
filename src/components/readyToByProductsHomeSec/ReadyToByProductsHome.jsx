@@ -5,7 +5,8 @@ import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
 import { baseURL } from '../../functions/baseUrl'
 import axios from 'axios'
-export default function ReadyToByProductsHome({ secMAinTitle }) {
+import toast from 'react-hot-toast'
+export default function ReadyToByProductsHome({ secMAinTitle,token }) {
 
     const listedNavigationItem = [
         {
@@ -26,17 +27,20 @@ export default function ReadyToByProductsHome({ secMAinTitle }) {
     const [newData, setNewdata] = useState([])
     const fetchAllProducts = async () => {
         try {
-            const response = await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`);
+            const response = await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setNewdata(response?.data?.data?.products?.products);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
-        }
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+        };
     };
     useEffect(() => {
         fetchAllProducts();
     }, []);
-    console.log(newData);
-    
+
     return (
         <div className='readyToBuySec__handler'>
             <div className="container">
@@ -44,7 +48,7 @@ export default function ReadyToByProductsHome({ secMAinTitle }) {
                     <HeaderSec title={secMAinTitle}
                     />
                 </div>
-                <div className="readyToBuy__navigationBar none__on__small__screen">
+                {/* <div className="readyToBuy__navigationBar none__on__small__screen">
                     <ul className="listedNavigate">
                         {
                             listedNavigationItem.map((el, index) => {
@@ -68,7 +72,7 @@ export default function ReadyToByProductsHome({ secMAinTitle }) {
 
                         </select>
                     </>
-                </div>
+                </div> */}
                 <div className="readyToBuy__products">
                     <div className="row">
                         {
@@ -76,6 +80,9 @@ export default function ReadyToByProductsHome({ secMAinTitle }) {
                                 return (
                                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
                                         <ProductCard
+                                        productCurrancy={el?.currency_symbol}
+                                        token={token}
+                                        getCurrentProducts={fetchAllProducts} product={el}
                                         itemType={'product'}  prodSlug={el?.slug} 
                                         productImage={el.productImages[0]?.image} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>

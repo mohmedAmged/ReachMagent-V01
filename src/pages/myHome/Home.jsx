@@ -61,10 +61,10 @@ export default function Home({companies,token}) {
         </div>
       }
 
-      <ReadyToByProductsHome secMAinTitle={`Ready-To-Buy Products`}/>
+      <ReadyToByProductsHome token={token} secMAinTitle={`Ready-To-Buy Products`}/>
       <TrendingCompanySec companies={companies} token={token} />
       <GrowBuisnessSec />
-      <LastMinuteDeals />
+      <LastMinuteDeals token={token}/>
       <FranchiseSec
         pageName='home'
         headText='Franchise Opportunities'

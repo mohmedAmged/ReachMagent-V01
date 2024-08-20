@@ -8,12 +8,18 @@ import LastMinuteCard from '../lastMinuteCardSec/LastMinuteCard'
 import lastMinuteLogo from '../../assets/logos/Group (2).png'
 import { baseURL } from '../../functions/baseUrl'
 import axios from 'axios'
-export default function LastMinuteDeals() {
-
+import { useNavigate } from 'react-router-dom'
+import { scrollToTop } from '../../functions/scrollToTop'
+export default function LastMinuteDeals({token}) {
+    const navigate = useNavigate()
     const [newData, setNewdata] = useState([])
     const fetchLastMinuteDeals = async () => {
       try {
-        const response = await axios.get(`${baseURL}/user/last-minute-deals?t=${new Date().getTime()}`);
+        const response = await axios.get(`${baseURL}/user/last-minute-deals?t=${new Date().getTime()}`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         setNewdata(response?.data?.data?.last_minute_deals);
       } catch (error) {
         setNewdata(error?.response?.data.message);
@@ -67,13 +73,16 @@ console.log(newData);
                                         <LastMinuteCard
                                             productImage={el?.medias[0].media}
                                             productName={el?.title}
+                                            productLink={`/lastMinuteDeals/${el?.id}`}
                                             dealTimeDay={el?.limited_date}
                                             // dealtimeHours={el.dealHours}
                                             dealQuantity={`${el?.quantity} picees`}
-                                            // dealTotPrice={`${el?.total_price} ${el?.currency}`}
                                             showCustomContent={false}
                                             buttonLabel="Know more"
-                                            onKnowMoreClick={() => alert('Know more button clicked')}
+                                            onKnowMoreClick={() => {
+                                                scrollToTop();
+                                                navigate(`/lastMinuteDeals/${el?.id}`);
+                                            }}
                                         />
                                     </div>
                                 )

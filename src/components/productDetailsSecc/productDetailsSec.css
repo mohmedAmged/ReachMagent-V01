@@ -142,7 +142,7 @@
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
-    width: 70%;
+    width: 80%;
 }
 .productDetails__addToCartBtn .addToCartBtn:hover {
     background-color: var(--primary-white);

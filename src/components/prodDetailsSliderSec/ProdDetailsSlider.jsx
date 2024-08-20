@@ -16,7 +16,7 @@ export default function ProdDetailsSlider({productImgs}) {
   const [currImages,setCurrentImages] = useState([]);
   useEffect(()=>{
       if(productImgs){
-        setCurrImg(productImgs[0]?.image);
+        setCurrImg(productImgs[0]?.image ? productImgs[0]?.image : productImgs[0]?.media);
         setCurrentImages(productImgs.slice(0,5))
       };
   },[productImgs]);
@@ -33,9 +33,9 @@ export default function ProdDetailsSlider({productImgs}) {
                 return(
                   <div key={img?.id} className="imgContainer">
                     <img onClick={()=>{
-                      setCurrImg(img?.image);
+                      setCurrImg(img?.image ? img?.image : img?.media);
                     }}
-                    src={img?.image} 
+                    src={img?.image ? img?.image : img?.media} 
                     alt='product detials' 
                     />
                   </div>

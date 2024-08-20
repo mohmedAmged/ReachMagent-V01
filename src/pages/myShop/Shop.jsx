@@ -23,16 +23,16 @@ export default function Shop({token}) {
       name: "Three",
       id: 4
     }
-  ]
+  ];
 
   return (
     <>
       <MyMainHeroSec 
-      heroSecContainerType='shopHeroSec__container' 
-      headText='Ready To Buy Products' 
-      paraPartOne='Dive into thousands of products ready to buy today'
-      paraPartTwo='in your region, from a needle to whatever you need'
-      categoryArr={arrOfCateg}
+        heroSecContainerType='shopHeroSec__container' 
+        headText='Ready To Buy Products' 
+        paraPartOne='Dive into thousands of products ready to buy today'
+        paraPartTwo='in your region, from a needle to whatever you need'
+        categoryArr={arrOfCateg}
       />
       {/* <ShopCategorySlider /> */}
       {/* <FilterationBar /> */}

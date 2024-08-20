@@ -2,8 +2,7 @@ import React from 'react';
 import './productDetailsDescriptionContent.css';
 import { Col, Container, Row } from 'react-bootstrap';
 
-export default function ProductDetailsDescriptionContent({product}) {
-  console.log(product)
+export default function ProductDetailsDescriptionContent({ product }) {
   return (
     <Container>
       <Row>
@@ -15,11 +14,12 @@ export default function ProductDetailsDescriptionContent({product}) {
             <p className='mt-3 mb-4 fs-5'>
               {product?.description}
             </p>
-            <p className='fw-bold fs-2'>{product?.productAttribute === 'N/A' ? '' : product?.productAttribute}</p>
-            <div class="row">
+            <p className='fw-bold fs-2'>{product?.productAttribute === 'N/A' ? '' : product?.productAttribute}
+            </p>
+            <div className="row prodDetailsChangeColorSpan">
               {
                 product?.productAttributeValues?.map(prod => (
-                  <div class="col-lg-12">
+                  <div className="col-lg-12" key={prod?.id}>
                     <p className='fw-bold fs-5'>
                       value:
                       <span className='fw-medium fs-6'> {prod?.value ? prod?.value : ''}</span>
@@ -28,6 +28,55 @@ export default function ProductDetailsDescriptionContent({product}) {
                 ))
               }
             </div>
+            {
+              product?.limited_date ?
+                <>
+                  <div className="row prodDetailsChangeColorSpan">
+                    <div className="col-lg-6 mb-3">
+                      <p className='fw-medium text-capitalize fs-4'>
+                        total price:
+                        <span className='fw-medium ms-2 fs-5'>
+                          {product?.total_price} {product?.currency_symbol}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <p className='fw-medium text-capitalize fs-4'>
+                        quantity: 
+                        <span className='fw-medium ms-2 fs-5'>
+                          {product?.quantity} Pieces
+                        </span>
+                      </p>
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <p className='fw-medium text-capitalize fs-4'>
+                        price per item: 
+                        <span className='fw-medium ms-2 fs-5'>
+                          {product?.price_per_item} {product?.currency_symbol}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <p className='fw-medium text-capitalize fs-4'>
+                        secure for reservation: 
+                        <span className='fw-medium ms-2 fs-5'>
+                          {product?.secure} {product?.currency_symbol}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="col-lg-12 mb-3">
+                      <p className='fw-medium text-capitalize fs-4'>
+                        limited date: 
+                        <span className='fw-medium limitedP ms-2 fs-5'>
+                          {product?.limited_date}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </>
+                :
+                ''
+            }
           </div>
         </Col>
         {/* <Col lg={12}>

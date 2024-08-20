@@ -69,7 +69,6 @@ export default function ShopProducts({token}) {
   };
 
   const getCurrentProducts = async () => {
-    const toastId = toast.loading('Loading Products...');
     await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
       headers: {
         Authorization: `Bearer ${token}`
@@ -80,16 +79,6 @@ export default function ShopProducts({token}) {
       setMaxPrice(+response?.data?.data?.max_price);
       setSelectedMaxPrice(+response?.data?.data?.max_price);
       setMinPrice(+response?.data?.data?.min_price);
-      toast?.success(response?.data?.message || 'Products Loaded Successfully!',{
-        id: toastId,
-        duration: 1000
-      });
-    })
-    .catch(error=>{
-      toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
-        id: toastId,
-        duration: 1000
-      });
     });
   };
 
@@ -326,11 +315,12 @@ export default function ShopProducts({token}) {
           </div>
           <div className="col-lg-9 col-md-8">
             <div className="row">
+              {console.log(products)}
               {
                 products?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                      <ProductCard itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })

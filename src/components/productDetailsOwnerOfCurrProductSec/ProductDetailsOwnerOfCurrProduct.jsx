@@ -13,5 +13,5 @@ export default function ProductDetailsOwnerOfCurrProduct({companyName}) {
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};

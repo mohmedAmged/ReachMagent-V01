@@ -57,7 +57,7 @@ export default function ProductDetails({token}) {
   },[token,loginType,singleProduct]);
 
   useEffect(()=>{
-    const findedProd =  allProducts?.find(prod=> prod.slug === singleProduct);
+    const findedProd = allProducts?.find(prod=> prod.slug === singleProduct);
     if(findedProd){
       const allCompanyProducts = allProducts?.filter(prod => prod?.company_name === findedProd?.company_name);
       setRelatedProducts(allCompanyProducts?.filter(prod => prod?.slug !== findedProd?.slug));
@@ -74,7 +74,7 @@ export default function ProductDetails({token}) {
 
   return (
     <div className='productDetailsPage'>
-      <ProductDetailsSec product={currentProduct} token={token} />
+      <ProductDetailsSec getCurrentProduct={getCurrentProduct} itemType={'product'} product={currentProduct} token={token} />
       {/* <ProductDetailsFilterationBar items={items}/> */}
       <ProductDetailsDescriptionContent product={currentProduct} /> 
       <ProductDetailsOwnerOfCurrProduct companyName={currentProduct?.company_name} />
@@ -84,13 +84,13 @@ export default function ProductDetails({token}) {
                 relatedProducts?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-3 col-md-4 col-sm-12 my-2 d-flex justify-content-center px-4 mb-5">
-                      <ProductCard itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard token={token} getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })
               }
             </div>
-          </div>
+      </div>
     </div>
   );
 };
