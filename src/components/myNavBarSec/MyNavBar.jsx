@@ -114,6 +114,16 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                 }}
                                 aria-label="Close"
                                 className={`nav-link nav__link__style`}
+                                to={`/all-companies`}
+                            >
+                                All Companies
+                            </NavLink>
+                            <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }}
+                                aria-label="Close"
+                                className={`nav-link nav__link__style`}
                                 to={`/contact-us`}
                             >
                                 contact us

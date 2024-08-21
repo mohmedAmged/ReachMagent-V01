@@ -48,6 +48,7 @@ import NewFaqForm from './components/newFaqFromItem/NewFaqForm';
 import MyPosts from './pages/myPostsPage/MyPosts';
 import NewPostForm from './components/newPostFormItem/NewPostForm';
 import LastMinuteDetails from './pages/LastMinuteDetailsPage/LastMinuteDetails';
+import MyAllCompanies from './pages/myAllCompaniesPage/MyAllCompanies';
 
 function App() {
   useEffect(() => {
@@ -127,6 +128,7 @@ function App() {
         <Route path='/shop/:singleProduct' element={<ProductDetails token={token}/>} />
         <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token}/>} />
         <Route path='/discover' element={<Discover />} />
+        <Route path='/all-companies' element={<MyAllCompanies token={token}/>} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}
           token={token} />} />
