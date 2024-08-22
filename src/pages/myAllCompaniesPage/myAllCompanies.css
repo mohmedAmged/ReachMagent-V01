@@ -97,6 +97,11 @@
     text-transform: capitalize;
     color: #000;
 }
+@media screen and (max-width: 600px){
+    .mainContentAllCompanies__handler{
+        margin-top: 50px;
+    }
+}
 
 @media screen and (max-width: 992px) {
     .mainContentAllCompanies__handler .CompanyContentItem{
