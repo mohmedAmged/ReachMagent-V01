@@ -99,12 +99,10 @@ function App() {
       return response?.data?.data;
     },
   });
-  
   const regionsQuery = useQuery({
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
   });
-
 
   return (
     <>
@@ -139,7 +137,6 @@ function App() {
             token={token}
             />} 
           />
-
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />

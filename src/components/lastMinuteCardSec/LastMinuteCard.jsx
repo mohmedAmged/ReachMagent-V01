@@ -34,47 +34,6 @@ export default function LastMinuteCard({
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
     return (
-        // <>
-        //     <div className='lastMinuteCard__handler'>
-        //         <div className="product__image">
-        //             <img src={productImage} alt="product-imag" />
-        //         </div>
-        //         <div className="product__info">
-        //             <div className="main__info">
-        //                 <h3>
-        //                     {productName}
-        //                 </h3>
-        //                 <div className="deal__time">
-        //                     <img src={timeImg} alt="time" />
-        //                     <div className="deal__time__day">
-        //                         <p>
-        //                             {dealTimeDay}
-        //                         </p>
-        //                         <p>
-        //                             Day
-        //                         </p>
-        //                     </div>
-        //                     <div className="deal__time__hour">
-        //                         <p>
-        //                             {dealtimeHours}
-        //                         </p>
-        //                         <p>
-        //                             hours
-        //                         </p>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //             <div className="sub__info">
-        //                 <p>
-        //                     {dealQuantity}
-        //                 </p>
-        //                 <button className='pageMainBtnStyle'>
-        //                     Know more
-        //                 </button>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </>
         <>
             <div className='lastMinuteCard__handler' style={cardStyles} >
                 <div className="product__image">

@@ -105,7 +105,6 @@ export default function CopmanyCard({ token ,companies , coverImg, companyProfil
                     </div>
                 </div>
                 <div className="card__actions">
-                    {console.log(currentFollowedCompanies?.map(el => el))}
                     {
                         (token && loginType === 'user') ? 
                             (currentFollowedCompanies) ?

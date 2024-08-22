@@ -8,55 +8,6 @@ import { Pagination } from 'swiper/modules';
 import './singleCompanyRectangle.css';
 
 export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
-  const questionsArr = [
-    {
-      id: 1,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 2,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 3,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 4,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 5,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 6,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 7,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 8,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-    {
-      id: 9,
-      question: 'Question lorem ipsum ?',
-      answer: 'We’ve been focused on making the from v4 to v5 more approachable but we’ve also not been afraid'
-    },
-  ];
-console.log(showCompaniesQuery?.companyFaqs);
-
   return (
     <div className='singleCompany__rectangleSec'>
       <div className="rectangleBg"></div>

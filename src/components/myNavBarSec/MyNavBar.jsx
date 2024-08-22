@@ -116,7 +116,7 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                 className={`nav-link nav__link__style`}
                                 to={`/all-companies`}
                             >
-                                All Companies
+                                Companies
                             </NavLink>
                             <NavLink
                                 onClick={() => {
@@ -256,7 +256,17 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                     to={`/discover`}>
                                     discover
                                 </NavLink>
-
+                                <NavLink
+                                    onClick={() => {
+                                        scrollToTop();
+                                        closeOffcanvas();
+                                    }}
+                                    aria-label="Close"
+                                    className={`nav-link nav__link__style`}
+                                    to={`/all-companies`}
+                                >
+                                    Companies
+                                </NavLink>
                                 <NavLink
                                     onClick={() => {
                                         scrollToTop();

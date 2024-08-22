@@ -23,6 +23,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/autoplay";
 import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
+
+
 export default function SingleCompany({ token }) {
     const { companyId } = useParams();
     const loginType = localStorage.getItem('loginType');
@@ -56,7 +58,11 @@ export default function SingleCompany({ token }) {
 
     const showCompaniesQuery = useQuery({
         queryKey: ['show-company'],
-        queryFn: () => getDataFromAPI(`show-company/${companyId}?t=${new Date().getTime()}`),
+        queryFn: () => getDataFromAPI(`show-company/${companyId}?t=${new Date().getTime()}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }),
     });
     const [activeItem, setActiveItem] = useState('Overview');
 
@@ -253,7 +259,6 @@ export default function SingleCompany({ token }) {
                                             <LastMinuteCard
                                                 productImage={el?.productMedias[0].image }
                                                 productName={el?.productTitle}
-                                                // dealQuantity={''}
                                                 showCustomContent={true}
                                                 borderColor={'rgba(0, 0, 0, 0.5)'}
                                                 onAddClick={''}
@@ -269,7 +274,7 @@ export default function SingleCompany({ token }) {
 
             <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company}/>
 
-            <ReadyToBuySec showCompaniesQuery={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
+            <ReadyToBuySec token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
             <HeaderOfSec
                 secHead='Company Insights'
                 secText='Stay informed with the latest updates, announcements, and specials from our company'

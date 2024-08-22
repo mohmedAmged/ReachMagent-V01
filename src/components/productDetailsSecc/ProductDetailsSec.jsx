@@ -34,6 +34,7 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
             })
           })
           .catch(error => {
+            console.log(error?.response)
             toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
               id: toastId,
               duration: 1000,
@@ -134,16 +135,17 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
               </span>
             </p>
             <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-2 flex-wrap gap-3'>
-              <div className="productDetails__addToCartBtn">
+              <div className={`${'productDetails__addToCartBtn'}`}>
                 {
-                  product?.inWishList ?
+                  itemType === 'product' &&
+                    (product?.inWishList ?
                     <button className="addToCartBtn addToWishlist" onClick={() => handleAddProductToWishList(product?.id)}>
                       REMOVE FROM WISHLIST <i className="bi bi-trash"></i>
                     </button>
                     :
                     <button className="addToCartBtn addToWishlist" onClick={() => handleAddProductToWishList(product?.id)}>
                       ADD TO WISHLIST <i className="bi bi-heart-fill"></i>
-                    </button>
+                    </button>)
                 }
                 {
                   product?.inCart ?
@@ -151,7 +153,7 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
                       SHOW IN CART <i className="bi bi-eye"></i>
                     </button>
                     :
-                    <button className="addToCartBtn" onClick={handleAddProductToCart}>
+                    <button className="addToCartBtn" onClick={()=> handleAddProductToCart(product?.id)}>
                       ADD TO CART <i className="bi bi-cart-plus-fill"></i>
                     </button>
                 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './myAllCompanies.css'
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
@@ -6,11 +6,24 @@ import locationIcon from '../../assets/icons/Duotone.png'
 import userIcon from '../../assets/icons/Duotone3.png'
 import emailIcon from '../../assets/icons/Duotone 2.png'
 import flag from '../../assets/icons/image 3 (1).png'
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 export default function MyAllCompanies({ token }) {
-    const { companyId } = useParams()
-    const [newData, setNewdata] = useState([])
+    const [allCompanies, setAllCompanies] = useState([]);
+    const [filteredCompanies, setFilteredCompanies] = useState([]);
+    const [uniqueAllowedCompNames, setUniqueAllowedCompNames] = useState([]);
+    const [uniqueAllowedCompTypes, setUniqueAllowedCompTypes] = useState([]);
+    // const [newData, setNewdata] = useState([])
+    const [formData, setFormData] = useState({
+        name: '',
+        main_type: [],
+        product_name: '',
+        service_name: '',
+    });
+    const location = useLocation();
+    const navigate = useNavigate();
+    const initialized = useRef(false);
+    // ?t=${new Date().getTime()}
     const fetchAllCompanies = async () => {
         try {
             const response = await axios.get(`${baseURL}/all-companies?t=${new Date().getTime()}`, {
@@ -18,15 +31,105 @@ export default function MyAllCompanies({ token }) {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setNewdata(response?.data?.data?.companies);
+            const companies = response?.data?.data?.companies || [];
+            setAllCompanies(companies);
+
+            // Extract unique company names and types
+            const companyAllowedNames = companies.map(item => item.companyName);
+            const companyAllowedTypes = companies.flatMap(item => item.companyTypes.map(typeObj => typeObj.type));
+            setUniqueAllowedCompNames([...new Set(companyAllowedNames)]);
+            setUniqueAllowedCompTypes([...new Set(companyAllowedTypes)]);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
+            console.error("Error fetching all companies:", error);
         }
     };
+    // Fetch filtered companies based on form data
+    const fetchFilteredCompanies = async () => {
+        try {
+            const queryString = buildQueryString(formData);
+            const response = await axios.get(`${baseURL}/filter-companies?${queryString}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const companies = response?.data?.data?.companies || [];
+            setFilteredCompanies(companies);
+        } catch (error) {
+            console.error("Error fetching filtered companies:", error);
+            setFilteredCompanies([]);
+        }
+    };
+
+    const buildQueryString = (params) => {
+        const query = new URLSearchParams();
+        Object.keys(params).forEach(key => {
+            const value = params[key];
+            if (Array.isArray(value)) {
+                value.forEach(item => query.append(`${key}[]`, item));
+            } else if (value) {
+                query.append(key, value);
+            }
+        });
+        return query.toString();
+    };
+    // Update URL with the current filters
+    const updateURLWithFilters = () => {
+        const queryString = buildQueryString(formData);
+        navigate(`?${queryString}`, { replace: true });
+    };
+    // Initialize formData from URL query parameters
+    useEffect(() => {
+        if (!initialized.current) {
+            const queryParams = new URLSearchParams(location.search);
+            const initialFormData = {
+                name: queryParams.get('name') || '',
+                main_type: queryParams.getAll('main_type[]') || [],
+                product_name: queryParams.get('product_name') || '',
+                service_name: queryParams.get('service_name') || '',
+            };
+            setFormData(initialFormData);
+            initialized.current = true;
+        }
+    }, [location.search]);
+
     useEffect(() => {
         fetchAllCompanies();
     }, [token]);
-    console.log(newData);
+
+    // Re-fetch companies when filter
+    useEffect(() => {
+        if (allCompanies.length > 0) {
+            fetchFilteredCompanies();
+            updateURLWithFilters();
+        }
+    }, [formData, allCompanies]);
+
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+    const handleSelectChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value ? [value] : [],
+        }));
+    };
+
+    const clearFilters = () => {
+        setFormData({
+            name: '',
+            main_type: [],
+            product_name: '',
+            service_name: '',
+        });
+        navigate('?');
+    };
 
     return (
         <div className='MyAllCompanies__handler'>
@@ -36,40 +139,29 @@ export default function MyAllCompanies({ token }) {
                         <div className="sidebarForItemsFilter__handler">
                             <div className="sidebarItemFilter">
                                 <div className="catalog__new__input">
-                                    <label htmlFor="shopFilterationSorting" className='d-flex justify-content-between align-items-center mb-3'>
-                                        <span>
-                                            Sorting Type
-                                        </span>
-                                        <i className="bi bi-arrow-down-up"></i>
-                                    </label>
-                                    <select
-                                        id='shopFilterationSorting'
-                                        name="sorting"
-                                        className="form-control custom-select"
-                                        defaultValue={''}
-                                        onChange={''}
-                                    >
-                                        <option value="" disabled>Select Sorting Type</option>
-                                        <option value="" >1</option>
-                                        <option value="">2</option>
-                                        {/* {
-                                            sortingTypes?.map(sort => (
-                                                <option key={sort?.id} value={sort?.value}>{sort?.name}</option>
-                                            ))
-                                        } */}
-                                    </select>
+                                    <label htmlFor="shopFilterationtitle">Filter by Product</label>
+                                    <input
+                                        type="text"
+                                        name="product_name"
+                                        id="shopFilterationtitle"
+                                        className="form-control"
+                                        placeholder={`Enter your text`}
+                                        value={formData?.product_name}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                             </div>
                             <div className="sidebarItemFilter">
                                 <div className="catalog__new__input">
-                                    <label htmlFor="shopFilterationtitle">Filter by Name</label>
+                                    <label htmlFor="shopFilterationtitle">Filter by Service</label>
                                     <input
                                         type="text"
-                                        name="title"
+                                        name="service_name"
                                         id="shopFilterationtitle"
                                         className="form-control"
                                         placeholder={`Enter your text`}
-                                        onChange={''}
+                                        value={formData?.service_name}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -79,24 +171,49 @@ export default function MyAllCompanies({ token }) {
                                         Filter by Company
                                     </label>
                                     <select
-                                        name="company"
+                                        name="name"
                                         id="shopFilterationcompany"
                                         className="form-control custom-select"
-                                        defaultValue={''}
-                                        onChange={''}
+                                        // defaultValue={''}
+                                        value={formData?.name}
+                                        onChange={handleInputChange}
                                     >
                                         <option value="" disabled>Select a company</option>
-                                        <option value="" >1</option>
-                                        <option value="">2</option>
-                                        {/* {
-                                            companiesAllowed?.map(company => (
-                                                <option key={company?.id} value={company?.id}>{company?.name}</option>
+                                        {
+                                            uniqueAllowedCompNames?.map((company, index) => (
+                                                <option key={index} value={company}>{company}</option>
                                             ))
-                                        } */}
+                                        }
                                     </select>
                                 </div>
                             </div>
                             <div className="sidebarItemFilter">
+                                <div className="catalog__new__input">
+                                    <label htmlFor="shopFilterationSorting">
+                                        <span>
+                                            filter by Company Types
+                                        </span>
+                                    </label>
+                                    <select
+                                        id='shopFilterationSorting'
+                                        name="main_type"
+                                        className="form-control custom-select"
+                                        // defaultValue={''}
+                                        value={formData.main_type[0] || ''}
+                                        onChange={handleSelectChange}
+                                    >
+                                        <option value="" disabled>Select Sorting Type</option>
+                                        {
+                                            uniqueAllowedCompTypes?.map((type, index) => (
+                                                <option key={index} value={type}>{type}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            {/* <div className="sidebarItemFilter">
                                 <div className="catalog__new__input">
                                     <label htmlFor="shopFilterationcategory">
                                         Filter by Category
@@ -111,15 +228,11 @@ export default function MyAllCompanies({ token }) {
                                         <option value="" disabled>Select Category</option>
                                         <option value="" >1</option>
                                         <option value="">2</option>
-                                        {/* {
-                                            categoriesAllowed?.map(cat => (
-                                                <option key={cat?.id} value={cat?.id}>{cat?.name}</option>
-                                            ))
-                                        } */}
                                     </select>
                                 </div>
-                            </div>
-                            <div className="sidebarItemFilter">
+                            </div> */}
+
+                            {/* <div className="sidebarItemFilter">
                                 <div className="catalog__new__input">
                                     <label htmlFor="shopFilterationsub-category">
                                         Filter by Sub-Category
@@ -134,30 +247,15 @@ export default function MyAllCompanies({ token }) {
                                         <option value="" disabled>Select Sub-Category</option>
                                         <option value="" >1</option>
                                         <option value="">2</option>
-                                        {/* {
-                                            subCategoriesAllowed?.map(sub => (
-                                                <option key={sub?.id} value={sub?.id}>{sub?.name}</option>
-                                            ))
-                                        } */}
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
+
+
                             <div className="sidebarItemFilter">
-                                <button className='clearFilterBtn'
-
-                                // onClick={() => {
-                                //     setFilterationObj({
-                                //         company: '',
-                                //         title: '',
-                                //         sorting: '',
-                                //         category: '',
-                                //         sub_category: '',
-                                //         price_from: '',
-                                //         price_to: ''
-                                //     });
-                                //     scrollToTop(500);
-                                // }}
-
+                                <button
+                                    className='clearFilterBtn'
+                                    onClick={clearFilters}
                                 >
                                     Clear
                                 </button>
@@ -166,9 +264,11 @@ export default function MyAllCompanies({ token }) {
                     </div>
                     <div className="col-lg-9 col-md-8">
                         <div className="mainContentAllCompanies__handler">
-                            <div className="row gap-3">
+                            {
+                                filteredCompanies?.length !== 0 ?
+                                <div className="row gap-3">
                                 {
-                                    newData?.map((el) => {
+                                    filteredCompanies?.map((el) => {
                                         return (
                                             <div key={el?.id} className="col-12">
                                                 <div className="CompanyContentItem">
@@ -230,6 +330,16 @@ export default function MyAllCompanies({ token }) {
                                     })
                                 }
                             </div>
+                            :
+                            <div className="row">
+                                <div className="col-12">
+                                    <h1 className=' text-danger fs-3 text-capitalize text-center mt-4'>
+                                        no company with this filter
+                                    </h1>
+                                </div>
+                            </div>
+                            }
+                            
                         </div>
                     </div>
                 </div>

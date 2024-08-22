@@ -4,11 +4,14 @@ import ProductCard from '../productCardSec/ProductCard';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
-import { slugifyFilteration } from '../../functions/slugifyToURL';
+import { reverseSlugToObj, slugifyFilteration } from '../../functions/slugifyToURL';
 import { scrollToTop } from '../../functions/scrollToTop';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { clearEmptyQueryValues } from '../../functions/slugTransformation';
 
 export default function ShopProducts({token}) {
-  const loginType = localStorage.getItem('loginType');
+  const navigate = useNavigate();
+  const { search } = useLocation();
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState(0);
@@ -35,6 +38,15 @@ export default function ShopProducts({token}) {
     price_to: '',
   });
   const [slugURLObj,setSlugURLObj] = useState('');
+
+  useEffect(()=>{
+    if(search){
+      const newFilterGettedFromURL = reverseSlugToObj(search.slice(1));
+      setFilterationObj({...filterationObj , ...newFilterGettedFromURL});
+    };
+  },[]);
+
+  console.log(filterationObj)
 
   const handleChangeFilterInputs = (e) => {
     if(e.target.name === 'category'){
@@ -68,20 +80,6 @@ export default function ShopProducts({token}) {
     setFilterationObj({...filterationObj, [e.target.name]: `${e.target.value}`,price_from: `${minPrice}`});
   };
 
-  const getCurrentProducts = async () => {
-    await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(response => {
-      setProducts(response?.data?.data?.products?.products);
-      setMaxPrice(+response?.data?.data?.max_price);
-      setSelectedMaxPrice(+response?.data?.data?.max_price);
-      setMinPrice(+response?.data?.data?.min_price);
-    });
-  };
-
   const getCurrentAllowedCountriesAndCategories = async () => {
     await axios.get(`${baseURL}/user/allowed-companies?t=${new Date().getTime()}`,{
       headers: {
@@ -112,11 +110,6 @@ export default function ShopProducts({token}) {
     });
   };
 
-  useEffect(()=>{
-    getCurrentProducts();
-    getCurrentAllowedCountriesAndCategories();
-  },[loginType,token]);
-
   const changeFilterToSlug = (obj) => {
     let slugifiedObj = ``;
     for (const [key, value] of Object.entries(obj)) {
@@ -131,27 +124,59 @@ export default function ShopProducts({token}) {
 
   useEffect(()=>{
     changeFilterToSlug(filterationObj);
-  },[filterationObj]);
+    if(slugURLObj){
+      const filterParams = new URLSearchParams(filterationObj);
+      const slugWithoutEmptyVlaues = clearEmptyQueryValues(filterParams.toString());
+      navigate(`/shop?${slugWithoutEmptyVlaues}`);
+    };
+  },[filterationObj,slugURLObj]);
+
+  const getCurrentProducts = async () => {
+    await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if(!(filterationObj.category || filterationObj?.company || filterationObj.price_from || filterationObj.sorting || filterationObj.sub_category || filterationObj.title)){
+        console.log('object');
+        setProducts(response?.data?.data?.products?.products);
+      };
+      setMaxPrice(+response?.data?.data?.max_price);
+      setMinPrice(+response?.data?.data?.min_price);
+      setSelectedMaxPrice(+response?.data?.data?.max_price);
+    });
+  };
 
   useEffect(()=>{
-    (async() => {
+    getCurrentProducts();
+    getCurrentAllowedCountriesAndCategories();
+  },[]);
+
+  const filterProducts = async () => {
+    (async()=>{
+      if(slugURLObj){
         await axios.get(`${baseURL}/user/filter-products?${slugURLObj}`,{
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
         .then(response => {
-          setProducts(response?.data?.data?.products);
+          const currProducts = response?.data?.data?.products;
+          setProducts(currProducts);
         })
         .catch(error => {
           toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
             duration: 1000,
           });
         })
-      }
-    )();
-  },[slugURLObj]);
+      };
+    })();
+  };
 
+  useEffect(()=>{
+    filterProducts();
+  },[slugURLObj,filterationObj]);
 
   return (
     <div className='container'>
@@ -279,7 +304,7 @@ export default function ShopProducts({token}) {
                       className="form-control"
                       placeholder="Max"
                       readOnly
-                      value={selectedMaxPrice}
+                      value={+filterationObj?.price_to || selectedMaxPrice}
                       onChange={handleChangeFilterInputs}
                     />
                   </div>
@@ -289,6 +314,7 @@ export default function ShopProducts({token}) {
                     className={`price-slider`}
                     min={minPrice}
                     max={maxPrice + 10}
+                    defaultValue={+filterationObj?.price_to}
                     value={selectedMaxPrice}
                     onChange={handleChangeFilterInputs}
                     onMouseUp={handleMouseUpOnRange}
@@ -307,6 +333,7 @@ export default function ShopProducts({token}) {
                       price_to: ''
                     });
                     scrollToTop(500);
+                    navigate('/shop');
                   }}>
                   Clear
                 </button>
@@ -315,7 +342,6 @@ export default function ShopProducts({token}) {
           </div>
           <div className="col-lg-9 col-md-8">
             <div className="row">
-              {console.log(products)}
               {
                 products?.map((el) => {
                   return (
