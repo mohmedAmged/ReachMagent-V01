@@ -6,14 +6,13 @@ import locationIcon from '../../assets/icons/Duotone.png'
 import userIcon from '../../assets/icons/Duotone3.png'
 import emailIcon from '../../assets/icons/Duotone 2.png'
 import flag from '../../assets/icons/image 3 (1).png'
-import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 export default function MyAllCompanies({ token }) {
     const [allCompanies, setAllCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
     const [uniqueAllowedCompNames, setUniqueAllowedCompNames] = useState([]);
     const [uniqueAllowedCompTypes, setUniqueAllowedCompTypes] = useState([]);
-    // const [newData, setNewdata] = useState([])
     const [formData, setFormData] = useState({
         name: '',
         main_type: [],
@@ -23,7 +22,6 @@ export default function MyAllCompanies({ token }) {
     const location = useLocation();
     const navigate = useNavigate();
     const initialized = useRef(false);
-    // ?t=${new Date().getTime()}
     const fetchAllCompanies = async () => {
         try {
             const response = await axios.get(`${baseURL}/all-companies?t=${new Date().getTime()}`, {
@@ -34,16 +32,16 @@ export default function MyAllCompanies({ token }) {
             const companies = response?.data?.data?.companies || [];
             setAllCompanies(companies);
 
-            // Extract unique company names and types
             const companyAllowedNames = companies.map(item => item.companyName);
             const companyAllowedTypes = companies.flatMap(item => item.companyTypes.map(typeObj => typeObj.type));
             setUniqueAllowedCompNames([...new Set(companyAllowedNames)]);
             setUniqueAllowedCompTypes([...new Set(companyAllowedTypes)]);
         } catch (error) {
-            console.error("Error fetching all companies:", error);
+            console.log("Error fetching all companies:", error);
         }
     };
-    // Fetch filtered companies based on form data
+
+    // Fetch filtered companies based on formData
     const fetchFilteredCompanies = async () => {
         try {
             const queryString = buildQueryString(formData);
@@ -72,12 +70,14 @@ export default function MyAllCompanies({ token }) {
         });
         return query.toString();
     };
-    // Update URL with the current filters
+
+    // Update URL with current filters
     const updateURLWithFilters = () => {
         const queryString = buildQueryString(formData);
         navigate(`?${queryString}`, { replace: true });
     };
-    // Initialize formData from URL query parameters
+
+    // get formData from URL query parameters if there
     useEffect(() => {
         if (!initialized.current) {
             const queryParams = new URLSearchParams(location.search);
@@ -96,7 +96,7 @@ export default function MyAllCompanies({ token }) {
         fetchAllCompanies();
     }, [token]);
 
-    // Re-fetch companies when filter
+    // refetch companies when filter
     useEffect(() => {
         if (allCompanies.length > 0) {
             fetchFilteredCompanies();
@@ -113,6 +113,7 @@ export default function MyAllCompanies({ token }) {
             [name]: value,
         }));
     };
+
     const handleSelectChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -174,7 +175,6 @@ export default function MyAllCompanies({ token }) {
                                         name="name"
                                         id="shopFilterationcompany"
                                         className="form-control custom-select"
-                                        // defaultValue={''}
                                         value={formData?.name}
                                         onChange={handleInputChange}
                                     >
