@@ -37,7 +37,7 @@ export default function LastMinuteDeals({token}) {
                 <div className="lastMinuteDeals__cards mb-4">
                     <div className="row">
                         {
-                            newData.map((el) => {
+                            newData?.map((el) => {
                                 return (
                                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center mb-4">
                                         <LastMinuteCard

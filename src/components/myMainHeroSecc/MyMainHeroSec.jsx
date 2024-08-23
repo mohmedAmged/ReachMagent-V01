@@ -1,7 +1,7 @@
 import React from 'react'
 import './myMainHeroSec.css';
 
-export default function MyMainHeroSec({ heroSecContainerType, headText, paraPartOne, paraPartTwo, categoryArr }) {
+export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr }) {
 
     return (
         <div className={`myMainHero__handler `}>
@@ -29,9 +29,9 @@ export default function MyMainHeroSec({ heroSecContainerType, headText, paraPart
                                             {
                                                 categoryArr ?
                                                     <div className="form__part select__category__part">
-                                                        <select name="" id="">
+                                                        <select>
                                                             {
-                                                                categoryArr.map(el => {
+                                                                categoryArr?.map(el => {
                                                                     return (
                                                                         <option key={el.id} value={el.id}>{el.name}</option>
                                                                     )
@@ -44,7 +44,7 @@ export default function MyMainHeroSec({ heroSecContainerType, headText, paraPart
                                             }
                                             <div className="form__part input__search__part">
                                                 <i className="bi bi-search"></i>
-                                                <input type="text" placeholder='Search for Services, Business Owners,etc..' />
+                                                <input type="text" onChange={handleChangeFilterInputs} placeholder='Search for Services, Business Owners,etc..' />
                                             </div>
                                             <div className="form__part select__area__part">
                                                 <select name="" id="">
@@ -66,9 +66,10 @@ export default function MyMainHeroSec({ heroSecContainerType, headText, paraPart
                                                 categoryArr ?
                                                     <div className="form__part select__category__part">
                                                         <i className="bi bi-blockquote-right"></i>
-                                                        <select name="" id="">
+                                                        <select defaultValue={''} name='company' onChange={handleChangeFilterInputs}>
+                                                        {currentPage === 'shop' && <option value="">Select Company</option>}
                                                             {
-                                                                categoryArr.map(el => {
+                                                                categoryArr?.map(el => {
                                                                     return (
                                                                         <option key={el.id} value={el.id}>{el.name}</option>
                                                                     )
@@ -81,7 +82,7 @@ export default function MyMainHeroSec({ heroSecContainerType, headText, paraPart
                                             }
                                             <div className="form__part input__search__part">
                                                 <i className="bi bi-search"></i>
-                                                <input type="text" placeholder='Search for Services, Business Owners,etc..' />
+                                                <input type="text" name='title' onChange={handleChangeFilterInputs} placeholder={currentPage === 'shop' && 'Search with Product Name'}/>
                                             </div>
                                         </>
                                 }
