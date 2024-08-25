@@ -51,6 +51,14 @@
 .news__card .swiper-pagination {
     bottom: -20px !important;
 }
+.showAllBtn{
+    text-align: end;
+    margin-top: 20px;
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--main-blue-color);
+}
 @media (max-width: 767px) {
     .news__card {
         margin-bottom: 40px;

@@ -74,7 +74,7 @@ export default function Home({companies,token}) {
           secHead='Companies Insights'
           secText='Stay informed with the latest updates, announcements, and specials from top companies'
         />
-        <SingleCompanyNewsSec />
+        <SingleCompanyNewsSec token={token}/>
       </>
       <DownloadApp />
     </div>

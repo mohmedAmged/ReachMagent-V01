@@ -1,118 +1,115 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import newImg from '../../assets/companyCards/profile.png';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
-import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
+import "swiper/css/autoplay";
+import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
 import { Col, Container, Row } from 'react-bootstrap';
 import "./singleCompanyNews.css";
+import { baseURL } from '../../functions/baseUrl';
+import axios from 'axios';
+import { NavLink } from 'react-router-dom';
+import { scrollToTop } from '../../functions/scrollToTop';
 
-export default function SingleCompanyNewsSec() {
-  const newsArr = [
-    {
-      id: 1,
-      src: newImg,
-      starsNum: 5,
-      maxStarsNum: 5,
-      newsHead: 'Homzmart',
-      newsQuote: 'E-Commerce Website',
-      newsDescreption: 'Lorem ipsum dolor sit amet consectetur. Fermentum tortor tortor nisi laoreet cursus ultrices amet. Odio arcu ornare turpis et condimentum sagittis justo. Varius ipsum ornare mattis dictumst tristique faucibus sit. Aliquam pretium cursus id fringilla id nunc ante.'
-    },
-    {
-      id: 2,
-      src: newImg,
-      starsNum: 5,
-      maxStarsNum: 5,
-      newsHead: 'Homzmart',
-      newsQuote: 'E-Commerce Website',
-      newsDescreption: 'Lorem ipsum dolor sit amet consectetur. Fermentum tortor tortor nisi laoreet cursus ultrices amet. Odio arcu ornare turpis et condimentum sagittis justo. Varius ipsum ornare mattis dictumst tristique faucibus sit. Aliquam pretium cursus id fringilla id nunc ante.'
-    },
-    {
-      id: 3,
-      src: newImg,
-      starsNum: 4,
-      maxStarsNum: 5,
-      newsHead: 'Homzmart',
-      newsQuote: 'E-Commerce Website',
-      newsDescreption: 'Lorem ipsum dolor sit amet consectetur. Fermentum tortor tortor nisi laoreet cursus ultrices amet. Odio arcu ornare turpis et condimentum sagittis justo. Varius ipsum ornare mattis dictumst tristique faucibus sit. Aliquam pretium cursus id fringilla id nunc ante.'
-    },
-  ]
+export default function SingleCompanyNewsSec({ token }) {
+
+  const [newData, setNewdata] = useState([])
+  const fetchHomePosts = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/home-posts?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setNewdata(response?.data?.data?.posts);
+    } catch (error) {
+      setNewdata(error?.response?.data.message);
+    }
+  };
+  useEffect(() => {
+    fetchHomePosts();
+  }, [token]);
 
   return (
     <Container className='my-5'>
-      <Row className='justify-content-around'>
-      <Col lg={6} md={6}>
-        <Swiper
-          spaceBetween={30}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Pagination]}
-          className="mySwiper"
-        >
-          {
-            newsArr.map(el =>{
-              return (
-                <SwiperSlide key={el.id} className='news__card p-3'>
-                  <div className="headOfNews__card d-flex justify-content-between align-items-start">
-                    <div className="headOfNews__card-leftPart">
-                      <div className="image">
-                        <img src={el.src} alt="newImg" />
+      <Row className='justify-content-center'>
+
+        <Col lg={12} md={12} className=''>
+          <Swiper
+            className='mySwiper'
+            modules={[Autoplay]}
+            autoplay={{
+              delay: 2500,
+              pauseOnMouseEnter: true,
+              disableOnInteraction: false
+            }}
+            breakpoints={{
+              300: {
+                slidesPerView: 1.1,
+                spaceBetween: 10
+              },
+              426: {
+                slidesPerView: 1.2,
+                spaceBetween: 20
+              },
+              600: {
+                slidesPerView: 2.2,
+                spaceBetween: 15
+              },
+              768: {
+                slidesPerView: 2.2,
+                spaceBetween: 15
+              },
+              995: {
+                slidesPerView: 3,
+                spaceBetween: 20
+              },
+            }}
+          >
+
+
+            {
+              newData?.map(el => {
+                return (
+                  <SwiperSlide key={el?.id} className=''>
+                    <div className="news__card p-3">
+                      <div className="headOfNews__card d-flex justify-content-between align-items-start">
+                        <div className="headOfNews__card-leftPart">
+                          <div className="image">
+                            <NavLink  
+                              onClick={() => {
+                                    scrollToTop();
+                                }} 
+                                className={'nav-link'} to={`/show-company/${el?.company_id}`}>
+                              <img src={el?.company_logo} alt="newImg" />
+                            </NavLink>
+                          </div>
+                          <h4>{el?.title}</h4>
+                          <p>Type: {el?.type}</p>
+                          <p>{el?.created_at}</p>
+                        </div>
                       </div>
-                      <h4>{el.newsHead}</h4>
-                      <p>{el.newsQuote}</p>
-                    </div>
-                  </div>
-                  <div className="news__card-body">
-                    <p>
-                      {
-                        el.newsDescreption
-                      }
-                    </p>
-                  </div>
-                </SwiperSlide>
-              )
-            })
-          }
-        </Swiper>
-      </Col>
-      <Col lg={6} md={6}>
-        <Swiper
-          spaceBetween={30}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Pagination]}
-          className="mySwiper"
-        >
-          {
-            newsArr.map(el =>{
-              return (
-                <SwiperSlide key={el.id} className='news__card p-3'>
-                  <div className="headOfNews__card d-flex justify-content-between align-items-start">
-                    <div className="headOfNews__card-leftPart">
-                      <div className="image">
-                        <img src={el.src} alt="newImg" />
+                      <div className="news__card-body">
+                        <p>
+                          {
+                            el?.description
+                          }
+                        </p>
                       </div>
-                      <h4>{el.newsHead}</h4>
-                      <p>{el.newsQuote}</p>
                     </div>
-                  </div>
-                  <div className="news__card-body">
-                    <p>
-                      {
-                        el.newsDescreption
-                      }
-                    </p>
-                  </div>
-                </SwiperSlide>
-              )
-            })
-          }
-        </Swiper>
-      </Col>
+
+                  </SwiperSlide>
+                )
+              })
+            }
+          </Swiper>
+          <div className="showAllBtn">
+            <NavLink className={'nav-link'} to={'/all-insights'}>
+              Show All
+            </NavLink>
+          </div>
+        </Col>
       </Row>
     </Container>
   )
