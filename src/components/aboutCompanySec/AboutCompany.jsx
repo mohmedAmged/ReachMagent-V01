@@ -40,17 +40,15 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
         <Marker position={position} icon={customIcon}></Marker>
     );
 };
+
 export default function AboutCompany({ company, showCompaniesQuery }) {
-    
-    // console.log(showCompaniesQuery);
-    
     const [initialPosition,setInitialPosition] = useState([0, 0]);
     useEffect(()=>{
         setInitialPosition([
             showCompaniesQuery?.companyBranches[0]?.branchLatitude,
             showCompaniesQuery?.companyBranches[0]?.branchLongitude
         ])
-    },[showCompaniesQuery])
+    },[showCompaniesQuery]);
     return (
         <div className='aboutCompany__handler'>
             <div className="container">

@@ -90,19 +90,21 @@ function App() {
   });
   const companiesQuery = useQuery({
     queryKey: ['companies'],
-    queryFn: async () => {
-      const response = await axios.get(`${baseURL}/companies?t=${new Date().getTime()}`, {
+    queryFn: () => getDataFromAPI(`companies`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      });
-      return response?.data?.data;
-    },
+      }
+    ),
   });
+  if(token && loginType === 'user' && companiesQuery?.data?.companies[0]?.followed === undefined){
+    companiesQuery.refetch();
+  };
   const regionsQuery = useQuery({
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
   });
+
 
   return (
     <>

@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './trendingCompanySec.css'
 import cover3 from '../../assets/companyCards/cover 3.png'
 import CopmanyCard from '../companyCardSec/CopmanyCard'
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
+import Cookies from 'js-cookie'
 export default function TrendingCompanySec({ companies ,token }) {
+    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState(() => {
+        const cookieValue = Cookies.get('CurrentFollowedCompanies');
+        return cookieValue ? JSON.parse(cookieValue) : [];
+    });
+
+    useEffect(()=>{
+        if(!Cookies.get('CurrentFollowedCompanies') && companies){
+            const firstCompany = companies[0] ? companies[0] : ''
+            if(firstCompany?.followed !== undefined){
+                const filteredCompanies = companies?.filter(company => company?.followed === true);
+                setCurrentFollowedCompanies([...currentFollowedCompanies , ...filteredCompanies ]);
+            };
+        };
+    },[companies]);
+
     return (
         <div className='trendingCompany__handler'>
             <div className="container">
@@ -14,12 +30,13 @@ export default function TrendingCompanySec({ companies ,token }) {
                 <div className="trendingCompany__cards mb-5">
                     <div className="row">
                         {
-                            companies?.map((el, index) => {
+                            companies?.map((el) => {
                                 return (
-                                    <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
+                                    <div key={el?.companyId} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
                                         <CopmanyCard
 // ************* dynamic info
-                                            companies={companies}
+                                            currentFollowedCompanies={currentFollowedCompanies}
+                                            setCurrentFollowedCompanies={setCurrentFollowedCompanies}
                                             token={token}
                                             companyProfile={el.companyLogo}
                                             companyName={el.companyName} 

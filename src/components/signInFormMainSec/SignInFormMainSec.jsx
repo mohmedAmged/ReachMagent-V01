@@ -49,9 +49,10 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                 const slugCompletion = loginType === 'user' ? 'user/profile' : 'employee/show-profile';
                 const fetchData = async () => {
                     try {
-                        const response = await axios.get(`${baseURL}/${slugCompletion}`, {
+                        const response = await axios.get(`${baseURL}/${slugCompletion}?t=${new Date().getTime()}`, {
                             headers: {
                                 'Accept': 'application/json',
+                                'Content-Type': 'application/json',
                                 'Authorization': `Bearer ${token}`,
                             },
                         });

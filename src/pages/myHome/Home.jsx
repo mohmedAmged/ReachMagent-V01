@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './home.css';
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
 import AboutReachSec from '../../components/aboutReachSecc/AboutReachSec';
 import AllCategorySec from '../../components/allCategorySecc/AllCategorySec';
 import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
-import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec';
 import TrendingCompanySec from '../../components/trendingCompanySecc/TrendingCompanySec';
 import GrowBuisnessSec from '../../components/growBuisnessSecc/GrowBuisnessSec';
 import LastMinuteDeals from '../../components/lastMinuteDealsSec/LastMinuteDeals';
 import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
-import { baseURL } from '../../functions/baseUrl';
-import axios from 'axios';
 import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 
 export default function Home({companies,token}) {

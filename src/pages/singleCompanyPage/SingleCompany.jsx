@@ -28,7 +28,7 @@ import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
 export default function SingleCompany({ token }) {
     const { companyId } = useParams();
     const loginType = localStorage.getItem('loginType');
-    const [formId, setFormId] = useState('1');
+    const [formId, setFormId] = useState(undefined);
     const [formInputs, setFormInputs] = useState({});
 
     const companyData = {
@@ -78,7 +78,7 @@ export default function SingleCompany({ token }) {
         setActiveItem(itemName);
     };
     useEffect(() => {
-        if (token && loginType === 'user') {
+        if (token && loginType === 'user' && formId) {
             (async () => {
                 const toastId = toast.loading('Loading Forms...');
                 await axios.post(`${baseURL}/${loginType}/show-form?t=${new Date().getTime()}`, {

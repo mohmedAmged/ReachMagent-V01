@@ -26,7 +26,7 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
         const toastId = toast.loading('Please Wait...');
         const fetchData = async () => {
             try {
-                const response = await axios.post(`${baseURL}/${loginType}/logout`, {}, {
+                const response = await axios.post(`${baseURL}/${loginType}/logout?t=${new Date().getTime()}`, {}, {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`,

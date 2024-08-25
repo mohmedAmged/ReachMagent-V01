@@ -59,7 +59,7 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
                 (async () => {
                     const toastId = toast.loading('Loading...');
                     try {
-                        const response = await axios.get(`${baseURL}/${loginType}/show-company`, {
+                        const response = await axios.get(`${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                                 Accept: 'application/json'
@@ -125,7 +125,6 @@ export default function MyBussinessSettings({token,mainCategories,mainActivities
         };
         setCurrentCoverUpdateFile(event.target.files);
     };
-console.log(mainCategories);
 
     return (
         <div className='dashboard__handler d-flex'>
@@ -136,12 +135,12 @@ console.log(mainCategories);
                     <div className="profileCoverImg">
                         <img src={(currentCoverImage === 'N/A') ? cover : currentCoverImage} alt="Cover" />
                     </div>
-                    <div className={`updateCover ${profileUpdateStatus === 'updating' && 'cursorPointer'}`}>
+                    <div className={`updateCover ${profileUpdateStatus === 'updating' && 'cursorPointer d-block'}`}>
                         {
                             profileUpdateStatus !== 'notUpdating' && 
                             <>
                                 <input type="file" className='invisibleInput' ref={fileCoverRef} onChange={hangleChangeCover} />
-                                <span onClick={handleCoverClick}>Change Cover</span>
+                                <span onClick={handleCoverClick}><i className="bi bi-pencil-square"></i></span>
                             </>
                         }
                     </div>

@@ -51,10 +51,9 @@ export default function CompanySettingsForm(
 )
 
 {
-  console.log(mainCategories);
-  
   const loginType =localStorage.getItem('loginType');
   const [subCategories,setSubCategories] = useState([]);
+  const linkedInLink = company?.linkedin_link === 'N/A' ? '' : company?.linkedin_link;
 
   const {
     register,
@@ -74,7 +73,7 @@ export default function CompanySettingsForm(
         main_type: company?.companyTypes,
         cover: '',
         website_link: company?.website_link,
-        linkedin_link: company?.linkedin_link,
+        linkedin_link: linkedInLink,
         founded: company?.founded,
     },
     resolver: zodResolver(UpdateCompanyDataSchema),
@@ -115,7 +114,7 @@ export default function CompanySettingsForm(
     setValue('full_address',company?.full_address);
     setValue('about_us',company?.about_us);
     setValue('website_link',company?.website_link);
-    setValue('linkedin_link',company?.linkedin_link);
+    setValue('linkedin_link',linkedInLink);
     setValue('founded',company?.founded);
     setValue('main_type',company?.companyTypes?.map(el => el?.type));
     setValue('category_id', `${mainCategories?.find(cat => cat?.mainCategoryName === company?.category )?.mainCategoryId}`);
@@ -162,7 +161,7 @@ export default function CompanySettingsForm(
   if(coverChanged && data.cover[0]){
     formData.append('cover', data.cover[0]);
   };
-  await axios.post(`${baseURL}/${loginType}/update-company-data`, formData, {
+  await axios.post(`${baseURL}/${loginType}/update-company-data?t=${new Date().getTime()}`, formData, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'multipart/form-data',
@@ -271,7 +270,7 @@ export default function CompanySettingsForm(
               <input
                   id='dashboardCompanyMainCategory'
                   className='form-control signUpInput mt-2'
-                  value={company?.category}
+                  defaultValue={company?.category}
                   type="text"
                   disabled={true}
               />
@@ -304,7 +303,7 @@ export default function CompanySettingsForm(
               <input
                   id='dashboardCompanySubCategory'
                   className='form-control signUpInput mt-2'
-                  value={company?.sub_category}
+                  defaultValue={company?.sub_category}
                   type="text"
                   disabled={true}
               />
@@ -312,7 +311,6 @@ export default function CompanySettingsForm(
               <>
               <select
                 className={`form-select signUpInput mt-2 ${errors?.sub_category_id ? 'inputError' : ''}`}
-                defaultValue={''}
                 {...register('sub_category_id')}
                 id="dashboardCompanySubCategory"
               >
@@ -374,7 +372,7 @@ export default function CompanySettingsForm(
         :
         <>
           <select
-            value={selectValue}
+            defaultValue={selectValue}
             onChange={handleChangeBusinessType}
             className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''}`}
             id="dashboardCompanymainType"

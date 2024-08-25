@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React from 'react'
 import './companyCard.css'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop';
@@ -7,27 +7,16 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 
-export default function CopmanyCard({ token ,companies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId }) {
+export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrentFollowedCompanies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId }) {
     const loginType = localStorage.getItem('loginType');
-    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState(() => {
-        const cookieValue = Cookies.get('CurrentFollowedCompanies');
-        return cookieValue ? JSON.parse(cookieValue) : [];
-    });
     const navigate = useNavigate();
-
-    useEffect(()=>{
-        if(!Cookies.get('CurrentFollowedCompanies')){
-            const filteredCompanies = companies?.filter(company => company?.followed === true);
-            setCurrentFollowedCompanies([...currentFollowedCompanies , ...filteredCompanies ]);
-        };
-    },[]);
 
     const handleToggleFollowCompany = async (id) => {
         const currentCompanyWantedToFollow = {
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-            await axios.post(`${baseURL}/${loginType}/control-follow-company`, 
+            await axios.post(`${baseURL}/${loginType}/control-follow-company?t=${new Date().getTime()}`, 
             currentCompanyWantedToFollow ,
             {
                 headers: {

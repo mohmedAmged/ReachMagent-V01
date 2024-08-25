@@ -96,10 +96,10 @@
     }
 }
 .unFollowCompanyBtn {
-    border-color: #ff2020;
-    color: #ff2020;
+    border-color: #ff2020 !important;
+    color: #ff2020 !important;
 }
 .unFollowCompanyBtn:hover {
-    color: var(--primary-white);
-    background-color: #ff2020;
+    color: var(--primary-white) !important;
+    background-color: #ff2020 !important;
 }

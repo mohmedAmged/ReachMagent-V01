@@ -7,23 +7,6 @@ import { baseURL } from '../../functions/baseUrl'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 export default function ReadyToByProductsHome({ secMAinTitle,token }) {
-
-    const listedNavigationItem = [
-        {
-            item: 'Featured Products',
-            itemStyle: 'active'
-        },
-        {
-            item: 'Most Selling'
-        },
-        {
-            item: 'Recent Items'
-        },
-        {
-            item: 'Trending Products'
-        },
-
-    ]
     const [newData, setNewdata] = useState([])
     const fetchAllProducts = async () => {
         try {

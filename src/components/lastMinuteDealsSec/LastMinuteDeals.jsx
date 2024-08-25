@@ -8,8 +8,8 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop'
 export default function LastMinuteDeals({token}) {
-    const navigate = useNavigate()
-    const [newData, setNewdata] = useState([])
+    const navigate = useNavigate();
+    const [newData, setNewdata] = useState([]);
     const fetchLastMinuteDeals = async () => {
         try {
             const response = await axios.get(`${baseURL}/user/last-minute-deals?t=${new Date().getTime()}`,{
@@ -19,7 +19,7 @@ export default function LastMinuteDeals({token}) {
             });
             setNewdata(response?.data?.data?.last_minute_deals);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
+            console.log(error);
         }
     };
     useEffect(() => {
