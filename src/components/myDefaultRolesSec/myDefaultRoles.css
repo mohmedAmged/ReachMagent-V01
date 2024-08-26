@@ -93,6 +93,10 @@
     width: 23px;
     height: 12.94px;
     box-shadow: rgba(0, 0, 0, 0.62) 0px 0px 5px inset, rgba(0, 0, 0, 0.21) 0px 0px 0px 24px inset, rgba(13, 148, 136, 1) 0px 0px 0px 0px inset, rgba(224, 224, 224, 0.45) 0px 1px 0px 0px;
+    -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    -moz-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    -ms-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    -o-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
 }
 
 .slider::after {
