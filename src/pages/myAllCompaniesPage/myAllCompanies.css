@@ -91,11 +91,15 @@
     gap: 6px;
     align-items: center;
 }
+.mainContentAllCompanies__handler .CompanyContentItem .compMainInfo .companyMainCountry i{
+    color: rgba(181, 181, 195, 1);
+
+}
 .mainContentAllCompanies__handler .CompanyContentItem .compMainInfo .companyMainCountry span{
     font-size: 17px;
     font-weight: 400;
     text-transform: capitalize;
-    color: #000;
+    color: var(--main-blue-color);
 }
 @media screen and (max-width: 600px){
     .mainContentAllCompanies__handler{

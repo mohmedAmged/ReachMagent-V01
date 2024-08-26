@@ -62,20 +62,20 @@ export default function Home({companies,token}) {
       <TrendingCompanySec companies={companies} token={token} />
       <GrowBuisnessSec />
       <LastMinuteDeals token={token}/>
-      <FranchiseSec
+      {/* <FranchiseSec
         pageName='home'
         headText='Franchise Opportunities'
         paraText='Find secure and verified franchises, or attract franchisees for your current brand'
         btnOneText='Submit Your Brand'
         btnTwoText='Explore Now'
-      />
-      <>
+      /> */}
+      <div className='mt-3'>
         <HeaderOfSec
           secHead='Companies Insights'
           secText='Stay informed with the latest updates, announcements, and specials from top companies'
         />
         <SingleCompanyNewsSec token={token}/>
-      </>
+      </div>
       <DownloadApp />
     </div>
   )

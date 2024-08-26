@@ -11,6 +11,7 @@
 .lastMinuteDeals__handler .lastMinuteDeals__cards .product__image img{
     width: 330px;
     height: 190px;
+    border-radius: 12px;
 }
 .lastMinuteDeals__handler .lastMinuteDeals__cards .product__info .sub__info p{
     text-align: right;
@@ -27,4 +28,9 @@
         position: relative;
         z-index: 10;
     }
+
+.lastMinuteDeals__handler .lastMinuteDeals__cards .product__image img{
+    width: 100%;
+    height: 120px;
+}
 }

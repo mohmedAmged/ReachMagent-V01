@@ -1,5 +1,7 @@
 import React from 'react'
 import './growBuisnessSec.css'
+import { NavLink } from 'react-router-dom'
+import { scrollToTop } from '../../functions/scrollToTop';
 export default function GrowBuisnessSec() {
     return (
         <div className='growBuisness__handler'>
@@ -14,9 +16,15 @@ export default function GrowBuisnessSec() {
                         </p>
                     </div>
                     <div className="gowBuisness__action">
-                        <button className='linear__btn'>
-                            Be a Partner
-                        </button>
+                        <NavLink className={'nav-link'} to={'/business-signUp'}
+                            onClick={() => {
+                                scrollToTop();
+                            }}>
+                            <button className='linear__btn'>
+                                Be a Partner
+                            </button>
+                        </NavLink>
+
                     </div>
                 </div>
             </div>
