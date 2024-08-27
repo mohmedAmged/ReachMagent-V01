@@ -148,6 +148,15 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                                 alt='img-check'
                                             />
                                         </NavLink>
+                                        {
+                                            loginType === 'user' &&
+                                            <NavLink onClick={() => {
+                                                scrollToTop();
+                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn'>
+                                                <i className="bi bi-cart4"></i>
+                                            </NavLink>
+                                        }
+                                        
                                     </>
                                     :
                                     <>
@@ -212,6 +221,14 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                                 alt='img-check'
                                             />
                                         </NavLink>
+                                        {
+                                            loginType === 'user' &&
+                                            <NavLink onClick={() => {
+                                                scrollToTop();
+                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn'>
+                                                <i className="bi bi-cart4"></i>
+                                            </NavLink>
+                                        }
                                     </>
                                 }
                                 <NavLink

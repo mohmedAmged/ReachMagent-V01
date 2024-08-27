@@ -439,7 +439,7 @@ export default function NewProductForm({ mainCategories, token }) {
               </div>
               <div className="form__submit__button">
                 <button type="submit" className="btn btn-primary">
-                  Add Catalog Item
+                  Add Product Item
                 </button>
               </div>
             </form>

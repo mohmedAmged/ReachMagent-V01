@@ -4,28 +4,30 @@ import cover3 from '../../assets/companyCards/cover 3.png'
 import CopmanyCard from '../companyCardSec/CopmanyCard'
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import Cookies from 'js-cookie'
-export default function TrendingCompanySec({ companies ,token }) {
-    const [currentFollowedCompanies,setCurrentFollowedCompanies] = useState(() => {
+import { NavLink } from 'react-router-dom'
+import { scrollToTop } from '../../functions/scrollToTop'
+export default function TrendingCompanySec({ companies, token }) {
+    const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
     });
 
-    useEffect(()=>{
-        if(!Cookies.get('CurrentFollowedCompanies') && companies){
+    useEffect(() => {
+        if (!Cookies.get('CurrentFollowedCompanies') && companies) {
             const firstCompany = companies[0] ? companies[0] : ''
-            if(firstCompany?.followed !== undefined){
+            if (firstCompany?.followed !== undefined) {
                 const filteredCompanies = companies?.filter(company => company?.followed === true);
-                setCurrentFollowedCompanies([...currentFollowedCompanies , ...filteredCompanies ]);
+                setCurrentFollowedCompanies([...currentFollowedCompanies, ...filteredCompanies]);
             };
         };
-    },[companies]);
+    }, [companies]);
 
     return (
         <div className='trendingCompany__handler'>
             <div className="container">
                 <HeaderOfSec
                     secHead='Trending Companies'
-                    secText='Explore a wide array of trending companies making headlines in the industry'/>
+                    secText='Explore a wide array of trending companies making headlines in the industry' />
 
                 <div className="trendingCompany__cards mb-5">
                     <div className="row">
@@ -34,15 +36,15 @@ export default function TrendingCompanySec({ companies ,token }) {
                                 return (
                                     <div key={el?.companyId} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
                                         <CopmanyCard
-// ************* dynamic info
+                                            // ************* dynamic info
                                             currentFollowedCompanies={currentFollowedCompanies}
                                             setCurrentFollowedCompanies={setCurrentFollowedCompanies}
                                             token={token}
                                             companyProfile={el.companyLogo}
-                                            companyName={el.companyName} 
+                                            companyName={el.companyName}
                                             companyUser={el.companyEmail}
                                             companyId={el.companyId}
-// ************* static info
+                                            // ************* static info
                                             coverImg={cover3}
                                             productsCount={'112'}
                                             dealsCount={'261'}
@@ -55,7 +57,17 @@ export default function TrendingCompanySec({ companies ,token }) {
                         }
 
                     </div>
+                    <div className="showAllBtn">
+                        <NavLink className={'nav-link'} to={'/all-companies'}
+                        onClick={() => {
+                            scrollToTop();
+                        }}
+                        >
+                            Show All
+                        </NavLink>
+                    </div>
                 </div>
+
             </div>
         </div>
     )

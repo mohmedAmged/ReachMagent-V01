@@ -6,6 +6,8 @@ import HeaderSec from '../myHeaderSec/HeaderSec'
 import { baseURL } from '../../functions/baseUrl'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { NavLink } from 'react-router-dom'
+import { scrollToTop } from '../../functions/scrollToTop'
 export default function ReadyToByProductsHome({ secMAinTitle,token }) {
     const [newData, setNewdata] = useState([])
     const fetchAllProducts = async () => {
@@ -72,6 +74,15 @@ export default function ReadyToByProductsHome({ secMAinTitle,token }) {
                                 )
                             })
                         }
+                    </div>
+                    <div className="showAllBtn">
+                        <NavLink className={'nav-link'} to={'/shop'}
+                        onClick={() => {
+                            scrollToTop();
+                        }}
+                        >
+                            Show All
+                        </NavLink>
                     </div>
                 </div>
             </div>

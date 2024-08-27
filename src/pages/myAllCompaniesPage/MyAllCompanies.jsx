@@ -5,7 +5,6 @@ import { baseURL } from '../../functions/baseUrl';
 import locationIcon from '../../assets/icons/Duotone.png'
 import userIcon from '../../assets/icons/Duotone3.png'
 import emailIcon from '../../assets/icons/Duotone 2.png'
-import flag from '../../assets/icons/image 3 (1).png'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 export default function MyAllCompanies({ token }) {
