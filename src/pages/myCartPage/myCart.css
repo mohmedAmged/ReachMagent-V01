@@ -223,5 +223,20 @@ background: #fff;
         justify-content: space-between;
         text-align: end;
     }
+    .cartItems__content h2{
+        font-size: 16px;
+    }
+    .productCartItem__card .cartItem__info__left h5, .orderSummary__content h5{
+        font-size: 15px;
+    }
+    .productCartItem__card .cartItem__info__left .item__attributes .attribute__tit {
+        font-size: 13px;
+    }
+    .productCartItem__card .cartItem__info__left .item__qty span {
+        font-size: 13px;
+    }
+    .productCartItem__card .cartItem__info__right .cartItem__price h3 {
+        font-size: 20px;
+    }
 }
 
