@@ -11,6 +11,8 @@ import { clearEmptyQueryValues } from '../../functions/slugTransformation';
 import MyMainHeroSec from '../myMainHeroSecc/MyMainHeroSec';
 
 export default function ShopProducts({token}) {
+  const [loading,setLoading] = useState(true);
+  const [loadingProducts,setLoadingProducts] = useState(true);
   const navigate = useNavigate();
   const { search } = useLocation();
   const [minPrice, setMinPrice] = useState(0);
@@ -48,6 +50,7 @@ export default function ShopProducts({token}) {
   },[]);
 
   const getCurrentAllowedCountriesAndCategories = async () => {
+    setLoading(true);
     await axios.get(`${baseURL}/user/allowed-companies?t=${new Date().getTime()}`,{
       headers: {
         Authorization: `Bearer ${token}`
@@ -75,6 +78,7 @@ export default function ShopProducts({token}) {
         duration: 1000,
       });
     });
+    setLoading(false);
   };
 
   const changeFilterToSlug = (obj) => {
@@ -99,6 +103,7 @@ export default function ShopProducts({token}) {
   },[filterationObj,slugURLObj]);
 
   const getCurrentProducts = async () => {
+    setLoadingProducts(true);
     await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
       headers: {
         Authorization: `Bearer ${token}`
@@ -112,6 +117,7 @@ export default function ShopProducts({token}) {
       setMinPrice(+response?.data?.data?.min_price);
       setSelectedMaxPrice(+response?.data?.data?.max_price);
     });
+    setLoadingProducts(false);
   };
 
   useEffect(()=>{
@@ -120,6 +126,7 @@ export default function ShopProducts({token}) {
   },[]);
 
   const filterProducts = async () => {
+    setLoadingProducts(true);
     (async()=>{
       if(slugURLObj){
         await axios.get(`${baseURL}/user/filter-products?${slugURLObj}&t=${new Date().getTime()}`,{
@@ -138,6 +145,7 @@ export default function ShopProducts({token}) {
         })
       };
     })();
+    setLoadingProducts(false);
   };
 
   useEffect(()=>{
@@ -147,6 +155,7 @@ export default function ShopProducts({token}) {
   const handleChangeFilterInputs = (e) => {
     if(e.target.name === 'category'){
       setFilterationObj({...filterationObj , [e?.target?.name]: e.target.value , sub_category: ''});
+      setLoadingProducts(true);
       (async () =>{ 
         await axios.get(`${baseURL}/user/show-allowed-category/${e?.target?.value}?t=${new Date().getTime()}`,{
           headers: {
@@ -171,14 +180,39 @@ export default function ShopProducts({token}) {
       };
     };
     setSlugURLObj();
+    setLoadingProducts(false);
   };
 
   const handleMouseUpOnRange = (e) => {
     setFilterationObj({...filterationObj, [e.target.name]: `${e.target.value}`,price_from: `${minPrice}`});
   };
 
+  useEffect(()=>{
+    setTimeout(() => {
+      setLoading(false);
+    },500);
+  },[loading]);
+
   return (
     <>
+      {
+        loading ? 
+        <div className="loaderContainer">
+          <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      :
+      <>
       <MyMainHeroSec 
         heroSecContainerType='shopHeroSec__container' 
         headText='Ready To Buy Products' 
@@ -350,6 +384,9 @@ export default function ShopProducts({token}) {
               </div>
             </div>
             <div className="col-lg-9 col-md-8">
+              {loadingProducts ?
+                <div className="permissionsLoader"></div>
+              :
               <div className="row">
                 {
                   products?.map((el) => {
@@ -361,11 +398,14 @@ export default function ShopProducts({token}) {
                   })
                 }
               </div>
+              }
             </div>
 
           </div>
         </div>
       </div>
+      </>
+      }
     </>
   );
 };

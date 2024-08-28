@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './productDetails.css';
-import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
 import ProductDetailsDescriptionContent from '../../components/productDetailsDescriptionContentSec/ProductDetailsDescriptionContent';
 import ProductDetailsOwnerOfCurrProduct from '../../components/productDetailsOwnerOfCurrProductSec/ProductDetailsOwnerOfCurrProduct';
-import ShopProducts from '../../components/shopProductsSec/ShopProducts';
 import ProductDetailsSec from '../../components/productDetailsSecc/ProductDetailsSec';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -17,6 +15,13 @@ export default function ProductDetails({token}) {
   const [allProducts,setAllProducts] = useState([]);
   const [relatedProducts,setRelatedProducts] = useState([]);
   const [currentProduct,setCurrentProduct] = useState({});
+  const [loading,setLoading] = useState(true);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoading(false);
+    },500);
+  },[loading]);
 
   const getCurrentProducts = async () => {
     await axios.get(`${baseURL}/user/products?t=${new Date().getTime()}`,{
@@ -35,6 +40,7 @@ export default function ProductDetails({token}) {
   };
 
   const getCurrentProduct = async (id) => {
+    setLoading(true);
     await axios.get(`${baseURL}/user/show-product/${id}?t=${new Date().getTime()}`,{
       headers: {
         Authorization: `Bearer ${token}`
@@ -48,6 +54,7 @@ export default function ProductDetails({token}) {
         duration: 1000
       });
     });
+    setLoading(false);
   };
 
   useEffect(()=>{
@@ -65,17 +72,27 @@ export default function ProductDetails({token}) {
     };
   },[singleProduct,allProducts]);
 
-  // const items = [
-  //   { name: 'Details', active: true },
-  //   { name: 'Specification', active: false },
-  //   { name: 'Reviews', active: false },
-  //   { name: 'Seller Details', active: false },
-  // ];
-
   return (
-    <div className='productDetailsPage'>
+    <>
+    {
+      loading ? 
+      <div className="loaderContainer">
+        <div class="loader">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+      :
+      <div className='productDetailsPage'>
       <ProductDetailsSec getCurrentProduct={getCurrentProduct} itemType={'product'} product={currentProduct} token={token} />
-      {/* <ProductDetailsFilterationBar items={items}/> */}
       <ProductDetailsDescriptionContent product={currentProduct} /> 
       <ProductDetailsOwnerOfCurrProduct companyName={currentProduct?.company_name} />
       <div className="container">
@@ -92,5 +109,7 @@ export default function ProductDetails({token}) {
             </div>
       </div>
     </div>
+    }
+    </>
   );
 };

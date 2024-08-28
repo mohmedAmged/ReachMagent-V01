@@ -144,10 +144,17 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                             title='Profile'
                                         >
                                             <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
-                                                // alt={`${JSON.parse(profileData)?.name}`} 
                                                 alt='img-check'
                                             />
                                         </NavLink>
+                                        {
+                                            loginType === 'user' &&
+                                            <NavLink onClick={() => {
+                                                scrollToTop();
+                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn'>
+                                                <i className="bi bi-heart"></i>
+                                            </NavLink>
+                                        }
                                         {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
@@ -221,6 +228,14 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                                 alt='img-check'
                                             />
                                         </NavLink>
+                                        {
+                                            loginType === 'user' &&
+                                            <NavLink onClick={() => {
+                                                scrollToTop();
+                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn'>
+                                                <i className="bi bi-heart"></i>
+                                            </NavLink>
+                                        }
                                         {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {

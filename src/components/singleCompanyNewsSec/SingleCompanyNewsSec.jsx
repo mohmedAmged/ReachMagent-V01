@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import newImg from '../../assets/companyCards/profile.png';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -12,7 +11,7 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 
-export default function SingleCompanyNewsSec({ token }) {
+export default function SingleCompanyNewsSec({ token  }) {
 
   const [newData, setNewdata] = useState([])
   const fetchHomePosts = async () => {
@@ -25,8 +24,9 @@ export default function SingleCompanyNewsSec({ token }) {
       setNewdata(response?.data?.data?.posts);
     } catch (error) {
       setNewdata(error?.response?.data.message);
-    }
+    };
   };
+
   useEffect(() => {
     fetchHomePosts();
   }, [token]);

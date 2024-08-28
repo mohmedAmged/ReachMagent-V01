@@ -20,7 +20,7 @@ export default function LastMinuteDeals({token}) {
             setNewdata(response?.data?.data?.last_minute_deals);
         } catch (error) {
             console.log(error);
-        }
+        };
     };
     useEffect(() => {
         fetchLastMinuteDeals();

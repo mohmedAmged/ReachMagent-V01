@@ -8,7 +8,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { NavLink } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop'
-export default function ReadyToByProductsHome({ secMAinTitle,token }) {
+export default function ReadyToByProductsHome({ secMAinTitle,token}) {
     const [newData, setNewdata] = useState([])
     const fetchAllProducts = async () => {
         try {

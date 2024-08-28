@@ -28,8 +28,6 @@ import EnterUrEmail from './pages/enterUrEmailPage/EnterUrEmail';
 import ResetPassword from './pages/resetPasswordPage/ResetPassword';
 import OtherCategories from './pages/otherCategoriesPage/OtherCategories';
 import SubCategoryMain from './pages/subCategoryMainPage/SubCategoryMain';
-import { baseURL } from './functions/baseUrl';
-import axios from 'axios';
 import MyProfileSettings from './pages/myProfileSettingsPage/MyProfileSettings';
 import MyBussinessSettings from './pages/myBusinessSettingsPage/MyBussinessSettings';
 import MyUsersManagement from './pages/myUsersManagementPage/MyUsersManagement';
@@ -51,6 +49,7 @@ import LastMinuteDetails from './pages/LastMinuteDetailsPage/LastMinuteDetails';
 import MyAllCompanies from './pages/myAllCompaniesPage/MyAllCompanies';
 import MyCompaniesInsights from './pages/myCompaniesInsightsPage/MyCompaniesInsights';
 import MyCart from './pages/myCartPage/MyCart';
+import MyWishList from './pages/myWishListPage/MyWishList';
 
 function App() {
   useEffect(() => {
@@ -107,7 +106,6 @@ function App() {
     queryFn: () => getDataFromAPI('regions'),
   });
 
-
   return (
     <>
 
@@ -133,6 +131,7 @@ function App() {
         <Route path='/all-companies' element={<MyAllCompanies token={token}/>} />
         <Route path='/all-insights' element={<MyCompaniesInsights token={token}/>} />
         <Route path='/my-cart' element={<MyCart token={token}/>} />
+        <Route path='/my-wishlist' element={<MyWishList token={token}/>} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}
           token={token} />} />
@@ -141,8 +140,12 @@ function App() {
             mainCategories={mainCategoriesQuery?.data?.mainCategories}
             countries={countriesQuery?.data?.countries}
             token={token}
-            />} 
+            />}
           />
+
+
+        {/* //////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />

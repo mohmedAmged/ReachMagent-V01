@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './discover.css';
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
 import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
@@ -7,6 +7,7 @@ import ShopSliderSec from '../../components/myShopSliderSec/ShopSliderSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 
 export default function Discover() {
+  const [loading,setLoading] = useState(true);
   const arrOfCateg = [
     {
       name: 'Categories',
@@ -24,10 +25,34 @@ export default function Discover() {
       name: "Three",
       id: 4
     }
-  ]
+  ];
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoading(false);
+    },500);
+  },[loading]);
 
   return (
     <>
+    {
+        loading ? 
+        <div className="loaderContainer">
+          <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      :
+      <>
       <MyMainHeroSec 
       heroSecContainerType='shopHeroSec__container' 
       headText='Ready To Buy Products' 
@@ -49,6 +74,8 @@ export default function Discover() {
       />
       <ShopSliderSec 
       />
+      </>
+    }
     </>
   );
 };

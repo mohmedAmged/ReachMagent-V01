@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './home.css';
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
 import AboutReachSec from '../../components/aboutReachSecc/AboutReachSec';
@@ -13,6 +13,7 @@ import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 
 export default function Home({companies,token}) {
+  const [loading,setLoading] = useState(true);
   const arrOfCateg = [
     {
       name: 'All',
@@ -33,50 +34,75 @@ export default function Home({companies,token}) {
   ];
   const loginType = localStorage.getItem('loginType');
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoading(false);
+    },500);
+  },[loading]);
 
   return (
-    <div className='myHomeSec__handler'>
-      <MyMainHeroSec
-        heroSecContainerType='heroSec__container'
-        headText='We Make Things Better'
-        paraPartOne=' Save  thousands to millions of bucks by using single tool for different'
-        paraPartTwo='amazing and outstanding cool and great useful admin'
-        categoryArr={arrOfCateg}
-      />
-      <AboutReachSec />
-      <AllCategorySec />
+    <>
       {
-        loginType === 'user' &&
-        <div className='oneClickQuotation__handler'>
-          <FranchiseSec
-            pageName='discover'
-            headText='One-click Quotation'
-            paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
-            btnOneText='Start Now'
-            btnOnelink='/one-click-quotation'
-          />
+        loading ? 
+        <div className="loaderContainer">
+          <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
         </div>
-      }
-
-      <ReadyToByProductsHome token={token} secMAinTitle={`Ready-To-Buy Products`}/>
-      <TrendingCompanySec companies={companies} token={token} />
-      <GrowBuisnessSec />
-      <LastMinuteDeals token={token}/>
-      {/* <FranchiseSec
-        pageName='home'
-        headText='Franchise Opportunities'
-        paraText='Find secure and verified franchises, or attract franchisees for your current brand'
-        btnOneText='Submit Your Brand'
-        btnTwoText='Explore Now'
-      /> */}
-      <div className='mt-3'>
-        <HeaderOfSec
-          secHead='Companies Insights'
-          secText='Stay informed with the latest updates, announcements, and specials from top companies'
+      :
+      <div className='myHomeSec__handler'>
+        <MyMainHeroSec
+          heroSecContainerType='heroSec__container'
+          headText='We Make Things Better'
+          paraPartOne=' Save  thousands to millions of bucks by using single tool for different'
+          paraPartTwo='amazing and outstanding cool and great useful admin'
+          categoryArr={arrOfCateg}
         />
-        <SingleCompanyNewsSec token={token}/>
+        <AboutReachSec />
+        <AllCategorySec />
+        {
+          loginType === 'user' &&
+          <div className='oneClickQuotation__handler'>
+            <FranchiseSec
+              pageName='discover'
+              headText='One-click Quotation'
+              paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
+              btnOneText='Start Now'
+              btnOnelink='/one-click-quotation'
+            />
+          </div>
+        }
+  
+        <ReadyToByProductsHome token={token} secMAinTitle={`Ready-To-Buy Products`}/>
+        <TrendingCompanySec companies={companies} token={token} />
+        <GrowBuisnessSec />
+        <LastMinuteDeals setLoading={setLoading} token={token}/>
+        {/* <FranchiseSec
+          pageName='home'
+          headText='Franchise Opportunities'
+          paraText='Find secure and verified franchises, or attract franchisees for your current brand'
+          btnOneText='Submit Your Brand'
+          btnTwoText='Explore Now'
+        /> */}
+        <div className='mt-3'>
+          <HeaderOfSec
+            secHead='Companies Insights'
+            secText='Stay informed with the latest updates, announcements, and specials from top companies'
+          />
+          <SingleCompanyNewsSec setLoading={setLoading} token={token}/>
+        </div>
+        <DownloadApp />
       </div>
-      <DownloadApp />
-    </div>
+      }
+    </>
   )
 }

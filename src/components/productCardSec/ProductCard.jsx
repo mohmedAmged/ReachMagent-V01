@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function ProductCard({ getCurrentProducts, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
+export default function ProductCard({ getCurrentProducts,wishListPage, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
     const navigate = useNavigate();
     const loginType = localStorage.getItem('loginType');
 
@@ -69,6 +69,7 @@ export default function ProductCard({ getCurrentProducts, product, itemType, tok
                         })
                     })
                     .catch(error => {
+                        console.log(error);
                         toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
                             id: toastId,
                             duration: 1000,
@@ -88,8 +89,8 @@ export default function ProductCard({ getCurrentProducts, product, itemType, tok
                     scrollToTop();
                     navigate(`/shop/${prodSlug}`);
                 }} />
-                <div className="card__wishlist" onClick={() => handleAddProductToWishList(product?.id)}>
-                    <i className={`bi bi-heart-fill ${(product?.inWishList) && 'text-danger'}`}></i>
+                <div className="card__wishlist" onClick={() => handleAddProductToWishList(wishListPage ? product?.product_id :product?.id)}>
+                    <i className={`bi bi-heart-fill ${(product?.inWishList) && 'text-danger'} ${wishListPage && 'text-danger'}`}></i>
                 </div>
             </div>
             <div className="product__info">
@@ -123,7 +124,7 @@ export default function ProductCard({ getCurrentProducts, product, itemType, tok
                                 Show Cart
                             </button>
                             :
-                            <button className='pageMainBtnStyle' onClick={() => handleAddProductToCart(product?.id)}>
+                            <button className='pageMainBtnStyle' onClick={() => handleAddProductToCart(wishListPage ? product?.product_id : product?.id)}>
                                 Add To Cart
                             </button>
                     }
