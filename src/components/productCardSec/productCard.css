@@ -131,3 +131,9 @@
         height: 130px;
     }
 }
+.productCard__delPrice .productDetails__deletedPrice {
+    font-size: 15px !important;
+}
+.productCard__price {
+    color: var(--main-blue-color) !important;
+}

@@ -58,10 +58,10 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Quotations", link: "/profile/quotations", icon: icon3 },
         { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
         { title: "Orders", link: "/profile/orders", icon: icon4 },
-        { title: "Insights", link: "/profile/insights", icon: icon5 },
+        // { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
-        { title: "Requests", link: "/profile/requests", icon: icon8 },
+        // { title: "Requests", link: "/profile/requests", icon: icon8 },
         {
             title: "Settings",
             link: "/profile/profile-settings",
@@ -69,7 +69,7 @@ export default function MyNewSidebarDash({ token }) {
             // submenu: [
             //     { title: "Profile Settings", link: "/profile/profile-settings" },
             //     { title: "Business Settings", link: "/profile/business-settings" },
-            //     { title: "Users Management", link: "/profile/users-management" }
+            //     { title: "Employees Management", link: "/profile/users-management" }
             // ]
         }
     ];
@@ -86,7 +86,7 @@ export default function MyNewSidebarDash({ token }) {
             // { title: "Insights", link: "/profile/insights", icon: icon5 },
             { title: "Messages", link: "/your-messages", icon: icon6 },
             { title: "Notifications", link: "/profile/notifications", icon: icon7 },
-            { title: "Requests", link: "/profile/requests", icon: icon8 },
+            // { title: "Requests", link: "/profile/requests", icon: icon8 },
             {
                 title: "Settings",
                 link: "/profile/profile-settings",
@@ -103,7 +103,7 @@ export default function MyNewSidebarDash({ token }) {
     ] : [
         { title: "Profile Settings", link: "/profile/profile-settings" },
         { title: "Business Settings", link: "/profile/business-settings" },
-        { title: "Users Management", link: "/profile/users-management" }
+        { title: "Employees Management", link: "/profile/users-management" }
     ];
     const settingsIndex = sidebarItems.findIndex(item => item.title === "Settings");
     if (settingsIndex !== -1) {

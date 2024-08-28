@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import CompanyWorkHourFormTable from '../companyWorkHourFormTableItem/CompanyWorkHourFormTable';
+import toast from 'react-hot-toast';
 
-export default function CompanyWorkHourForm({ token }) {
+export default function CompanyWorkHourForm({ token ,setUnAuth }) {
     const loginType = localStorage.getItem('loginType')
     const [newData, setNewdata] = useState([])
     const [editMode, setEditMode] = useState(false);
@@ -17,8 +18,11 @@ export default function CompanyWorkHourForm({ token }) {
             });
             setNewdata(response?.data?.data);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
-        }
+            if(error?.response?.data?.message === 'Unauthorized'){
+                setUnAuth(true);
+            };
+            toast.error(error?.response?.data.message || 'Somthing Went Wrong');
+        };
     };
     useEffect(() => {
         fetchShowCompany();
@@ -27,7 +31,7 @@ export default function CompanyWorkHourForm({ token }) {
 
     return (
         <div className='companyWorkHourTable__handler'>
-             <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
+                <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
                 {editMode ? 'Cancel Update' : 'Update Work Hours'}
             </button>
             {!editMode ? (
@@ -65,7 +69,7 @@ export default function CompanyWorkHourForm({ token }) {
                     ))}
                 </form>
             ) : (
-                <CompanyWorkHourFormTable token={token} workingHours={newData?.workingHours} />
+                <CompanyWorkHourFormTable setUnAuth={setUnAuth} token={token} workingHours={newData?.workingHours} />
             )}
             
         </div>

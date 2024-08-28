@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import ProductCard from '../../components/productCardSec/ProductCard';
 import { NavLink } from 'react-router-dom';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function MyWishList({token}) {
   const [loading,setLoading] = useState(true);
@@ -38,20 +39,7 @@ export default function MyWishList({token}) {
     <>
       {
         loading ? 
-        <div className="loaderContainer">
-          <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-        </div>
+        <MyLoader />
         :
         <div className='wishList__handler'>
         <div className="container">
@@ -83,6 +71,7 @@ export default function MyWishList({token}) {
                   </div>
 
                   <div className="wishList__body__rightBottomContent px-3 py-4 row">
+                    {console.log(wishListData)}
                   {
                     wishListData?.length === 0 ? 
                     <div className="col-12">No Products Inside Your WishList <NavLink to='/shop' className={'text-decoration-underline'}>Open Shop</NavLink></div>
@@ -90,7 +79,7 @@ export default function MyWishList({token}) {
                     wishListData?.map((el) => {
                       return (
                         <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                          <ProductCard wishListPage={true} getCurrentProducts={fetchWishListItems} product={el} itemType={'product'} token={token} prodSlug={el?.product_slug} productCurrancy={el?.currency_symbol} productImage={el?.medias[0]?.media} productName={el?.product_title} productPrice={el?.price} companyName={el?.company_name} />
+                          <ProductCard discountPrice={el?.product_discount_price} wishListPage={true} getCurrentProducts={fetchWishListItems} product={el} itemType={'product'} token={token} prodSlug={el?.product_slug} productCurrancy={el?.currency_symbol} productImage={el?.medias[0]?.media} productName={el?.product_title} productPrice={el?.product_price} companyName={el?.company_name} />
                         </div>
                       )
                     })

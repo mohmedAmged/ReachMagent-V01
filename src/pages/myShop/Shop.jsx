@@ -6,8 +6,6 @@ export default function Shop({token}) {
 
   return (
     <>
-      {/* <ShopCategorySlider /> */}
-      {/* <FilterationBar /> */}
       <ShopProducts token={token} />
     </>
   );

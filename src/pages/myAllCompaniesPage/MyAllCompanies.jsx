@@ -7,6 +7,7 @@ import userIcon from "../../assets/icons/Duotone3.png";
 import emailIcon from "../../assets/icons/Duotone 2.png";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
+import MyLoader from "../../components/myLoaderSec/MyLoader";
 export default function MyAllCompanies({ token }) {
     const [loading, setLoading] = useState(true);
     const [loadingCompanies, setLoadingCompanies] = useState(true);
@@ -182,20 +183,7 @@ export default function MyAllCompanies({ token }) {
     return (
         <>
             {loading ? (
-                <div className="loaderContainer">
-                    <div class="loader">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
+                <MyLoader />
             ) : (
                 <div className="MyAllCompanies__handler">
                     <div className="container">

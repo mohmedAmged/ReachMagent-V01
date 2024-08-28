@@ -7,19 +7,21 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
+import { AddEmployeeSchema } from '../../validation/AddEmployee';
 
-export default function PersonalSignUpFormMainSec({countries,industries}) {
+export default function PersonalSignUpFormMainSec({token ,countries,industries,isSignUp}) {
   const [showPassword,setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
+  const [roles,setRoles] = useState([]);
   const navigate = useNavigate();
+  const loginType = localStorage.getItem('loginType');
 
   const {
     register,
     handleSubmit,
     setError,
     watch,
-    setValue,
     reset,
     formState:{errors , isSubmitting}
   } = useForm({
@@ -28,15 +30,22 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
       email: '',
       phone: '',
       password: '',
-      password_confirmation: '',
-      industry_id: '',
       country_id: '',
       city_id: '',
       image: '',
+
+      password_confirmation: '',
+      industry_id: '',
       address_one: '',
       address_two: '',
+
+      citizenship: '',
+      full_address: '',
+      title: '',
+      official_id_or_passport: '',
+      role_id: ''
     },
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(isSignUp ? RegisterSchema : AddEmployeeSchema),
   });
 
   const [currentCitiesInsideCountry,setCurrentCitiesInsideCountry] = useState([]);
@@ -47,7 +56,7 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
     if(currentCountry){
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
-      const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
+      const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}?t=${new Date().getTime()}`);
         setCurrentCitiesInsideCountry(response?.data?.data?.cities);
       };
       citiesInsideCurrentCountry();
@@ -66,6 +75,26 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
     };
   },[watch('country_id')]);
 
+  useEffect(()=>{
+    if(!isSignUp && loginType === 'employee'){
+      (async () => {
+        await axios.get(`${baseURL}/${loginType}/roles?t=${new Date().getTime()}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          }
+        })
+        .then(response =>{
+          setRoles(response?.data?.data?.roles);
+        })
+        .catch(error =>{
+          toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+        })
+      })();
+    };
+  },[]);
+
   const onSubmit = async(data) => {
     const toastId = toast.loading('Please Wait...');
     const formData = new FormData();
@@ -77,19 +106,28 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
     if (data.image && data.image[0]) {
       formData.append('image', data.image[0]);
     }
-    await axios.post(`${baseURL}/user/register`, formData, {
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
-      },
+    if (data.official_id_or_passport && data.official_id_or_passport[0]) {
+      formData.append('official_id_or_passport', data.official_id_or_passport[0]);
+    }
+    const currentSlug = isSignUp ? 'user/register' : 'employee/add-employee';
+    const currentHeaders = isSignUp ? {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    } : {
+      Authorization: `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    };
+    await axios.post(`${baseURL}/${currentSlug}?t=${new Date().getTime()}`, formData, {
+      headers: currentHeaders,
       }).then(response => {
-        toast.success(`${response?.data?.message}, will go to login Page after 2 seconds!`,{
+        toast.success(`${response?.data?.message}` || 'Created Successfully!',{
           id: toastId,
           duration: 2000
         });
-        setTimeout(()=>{
+        isSignUp && (setTimeout(()=>{
           navigate('/logIn');
-        },2000);
+        },2000));
         scrollToTop();
         reset();
       })
@@ -107,10 +145,6 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
 
   return (
     <>
-      <Toaster
-        position="top-center"
-        reverseOrder={true}
-      />
       <div className='signUpForm__mainSec py-5 mb-5'>
         <div className="container">
           <div className="row">
@@ -155,6 +189,30 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
                         (<span className='errorMessage'>{errors.email.message}</span>)
                       }
                     </div>
+                    {
+                      !isSignUp && 
+                      <>
+                      <div className="col-lg-6 mb-4">
+                        <label htmlFor="addEmployeetitle">
+                          Employee Title <span className="requiredStar">*</span>
+                        </label>
+                        <div className="position-relative">
+                          <input 
+                            type={`text`}
+                            id='addEmployeetitle'
+                            placeholder='Enter Employee Title'
+                            {...register('title')}
+                            className={`form-control signUpInput ${errors.title ? 'inputError' : ''}`}
+                          />
+                        </div>
+                        {
+                          errors.title
+                          &&
+                          (<span className='errorMessage'>{errors.title.message}</span>)
+                        }
+                      </div>
+                      </>
+                    }
                     <div className="col-lg-6 mb-4">
                       <label htmlFor="signUpMobileNumber">
                         Mobile Number <span className="requiredStar">*</span>
@@ -232,62 +290,132 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
                         <span className="errorMessage">{errors.city_id.message}</span>
                       }
                     </div>
-                    <div className="col-lg-6 mb-4">
-                      <label htmlFor="signUpaddress_one">
-                        Address Line 1  <span className="requiredStar">*</span>
-                      </label>
-                      <input 
-                        type='text'
-                        id='signUpaddress_one'
-                        placeholder='Street name, City , Zip Code'
-                        {...register('address_one')}
-                        className={`form-control signUpInput ${errors.address_one ? 'inputError' : ''}`}
-                      />
-                      {
-                        errors.address_one 
-                        &&
-                        (<span className='errorMessage'>{errors.address_one.message}</span>)
-                      }
-                    </div>
-                    <div className="col-lg-6 mb-4">
-                      <label htmlFor="signUpaddress_two">
-                        Address Line 2  <span className="optional">( Optional )</span>
-                      </label>
-                      <input 
-                        type='text'
-                        id='signUpaddress_two'
-                        placeholder='Building no. , apt no. , etc'
-                        {...register('address_two')}
-                        className={`form-control signUpInput ${errors.address_two ? 'inputError' : ''}`}
-                      />
-                      {
-                        errors.address_two 
-                        &&
-                        (<span className='errorMessage'>{errors.address_two.message}</span>)
-                      }
-                    </div>
-                    <div className="col-lg-6 mb-4">
-                      <label htmlFor="signUpindustry">
-                        Industry <span className="requiredStar">*</span>
-                      </label>
-                      <select
-                        id="signUpindustry" 
-                        className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
-                        {...register('industry_id')} >
-                          <option value="" disabled>
-                            Select an industry
-                          </option>
-                          {industries?.map((industry) => (
-                            <option key={industry.id} value={industry.id}>
-                              {industry.name}
-                            </option>
-                          ))}
-                        </select>
-                      {
-                        errors.industry_id && 
-                        <span className="errorMessage">{errors.industry_id.message}</span>
-                      }
-                    </div>
+                    {!isSignUp &&
+                      <>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="addEmployeerole_id">
+                            Employee Role <span className="requiredStar">*</span>
+                          </label>
+                          <div className="position-relative">
+                            <select 
+                              id='addEmployeerole_id'
+                              {...register('role_id')}
+                              className={`form-select signUpInput ${errors.role_id ? 'inputError' : ''}`}
+                            >
+                              <option value="" disabled>Select Role</option>
+                              {roles?.map(el =>(
+                                <option key={el?.id} value={el?.id}>{el?.name}</option>
+                              ))}
+                            </select>
+                          </div>
+                          {
+                            errors.role_id
+                            &&
+                            (<span className='errorMessage'>{errors.role_id.message}</span>)
+                          }
+                        </div>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="addEmployeecitizenship">
+                            Citizenship <span className="requiredStar">*</span>
+                          </label>
+                          <div className="position-relative">
+                            <input 
+                              type={`text`}
+                              id='addEmployeecitizenship'
+                              placeholder='Enter Your Citizenship'
+                              {...register('citizenship')}
+                              className={`form-control signUpInput ${errors.citizenship ? 'inputError' : ''}`}
+                            />
+                          </div>
+                          {
+                            errors.citizenship
+                            &&
+                            (<span className='errorMessage'>{errors.citizenship.message}</span>)
+                          }
+                        </div>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="addEmployeefull_address">
+                            Full Address <span className="requiredStar">*</span>
+                          </label>
+                          <div className="position-relative">
+                            <input 
+                              type={`text`}
+                              id='addEmployeefull_address'
+                              placeholder='Enter Full Address'
+                              {...register('full_address')}
+                              className={`form-control signUpInput ${errors.full_address ? 'inputError' : ''}`}
+                            />
+                          </div>
+                          {
+                            errors.full_address
+                            &&
+                            (<span className='errorMessage'>{errors.full_address.message}</span>)
+                          }
+                        </div>
+                        
+                      </>
+                    }
+                    {
+                      isSignUp && 
+                      <>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="signUpaddress_one">
+                            Address Line 1  <span className="requiredStar">*</span>
+                          </label>
+                          <input 
+                            type='text'
+                            id='signUpaddress_one'
+                            placeholder='Street name, City , Zip Code'
+                            {...register('address_one')}
+                            className={`form-control signUpInput ${errors.address_one ? 'inputError' : ''}`}
+                          />
+                          {
+                            errors.address_one 
+                            &&
+                            (<span className='errorMessage'>{errors.address_one.message}</span>)
+                          }
+                        </div>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="signUpaddress_two">
+                            Address Line 2  <span className="optional">( Optional )</span>
+                          </label>
+                          <input 
+                            type='text'
+                            id='signUpaddress_two'
+                            placeholder='Building no. , apt no. , etc'
+                            {...register('address_two')}
+                            className={`form-control signUpInput ${errors.address_two ? 'inputError' : ''}`}
+                          />
+                          {
+                            errors.address_two 
+                            &&
+                            (<span className='errorMessage'>{errors.address_two.message}</span>)
+                          }
+                        </div>
+                        <div className="col-lg-6 mb-4">
+                          <label htmlFor="signUpindustry">
+                            Industry <span className="requiredStar">*</span>
+                          </label>
+                          <select
+                            id="signUpindustry" 
+                            className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
+                            {...register('industry_id')} >
+                              <option value="" disabled>
+                                Select an industry
+                              </option>
+                              {industries?.map((industry) => (
+                                <option key={industry.id} value={industry.id}>
+                                  {industry.name}
+                                </option>
+                              ))}
+                            </select>
+                          {
+                            errors.industry_id && 
+                            <span className="errorMessage">{errors.industry_id.message}</span>
+                          }
+                        </div>
+                      </>
+                    }
                     <div className="col-lg-6 mb-4">
                       <label htmlFor="signUpPassword">
                         Password <span className="requiredStar">*</span>
@@ -315,33 +443,55 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
                         (<span className='errorMessage'>{errors.password.message}</span>)
                       }
                     </div>
-                    <div className="col-lg-6 mb-4">
-                      <label htmlFor="signUpConfirmPassword">
-                        Confirm Password <span className="requiredStar">*</span>
-                      </label>
-                      <div className="position-relative">
-                        <input 
-                          type={`${showConfirmPassword ? 'text' : 'password'}`}
-                          id='signUpConfirmPassword'
-                          placeholder='Enter 8-digit password'
-                          {...register('password_confirmation')}
-                          className={`form-control signUpInput ${errors.password_confirmation ? 'inputError' : ''}`}
-                        />
-                        <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
-                          {
-                            showConfirmPassword ?
-                            <i className="bi bi-eye-slash"></i>
-                            :
-                            <i className="bi bi-eye-fill"></i>
-                          }
+                    {
+                      isSignUp &&
+                      <div className="col-lg-6 mb-4">
+                        <label htmlFor="signUpConfirmPassword">
+                          Confirm Password <span className="requiredStar">*</span>
+                        </label>
+                        <div className="position-relative">
+                          <input 
+                            type={`${showConfirmPassword ? 'text' : 'password'}`}
+                            id='signUpConfirmPassword'
+                            placeholder='Enter 8-digit password'
+                            {...register('password_confirmation')}
+                            className={`form-control signUpInput ${errors.password_confirmation ? 'inputError' : ''}`}
+                          />
+                          <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
+                            {
+                              showConfirmPassword ?
+                              <i className="bi bi-eye-slash"></i>
+                              :
+                              <i className="bi bi-eye-fill"></i>
+                            }
+                          </div>
                         </div>
+                        {
+                          errors.password_confirmation
+                          &&
+                          (<span className='errorMessage'>{errors.password_confirmation.message}</span>)
+                        }
                       </div>
+                    }
+                    {
+                      !isSignUp &&
+                      <div className='col-lg-6 text-center'>
+                      <label htmlFor="addEmployeeofficial_id_or_passport" className='singUp__upLoadBtn'>
+                        Official Id Or Passport
+                      </label>
+                      <input 
+                        type='file'
+                        id='addEmployeeofficial_id_or_passport'
+                        {...register('official_id_or_passport')}
+                        className={`signUpInput ${errors.official_id_or_passport ? 'inputError' : ''}`}
+                      />
                       {
-                        errors.password_confirmation
+                        errors.official_id_or_passport
                         &&
-                        (<span className='errorMessage'>{errors.password_confirmation.message}</span>)
+                        (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
                       }
-                    </div>
+                      </div>
+                    }
                     <div className='col-lg-6 text-center'>
                       <label htmlFor="signUpProfileImage" className='singUp__upLoadBtn'>
                         Upload Profile Image
@@ -359,30 +509,33 @@ export default function PersonalSignUpFormMainSec({countries,industries}) {
                       }
                     </div>
                     <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
-                      <input disabled={isSubmitting} type="submit" value={'Sign Up'} />
+                      <input disabled={isSubmitting} type="submit" value={isSignUp ? 'Sign Up' : 'Add Employee'} />
                     </div>
                   </form>
-                  <div className="col-lg-12 signUpOtherWays text-center pe-4">
-                    <div className="serviceTerms">
-                      <p>
-                        By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy. 
-                      </p>
-                      <p className="businessQuestion">
-                        Are you a business? 
-                        <br />
-                        <span className="getStarted" onClick={()=>{
-                          navigate('/business-signup');
-                          scrollToTop();
-                        }}>
-                          Get started here!
-                        </span>
-                      </p>
+                  {
+                    isSignUp &&
+                    <div className="col-lg-12 signUpOtherWays text-center pe-4">
+                      <div className="serviceTerms">
+                        <p>
+                          By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy. 
+                        </p>
+                        <p className="businessQuestion">
+                          Are you a business? 
+                          <br />
+                          <span className="getStarted" onClick={()=>{
+                            navigate('/business-signup');
+                            scrollToTop();
+                          }}>
+                            Get started here!
+                          </span>
+                        </p>
+                      </div>
+                      <div className="signInNavigation mb-5">
+                        Already have an account?
+                        <NavLink className='nav-link d-inline ms-1' to='/logIn' onClick={()=>scrollToTop()}>Sign In</NavLink>
+                      </div>
                     </div>
-                    <div className="signInNavigation mb-5">
-                      Already have an account?
-                      <NavLink className='nav-link d-inline ms-1' to='/logIn' onClick={()=>scrollToTop()}>Sign In</NavLink>
-                    </div>
-                  </div>
+                  }
                 </div>
               </div>
             </div>

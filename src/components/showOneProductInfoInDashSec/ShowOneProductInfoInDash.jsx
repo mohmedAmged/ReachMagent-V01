@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash'
-import MainContentHeader from '../mainContentHeaderSec/MainContentHeader'
-import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
-import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import { baseURL } from '../../functions/baseUrl'
-import './showOneProductInfoInDash.css'
+import React, { useEffect, useState } from 'react';
+import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
+import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
+import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
+import './showOneProductInfoInDash.css';
+import MyLoader from '../myLoaderSec/MyLoader';
+import toast from 'react-hot-toast';
 
 export default function ShowOneProductInfoInDash({ token }) {
-    const { prodInfoId } = useParams()
-    const loginType = localStorage.getItem('loginType')
+    const [loading, setLoading] = useState(true);
+    const { prodInfoId } = useParams();
+    const loginType = localStorage.getItem('loginType');
 
-    const [newData, setNewdata] = useState([])
+    const [newData, setNewdata] = useState([]);
     const fetchProductInfo = async () => {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/show-product/${prodInfoId}?t=${new Date().getTime()}`, {
@@ -21,16 +24,26 @@ export default function ShowOneProductInfoInDash({ token }) {
             });
             setNewdata(response?.data?.data);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };
     useEffect(() => {
         fetchProductInfo();
     }, [loginType, token]);
-console.log(newData);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    }, [loading]);
 
     return (
-        <div className='dashboard__handler showOneProductInDash__handler d-flex'>
+        <>
+        {
+            loading ? 
+            <MyLoader />
+            :
+            <div className='dashboard__handler showOneProductInDash__handler d-flex'>
             <MyNewSidebarDash />
             <div className='main__content container'>
                 <MainContentHeader />
@@ -152,5 +165,7 @@ console.log(newData);
                 </div>
             </div>
         </div>
-    )
-}
+        }
+        </>
+    );
+};

@@ -23,6 +23,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/autoplay";
 import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
+import MyLoader from '../../components/myLoaderSec/MyLoader'
 
 
 export default function SingleCompany({ token }) {
@@ -115,20 +116,7 @@ export default function SingleCompany({ token }) {
         <>
             {
                 loading ?
-                    <div className="loaderContainer">
-                        <div class="loader">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
+                    <MyLoader />
                     :
                     <div className='singleCompany__handler'>
                         <HeroOnlyCover />
@@ -182,7 +170,6 @@ export default function SingleCompany({ token }) {
                                                         <LastMinuteCard
                                                             productImage={el?.serviceImage}
                                                             productName={el?.serviceTitle}
-                                                            // dealQuantity={''}
                                                             showCustomContent={true}
                                                             borderColor={'rgba(0, 0, 0, 0.5)'}
                                                             onAddClick={''}
@@ -233,7 +220,6 @@ export default function SingleCompany({ token }) {
                                                         <LastMinuteCard
                                                             productImage={el?.catalogImages[0].media}
                                                             productName={el?.catalogTitle}
-                                                            // dealQuantity={''}
                                                             showCustomContent={true}
                                                             borderColor={'rgba(0, 0, 0, 0.5)'}
                                                             onAddClick={''}

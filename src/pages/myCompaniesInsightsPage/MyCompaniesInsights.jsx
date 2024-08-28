@@ -4,6 +4,7 @@ import axios from 'axios';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function MyCompaniesInsights({ token }) {
     const [loading, setLoading] = useState(true);
@@ -119,20 +120,7 @@ export default function MyCompaniesInsights({ token }) {
         <>
             {
                 loading ?
-                    <div className="loaderContainer">
-                        <div class="loader">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
+                    <MyLoader />
                     :
                     <div className='MyAllCompanies__handler myCompaniesInsights__handler'>
                         <div className="container">

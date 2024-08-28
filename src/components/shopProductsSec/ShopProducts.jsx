@@ -9,6 +9,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { clearEmptyQueryValues } from '../../functions/slugTransformation';
 import MyMainHeroSec from '../myMainHeroSecc/MyMainHeroSec';
+import MyLoader from '../myLoaderSec/MyLoader';
 
 export default function ShopProducts({token}) {
   const [loading,setLoading] = useState(true);
@@ -197,20 +198,7 @@ export default function ShopProducts({token}) {
     <>
       {
         loading ? 
-        <div className="loaderContainer">
-          <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-        </div>
+        <MyLoader />
       :
       <>
       <MyMainHeroSec 
@@ -392,7 +380,7 @@ export default function ShopProducts({token}) {
                   products?.map((el) => {
                     return (
                       <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                        <ProductCard getCurrentProducts={search ? filterProducts : getCurrentProducts} product={el} itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                        <ProductCard discountPrice={el?.discountPrice} getCurrentProducts={search ? filterProducts : getCurrentProducts} product={el} itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                       </div>
                     )
                   })

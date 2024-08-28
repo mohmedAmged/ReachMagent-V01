@@ -135,7 +135,7 @@ export default function CartProduct({
                     });
                 })
             })();
-        }
+        };
     };
 
     const handleAddNoteToQuotation = (id) => {

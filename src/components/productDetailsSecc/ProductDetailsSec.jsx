@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './productDetailsSec.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import ProdDetailsSlider from '../prodDetailsSliderSec/ProdDetailsSlider';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 export default function ProductDetailsSec({ getCurrentProduct, itemType, product, token }) {
   const navigate = useNavigate();
   const loginType = localStorage.getItem('loginType');
+  const [currentAttribute,setCurrentAttribute] = useState('');
   const handleAddProductToCart = (id) => {
     if (token) {
       if (loginType === 'employee') {
@@ -17,7 +18,10 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
             You Must be A user.
           `);
       } else {
-        const productSended = { item_type: itemType, item_id: `${id}` };
+        const productSended = { item_type: itemType, item_id: `${id}`};
+        if(currentAttribute){
+          productSended.product_attribute_value_id = `${currentAttribute}`;
+        };
         const toastId = toast.loading('Loading...');
         axios.post(`${baseURL}/user/add-to-cart?t=${new Date().getTime()}`, productSended, {
           headers: {
@@ -81,6 +85,10 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
     };
   };
 
+  const handleChangeAttributes = (e)=>{
+    setCurrentAttribute(e.target.value);
+  };
+
   return (
     <Container className='productDetails__sec mb-5 mt-3'>
       <Row>
@@ -96,29 +104,23 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
             <p className='mt-3 mb-4 fs-5 text-capitalize'>
               {product?.description}
             </p>
-            <p className='productDetails__price mb-3'>
-              {product?.price ? product?.price + product?.currency_symbol : product?.total_price + product?.currency_symbol}
-              {
-                product?.quantity ?
-                  <>
-                    <br />
-                    <span className='fs-3'>
-                      For {product?.quantity} Pieces
-                    </span>
-                  </>
-                  :
-                  ''
-              }
-            </p>
+            {
+              product?.discountPrice &&
+              <p className='productDetails__price mb-3'>
+                {product?.discountPrice && product?.discountPrice + product?.currency_symbol}
+              </p>
+            }
             {
               product?.discountPrice ?
                 <p className='productDetails__delPrice d-flex gap-3 align-items-center mb-4'>
                   <span className='productDetails__deletedPrice'>
-                    {product?.discountPrice ? product?.price + product?.discountPrice : ''}{product?.currency_symbol}
+                    {product?.price ? product?.price : ''}{product?.currency_symbol}
                   </span>
                 </p>
                 :
-                ''
+                <p className="productDetails__price">
+                  {product?.price ? product?.price : ''}{product?.currency_symbol}
+                </p>
             }
             {
               product?.limited_date ?
@@ -134,6 +136,26 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
                 <strong>{product?.company_name}</strong>
               </span>
             </p>
+            {
+              product?.productAttribute !== 'N/A' &&
+              <div className='productDetails__attributes mb-3 mb-4'>
+                <select 
+                  className='form-select signUpInput'
+                  id="productDetailsAttributes"
+                  defaultValue={''}
+                  onChange={handleChangeAttributes}
+                >
+                <option value='' disabled>
+                  {product?.productAttribute}
+                </option>
+                {
+                  product?.productAttributeValues?.map((el)=>(
+                    <option key={el?.id} value={el?.id}>{el?.value}</option>
+                  ))
+                }
+                </select>
+              </div>
+            }
             <div className='productDetails__addToCartPart d-flex justify-content-between align-items-center mt-2 flex-wrap gap-3'>
               <div className={`${'productDetails__addToCartBtn'}`}>
                 {
@@ -147,16 +169,9 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
                       ADD TO WISHLIST <i className="bi bi-heart-fill"></i>
                     </button>)
                 }
-                {
-                  product?.inCart ?
-                    <button className="addToCartBtn" onClick={() => navigate('/cart')}>
-                      SHOW IN CART <i className="bi bi-eye"></i>
-                    </button>
-                    :
-                    <button className="addToCartBtn" onClick={()=> handleAddProductToCart(product?.id)}>
-                      ADD TO CART <i className="bi bi-cart-plus-fill"></i>
-                    </button>
-                }
+                <button className="addToCartBtn" onClick={()=> handleAddProductToCart(product?.id)}>
+                  ADD TO CART <i className="bi bi-cart-plus-fill"></i>
+                </button>
               </div>
             </div>
           </div>

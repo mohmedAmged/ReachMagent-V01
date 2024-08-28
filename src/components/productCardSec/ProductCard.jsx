@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function ProductCard({ getCurrentProducts,wishListPage, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
+export default function ProductCard({ getCurrentProducts,discountPrice,wishListPage, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
     const navigate = useNavigate();
     const loginType = localStorage.getItem('loginType');
 
@@ -102,8 +102,25 @@ export default function ProductCard({ getCurrentProducts,wishListPage, product, 
                         {productName ? productName : ''}
                     </h3>
                     <h5>
-                        {productCurrancy ? productCurrancy : '$'}{productPrice ? productPrice : ''}
+                        {
+                            discountPrice ? 
+                            <div className="productCard__delPrice">
+                                <span className='productDetails__deletedPrice'>
+                                    {productCurrancy ? productCurrancy : '$'}{productPrice ? productPrice : ''}
+                                </span>
+                            </div>
+                            :
+                            <p className='productCard__price'>
+                                {productCurrancy ? productCurrancy : '$'}{productPrice ? productPrice : ''}
+                            </p>
+                        }
                     </h5>
+                    {
+                        discountPrice &&
+                        <h5 className='productCard__price'>
+                            {discountPrice ? productCurrancy : '$'}{discountPrice}
+                        </h5>
+                    }
                 </div>
                 <div className="sub__info">
 

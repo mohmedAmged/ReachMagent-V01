@@ -6,6 +6,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
+import toast from 'react-hot-toast';
 
 export default function QuotationTableSec({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -23,7 +24,7 @@ export default function QuotationTableSec({ token }) {
             });
             setNewdata(response?.data?.data?.quotations);
         } catch (error) {
-            setNewdata(error?.response?.data.message);
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };
     useEffect(() => {

@@ -8,6 +8,7 @@ import axios from "axios";
 import { baseURL } from "../../functions/baseUrl";
 import defaultProdImg from "../../assets/servicesImages/default-store-350x350.jpg";
 import toast from "react-hot-toast";
+import MyLoader from "../myLoaderSec/MyLoader";
 
 export default function ShowOneClickQuotation({ token }) {
   const loginType = localStorage.getItem("loginType");
@@ -58,7 +59,7 @@ export default function ShowOneClickQuotation({ token }) {
       setFullData(response?.data?.data?.one_click_quotation);
       setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation);
     } catch (error) {
-      setNewdata(error?.response?.data.message);
+      toast.error(error?.response?.data.message || 'Something Went Wrong!');
     };
   };
 
@@ -254,156 +255,171 @@ export default function ShowOneClickQuotation({ token }) {
     };
   };
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [loading]);
+
   return (
-    <div className="dashboard__handler showSingleQuotation__handler d-flex">
-      <MyNewSidebarDash />
-      <div className="main__content container">
-        <MainContentHeader />
-        <div className="content__view__handler">
-          <ContentViewHeader title={"Request a quote"} />
-          <div className="quotationTable__content">
-            <Table responsive>
-              <thead>
-                <tr className="table__default__header">
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>QTY</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {acceptedSingleQuotations?.map((row) => (
-                  <tr className="" key={row?.id}>
-                    <td className="product__item__content">
-                      <img
-                        src={
-                          row?.medias[0]?.media
-                            ? row?.medias[0]?.media
-                            : `${defaultProdImg}`
-                        }
-                        alt=""
-                      />
-                      <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
-                    </td>
-                    <td>{row?.category ? row?.category : "N/A"}</td>
+    <>
+      {
+        loading ?
+          <MyLoader />
+          :
+          <div className="dashboard__handler showSingleQuotation__handler d-flex">
+            <MyNewSidebarDash />
+            <div className="main__content container">
+              <MainContentHeader />
+              <div className="content__view__handler">
+                <ContentViewHeader title={"Request a quote"} />
+                <div className="quotationTable__content">
+                  <Table responsive>
+                    <thead>
+                      <tr className="table__default__header">
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>QTY</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {acceptedSingleQuotations?.map((row) => (
+                        <tr className="" key={row?.id}>
+                          <td className="product__item__content">
+                            <img
+                              src={
+                                row?.medias[0]?.media
+                                  ? row?.medias[0]?.media
+                                  : `${defaultProdImg}`
+                              }
+                              alt=""
+                            />
+                            <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
+                          </td>
+                          <td>{row?.category ? row?.category : "N/A"}</td>
 
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        disabled
-                        defaultValue={!row?.price ? 0 : row?.price}
-                      />
-                    </td>
-                    <td>{row?.quantity}</td>
-                    <td>
-                      <input
-                        type="number"
-                        className={`form-control ${loginType !== "user" && "bg-white"
-                          }`}
-                        defaultValue={
-                          row?.offer_price !== "N/A" ? row?.offer_price : 0
-                        }
-                        onChange={(event) =>
-                          handleChangeOfferPrices(event, row?.id)
-                        }
-                        disabled={loginType === "user"}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
-          <div className="quoteTotals__handler">
-            <h3>Quote Totals</h3>
-            <div className="row align-items-center">
-              <div className="col-lg-6">
-                <div className="totals__full__info">
-                  <div className="totals__text">
-                    <h5 className="mb-4">subtotal (Standard)</h5>
-                    <h5 className="mb-4">Shipping cost</h5>
-                    <h5 className="mb-4">Tax</h5>
-                    <h5 className="mb-4">Services</h5>
-                    <h5>Total</h5>
-                  </div>
-                  <div className="totals__prices">
-                    <h5 className="mb-4">${submitionData?.total_price}</h5>
-                    {(newData?.include_shipping === "Yes") && (
-                      <h5 className="mb-4">
-                        {shippingValue}
-                      </h5>
-                    ) }
-                    <h5 className="mb-4">${taxValue}</h5>
-                    <h5 className="mb-4">${servicesValue}</h5>
-                    <h5>
-                      $
-                      {totalPrice}
-                    </h5>
+                          <td>
+                            <input
+                              type="number"
+                              className="form-control"
+                              disabled
+                              defaultValue={!row?.price ? 0 : row?.price}
+                            />
+                          </td>
+                          <td>{row?.quantity}</td>
+                          <td>
+                            <input
+                              type="number"
+                              className={`form-control ${loginType !== "user" && "bg-white"
+                                }`}
+                              defaultValue={
+                                row?.offer_price !== "N/A" ? row?.offer_price : 0
+                              }
+                              onChange={(event) =>
+                                handleChangeOfferPrices(event, row?.id)
+                              }
+                              disabled={loginType === "user"}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+                <div className="quoteTotals__handler">
+                  <h3>Quote Totals</h3>
+                  <div className="row align-items-center">
+                    <div className="col-lg-6">
+                      <div className="totals__full__info">
+                        <div className="totals__text">
+                          <h5 className="mb-4">subtotal (Standard)</h5>
+                          <h5 className="mb-4">Shipping cost</h5>
+                          <h5 className="mb-4">Tax</h5>
+                          <h5 className="mb-4">Services</h5>
+                          <h5>Total</h5>
+                        </div>
+                        <div className="totals__prices">
+                          <h5 className="mb-4">${submitionData?.total_price}</h5>
+                          {(newData?.include_shipping === "Yes") && (
+                            <h5 className="mb-4">
+                              {shippingValue}
+                            </h5>
+                          )}
+                          <h5 className="mb-4">${taxValue}</h5>
+                          <h5 className="mb-4">${servicesValue}</h5>
+                          <h5>
+                            $
+                            {totalPrice}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-6 adjustPositione">
+                      <div className="totals__have__problem">
+                        <h3>Having a problem?</h3>
+                        <button className="updateBtn">
+                          <i className="bi bi-wechat fs-4"></i>
+                          <span>Chat with requester</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-6 adjustPositione">
-                <div className="totals__have__problem">
-                  <h3>Having a problem?</h3>
-                  <button className="updateBtn">
-                    <i className="bi bi-wechat fs-4"></i>
-                    <span>Chat with requester</span>
-                  </button>
+
+                <div className="requesterDetails__handler">
+                  <h3>Requester Details</h3>
+                  <div className="row">
+                    <div className="col-lg-12 requesterDetails__content">
+                      <div className="requesterDetails__mainInfo">
+                        <div className="mainInfo__title">
+                          <h5 className="mb-4">Company Name:</h5>
+                          <h5 className="mb-4">Quotation Type:</h5>
+                          <h5>Street address:</h5>
+                        </div>
+                        <div className="mainInfo__texts">
+                          <h5 className="mb-4">{fullData?.company_name}</h5>
+                          <h5 className="mb-4">{fullData?.type}</h5>
+                          <h5>{fullData?.address}</h5>
+                        </div>
+                      </div>
+                      <div className="requesterDetails__subInfo">
+                        <div className="mainInfo__title">
+                          <h5 className="mb-4">Your City:</h5>
+                          <h5 className="mb-4">Your Area:</h5>
+                          <h5 className="mb-4">Postal Code:</h5>
+                          <h5>Your Country:</h5>
+                        </div>
+                        <div className="mainInfo__texts">
+                          <h5 className="mb-4">{fullData?.destination_city}</h5>
+                          <h5 className="mb-4">{fullData?.destination_area}</h5>
+                          <h5 className="mb-4">{fullData?.code}</h5>
+                          <h5>{fullData?.destination_country}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-12 d-flex justify-content-around">
+                      <span onClick={handleAcceptQuotation} className="updateBtn">
+                        Accept Quotation
+                      </span>
+                      <span
+                        onClick={handleRejectAllQuotation}
+                        className="updateBtn reject"
+                      >
+                        Reject Quotation
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+
               </div>
             </div>
           </div>
-          
-            <div className="requesterDetails__handler">
-              <h3>Requester Details</h3>
-              <div className="row">
-                <div className="col-lg-12 requesterDetails__content">
-                  <div className="requesterDetails__mainInfo">
-                    <div className="mainInfo__title">
-                      <h5 className="mb-4">Company Name:</h5>
-                      <h5 className="mb-4">Quotation Type:</h5>
-                      <h5>Street address:</h5>
-                    </div>
-                    <div className="mainInfo__texts">
-                      <h5 className="mb-4">{fullData?.company_name}</h5>
-                      <h5 className="mb-4">{fullData?.type}</h5>
-                      <h5>{fullData?.address}</h5>
-                    </div>
-                  </div>
-                  <div className="requesterDetails__subInfo">
-                    <div className="mainInfo__title">
-                      <h5 className="mb-4">Your City:</h5>
-                      <h5 className="mb-4">Your Area:</h5>
-                      <h5 className="mb-4">Postal Code:</h5>
-                      <h5>Your Country:</h5>
-                    </div>
-                    <div className="mainInfo__texts">
-                      <h5 className="mb-4">{fullData?.destination_city}</h5>
-                      <h5 className="mb-4">{fullData?.destination_area}</h5>
-                      <h5 className="mb-4">{fullData?.code}</h5>
-                      <h5>{fullData?.destination_country}</h5>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12 d-flex justify-content-around">
-                  <span onClick={handleAcceptQuotation} className="updateBtn">
-                    Accept Quotation
-                  </span>
-                  <span
-                    onClick={handleRejectAllQuotation}
-                    className="updateBtn reject"
-                  >
-                    Reject Quotation
-                  </span>
-                </div>
-              </div>
-            </div>
-          
-
-        </div>
-      </div>
-    </div>
+      }
+    </>
   );
-}
+};

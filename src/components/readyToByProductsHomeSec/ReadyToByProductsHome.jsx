@@ -33,31 +33,6 @@ export default function ReadyToByProductsHome({ secMAinTitle,token}) {
                     <HeaderSec title={secMAinTitle}
                     />
                 </div>
-                {/* <div className="readyToBuy__navigationBar none__on__small__screen">
-                    <ul className="listedNavigate">
-                        {
-                            listedNavigationItem.map((el, index) => {
-                                return (
-                                    <BorderedNavigationBar itemStyle={el.itemStyle} key={index} listTitle={el.item} />
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
-                <div className="readyToBuy__selectBar display__on__small__screen">
-                    <>
-                        <select name="" id="">
-                            {
-                                listedNavigationItem.map((el, index) => {
-                                    return (
-                                        <option key={index}>{el.item}</option>
-                                    )
-                                })
-                            }
-
-                        </select>
-                    </>
-                </div> */}
                 <div className="readyToBuy__products">
                     <div className="row">
                         {
@@ -65,6 +40,7 @@ export default function ReadyToByProductsHome({ secMAinTitle,token}) {
                                 return (
                                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
                                         <ProductCard
+                                        discountPrice={el?.discountPrice}
                                         productCurrancy={el?.currency_symbol}
                                         token={token}
                                         getCurrentProducts={fetchAllProducts} product={el}

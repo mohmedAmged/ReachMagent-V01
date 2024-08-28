@@ -50,6 +50,7 @@ import MyAllCompanies from './pages/myAllCompaniesPage/MyAllCompanies';
 import MyCompaniesInsights from './pages/myCompaniesInsightsPage/MyCompaniesInsights';
 import MyCart from './pages/myCartPage/MyCart';
 import MyWishList from './pages/myWishListPage/MyWishList';
+import MyCheckout from './pages/myCheckoutPage/MyCheckout';
 
 function App() {
   useEffect(() => {
@@ -132,6 +133,7 @@ function App() {
         <Route path='/all-insights' element={<MyCompaniesInsights token={token}/>} />
         <Route path='/my-cart' element={<MyCart token={token}/>} />
         <Route path='/my-wishlist' element={<MyWishList token={token}/>} />
+        <Route path='/check-out/:companyId' element={<MyCheckout token={token}/>} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries}
           token={token} />} />
@@ -142,10 +144,6 @@ function App() {
             token={token}
             />}
           />
-
-
-        {/* //////////////////////////////////////////////////////////////////////////////////////////////////////// */}
-
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />
@@ -212,10 +210,10 @@ function App() {
         <Route path='/profile/business-settings'
           element={<MyBussinessSettings
             mainCategories={mainCategoriesQuery?.data?.mainCategories}
-            countries={countriesQuery?.data?.countries}
-            loginType={loginType}
             token={token} />}
         />
+
+        {/* UnAuthorized Handling Limit */}
 
         <Route path='/profile/users-management'
           element={<MyUsersManagement

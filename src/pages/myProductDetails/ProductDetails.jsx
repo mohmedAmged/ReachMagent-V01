@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import ProductCard from '../../components/productCardSec/ProductCard';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function ProductDetails({token}) {
   const { singleProduct } = useParams();
@@ -76,20 +77,7 @@ export default function ProductDetails({token}) {
     <>
     {
       loading ? 
-      <div className="loaderContainer">
-        <div class="loader">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-      </div>
+      <MyLoader />
       :
       <div className='productDetailsPage'>
       <ProductDetailsSec getCurrentProduct={getCurrentProduct} itemType={'product'} product={currentProduct} token={token} />
@@ -101,7 +89,7 @@ export default function ProductDetails({token}) {
                 relatedProducts?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-3 col-md-4 col-sm-12 my-2 d-flex justify-content-center px-4 mb-5">
-                      <ProductCard token={token} getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard discountPrice={el?.discountPrice} token={token} getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })

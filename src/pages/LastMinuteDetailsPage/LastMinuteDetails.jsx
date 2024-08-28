@@ -4,6 +4,7 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import ProductDetailsSec from '../../components/productDetailsSecc/ProductDetailsSec';
 import ProductDetailsDescriptionContent from '../../components/productDetailsDescriptionContentSec/ProductDetailsDescriptionContent';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function LastMinuteDetails({ token }) {
     const [loading,setLoading] = useState(true);
@@ -39,20 +40,7 @@ export default function LastMinuteDetails({ token }) {
     <>
         {
             loading ? 
-            <div className="loaderContainer">
-                <div class="loader">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-            </div>
+            <MyLoader />
             :
             <div className='productDetailsPage'>
                 <ProductDetailsSec getCurrentProduct={fetchLastMinuteDealsSingle} itemType={'lastMinuteDeal'} product={newSingleData} token={token} />

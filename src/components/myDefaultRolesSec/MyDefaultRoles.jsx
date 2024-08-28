@@ -79,8 +79,6 @@ export default function MyDefaultRoles({token}) {
             toast.error(error?.response?.data?.message);
         });
     };
-    console.log(allRoles)
-
 
     return (
         <div className='myDefaultRoles__handler'>

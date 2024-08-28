@@ -13,6 +13,7 @@ import { baseURL } from '../../functions/baseUrl';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 
 export default function SingleCompanyQuote({ token, countries }) {
@@ -315,20 +316,7 @@ export default function SingleCompanyQuote({ token, countries }) {
         <>
             {
                 loading ?
-                    <div className="loaderContainer">
-                        <div class="loader">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
+                    <MyLoader />
                     :
                     <div className='singleCompanyQuote__handler'>
                         <MyMainHeroSec

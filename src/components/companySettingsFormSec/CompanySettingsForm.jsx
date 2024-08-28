@@ -39,6 +39,7 @@ let allTypesRendered = allTypes;
 
 export default function CompanySettingsForm(
   {
+    setUnAuth,
     token,
     mainCategories,
     imgChanged,coverChanged,
@@ -181,7 +182,10 @@ export default function CompanySettingsForm(
         Object.keys(error?.response?.data?.errors).forEach((key) => {
           setError(key, {message: error?.response?.data?.errors[key][0]});
         });
-      }
+      };
+      if(error?.response?.data?.message === 'Unauthorized') {
+        setUnAuth(true);
+      };
       toast.error(error?.response?.data?.message,{
         id: toastId,
         duration: 2000

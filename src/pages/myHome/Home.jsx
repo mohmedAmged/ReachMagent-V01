@@ -11,6 +11,7 @@ import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCo
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function Home({companies,token}) {
   const [loading,setLoading] = useState(true);
@@ -44,20 +45,7 @@ export default function Home({companies,token}) {
     <>
       {
         loading ? 
-        <div className="loaderContainer">
-          <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-        </div>
+        <MyLoader />
       :
       <div className='myHomeSec__handler'>
         <MyMainHeroSec

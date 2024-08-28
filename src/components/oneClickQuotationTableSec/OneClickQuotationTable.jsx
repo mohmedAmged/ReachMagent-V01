@@ -5,6 +5,7 @@ import axios from "axios";
 import { baseURL } from "../../functions/baseUrl";
 import { NavLink } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
+import toast from "react-hot-toast";
 
 export default function OneClickQuotationTable({ token }) {
   const loginType = localStorage.getItem("loginType");
@@ -26,7 +27,7 @@ export default function OneClickQuotationTable({ token }) {
       );
       setNewdata(response?.data?.data?.one_click_quotations);
     } catch (error) {
-      setNewdata(error?.response?.data.message);
+      toast.error(error?.response?.data.message || 'Something Went Wrong!');
     }
   };
   useEffect(() => {

@@ -6,6 +6,7 @@ import DestinationForm from '../../components/destinationFormSec/DestinationForm
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 export default function OneClickQuotation({ token, mainCategories, regions, countries }) {
     const [loading, setLoading] = useState(true);
     const [requestIntries, setRequestIntries] = useState({
@@ -381,20 +382,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         <>
             {
                 loading ?
-                    <div className="loaderContainer">
-                        <div class="loader">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
+                    <MyLoader />
                     :
                     <div className='oneClickQuotation__handler'>
                         <MyMainHeroSec

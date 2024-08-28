@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import HeaderSec from '../../components/myHeaderSec/HeaderSec'
 import './otherCategories.css'
 import MainSearchBar from '../../components/mainSearchBarSec/MainSearchBar'
@@ -11,7 +11,9 @@ import sub4 from '../../assets/subCategsImages/sub 4.png'
 import sub5 from '../../assets/subCategsImages/sub 5.png'
 import sub6 from '../../assets/subCategsImages/sub 6.png'
 import sub7 from '../../assets/subCategsImages/sub 7.png'
+import MyLoader from '../../components/myLoaderSec/MyLoader'
 export default function OtherCategories() {
+    const [loading, setLoading] = useState(true);
     const arrOfCateg = [
         {
             name: 'All',
@@ -29,7 +31,8 @@ export default function OtherCategories() {
             name: "Three",
             id: 4
         }
-    ]
+    ];
+
     const subCategsItems = [
         {
             subCategImg: sub1,
@@ -59,19 +62,33 @@ export default function OtherCategories() {
             subCategImg: sub7,
             subCategName: 'Fashion Designers'
         },
-    ]
+    ];
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 500);
+    }, [loading]);
+
     return (
-        <div className='otherCategory__handler'>
-            <HeaderSec title={'All Category'} />
-            <div className="otherCategory__searchBar d-flex justify-content-center">
-                <MainSearchBar categoryArr={arrOfCateg} heroSecContainerType='heroSec__container'/>
-            </div>
-            <div className="otherCategory__display__handler d-flex mb-4">
-                <AllCategorySideBar />
-                <div className="subCategory__mainContent">
-                    <SubCategoryMainContent subCategsItems={subCategsItems}/>
-                </div>
-            </div>
-        </div>
+        <>
+            {
+                loading ?
+                    <MyLoader />
+                    :
+                    <div className='otherCategory__handler'>
+                        <HeaderSec title={'All Category'} />
+                        <div className="otherCategory__searchBar d-flex justify-content-center">
+                            <MainSearchBar categoryArr={arrOfCateg} heroSecContainerType='heroSec__container' />
+                        </div>
+                        <div className="otherCategory__display__handler d-flex mb-4">
+                            <AllCategorySideBar />
+                            <div className="subCategory__mainContent">
+                                <SubCategoryMainContent subCategsItems={subCategsItems} />
+                            </div>
+                        </div>
+                    </div>
+            }
+        </>
     )
 }

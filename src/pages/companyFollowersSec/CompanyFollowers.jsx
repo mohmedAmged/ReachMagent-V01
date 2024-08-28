@@ -7,10 +7,14 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
+import MyLoader from '../../components/myLoaderSec/MyLoader'
+import UnAuthSec from '../../components/unAuthSection/UnAuthSec'
 
 export default function CompanyFollowers({ loginType, token }) {
+    const [loading, setLoading] = useState(true);
     const [followers, setFollowers] = useState([]);
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
+    const [unAuth, setUnAuth] = useState(false);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -37,6 +41,9 @@ export default function CompanyFollowers({ loginType, token }) {
                         setFollowers(response?.data?.data?.followers)
                     }
                 } catch (error) {
+                    if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                        setUnAuth(true);
+                    };
                     toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
                 };
             };
@@ -44,6 +51,11 @@ export default function CompanyFollowers({ loginType, token }) {
         };
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 500);
+    }, [loading]);
 
     const updatedFollowersAndFollowing = loginType === 'user'
         ?
@@ -54,63 +66,74 @@ export default function CompanyFollowers({ loginType, token }) {
         followers?.filter((el, index, self) =>
             index === self.findIndex((t) => t.userId === el.userId)
         )
-    console.log(updatedFollowersAndFollowing);
     return (
-        <div className='dashboard__handler d-flex'>
-            <MyNewSidebarDash />
-            <div className='main__content container'>
-                <MainContentHeader currentUserLogin={currentUserLogin} />
-                <div className='content__view__handler company__follower__sec'>
-                    <ContentViewHeader title={'All Followers'} />
-                    <div className="follower__filter__search">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="form__part input__search__part">
-                                    <i className="bi bi-search"></i>
-                                    <input type="text" placeholder='Search followers...' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='followerInfo__handler row'>
+        <>
+            {
+                loading ?
+                    <MyLoader />
+                    :
+                    <div className='dashboard__handler d-flex'>
+                        <MyNewSidebarDash />
+                        <div className='main__content container'>
+                            <MainContentHeader currentUserLogin={currentUserLogin} />
                             {
-                                updatedFollowersAndFollowing?.map((el) => {
-                                    return (
-                                        <div key={el?.id} className="followerInfo__Item col-12">
-                                            <div className="followerImage">
-                                                <img src={el?.userImage || el?.companyLogo
-                                                } alt={`${el?.userName || el?.companyLogo} avatar`} />
-                                            </div>
-                                            <div className="followerContactInfo">
-                                                <h1>
-                                                    {el?.userName || el?.companyName}
-                                                </h1>
-                                                <div className="follower__status">
-                                                    <p>
-                                                        {el?.userEmail || ''}
-                                                    </p>
-                                                    <p className='isUsersfollowed'>
-                                                        {
-                                                            loginType === 'user' ?
-                                                            <>
-                                                            following
-                                                            </>
-                                                            :
-                                                            <>
-                                                            follows you
-                                                            </>
-                                                        }
-                                                    </p>
+                                unAuth ?
+                                    <UnAuthSec />
+                                    :
+                                    <div className='content__view__handler company__follower__sec'>
+                                        <ContentViewHeader title={'All Followers'} />
+                                        <div className="follower__filter__search">
+                                            <div className="row">
+                                                <div className="col-12">
+                                                    <div className="form__part input__search__part">
+                                                        <i className="bi bi-search"></i>
+                                                        <input type="text" placeholder='Search followers...' />
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div className='followerInfo__handler row'>
+                                                {
+                                                    updatedFollowersAndFollowing?.map((el) => {
+                                                        return (
+                                                            <div key={el?.id} className="followerInfo__Item col-12">
+                                                                <div className="followerImage">
+                                                                    <img src={el?.userImage || el?.companyLogo
+                                                                    } alt={`${el?.userName || el?.companyLogo} avatar`} />
+                                                                </div>
+                                                                <div className="followerContactInfo">
+                                                                    <h1>
+                                                                        {el?.userName || el?.companyName}
+                                                                    </h1>
+                                                                    <div className="follower__status">
+                                                                        <p>
+                                                                            {el?.userEmail || ''}
+                                                                        </p>
+                                                                        <p className='isUsersfollowed'>
+                                                                            {
+                                                                                loginType === 'user' ?
+                                                                                    <>
+                                                                                        following
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        follows you
+                                                                                    </>
+                                                                            }
+                                                                        </p>
+                                                                    </div>
 
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
                                         </div>
-                                    )
-                                })
+                                    </div>
                             }
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+            }
+        </>
     );
 };

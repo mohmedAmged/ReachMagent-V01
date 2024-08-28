@@ -5,6 +5,7 @@ import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
 import ShopCategorySlider from '../../components/shopCategorySliderSec/ShopCategorySlider';
 import ShopSliderSec from '../../components/myShopSliderSec/ShopSliderSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
+import MyLoader from '../../components/myLoaderSec/MyLoader';
 
 export default function Discover() {
   const [loading,setLoading] = useState(true);
@@ -37,20 +38,7 @@ export default function Discover() {
     <>
     {
         loading ? 
-        <div className="loaderContainer">
-          <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-        </div>
+        <MyLoader />
       :
       <>
       <MyMainHeroSec 

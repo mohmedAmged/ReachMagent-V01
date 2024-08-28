@@ -8,7 +8,7 @@ import CompanyActivityFormTable from '../companyActivityFormTable/CompanyActivit
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function CompanyActivitiesForm(token) {
+export default function CompanyActivitiesForm(token,setUnAuth) {
   const [companyActivities,setCompanyActivities] = useState([]);
   const [activityUpdateStatus,setActivityUpdateStatus] = useState(localStorage.getItem('updatingCompanyActivities'));
   const [allActivities,setAllActivities] = useState([]);
@@ -23,6 +23,9 @@ export default function CompanyActivitiesForm(token) {
       setAllActivities(response?.mainActivities);
     })
     .catch((error) => {
+      if(error?.response?.data?.message === 'Unauthorized'){
+        setUnAuth(true);
+      }
       toast.error(error?.response?.data?.message,{
         duration: 1000,
       });
@@ -52,12 +55,9 @@ export default function CompanyActivitiesForm(token) {
 }, []);
 
   const {
-    register,
     handleSubmit,
-    setError,
-    watch,
     setValue,
-    formState: { errors , isSubmitting}
+    formState: {errors,isSubmitting}
   } = useForm({
     defaultValues: {
       activity_id: '',
@@ -108,6 +108,9 @@ export default function CompanyActivitiesForm(token) {
         window.location.reload();
       })
       .catch(error => {
+        if(error?.response?.data?.message === 'Unauthorized') {
+          setUnAuth(true);
+        };
         toast.error(error?.response?.data?.message,{
           id: toastId,
           duration: 2000
