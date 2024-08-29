@@ -240,3 +240,14 @@ background: #fff;
     }
 }
 
+.emptyState {
+    min-height: 65vh;
+    max-width: 80%;
+    padding: 50px;
+    font-size: 40px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}

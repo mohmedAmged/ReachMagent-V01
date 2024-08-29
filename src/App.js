@@ -51,6 +51,7 @@ import MyCompaniesInsights from './pages/myCompaniesInsightsPage/MyCompaniesInsi
 import MyCart from './pages/myCartPage/MyCart';
 import MyWishList from './pages/myWishListPage/MyWishList';
 import MyCheckout from './pages/myCheckoutPage/MyCheckout';
+import ShowOneOrderInfo from './components/showOneOrderInfoSec/ShowOneOrderInfo';
 
 function App() {
   useEffect(() => {
@@ -254,7 +255,8 @@ function App() {
             token={token}
           />} />
 
-        <Route path='/profile/orders' element={<MyOrders />} />
+        <Route path='/profile/orders' element={<MyOrders token={token} />} />
+        <Route path='/profile/orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
 
         <Route path='/company-messages' element={<CompanyMessage />} />
         <Route path='/your-messages' element={<MyMessage />} />

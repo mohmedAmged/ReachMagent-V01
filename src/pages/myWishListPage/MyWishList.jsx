@@ -71,7 +71,6 @@ export default function MyWishList({token}) {
                   </div>
 
                   <div className="wishList__body__rightBottomContent px-3 py-4 row">
-                    {console.log(wishListData)}
                   {
                     wishListData?.length === 0 ? 
                     <div className="col-12">No Products Inside Your WishList <NavLink to='/shop' className={'text-decoration-underline'}>Open Shop</NavLink></div>

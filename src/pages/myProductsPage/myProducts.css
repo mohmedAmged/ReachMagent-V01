@@ -71,7 +71,7 @@ line-height: 21px;
 text-align: center;
 }
 .productTable__content .product__statue{
-    width: Fixed (106px)px;
+width: Fixed (106px)px;
 height: Hug (33px)px;
 padding: 8px ;
 border-radius: 8px;
@@ -88,5 +88,27 @@ text-transform: capitalize;
 }
 .productTable__content .product__statue.out-stock{
     background: rgba(238, 155, 144, 1);
-
+}
+.productTable__content .product__statue.Pending {
+    color: var(--primary-white);
+    background-color: var(--main-blue-color);
+}
+.productTable__content .product__statue.Accepted {
+    background: rgba(144, 238, 159, 1);
+}
+.productTable__content .product__statue.Inprocess  {
+    background: yellowgreen;
+    color: var(--primary-white);
+}
+.productTable__content .product__statue.Inshipping   {
+    background: orangered;
+    color: var(--primary-white);
+}
+.productTable__content .product__statue.Completed {
+    background: green;
+    color: var(--primary-white);
+}
+.productTable__content .product__statue.Rejected {
+    background: #ff2020;
+    color: var(--primary-white);
 }

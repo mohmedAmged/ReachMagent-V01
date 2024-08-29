@@ -31,17 +31,17 @@ export default function AllEmployeesSection({ token }) {
   };
 
   const handleDeleteThisEmployee = async (id) => {
-    await axios.delete(`${baseURL}/${loginType}/delete-employee/${id}?t=${new Date().getTime()}`,{
-      headers:{
+    await axios.delete(`${baseURL}/${loginType}/delete-employee/${id}?t=${new Date().getTime()}`, {
+      headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    .then(() => {
-      getAllEmployees(currentPage);
-    })
-    .catch((error)=>{
-      toast.error(error?.response?.data?.message || `Something Went Wrong!`);
-    });
+      .then(() => {
+        getAllEmployees(currentPage);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message || `Something Went Wrong!`);
+      });
   };
 
   useEffect(() => {
@@ -53,8 +53,6 @@ export default function AllEmployeesSection({ token }) {
       setCurrentPage(newPage);
     }
   };
-
-  console.log(allEmployees)
 
   return (
     <>
@@ -71,7 +69,7 @@ export default function AllEmployeesSection({ token }) {
                       <thead>
                         <tr className='table__default__header'>
                           <th className='ps-5'>
-                            Employee 
+                            Employee
                           </th>
                           <th className='text-center'>Role</th>
                           <th className='text-center'>Phone</th>
@@ -118,37 +116,37 @@ export default function AllEmployeesSection({ token }) {
                         ))}
                       </tbody>
                     </Table>
+                    {
+                      totalPages > 1 &&
+                      <div className="d-flex justify-content-center align-items-center mt-4">
+                        <button
+                          type="button"
+                          className="paginationBtn me-2"
+                          disabled={currentPage === 1}
+                          onClick={() => handlePageChange(currentPage - 1)}
+                        >
+                          <i class="bi bi-caret-left-fill"></i>
+                        </button>
+                        <span className='currentPagePagination'>{currentPage}</span>
+                        <button
+                          type="button"
+                          className="paginationBtn ms-2"
+                          disabled={currentPage === totalPages}
+                          onClick={() => handlePageChange(currentPage + 1)}
+                        >
+                          <i class="bi bi-caret-right-fill"></i>
+                        </button>
+                      </div>
+                    }
                   </div>
                   :
                   <div className='row'>
                     <div className="col-12 text-danger fs-5">
-                      No Product Items Yet
+                      No Employees Yet
                     </div>
                   </div>
               }
             </div>
-            {
-              totalPages > 1 &&
-              <div className="d-flex justify-content-center align-items-center mt-4">
-                <button
-                  type="button"
-                  className="paginationBtn me-2"
-                  disabled={currentPage === 1}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                >
-                  <i class="bi bi-caret-left-fill"></i>
-                </button>
-                <span className='currentPagePagination'>{currentPage}</span>
-                <button
-                  type="button"
-                  className="paginationBtn ms-2"
-                  disabled={currentPage === totalPages}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                >
-                  <i class="bi bi-caret-right-fill"></i>
-                </button>
-              </div>
-            }
           </>
       }
     </>

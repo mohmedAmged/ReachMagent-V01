@@ -1,0 +1,44 @@
+
+.secBordered{
+    border: 1px solid gray;
+    border-radius: 12px;
+}
+.main_header_for_order{
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+}
+.showOrder__handler .icon_handler{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-blue-color);
+    color: #fff;
+    /* padding: 4px; */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    justify-content: center;
+}
+.sub_header_for_order{
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.sub_header_for_order p.specialP{
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(172, 172, 172, 1);
+}
+.sub_header_for_order p{
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+}
+.sub_header_for_order h5{
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+}

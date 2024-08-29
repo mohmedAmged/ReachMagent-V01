@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './myCheckout.css'
 import testImg from '../../assets/productImages/S0-unsplash-1_650d426ce6d6f.jpg'
 import Cookies from 'js-cookie'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
@@ -18,6 +18,7 @@ export default function MyCheckout({ token }) {
     const [selectedCityCost, setSelectedCityCost] = useState(0);
     const [currencyCode, setCurrencyCode] = useState('');
     const [countryId, setCountryId] = useState('');
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         company_id: companyId,
@@ -30,8 +31,6 @@ export default function MyCheckout({ token }) {
         phone: ''
     });
 
-
-
     const fetchCheckoutData = async () => {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/get-checkout/${companyId}?t=${new Date().getTime()}`, {
@@ -40,34 +39,12 @@ export default function MyCheckout({ token }) {
                 }
             });
             setCheckoutData(response?.data?.data);
+            setAllowedCities(response?.data?.data?.shipping_cost_cities);
         } catch (error) {
             toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
         };
     };
 
-    const fetchAllowedCities = async () => {
-        try {
-            const response = await axios.post(`${baseURL}/${loginType}/allowed-cities`,
-                { company_id: `${companyId}` }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            if (response.status === 200) {
-                toast.success(response?.data?.message || 'cities fetched succesuflly');
-                setAllowedCities(response?.data?.data?.cities)
-            } else {
-                toast.error('Failed to get cities');
-            }
-
-        } catch (error) {
-            toast.error(error?.response?.data?.message || 'Error fetching cities');
-        }
-    };
-    // console.log(allowedCities);
-    
     const fetchAllowedAreas = async (cityId) => {
         try {
             const response = await axios.get(`${baseURL}/cities/${cityId}?t=${new Date().getTime()}`, {
@@ -89,14 +66,13 @@ export default function MyCheckout({ token }) {
 
     useEffect(() => {
         fetchCheckoutData();
-        fetchAllowedCities()
     }, [loginType, token]);
 
     const handleCityChange = (e) => {
         const cityId = e.target.value;
         setSelectedCity(cityId);
-        const selectedCityData = allowedCities.find(city => city.id === parseInt(cityId));
-        setSelectedCityCost(parseFloat(selectedCityData?.cost || 0));
+        const selectedCityData = allowedCities?.find(city => +city?.city_id === +cityId);
+        setSelectedCityCost(parseFloat(+selectedCityData?.cost || 0));
         setCurrencyCode(selectedCityData?.currency_code);
         setFormData((prevData) => ({
             ...prevData,
@@ -130,19 +106,16 @@ export default function MyCheckout({ token }) {
                     Authorization: `Bearer ${token}`,
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data',
-            }
+                }
             });
             toast.success(response?.data?.message || 'Order placed successfully!');
+            navigate('/my-cart');
         } catch (error) {
-            console.log(error?.response);
-            
             toast.error(error?.response?.data?.message || 'Failed to place order!');
-        }
+        };
     };
 
-
-    
-    const checkoutItemsData = checkoutData?.cart_items
+    const checkoutItemsData = checkoutData?.cart_items;
 
 
     return (
@@ -170,12 +143,11 @@ export default function MyCheckout({ token }) {
                                                     id="citySelect"
                                                     value={selectedCity}
                                                     onChange={handleCityChange}
-
                                                 >
                                                     <option value={''} disabled>Select city</option>
                                                     {
                                                         allowedCities?.map((city)=>(
-                                                            <option key={city?.id} value={city?.id}>
+                                                            <option key={city?.city_id} value={city?.city_id}>
                                                                 {city?.city}
                                                             </option>
                                                         ))
