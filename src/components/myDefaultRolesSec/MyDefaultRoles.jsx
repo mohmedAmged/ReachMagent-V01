@@ -4,7 +4,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 
-export default function MyDefaultRoles({token}) {
+export default function MyDefaultRoles({token,setUnAuth}) {
     const loginType = localStorage.getItem('loginType');
     const [permissions, setPermissions] = useState([]);
     const [allRoles,setAllRoles] = useState([]);
@@ -23,7 +23,10 @@ export default function MyDefaultRoles({token}) {
                 const lastShape = [...prevRoles , ...response?.data?.data?.roles];
                 return lastShape;
             });
-        }).catch(error=>{
+        }).catch(error => {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
             toast.error(error?.response?.data?.message);
         });
     };
@@ -48,6 +51,9 @@ export default function MyDefaultRoles({token}) {
                 setPermissions(response?.data?.data?.permissions);
                 setLoadingPermissions(false);
             }).catch(error=>{
+                if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                    setUnAuth(true);
+                };
                 toast.error(error?.response?.data?.message);
             });
         };
@@ -76,6 +82,7 @@ export default function MyDefaultRoles({token}) {
             setAllRoles(allRoles?.filter(role => +role?.id !== +id));
             toast.success(response?.data?.message);
         }).catch(error=>{
+            console.log(error);
             toast.error(error?.response?.data?.message);
         });
     };

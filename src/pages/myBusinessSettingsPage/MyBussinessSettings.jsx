@@ -79,6 +79,9 @@ export default function MyBussinessSettings({ token, mainCategories }) {
                         });
                         Cookies.set('currentUpdatedCompanyData', JSON.stringify(response?.data?.data));
                     } catch (error) {
+                        if(error?.response?.data?.message === 'Unauthorized'){
+                            setUnAuth(true);
+                        };
                         toast.error(error?.response?.data?.message || 'Something Wrong Happend!', {
                             id: toastId,
                             duration: 2000

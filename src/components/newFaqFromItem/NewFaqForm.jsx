@@ -8,11 +8,21 @@ import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyLoader from '../myLoaderSec/MyLoader';
+import Cookies from 'js-cookie';
 
 export default function NewFaqForm({ token }) {
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
+    const [currentUserLogin, setCurrentUserLogin] = useState(null);
+
+    useEffect(() => {
+        const cookiesData = Cookies.get('currentLoginedData');
+        if (!currentUserLogin) {
+            const newShape = JSON.parse(cookiesData);
+            setCurrentUserLogin(newShape);
+        }
+    }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
     const [formData, setFormData] = useState({
         question_ar: '',
@@ -55,7 +65,6 @@ export default function NewFaqForm({ token }) {
         };
     };
 
-
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -71,7 +80,7 @@ export default function NewFaqForm({ token }) {
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />
                         <div className='main__content container'>
-                            <MainContentHeader />
+                            <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
                                 <ContentViewHeader title={'Add New Faq to FAQS'} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>

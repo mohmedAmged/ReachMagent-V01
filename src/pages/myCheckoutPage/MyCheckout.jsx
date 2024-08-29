@@ -11,6 +11,27 @@ export default function MyCheckout({ token }) {
 
     const loginType = localStorage.getItem('loginType');
     const [checkoutData, setCheckoutData] = useState([]);
+    const [allowedCities, setAllowedCities] =useState([])
+    const [allowedAreas, setAllowedAreas] =useState([])
+    const [selectedCity, setSelectedCity] = useState('');
+    const [selectedArea, setSelectedArea] = useState('');
+    const [selectedCityCost, setSelectedCityCost] = useState(0);
+    const [currencyCode, setCurrencyCode] = useState('');
+    const [countryId, setCountryId] = useState('');
+
+    const [formData, setFormData] = useState({
+        company_id: companyId,
+        country_id: '',
+        city_id: '',
+        area_id: '',
+        address: '',
+        order_notes: '',
+        name: '',
+        phone: ''
+    });
+
+
+
     const fetchCheckoutData = async () => {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/get-checkout/${companyId}?t=${new Date().getTime()}`, {
@@ -23,24 +44,106 @@ export default function MyCheckout({ token }) {
             toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
         };
     };
+
+    const fetchAllowedCities = async () => {
+        try {
+            const response = await axios.post(`${baseURL}/${loginType}/allowed-cities`,
+                { company_id: `${companyId}` }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.status === 200) {
+                toast.success(response?.data?.message || 'cities fetched succesuflly');
+                setAllowedCities(response?.data?.data?.cities)
+            } else {
+                toast.error('Failed to get cities');
+            }
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Error fetching cities');
+        }
+    };
+    // console.log(allowedCities);
+    
+    const fetchAllowedAreas = async (cityId) => {
+        try {
+            const response = await axios.get(`${baseURL}/cities/${cityId}?t=${new Date().getTime()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setAllowedAreas(response?.data?.data?.areas || []);
+            const fetchedCountryId = response?.data?.data?.countryId.toString(); 
+            setFormData((prevData) => ({
+                ...prevData,
+                country_id: fetchedCountryId
+            }));
+            setCountryId(fetchedCountryId);
+        } catch (error) {
+            toast.error(error?.response?.data.message || 'Failed to get Areas!');
+        }
+    };
+
     useEffect(() => {
         fetchCheckoutData();
+        fetchAllowedCities()
     }, [loginType, token]);
 
-    console.log(checkoutData);
+    const handleCityChange = (e) => {
+        const cityId = e.target.value;
+        setSelectedCity(cityId);
+        const selectedCityData = allowedCities.find(city => city.id === parseInt(cityId));
+        setSelectedCityCost(parseFloat(selectedCityData?.cost || 0));
+        setCurrencyCode(selectedCityData?.currency_code);
+        setFormData((prevData) => ({
+            ...prevData,
+            city_id: cityId,
+            country_id: '' 
+        }));
+        fetchAllowedAreas(cityId);
+    };
 
+    const handleAreaChange = (e) => {
+        const areaId = e.target.value;
+        setSelectedArea(areaId);
+        setFormData((prevData) => ({
+            ...prevData,
+            area_id: areaId
+        }));
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handlePlaceOrder = async () => {
+        try {
+            const response = await axios.post(`${baseURL}/${loginType}/checkout`, formData, {
+                headers: { 
+                    Authorization: `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+            }
+            });
+            toast.success(response?.data?.message || 'Order placed successfully!');
+        } catch (error) {
+            console.log(error?.response);
+            
+            toast.error(error?.response?.data?.message || 'Failed to place order!');
+        }
+    };
+
+
+    
     const checkoutItemsData = checkoutData?.cart_items
 
-    const [user, setUser] = useState({})
-    useEffect(() => {
-        const cookiesData = Cookies.get('currentLoginedData')
-        if (cookiesData) {
-            const newShape = JSON.parse(cookiesData)
-            setUser(newShape)
-        }
-    }, [Cookies.get('currentLoginedData')])
-
-    // console.log(user?.country);
 
     return (
         <div className='myCheckout__handler'>
@@ -59,44 +162,41 @@ export default function MyCheckout({ token }) {
                                         </h5>
                                         <div className="checkoutForm_items">
                                             <div className="singleQuoteInput">
-                                                <label htmlFor="">
-                                                    select country
-                                                </label>
-                                                <select
-                                                    className='form-select'
-                                                    id=""
-                                                    value={''}
-
-                                                >
-                                                    <option value={''} disabled>Select Type</option>
-
-                                                </select>
-                                            </div>
-                                            <div className="singleQuoteInput">
-                                                <label htmlFor="">
+                                                <label htmlFor="citySelect">
                                                     select city
                                                 </label>
                                                 <select
                                                     className='form-select'
-                                                    id=""
-                                                    value={''}
+                                                    id="citySelect"
+                                                    value={selectedCity}
+                                                    onChange={handleCityChange}
 
                                                 >
-                                                    <option value={''} disabled>Select Type</option>
+                                                    <option value={''} disabled>Select city</option>
+                                                    {
+                                                        allowedCities?.map((city)=>(
+                                                            <option key={city?.id} value={city?.id}>
+                                                                {city?.city}
+                                                            </option>
+                                                        ))
+                                                    }
 
                                                 </select>
                                             </div>
                                             <div className="singleQuoteInput">
-                                                <label htmlFor="">
-                                                    select area
-                                                </label>
+                                                <label htmlFor="areaSelect">Select Area</label>
                                                 <select
                                                     className='form-select'
-                                                    id=""
-                                                    value={''}
-
+                                                    id="areaSelect"
+                                                    value={selectedArea}
+                                                    onChange={handleAreaChange}
                                                 >
-                                                    <option value={''} disabled>Select Type</option>
+                                                    <option value="" disabled>Select Area</option>
+                                                    {allowedAreas?.map((area) => (
+                                                        <option key={area?.areaId} value={area?.areaId}>
+                                                            {area?.areaName}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                             <div className="singleQuoteInput">
@@ -105,12 +205,12 @@ export default function MyCheckout({ token }) {
                                                 </label>
                                                 <input
                                                     id=""
-                                                    name=""
+                                                    name="address"
                                                     className='form-control'
                                                     type="text"
                                                     placeholder='Enter Your Address'
-                                                    value={''}
-                                                    onChange={''}
+                                                    value={formData?.address}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                             <div className="singleQuoteInput">
@@ -119,12 +219,12 @@ export default function MyCheckout({ token }) {
                                                 </label>
                                                 <input
                                                     id=""
-                                                    name=""
+                                                    name="name"
                                                     className='form-control'
                                                     type="text"
                                                     placeholder='Enter Your Name'
-                                                    value={''}
-                                                    onChange={''}
+                                                    value={formData?.name}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                             <div className="singleQuoteInput">
@@ -133,12 +233,12 @@ export default function MyCheckout({ token }) {
                                                 </label>
                                                 <input
                                                     id=""
-                                                    name=""
+                                                    name="phone"
                                                     className='form-control'
                                                     type="text"
                                                     placeholder='Enter your Phone'
-                                                    value={''}
-                                                    onChange={''}
+                                                    value={formData?.phone}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                             <div className="singleQuoteInput">
@@ -147,12 +247,12 @@ export default function MyCheckout({ token }) {
                                                 </label>
                                                 <textarea
                                                     id=""
-                                                    name=""
+                                                    name="order_notes"
                                                     className="form-control"
                                                     rows="3"
                                                     placeholder='Enter Your Notes'
-                                                    value={''}
-                                                    onChange={''}
+                                                    value={formData.order_notes}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                         </div>
@@ -170,7 +270,7 @@ export default function MyCheckout({ token }) {
                     <div className="checkout_products">
                         {
                             companyDetails?.items?.map((item, index) => (
-                                <div key={index} className="checkout_product_item mb-3">
+                                <div key={index} className="checkout_product_item mb-5">
                                     <div className="product_item_img">
                                         <img src={item?.media[0]?.media} alt='checkout-img' />
                                     </div>
@@ -182,7 +282,7 @@ export default function MyCheckout({ token }) {
                                             item?.item_attribute_name !== 'N/A' && 
                                             <div className="item__attributes">
                                                 <div className="attribute__tit">
-                                                {item?.item_attribute_name}
+                                                {item?.item_attribute_name}:
                                                 </div>
                                                 <span>
                                                     {item?.item_attribute}
@@ -190,14 +290,12 @@ export default function MyCheckout({ token }) {
                                             </div>
                                         }
                                         <p>
-                                            Qty: {item?.quantity}
+                                            Qty: <span>{item?.quantity}</span>
                                         </p>
-                                        <h5>
-                                            price per item: {item?.item_price}
-                                        </h5>
                                         <h5 className='item_price'>
-                                           Total Price: {item?.total_price}
-                                        </h5>
+                                                Total Price: {item?.currency_symbol} {item?.total_price}
+                                            </h5>
+                                        
                                     </div>
                                 </div>
                             ))
@@ -245,10 +343,10 @@ export default function MyCheckout({ token }) {
                                     <div className="orderSummary__info">
                                         <div className="summaryInfo__item">
                                             <span>
-                                                Subtotal (1 items)
+                                                Subtotal ({checkoutData?.total_quantity} items)
                                             </span>
                                             <h5>
-                                                $200
+                                                {checkoutData?.currency_symbol} {checkoutData?.total_price?.toFixed(2)}
                                             </h5>
                                         </div>
                                         <div className="summaryInfo__item">
@@ -256,7 +354,7 @@ export default function MyCheckout({ token }) {
                                                 Shipping Fee
                                             </span>
                                             <h5>
-                                                $50
+                                            {currencyCode} {selectedCityCost.toFixed(2)}
                                             </h5>
                                         </div>
 
@@ -267,17 +365,17 @@ export default function MyCheckout({ token }) {
                                                 Total <span>( inclusive of VAT )</span>
                                             </div>
                                             <h5>
-                                                $250
+                                            {checkoutData?.currency_symbol} {(parseFloat(checkoutData?.total_price) + parseFloat(selectedCityCost)).toFixed(2)}
                                             </h5>
                                         </div>
                                     </div>
 
                                 </div>
-                                <div className="orderCheckout__btn mt-4">
-                                    <button>
+                                
+                                    <button className='orderCheckout__btn mt-4' onClick={handlePlaceOrder}>
                                         place order
                                     </button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -4,9 +4,21 @@ import MainContentHeader from '../../components/mainContentHeaderSec/MainContent
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash';
 import OneClickQuotationTable from '../../components/oneClickQuotationTableSec/OneClickQuotationTable';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
+import Cookies from 'js-cookie';
+import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 
 export default function OneClickQuotationsDashboard({ token }) {
   const [loading, setLoading] = useState(true);
+  const [currentUserLogin, setCurrentUserLogin] = useState(null);
+  const [unAuth, setUnAuth] = useState(false);
+
+  useEffect(() => {
+    const cookiesData = Cookies.get('currentLoginedData');
+    if (!currentUserLogin) {
+      const newShape = JSON.parse(cookiesData);
+      setCurrentUserLogin(newShape);
+    }
+  }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -23,10 +35,15 @@ export default function OneClickQuotationsDashboard({ token }) {
           <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
             <div className='main__content container'>
-              <MainContentHeader />
+              <MainContentHeader currentUserLogin={currentUserLogin} />
               <div className='myQuotations__handler '>
                 <QuotationStateSec />
-                <OneClickQuotationTable token={token} />
+                {
+                  unAuth ?
+                    <UnAuthSec />
+                    :
+                    <OneClickQuotationTable setUnAuth={setUnAuth} token={token} />
+                }
               </div>
             </div>
           </div>

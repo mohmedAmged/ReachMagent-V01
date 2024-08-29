@@ -25,10 +25,19 @@ export default function MyCart({ token }) {
             toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
         };
     };
+    
+    // const [user, setUser] = useState({})
+    // useEffect(() => {
+    //     const cookiesData = Cookies.get('currentLoginedData')
+    //     if (cookiesData) {
+    //         const newShape = JSON.parse(cookiesData)
+    //         setUser(newShape)
+    //     }
+    // }, [Cookies.get('currentLoginedData')])
 
     const removeFromCart = async (cartItemId) => {
         try {
-            const response = await axios.post(`${baseURL}/user/remove-from-cart`,
+            const response = await axios.post(`${baseURL}/${loginType}/remove-from-cart`,
                 { cart_item_id: String(cartItemId) }, {
                 headers: {
                     Authorization: `Bearer ${token}`,

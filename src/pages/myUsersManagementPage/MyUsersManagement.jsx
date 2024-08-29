@@ -8,6 +8,7 @@ import MyAllRoles from '../../components/myAllRolesSec/MyAllRoles'
 import Cookies from 'js-cookie';
 import MyLoader from '../../components/myLoaderSec/MyLoader'
 import PersonalSignUpFormMainSec from '../../components/personalSignUpFormMainSec/PersonalSignUpFormMainSec'
+import AllEmployeesSection from '../../components/allEmployeesSection/AllEmployeesSection'
 
 export default function MyUsersManagement({ token ,countries }) {
     const [loading, setLoading] = useState(true);
@@ -27,8 +28,9 @@ export default function MyUsersManagement({ token ,countries }) {
 
     const [activeItem, setActiveItem] = useState('Roles');
     const items = [
-        { name: 'Profiles', active: activeItem === 'Profiles' },
+        // { name: 'Profiles', active: activeItem === 'Profiles' },
         { name: 'Roles', active: activeItem === 'Roles' },
+        { name: 'All Employees', active: activeItem === 'All Employees' },
         { name: 'Add Employee', active: activeItem === 'Add Employee' },
     ];
     const handleItemClick = (itemName) => {
@@ -62,6 +64,7 @@ export default function MyUsersManagement({ token ,countries }) {
                                     <div className="col-12 user__management__main__info mt-3">
                                         {activeItem === 'Roles' && <MyAllRoles token={token} />}
                                         {activeItem === 'Add Employee' && <PersonalSignUpFormMainSec countries={countries} isSignUp={false} token={token} />}
+                                        {activeItem === 'All Employees' && <AllEmployeesSection token={token} />}
                                     </div>
                                 </div>
                             </div>

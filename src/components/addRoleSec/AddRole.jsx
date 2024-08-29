@@ -7,14 +7,13 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { scrollToTop } from '../../functions/scrollToTop';
 
-export default function AddRole({ token }) {
+export default function AddRole({ token, setUnAuth }) {
   const loginType = localStorage.getItem('loginType');
   const [permissions, setPermissions] = useState([]);
   const [accepetedPermissions, setAcceptedPermissions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);  // Track the current page
-  const [totalPages, setTotalPages] = useState(1);    // Track the total number of pages
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // Fetch permissions for the current page
   const gettingAllPermissions = async (page = 1) => {
     await axios.get(`${baseURL}/${loginType}/permissions?page=${page}`, {
       headers: {
@@ -28,6 +27,9 @@ export default function AddRole({ token }) {
         setTotalPages(response?.data?.data?.meta?.last_page);
       })
       .catch((error) => {
+        if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+          setUnAuth(true);
+        };
         toast.error(error?.response?.data?.message);
       });
   };
@@ -68,6 +70,9 @@ export default function AddRole({ token }) {
           });
         })
         .catch((error) => {
+          if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+            setUnAuth(true);
+          };
           if (error?.response?.data?.errors) {
             Object.keys(error?.response?.data?.errors).forEach((key) => {
               setError(key, { message: error?.response?.data?.errors[key][0] });
@@ -83,7 +88,7 @@ export default function AddRole({ token }) {
         id: toastId,
         duration: 2000,
       });
-    }
+    };
   };
 
   const handleChangeCheckBox = (e, id) => {
@@ -91,17 +96,14 @@ export default function AddRole({ token }) {
       setAcceptedPermissions([...accepetedPermissions, id]);
     } else if (e.target.checked === false) {
       setAcceptedPermissions(accepetedPermissions?.filter((el) => +el !== +id));
-    }
+    };
   };
 
-  // Handle page navigation
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
-    }
+    };
   };
-
-  console.log(accepetedPermissions)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -124,7 +126,7 @@ export default function AddRole({ token }) {
               <span>{perm?.name}</span>
               <input
                 type="checkbox"
-                checked={accepetedPermissions?.find(el=> +el === +perm?.id)}
+                checked={accepetedPermissions?.find(el => +el === +perm?.id)}
                 onChange={(e) => handleChangeCheckBox(e, perm?.id)}
               />
               <span className="slider"></span>

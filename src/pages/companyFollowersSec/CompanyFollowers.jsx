@@ -38,8 +38,8 @@ export default function CompanyFollowers({ loginType, token }) {
                     if (loginType === 'user') {
                         setFollowers(response?.data?.data?.followedCompanies);
                     } else if (loginType === 'employee') {
-                        setFollowers(response?.data?.data?.followers)
-                    }
+                        setFollowers(response?.data?.data?.followers);
+                    };
                 } catch (error) {
                     if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                         setUnAuth(true);

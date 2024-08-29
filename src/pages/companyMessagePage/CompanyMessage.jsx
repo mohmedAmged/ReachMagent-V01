@@ -3,7 +3,9 @@ import './companyMessage.css'
 import UserChatSidebar from '../../components/userChatSidebarMainSec/UserChatSidebar'
 import MessageChatScreen from '../../components/messageChatScreenSec/MessageChatScreen'
 import EmployeeChatSidebar from '../../components/employeeChatSidebarMainSec/EmployeeChatSidebar'
-import MyLoader from '../../components/myLoaderSec/MyLoader'
+import MyLoader from '../../components/myLoaderSec/MyLoader';
+import Cookies from 'js-cookie';
+
 export default function CompanyMessage() {
     const [loading, setLoading] = useState(true);
 

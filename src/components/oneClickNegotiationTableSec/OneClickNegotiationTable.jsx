@@ -7,7 +7,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
 import toast from "react-hot-toast";
 
-export default function OneClickNegotiationTable({ token }) {
+export default function OneClickNegotiationTable({ token, setUnAuth }) {
   const loginType = localStorage.getItem("loginType");
   const [newData, setNewdata] = useState([]);
   const { negotiateId } = useParams();
@@ -28,6 +28,9 @@ export default function OneClickNegotiationTable({ token }) {
       );
       setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation);
     } catch (error) {
+      if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+        setUnAuth(true);
+      };
       toast.error(error?.response?.data.message || 'Error!');
     };
   };
@@ -50,7 +53,7 @@ export default function OneClickNegotiationTable({ token }) {
             {newData?.map((row, index) => (
               <tr className="" key={index}>
                 <td>
-                {row?.company_name}
+                  {row?.company_name}
                 </td>
                 <td className="adjust__flex">
                   <button className={`${loginType === 'user' && row?.company_status} table__statu__btn`}>

@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
 import toast from "react-hot-toast";
 
-export default function OneClickQuotationTable({ token }) {
+export default function OneClickQuotationTable({ token, setUnAuth }) {
   const loginType = localStorage.getItem("loginType");
   const [newData, setNewdata] = useState([]);
 
@@ -27,8 +27,11 @@ export default function OneClickQuotationTable({ token }) {
       );
       setNewdata(response?.data?.data?.one_click_quotations);
     } catch (error) {
+      if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+        setUnAuth(true);
+      };
       toast.error(error?.response?.data.message || 'Something Went Wrong!');
-    }
+    };
   };
   useEffect(() => {
     fetchAllQuotations();
@@ -51,37 +54,37 @@ export default function OneClickQuotationTable({ token }) {
               return (
                 (row?.user_status !== 'Rejected') &&
                 <tr className="" key={index}>
-                <td>
-                  {loginType === 'user'?
-                      row?.type 
+                  <td>
+                    {loginType === 'user' ?
+                      row?.type
                       :
                       row?.area === "N/A"
-                      ? loginType === "user"
-                        ? row?.company_name
-                        : row?.user_name
-                      : row?.area
+                        ? loginType === "user"
+                          ? row?.company_name
+                          : row?.user_name
+                        : row?.area
                     }
-                </td>
-                {
-                  loginType === 'user' ?
-                  <td>{row?.category}</td>
-                  :
-                  <td>{row?.include_shipping}</td>
-                }
-                <td className="adjust__flex">
-                  <NavLink
-                    className={"nav-link"}
-                    onClick={() => {
-                      scrollToTop();
-                    }}
-                    to={loginType === 'user' ? `/profile/oneclick-quotations/${row?.id}` : `/profile/companyoneclick-quotations/${row?.id}`}
-                  >
-                    <button className={`table__statu__btn show__btn`}>
-                      <span>show</span>
-                      <i className="bi bi-eye"></i>
-                    </button>
-                  </NavLink>
-                </td>
+                  </td>
+                  {
+                    loginType === 'user' ?
+                      <td>{row?.category}</td>
+                      :
+                      <td>{row?.include_shipping}</td>
+                  }
+                  <td className="adjust__flex">
+                    <NavLink
+                      className={"nav-link"}
+                      onClick={() => {
+                        scrollToTop();
+                      }}
+                      to={loginType === 'user' ? `/profile/oneclick-quotations/${row?.id}` : `/profile/companyoneclick-quotations/${row?.id}`}
+                    >
+                      <button className={`table__statu__btn show__btn`}>
+                        <span>show</span>
+                        <i className="bi bi-eye"></i>
+                      </button>
+                    </NavLink>
+                  </td>
                 </tr>
               )
             })}

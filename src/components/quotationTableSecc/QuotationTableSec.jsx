@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 
-export default function QuotationTableSec({ token }) {
+export default function QuotationTableSec({ token ,setUnAuth }) {
     const loginType = localStorage.getItem('loginType');
     const [newData, setNewdata] = useState([]);
 
@@ -24,6 +24,9 @@ export default function QuotationTableSec({ token }) {
             });
             setNewdata(response?.data?.data?.quotations);
         } catch (error) {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };

@@ -9,8 +9,11 @@ import { baseURL } from '../../functions/baseUrl';
 import { useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
+import Cookies from 'js-cookie'
+import UnAuthSec from '../unAuthSection/UnAuthSec';
 
 export default function NewCatalogItemForm({ mainCategories, token }) {
+    const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType')
     const navigate = useNavigate()
@@ -37,6 +40,15 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             name: 'Customization available',
         }
     ];
+    const [currentUserLogin, setCurrentUserLogin] = useState(null);
+
+    useEffect(() => {
+        const cookiesData = Cookies.get('currentLoginedData');
+        if (!currentUserLogin) {
+            const newShape = JSON.parse(cookiesData);
+            setCurrentUserLogin(newShape);
+        }
+    }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
     const [formData, setFormData] = useState({
         title_ar: '',
@@ -71,10 +83,13 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                             toast.error('Failed to fetch subcategories');
                         }
                     } catch (error) {
+                        if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                            setUnAuth(true);
+                        };
                         toast.error('Error fetching subcategories.');
-                    }
-                }
-            }
+                    };
+                };
+            };
         };
 
         fetchSubCategories();
@@ -140,8 +155,11 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                 toast.error('Failed to add catalog item');
             }
         } catch (error) {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
-        }
+        };
     };
 
     useEffect(() => {
@@ -159,162 +177,167 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />
                         <div className='main__content container'>
-                            <MainContentHeader />
+                            <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
                                 <ContentViewHeader title={'Add Item to Catalog'} />
-                                <form className="catalog__form__items" onSubmit={handleFormSubmit}>
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="title_en">Product Name in English</label>
-                                                <input
-                                                    type="text"
-                                                    name="title_en"
-                                                    className="form-control"
-                                                    placeholder="Enter your text"
-                                                    value={formData?.title_en}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-6">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="title_ar">Product Name in Arabic</label>
-                                                <input
-                                                    type="text"
-                                                    name="title_ar"
-                                                    className="form-control"
-                                                    placeholder="Enter your text"
-                                                    value={formData?.title_ar}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="category_id">Category</label>
-                                                <select
-                                                    name="category_id"
-                                                    className="form-control custom-select"
-                                                    value={formData?.category_id}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value="">Select Category</option>
-                                                    {mainCategories?.map((cat) => (
-                                                        <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
-                                                            {cat?.mainCategoryName}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-6">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="sub_category_id">Sub Category</label>
-                                                <select
-                                                    name="sub_category_id"
-                                                    className="form-control custom-select"
-                                                    value={formData?.sub_category_id}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value="">Select Sub Category</option>
-                                                    {currentSubCategoriesInsideMainCategory?.map((subCat) => (
-                                                        <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
-                                                            {subCat?.subCategoryName}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-lg-8">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="description_en">Description in English</label>
-                                                <textarea
-                                                    name="description_en"
-                                                    className="form-control"
-                                                    rows="5"
-                                                    value={formData?.description_en}
-                                                    onChange={handleInputChange}
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-8">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="description_ar">Description in Arabic</label>
-                                                <textarea
-                                                    name="description_ar"
-                                                    className="form-control"
-                                                    rows="5"
-                                                    value={formData?.description_ar}
-                                                    onChange={handleInputChange}
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="catalog__new__input">
-                                                <label htmlFor="price">Price</label>
-                                                <div className="custom-input-container">
-                                                    <input
-                                                        type="text"
-                                                        id="price"
-                                                        name="price"
-                                                        className="form-control custom-input"
-                                                        placeholder="Enter your text"
-                                                        value={formData?.price}
-                                                        onChange={handleInputChange}
-                                                    />
-                                                    <label htmlFor="currency" className="currency__label">Currency:</label>
-                                                    <select
-                                                        name="currency"
-                                                        className="form-control custom-select"
-                                                    >
-                                                        <option value="USD">USD</option>
-                                                        <option value="EGP">EGP</option>
-                                                        <option value="EUR">EUR</option>
-                                                    </select>
+                                {
+                                    unAuth ?
+                                        <UnAuthSec />
+                                        :
+                                        <form className="catalog__form__items" onSubmit={handleFormSubmit}>
+                                            <div className="row">
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="title_en">Product Name in English</label>
+                                                        <input
+                                                            type="text"
+                                                            name="title_en"
+                                                            className="form-control"
+                                                            placeholder="Enter your text"
+                                                            value={formData?.title_en}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="title_ar">Product Name in Arabic</label>
+                                                        <input
+                                                            type="text"
+                                                            name="title_ar"
+                                                            className="form-control"
+                                                            placeholder="Enter your text"
+                                                            value={formData?.title_ar}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="upload__image__btn">
-                                        <input
-                                            type="file"
-                                            name="images"
-                                            multiple
-                                            onChange={handleImageChange}
-                                            className="form-control"
-                                        />
-                                    </div>
-                                    <div className="catalog__check__points">
-                                        {allTypes?.map((type) => (
-                                            <div key={type?.id} className="check__item">
-                                                <div className="form-check">
-                                                    <input
-                                                        type="checkbox"
-                                                        id={`type-${type?.id}`}
-                                                        className="form-check-input"
-                                                        checked={formData?.type?.includes(type?.name)}
-                                                        onChange={() => handleCheckboxChange(type?.id, type?.name)}
-                                                    />
-                                                    <label htmlFor={`type-${type?.id}`} className="form-check-label">
-                                                        {type?.name}
-                                                    </label>
+                                            <div className="row">
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="category_id">Category</label>
+                                                        <select
+                                                            name="category_id"
+                                                            className="form-control custom-select"
+                                                            value={formData?.category_id}
+                                                            onChange={handleInputChange}
+                                                        >
+                                                            <option value="">Select Category</option>
+                                                            {mainCategories?.map((cat) => (
+                                                                <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
+                                                                    {cat?.mainCategoryName}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="sub_category_id">Sub Category</label>
+                                                        <select
+                                                            name="sub_category_id"
+                                                            className="form-control custom-select"
+                                                            value={formData?.sub_category_id}
+                                                            onChange={handleInputChange}
+                                                        >
+                                                            <option value="">Select Sub Category</option>
+                                                            {currentSubCategoriesInsideMainCategory?.map((subCat) => (
+                                                                <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
+                                                                    {subCat?.subCategoryName}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                    <div className="form__submit__button">
-                                        <button type="submit" className="btn btn-primary">
-                                            Add Catalog Item
-                                        </button>
-                                    </div>
-                                </form>
+                                            <div className="row">
+                                                <div className="col-lg-8">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="description_en">Description in English</label>
+                                                        <textarea
+                                                            name="description_en"
+                                                            className="form-control"
+                                                            rows="5"
+                                                            value={formData?.description_en}
+                                                            onChange={handleInputChange}
+                                                        ></textarea>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-8">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="description_ar">Description in Arabic</label>
+                                                        <textarea
+                                                            name="description_ar"
+                                                            className="form-control"
+                                                            rows="5"
+                                                            value={formData?.description_ar}
+                                                            onChange={handleInputChange}
+                                                        ></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="price">Price</label>
+                                                        <div className="custom-input-container">
+                                                            <input
+                                                                type="text"
+                                                                id="price"
+                                                                name="price"
+                                                                className="form-control custom-input"
+                                                                placeholder="Enter your text"
+                                                                value={formData?.price}
+                                                                onChange={handleInputChange}
+                                                            />
+                                                            <label htmlFor="currency" className="currency__label">Currency:</label>
+                                                            <select
+                                                                name="currency"
+                                                                className="form-control custom-select"
+                                                            >
+                                                                <option value="USD">USD</option>
+                                                                <option value="EGP">EGP</option>
+                                                                <option value="EUR">EUR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="upload__image__btn">
+                                                <input
+                                                    type="file"
+                                                    name="images"
+                                                    multiple
+                                                    onChange={handleImageChange}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                            <div className="catalog__check__points">
+                                                {allTypes?.map((type) => (
+                                                    <div key={type?.id} className="check__item">
+                                                        <div className="form-check">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`type-${type?.id}`}
+                                                                className="form-check-input"
+                                                                checked={formData?.type?.includes(type?.name)}
+                                                                onChange={() => handleCheckboxChange(type?.id, type?.name)}
+                                                            />
+                                                            <label htmlFor={`type-${type?.id}`} className="form-check-label">
+                                                                {type?.name}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="form__submit__button">
+                                                <button type="submit" className="btn btn-primary">
+                                                    Add Catalog Item
+                                                </button>
+                                            </div>
+                                        </form>
+                                }
                             </div>
                         </div>
                     </div>
