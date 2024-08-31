@@ -230,15 +230,15 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             Mobile Number <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <input
                                 type='text'
                                 value={`+962`}
                                 className={`form-control signUpInput`}
                                 disabled
                               />
-                            </div>
-                            <div className="col-9">
+                            </div> */}
+                            <div className="col-12">
                               <input
                                 type='text'
                                 id='signUpMobileNumber'
