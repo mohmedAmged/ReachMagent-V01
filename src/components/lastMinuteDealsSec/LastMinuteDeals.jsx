@@ -27,7 +27,10 @@ export default function LastMinuteDeals({token}) {
     }, []);
 
     return (
-        <div className='lastMinuteDeals__handler'>
+        <>
+        {
+            newData?.length !== 0 && 
+            <div className='lastMinuteDeals__handler'>
             <div className="container">
                 <HeaderOfSec secHead='Last Minute Deals'
                     secText='Secure limited-time deals on large lots or specific quantities before they are gone' />
@@ -60,6 +63,9 @@ export default function LastMinuteDeals({token}) {
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        }
+        </>
+        
     )
 }
