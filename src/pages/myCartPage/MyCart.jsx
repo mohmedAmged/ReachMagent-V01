@@ -102,6 +102,7 @@ export default function MyCart({ token }) {
     const handleNavigateToCompanyCheckOut = (id) => {
         navigate(`/check-out/${id}`)
     };
+console.log(cartData);
 
     return (
         <>

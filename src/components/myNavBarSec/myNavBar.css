@@ -186,8 +186,37 @@
 }
 
 
+.showNumHandler{
+    position: relative;
+}
+.showNumHandler i{
+    font-size: 28px;
+}
+.showNumHandler span{
+    position: absolute;
+    top: 4px;
+    right: -6px;
+    background: var(--main-blue-color);
+    color: #fff;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.showNumHandler span.wishlistItemNum{
+    background: var(--primary-hover-blue);
 
+}
 
+.OffcanvasBody__Scrollable {
+    overflow-y: auto;
+    max-height: 100vh;
+}
 
 
 /* start ersposnive */
@@ -218,5 +247,10 @@
         display: block !important;
         width: 100% !important;
         text-align: center;
+    }
+    .showNumHandler span{
+        top: -2px;
+        left: 22px;
+        
     }
 }

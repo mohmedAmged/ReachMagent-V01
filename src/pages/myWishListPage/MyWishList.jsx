@@ -28,6 +28,8 @@ export default function MyWishList({token}) {
   useEffect(() => {
     fetchWishListItems();
   }, [loginType, token]);
+  console.log(wishListData);
+  
 
   useEffect(()=>{
     setTimeout(()=>{

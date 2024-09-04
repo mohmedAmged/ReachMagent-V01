@@ -42,3 +42,55 @@
     font-weight: 600;
     color: #000;
 }
+.changeOrderStatu__handler{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.changeOrderStatu__handler p{
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+.changeOrderStatu__handler .changeSatusBtn{
+    border-radius: 8px;
+    background: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border: 1px solid #000;
+    transition:  all ease-in-out .3s;
+}
+.changeOrderStatu__handler .changeSatusBtn:hover{
+    background: #fff;
+    color: #000;
+}
+
+.changeOrderStatu__handler .order__statue.Pending {
+    color: var(--main-blue-color);
+}
+.changeOrderStatu__handler .order__statue.Accepted {
+    color: rgba(144, 238, 159, 1);
+}
+.changeOrderStatu__handler .order__statue.Inprocess  {
+    color: yellowgreen;
+}
+.changeOrderStatu__handler .order__statue.Inshipping   {
+    color: orangered;
+}
+.changeOrderStatu__handler .order__statue.Completed {
+    color: green;
+}
+.changeOrderStatu__handler .order__statue.Rejected {
+    color: #ff2020;
+}
+ @media screen and (max-width: 600px) {
+    .showOrder__handler .sub_header_for_order{
+        margin-bottom: 20px;
+    }
+    .changeOrderStatu__handler{
+        justify-content: start;
+        margin-top: 20px;
+    }
+ }

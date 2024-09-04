@@ -21,7 +21,7 @@ import { getDataFromAPI } from './functions/fetchAPI';
 import MyLogin from './pages/myLoginPage/MyLogin';
 import Cookies from 'js-cookie';
 import MyMessage from './pages/myMessagePage/MyMessage';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import CompanyFollowers from './pages/companyFollowersSec/CompanyFollowers';
 import CompanyMessage from './pages/companyMessagePage/CompanyMessage';
 import EnterUrEmail from './pages/enterUrEmailPage/EnterUrEmail';
@@ -52,6 +52,8 @@ import MyCart from './pages/myCartPage/MyCart';
 import MyWishList from './pages/myWishListPage/MyWishList';
 import MyCheckout from './pages/myCheckoutPage/MyCheckout';
 import ShowOneOrderInfo from './components/showOneOrderInfoSec/ShowOneOrderInfo';
+import { baseURL } from './functions/baseUrl';
+import axios from 'axios';
 
 function App() {
   useEffect(() => {
@@ -63,6 +65,11 @@ function App() {
 
   const token = Cookies.get('authToken');
   const [loginType, setLoginType] = useState(localStorage.getItem('loginType'));
+  const [cartData, setCartData] = useState([]);
+  const [totalCartItemsInCart, setTotalCartItemsInCart] = useState(0);
+  const [totalWishlistItems, setTotalWishlistItems] = useState(0);
+
+
   const { pathname } = useLocation();
   const [scrollToggle, setScrollToggle] = useState(false);
 
@@ -108,11 +115,47 @@ function App() {
     queryFn: () => getDataFromAPI('regions'),
   });
 
+  const fetchCartItems = async () => {
+    try {
+        const response = await axios.get(`${baseURL}/${loginType}/my-cart?t=${new Date().getTime()}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        setTotalCartItemsInCart(response?.data?.data?.cart?.total_quantity);
+    } catch (error) {
+        toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+    };
+};
+const wishlistItems = async () => {
+  try {
+      const response = await axios.get(`${baseURL}/${loginType}/my-wishlist?t=${new Date().getTime()}`, {
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
+      });
+      setTotalWishlistItems(response?.data?.data?.wish_list?.length);
+  } catch (error) {
+      toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+  };
+};
+useEffect(() => {
+  fetchCartItems()
+  wishlistItems()
+}, [loginType, token]);
+
+// console.log(fetchCartItems?.data?.cart?.total_quantity);
+console.log(totalWishlistItems);
+
+
+
+
+ 
   return (
     <>
 
       {
-        pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} />
+        pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} totalCartItemsInCart={totalCartItemsInCart} totalWishlistItems={totalWishlistItems}/>
       }
 
       <Toaster

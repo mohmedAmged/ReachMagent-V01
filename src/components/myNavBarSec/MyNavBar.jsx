@@ -10,7 +10,7 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import defaultImage from '../../assets/images.png';
 
-export default function MyNavBar({ scrollToggle, token, loginType }) {
+export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
 
@@ -151,16 +151,26 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
-                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn'>
+                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-heart"></i>
+                                                {
+                                                    totalWishlistItems !== 0 &&
+                                                    <span className='wishlistItemNum'>{totalWishlistItems}</span>
+                                                }
                                             </NavLink>
                                         }
                                         {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
-                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn'>
+                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn showNumHandler'>
+                                                
                                                 <i className="bi bi-cart4"></i>
+                                                {
+                                                    totalCartItemsInCart !== 0 &&
+                                                    <span>{totalCartItemsInCart}</span>
+                                                }
+                                                {/* <span>100</span> */}
                                             </NavLink>
                                         }
                                         
@@ -207,7 +217,7 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                 </NavLink>
                             </Offcanvas.Title>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
+                        <Offcanvas.Body className="OffcanvasBody__Scrollable">
                             <Nav className="mx-auto" >
 
                                 {
@@ -232,16 +242,24 @@ export default function MyNavBar({ scrollToggle, token, loginType }) {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
-                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn'>
+                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-heart"></i>
+                                                {
+                                                    totalWishlistItems !== 0 &&
+                                                    <span className='wishlistItemNum'>{totalWishlistItems}</span>
+                                                }
                                             </NavLink>
                                         }
                                         {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
-                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn'>
+                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-cart4"></i>
+                                                {
+                                                    totalCartItemsInCart !== 0 &&
+                                                    <span>{totalCartItemsInCart}</span>
+                                                }
                                             </NavLink>
                                         }
                                     </>
