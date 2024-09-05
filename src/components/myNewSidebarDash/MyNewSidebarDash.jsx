@@ -12,6 +12,7 @@ import icon8 from '../../assets/sidebar-icons/call-add.svg';
 import icon9 from '../../assets/sidebar-icons/discount-shape 1.svg';
 import icon10 from '../../assets/sidebar-icons/message-question 1.svg';
 import icon11 from '../../assets/sidebar-icons/people.svg';
+import currencyIcon from '../../assets/icons/cash-stack.svg'
 
 export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
@@ -61,7 +62,7 @@ export default function MyNewSidebarDash({ token }) {
         // { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
-        // { title: "Requests", link: "/profile/requests", icon: icon8 },
+        { title: "Shipping Costs", link: "/profile/shipping-costs", icon: currencyIcon },
         {
             title: "Settings",
             link: "/profile/profile-settings",

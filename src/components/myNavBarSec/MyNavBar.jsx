@@ -154,7 +154,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-heart"></i>
                                                 {
-                                                    totalWishlistItems !== 0 &&
+                                                    totalWishlistItems > 0 &&
                                                     <span className='wishlistItemNum'>{totalWishlistItems}</span>
                                                 }
                                             </NavLink>
@@ -167,7 +167,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 
                                                 <i className="bi bi-cart4"></i>
                                                 {
-                                                    totalCartItemsInCart !== 0 &&
+                                                    totalCartItemsInCart > 0 &&
                                                     <span>{totalCartItemsInCart}</span>
                                                 }
                                                 {/* <span>100</span> */}

@@ -54,6 +54,8 @@ import MyCheckout from './pages/myCheckoutPage/MyCheckout';
 import ShowOneOrderInfo from './components/showOneOrderInfoSec/ShowOneOrderInfo';
 import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
+import MyShippingCosts from './pages/myShippingCostsPage/MyShippingCosts';
+import NewShippingCostForm from './components/newShippingCostFromItem/NewShippingCostForm';
 
 function App() {
   useEffect(() => {
@@ -86,14 +88,17 @@ function App() {
     queryKey: ['countries'],
     queryFn: () => getDataFromAPI('countries'),
   });
+
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
   });
+
   const mainCategoriesQuery = useQuery({
     queryKey: ['main-categories'],
     queryFn: () => getDataFromAPI('main-categories'),
   });
+
   const mainActivitiesQuery = useQuery({
     queryKey: ['main-activities'],
     queryFn: () => getDataFromAPI('main-activities'),
@@ -107,6 +112,7 @@ function App() {
       }
     ),
   });
+
   if(token && loginType === 'user' && companiesQuery?.data?.companies[0]?.followed === undefined){
     companiesQuery.refetch();
   };
@@ -124,7 +130,7 @@ function App() {
         });
         setTotalCartItemsInCart(response?.data?.data?.cart?.total_quantity);
     } catch (error) {
-        toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+        console.error(error?.response?.data.message || 'Faild To get Cart Products!');
     };
 };
 const wishlistItems = async () => {
@@ -135,8 +141,9 @@ const wishlistItems = async () => {
           }
       });
       setTotalWishlistItems(response?.data?.data?.wish_list?.length);
-  } catch (error) {
-      toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+  } 
+  catch (error) {
+      console.error(error?.response?.data.message || 'Faild To get Cart Products!');
   };
 };
 useEffect(() => {
@@ -145,7 +152,7 @@ useEffect(() => {
 }, [loginType, token]);
 
 // console.log(fetchCartItems?.data?.cart?.total_quantity);
-console.log(totalWishlistItems);
+// console.log(totalWishlistItems);
 
 
 
@@ -291,6 +298,12 @@ console.log(totalWishlistItems);
         <Route path='/profile/faqs/:addNewItem' element={
           <NewFaqForm
             token={token}
+          />} />
+        <Route path='/profile/shipping-costs' element={<MyShippingCosts token={token} />} />
+        <Route path='/profile/shipping-costs/:addNewCost' element={
+          <NewShippingCostForm
+            token={token}
+            countries={countriesQuery?.data?.countries}
           />} />
         <Route path='/profile/posts' element={<MyPosts token={token} />} />
         <Route path='/profile/posts/:addNewItem' element={

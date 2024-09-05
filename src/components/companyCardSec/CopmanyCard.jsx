@@ -93,7 +93,9 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                         </div>
                     </div>
                 </div>
-                <div className="card__actions">
+                {
+                    loginType === 'user' && 
+                    <div className="card__actions">
                     {
                         (token && loginType === 'user') ? 
                             (currentFollowedCompanies) ?
@@ -128,7 +130,9 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                             + follow
                         </button>
                     }
-                </div>
+                    </div>
+                }
+                
             </div>
             <div className="card__description">
                 <p>
