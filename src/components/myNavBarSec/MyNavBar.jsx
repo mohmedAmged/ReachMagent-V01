@@ -13,6 +13,7 @@ import defaultImage from '../../assets/images.png';
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
+    console.log(loginType)
 
     function handleOffcanvasToggle() {
         setShowOffcanvas((prevShowOffcanvas) => !prevShowOffcanvas);
@@ -48,8 +49,9 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                 localStorage.removeItem('updatingCompanyActivities');
             } catch (error) {
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
-            }
+            };
         };
+        closeOffcanvas();
         fetchData();
     };
 
@@ -133,12 +135,18 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             {
                                 token ?
                                     <>
-                                        <NavLink onClick={handleLogout} to='/' title='Logout' className='nav-link nav__link__style logoutBtn'>
+                                        <NavLink 
+                                        aria-label="Close"
+                                        onClick={handleLogout} 
+                                        to='/' title='Logout' 
+                                        className='nav-link nav__link__style logoutBtn'>
                                             <i className="bi bi-box-arrow-left"></i>
                                         </NavLink>
-                                        <NavLink onClick={() => {
-                                            scrollToTop();
-                                        }}
+                                        <NavLink 
+                                            onClick={() => {
+                                                scrollToTop();
+                                            }}
+                                            aria-label="Close"
                                             className='nav-link nav__link__style nav__profileData'
                                             to='/profile/profile-settings'
                                             title='Profile'
@@ -150,8 +158,13 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                         {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
-                                                scrollToTop();
-                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
+                                                    scrollToTop();
+                                                }} 
+                                                to='/my-wishlist' 
+                                                title='wishlist' 
+                                                className='nav-link nav__link__style logoutBtn showNumHandler'
+                                                aria-label="Close"
+                                            >
                                                 <i className="bi bi-heart"></i>
                                                 {
                                                     totalWishlistItems > 0 &&
@@ -160,17 +173,20 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             </NavLink>
                                         }
                                         {
-                                            loginType === 'user' &&
                                             <NavLink onClick={() => {
-                                                scrollToTop();
-                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn showNumHandler'>
+                                                    scrollToTop();
+                                                }} 
+                                                aria-label="Close"
+                                                to='/my-cart' 
+                                                title='cart' 
+                                                className='nav-link nav__link__style logoutBtn showNumHandler'
+                                            >
                                                 
                                                 <i className="bi bi-cart4"></i>
                                                 {
                                                     totalCartItemsInCart > 0 &&
                                                     <span>{totalCartItemsInCart}</span>
                                                 }
-                                                {/* <span>100</span> */}
                                             </NavLink>
                                         }
                                         
@@ -219,7 +235,6 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         </Offcanvas.Header>
                         <Offcanvas.Body className="OffcanvasBody__Scrollable">
                             <Nav className="mx-auto" >
-
                                 {
                                     token &&
                                     <>
@@ -228,13 +243,13 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                         </NavLink>
                                         <NavLink onClick={() => {
                                             scrollToTop();
+                                            closeOffcanvas();
                                         }}
                                             className='nav-link nav__link__style nav__profileData'
                                             to='/profile/profile-settings'
                                             title='Profile'
                                         >
                                             <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
-                                                // alt={`${JSON.parse(profileData)?.name}`} 
                                                 alt='img-check'
                                             />
                                         </NavLink>
@@ -242,6 +257,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
+                                                closeOffcanvas();
                                             }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-heart"></i>
                                                 {
@@ -251,9 +267,9 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             </NavLink>
                                         }
                                         {
-                                            loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
+                                                closeOffcanvas();
                                             }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn showNumHandler'>
                                                 <i className="bi bi-cart4"></i>
                                                 {
@@ -335,6 +351,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             <NavLink
                                                 onClick={() => {
                                                     scrollToTop();
+                                                    closeOffcanvas();
                                                 }}
                                                 aria-label="Close"
                                                 className={`nav-link nav__link__style sign__up__btn`}
@@ -345,6 +362,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             <NavLink
                                                 onClick={() => {
                                                     scrollToTop();
+                                                    closeOffcanvas();
                                                 }}
                                                 aria-label="Close"
                                                 className={`nav-link nav__link__style sign__in__btn`}

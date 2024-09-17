@@ -5,15 +5,16 @@ import { scrollToTop } from '../../functions/scrollToTop'
 import toast from 'react-hot-toast'
 import MyLoader from '../../components/myLoaderSec/MyLoader'
 import { baseURL } from '../../functions/baseUrl'
-import { NavLink, useNavigate } from 'react-router-dom'
-export default function MyCart({ token }) {
+import { NavLink, useNavigate } from 'react-router-dom';
+
+export default function MyCart({ token , fetchCartItems }) {
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const [cartData, setCartData] = useState([]);
     const [toggleState, setToggleState] = useState({});
     const navigate = useNavigate();
 
-    const fetchCartItems = async () => {
+    const fetchAllCartItems = async () => {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/my-cart?t=${new Date().getTime()}`, {
                 headers: {
@@ -39,11 +40,12 @@ export default function MyCart({ token }) {
             if (response.status === 200) {
                 scrollToTop()
                 toast.success(response?.data?.message || 'product item deleted successfully!');
+                fetchCartItems();
             } else {
                 toast.error('Failed to delete product item');
             }
 
-            fetchCartItems();
+            fetchAllCartItems();
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Error deleting product item!');
         }
@@ -57,7 +59,7 @@ export default function MyCart({ token }) {
     };
 
     useEffect(() => {
-        fetchCartItems();
+        fetchAllCartItems();
     }, [loginType, token]);
 
     const cartItemsData = cartData?.cart_items;
@@ -74,28 +76,26 @@ export default function MyCart({ token }) {
         } else if (+quantity === +stock) {
             toast.error(`Invalid Quantity , Max Quantity is ${stock}`);
         } else {
-            if (loginType === 'user') {
-                await axios.post(`${baseURL}/${loginType}/control-cart-quantity?t=${new Date().getTime()}`,
-                    {
-                        cart_item_id: `${id}`,
-                        quantity_type: `${type}`,
+            await axios.post(`${baseURL}/${loginType}/control-cart-quantity?t=${new Date().getTime()}`,
+                {
+                    cart_item_id: `${id}`,
+                    quantity_type: `${type}`,
+                }
+                , {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
                     }
-                    , {
-                        headers: {
-                            'Content-type': 'application/json',
-                            'Accept': 'application/json',
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                    .then((response) => {
-                        setCartData(response?.data?.data?.cart);
-                    })
-                    .catch(error => {
-                        toast.error(`${error?.response?.data?.error?.quantity[0] || error?.response?.data?.message || 'Error!'}`, {
-                            duration: 1000
-                        });
+                })
+                .then((response) => {
+                    setCartData(response?.data?.data?.cart);
+                })
+                .catch(error => {
+                    toast.error(`${error?.response?.data?.error?.quantity[0] || error?.response?.data?.message || 'Error!'}`, {
+                        duration: 1000
                     });
-            };
+                });
         };
     };
 

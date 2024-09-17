@@ -39,8 +39,8 @@ transition: all ease-in-out .2s;
 }
 .productTable__content .product__breif__detail .product__img img{
     width: 52px;
-height: 52px;
-border-radius: 8px;
+    height: 52px;
+    border-radius: 8px;
 }
 .productTable__content .product__breif__detail .product__info{
     margin-left: 20px;
@@ -111,4 +111,9 @@ text-transform: capitalize;
 .productTable__content .product__statue.Rejected {
     background: #ff2020;
     color: var(--primary-white);
+}
+.tableEditBtn {
+    border: none;
+    background-color: transparent;
+    margin-left: 5px;
 }

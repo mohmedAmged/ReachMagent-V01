@@ -141,7 +141,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                     </div>  
                                     <div className="companyFollow__btn">
                                     {
-                                        (token && loginType === 'user') ?
+                                        (token) ?
                                             (currentFollowedCompanies) ?
                                                 currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
                                                     <button
@@ -162,13 +162,11 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             <button
                                                 className='pageMainBtnStyle followCompanyBtn'
                                                 onClick={() => {
-                                                    toast.error(`${(loginType === 'user') ? 'You Should Login First!' : 'Only Users Can Follow Companies!'}`);
-                                                    if (loginType === 'user') {
-                                                        setTimeout(() => {
-                                                            navigate('/login');
-                                                            scrollToTop();
-                                                        }, 1000);
-                                                    };
+                                                    toast.error(`${(!token) && 'You Should Login First!' }`);
+                                                    setTimeout(() => {
+                                                        navigate('/login');
+                                                        scrollToTop();
+                                                    }, 1000);
                                                 }}
                                             >
                                                 + follow
@@ -182,7 +180,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            {(token && loginType === 'user') &&
+                            {(token) &&
                                 <NavLink onClick={() => {
                                     scrollToTop();
                                     Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companyId);

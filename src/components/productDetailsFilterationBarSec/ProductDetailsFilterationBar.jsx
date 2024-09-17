@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './productDetailsFilterationBar.css';
 
 export default function ProductDetailsFilterationBar({items, onItemClick}) {

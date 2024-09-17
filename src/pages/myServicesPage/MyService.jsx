@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom';
-import { scrollToTop } from '../../functions/scrollToTop';
+import React, { useEffect, useState } from 'react';
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader';
@@ -10,6 +8,8 @@ import toast from 'react-hot-toast';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
+import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyService({ token }) {
     const [loading, setLoading] = useState(true);
@@ -17,6 +17,9 @@ export default function MyService({ token }) {
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [newData, setNewdata] = useState([]);
     const [unAuth, setUnAuth] = useState(false);
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -28,17 +31,24 @@ export default function MyService({ token }) {
 
     const fetchServices = async () => {
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/all-services?t=${new Date().getTime()}`, {
+            const response = await axios.get(`${baseURL}/${loginType}/all-services?page=${currentPage}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             setNewdata(response?.data?.data?.services);
+            setTotalPages(response?.data?.data?.meta?.last_page);
         } catch (error) {
             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                 setUnAuth(true);
             }
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
+        };
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
         };
     };
 
@@ -79,70 +89,81 @@ export default function MyService({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             {
-                                unAuth ? 
-                                <UnAuthSec />
-                                :
-                                <div className='content__view__handler'>
-                                <ContentViewHeader title={'Services'} />
-                                <div className="content__card__list">
-                                    {
-                                        newData?.length !== 0 ?
-                                            <div className="row">
-                                                {
-                                                    newData?.map((el) => {
-                                                        return (
-                                                            <div className='col-lg-6 d-flex justify-content-center mb-3' key={el?.id}>
-                                                                <div className="card__item">
-                                                                    <div className="card__image">
-                                                                        <img src={el?.image} alt={el?.title} />
+                                unAuth ?
+                                    <UnAuthSec />
+                                    :
+                                    <div className='content__view__handler'>
+                                        <ContentViewHeader title={'Services'} />
+                                        <AddNewItem link={'/profile/service/addNewItem'} />
+                                        <div className="content__card__list">
+                                            {
+                                                newData?.length !== 0 ?
+                                                    <div className="row">
+                                                        {
+                                                            newData?.map((el) => {
+                                                                return (
+                                                                    <div className='col-lg-6 d-flex justify-content-center mb-3' key={el?.id}>
+                                                                        <div className="card__item">
+                                                                            <div className="card__image">
+                                                                                <img src={el?.image} alt={el?.title} />
+                                                                            </div>
+                                                                            <div className="card__name">
+                                                                                <h3>
+                                                                                    {el?.title}
+                                                                                </h3>
+                                                                            </div>
+                                                                            <div className="card__btns d-flex">
+                                                                                <>
+                                                                                    <button
+                                                                                        onClick={() => handleDeleteThisService(el?.id)}
+                                                                                        className='btn__D'>
+                                                                                        Delete
+                                                                                    </button>
+                                                                                </>
+                                                                                <>
+                                                                                    <button className='btn__E' onClick={() => navigate(`/profile/service/edit-item/${el?.id}`)}>
+                                                                                        Edit
+                                                                                    </button>
+                                                                                </>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className="card__name">
-                                                                        <h3>
-                                                                            {el?.title}
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div className="card__btns d-flex">
-                                                                        <>
-                                                                            <button
-                                                                                onClick={() => handleDeleteThisService(el?.id)}
-                                                                                className='btn__D'>
-                                                                                Delete
-                                                                            </button>
-                                                                        </>
-                                                                        <>
-                                                                            <button className='btn__E'>
-                                                                                Edit
-                                                                            </button>
-                                                                        </>
-                                                                    </div>
-                                                                </div>
+                                                                )
+                                                            })
+                                                        }
+                                                        {
+                                                            totalPages > 1 &&
+                                                            <div className="col-12 d-flex justify-content-center align-items-center mt-4">
+                                                                <button
+                                                                    type="button"
+                                                                    className="paginationBtn me-2"
+                                                                    disabled={currentPage === 1}
+                                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                                >
+                                                                    <i class="bi bi-caret-left-fill"></i>
+                                                                </button>
+                                                                <span className='currentPagePagination'>{currentPage}</span>
+                                                                <button
+                                                                    type="button"
+                                                                    className="paginationBtn ms-2"
+                                                                    disabled={currentPage === totalPages}
+                                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                                >
+                                                                    <i class="bi bi-caret-right-fill"></i>
+                                                                </button>
                                                             </div>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                            :
-                                            <div className='row'>
-                                                <div className="col-12 text-danger fs-5">
-                                                    No Service Items Yet
-                                                </div>
-                                            </div>
-                                    }
+                                                        }
+                                                    </div>
+                                                    :
+                                                    <div className='row'>
+                                                        <div className="col-12 text-danger fs-5">
+                                                            No Service Items Yet
+                                                        </div>
+                                                    </div>
+                                            }
 
-                                </div>
-                                <div className='addNewItem__btn'>
-                                    <NavLink
-                                        onClick={() => {
-                                            scrollToTop();
-                                        }}
-                                        to='/profile/service/addNewItem' className='nav-link'>
-                                        <button >
-                                            Add New Item
-                                        </button>
-                                    </NavLink>
-
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
                             }
                         </div>
                     </div>

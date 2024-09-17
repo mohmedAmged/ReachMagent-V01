@@ -6,7 +6,7 @@ import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie'
@@ -16,7 +16,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType')
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [currCatalog,setCurrCatalog] = useState([]);
     const allTypes = [
         {
             id: 1,
@@ -63,6 +65,24 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
         image: [],
     });
 
+    useEffect(()=>{
+        if(id && loginType === 'employee') {
+            (async ()=> {
+                await axios.get(`${baseURL}/${loginType}/show-catalog/${id}?t=${new Date().getTime()}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    setCurrCatalog(response?.data?.data);
+                })
+                .catch(error => {
+                    toast.error(error?.response?.data?.message || 'Something went wrong!');
+                });
+            })();
+        };
+    },[id]);
+
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
 
     useEffect(() => {
@@ -95,6 +115,20 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
         fetchSubCategories();
     }, [formData.category_id, mainCategories]);
 
+    useEffect(()=>{
+        if(+currCatalog?.id === +id){
+            formData.price = currCatalog?.price;
+            formData.title_en = currCatalog?.title;
+            formData.title_ar = currCatalog?.title;
+            formData.description_en = currCatalog?.description;
+            formData.description_ar = currCatalog?.description;
+            formData.type = currCatalog?.catalogTypes?.map(el => el?.type);
+            formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currCatalog?.category)?.mainCategoryId;
+            formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currCatalog.subCategory)?.subCategoryId;
+            formData.image = currCatalog?.media?.map(el => el?.image);
+        };
+    },[currCatalog]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -126,7 +160,6 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const submissionData = new FormData();
-        ;
 
         Object.keys(formData).forEach((key) => {
             if (key !== 'image' && !Array.isArray(formData[key])) {
@@ -140,7 +173,8 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             submissionData.append(`image[${index}]`, image);
         })
         try {
-            const response = await axios.post(`${baseURL}/${loginType}/add-catalog`, submissionData, {
+            const slugCompletion = id ? `update-catalog/${id}` : 'add-catalog';
+            const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Accept': 'application/json',
@@ -148,17 +182,17 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                 },
             });
             if (response.status === 200) {
-                navigate('/profile/catalog')
+                navigate('/profile/catalog');
                 scrollToTop()
-                toast.success('Catalog item added successfully');
+                toast.success(response?.data?.message || (id ? 'Catalog item updated successfully' : 'Catalog item added successfully'));
             } else {
-                toast.error('Failed to add catalog item');
+                toast.error(id ? 'Failed to update catalog item' : 'Failed to add catalog item');
             }
         } catch (error) {
             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                 setUnAuth(true);
             };
-            toast.error(error?.response?.data.message || 'Something Went Wrong!');
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
         };
     };
 
@@ -179,7 +213,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={'Add Item to Catalog'} />
+                                <ContentViewHeader title={id ? 'Update Catalog Item' :'Add Item to Catalog'} />
                                 {
                                     unAuth ?
                                         <UnAuthSec />
@@ -223,7 +257,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                             value={formData?.category_id}
                                                             onChange={handleInputChange}
                                                         >
-                                                            <option value="">Select Category</option>
+                                                            <option value="" disabled>Select Category</option>
                                                             {mainCategories?.map((cat) => (
                                                                 <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
                                                                     {cat?.mainCategoryName}
@@ -241,7 +275,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                             value={formData?.sub_category_id}
                                                             onChange={handleInputChange}
                                                         >
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value="" disabled>Select Sub Category</option>
                                                             {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                                                                 <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
                                                                     {subCat?.subCategoryName}
@@ -333,7 +367,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             </div>
                                             <div className="form__submit__button">
                                                 <button type="submit" className="btn btn-primary">
-                                                    Add Catalog Item
+                                                    {id ? 'Update Catalog' : 'Add Catalog'}
                                                 </button>
                                             </div>
                                         </form>

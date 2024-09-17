@@ -57,13 +57,14 @@ export default function TrendingCompanySec({ companies, token }) {
                         }
 
                     </div>
-                    <div className="showAllBtn">
+                    <div className="showAllBtn d-flex justify-content-end align-items-center">
                         <NavLink className={'nav-link'} to={'/all-companies'}
                         onClick={() => {
                             scrollToTop();
                         }}
                         >
-                            Show All
+                            All Companies 
+                            <i className="bi bi-arrow-bar-right"></i>
                         </NavLink>
                     </div>
                 </div>

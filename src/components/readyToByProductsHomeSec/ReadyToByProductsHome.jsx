@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import BorderedNavigationBar from '../borderedNavigationBarSec/BorderedNavigationBar'
 
 import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
@@ -8,7 +7,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { NavLink } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop'
-export default function ReadyToByProductsHome({ secMAinTitle,token}) {
+export default function ReadyToByProductsHome({ secMAinTitle,token,fetchCartItems,wishlistItems}) {
     const [newData, setNewdata] = useState([])
     const fetchAllProducts = async () => {
         try {
@@ -40,24 +39,26 @@ export default function ReadyToByProductsHome({ secMAinTitle,token}) {
                                 return (
                                     <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
                                         <ProductCard
-                                        discountPrice={el?.discountPrice}
-                                        productCurrancy={el?.currency_symbol}
-                                        token={token}
-                                        getCurrentProducts={fetchAllProducts} product={el}
-                                        itemType={'product'}  prodSlug={el?.slug} 
-                                        productImage={el.productImages[0]?.image} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
+                                            fetchCartItems={fetchCartItems} wishlistItems={wishlistItems}
+                                            discountPrice={el?.discountPrice}
+                                            productCurrancy={el?.currency_symbol}
+                                            token={token}
+                                            getCurrentProducts={fetchAllProducts} product={el}
+                                            itemType={'product'}  prodSlug={el?.slug} 
+                                            productImage={el.productImages[0]?.image} productName={el.title} productPrice={el.price} productRate={el.rate} productRateNum={el.rateCount} />
                                     </div>
                                 )
                             })
                         }
                     </div>
-                    <div className="showAllBtn">
+                    <div className="showAllBtn d-flex justify-content-end align-items-center">
                         <NavLink className={'nav-link'} to={'/shop'}
                         onClick={() => {
                             scrollToTop();
                         }}
                         >
-                            Show All
+                            All Products
+                            <i className="bi bi-arrow-bar-right"></i>
                         </NavLink>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader'
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
@@ -17,6 +17,8 @@ export default function NewServiceForm({ mainCategories, token }) {
     const navigate = useNavigate();
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [unAuth, setUnAuth] = useState(false);
+    const { id } = useParams();
+    const [currSevice, setCurrService] = useState([]);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -37,11 +39,29 @@ export default function NewServiceForm({ mainCategories, token }) {
         image: '',
     });
 
+    useEffect(() => {
+        if (id && loginType === 'employee') {
+            (async () => {
+                await axios.get(`${baseURL}/${loginType}/show-service/${id}?t=${new Date().getTime()}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(response => {
+                        setCurrService(response?.data?.data);
+                    })
+                    .catch(error => {
+                        toast.error(error?.response?.data?.message || 'Something went wrong!');
+                    });
+            })();
+        };
+    }, [id]);
+
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
 
     useEffect(() => {
         const fetchSubCategories = async () => {
-            if (formData.category_id) {
+            if (formData?.category_id) {
                 setCurrentSubCategoriesInsideMainCategory([]);
                 const selectedCategory = mainCategories.find(
                     (cat) => cat.mainCategoryId === +formData.category_id
@@ -60,13 +80,25 @@ export default function NewServiceForm({ mainCategories, token }) {
                         if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                             setUnAuth(true);
                         };
-                        toast.error(error?.response?.data.message || 'Something Went Wrong!');
+                        toast.error('Error fetching subcategories.');
                     };
                 };
             };
         };
+
         fetchSubCategories();
     }, [formData.category_id, mainCategories]);
+
+    useEffect(() => {
+        if (+currSevice?.id === +id) {
+            formData.title_en = currSevice?.title;
+            formData.title_ar = currSevice?.title;
+            formData.description_en = currSevice?.description;
+            formData.description_ar = currSevice?.description;
+            formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currSevice?.category)?.mainCategoryId;
+            formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currSevice.subCategory)?.subCategoryId;
+        };
+    }, [currSevice]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -80,25 +112,24 @@ export default function NewServiceForm({ mainCategories, token }) {
         const files = (e.target.files);
         setFormData((prevState) => ({
             ...prevState,
-            image: files,
+            image: files[0],
         }));
     };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const submissionData = new FormData();
-        ;
-
         Object.keys(formData).forEach((key) => {
-            if (key === 'image') {
-                submissionData.append('image', formData.image[0]);
-            }
-            submissionData.append(key, formData[key]);
+            if (key === 'image' && formData[key] instanceof File) {
+                submissionData.append(key, formData[key]);
+            } else {
+                submissionData.append(key, formData[key]);
+            };
         });
 
-
         try {
-            const response = await axios.post(`${baseURL}/${loginType}/add-service`, submissionData, {
+            const slugCompletion = id ? `update-service/${id}` : 'add-service';
+            const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Accept': 'application/json',
@@ -107,19 +138,18 @@ export default function NewServiceForm({ mainCategories, token }) {
             });
 
             if (response.status === 200) {
-
-                navigate('/profile/service')
+                navigate('/profile/service');
                 scrollToTop()
-                toast.success('service item added successfully');
+                toast.success(response?.data?.message || (id ? 'Service item Updated Successfully!' : 'service item added successfully!'));
             } else {
-                toast.error('Failed to add service item');
+                toast.error(id ? 'Failed to update service item!' : 'Failed to add service item!');
             }
         } catch (error) {
             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                 setUnAuth(true);
             };
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
-        }
+        };
     };
 
     useEffect(() => {
@@ -143,7 +173,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                     <UnAuthSec />
                                     :
                                     <div className='newCatalogItem__form__handler'>
-                                        <ContentViewHeader title={'Add Item to Service'} />
+                                        <ContentViewHeader title={id ? 'Update Service Item' :'Add Item to Service'} />
                                         <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                             <div className="row">
                                                 <div className="col-lg-6">
@@ -183,7 +213,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                                             value={formData?.category_id}
                                                             onChange={handleInputChange}
                                                         >
-                                                            <option value="">Select Category</option>
+                                                            <option value="" disabled>Select Category</option>
                                                             {mainCategories?.map((cat) => (
                                                                 <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
                                                                     {cat?.mainCategoryName}
@@ -201,7 +231,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                                             value={formData?.sub_category_id}
                                                             onChange={handleInputChange}
                                                         >
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value="" disabled>Select Sub Category</option>
                                                             {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                                                                 <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
                                                                     {subCat?.subCategoryName}
@@ -247,7 +277,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                             </div>
                                             <div className="form__submit__button">
                                                 <button type="submit" className="btn btn-primary">
-                                                    Add Service Item
+                                                    {id ? 'Update Service' : 'Add Service'}
                                                 </button>
                                             </div>
                                         </form>

@@ -10,26 +10,25 @@ export default function LastMinuteCard({
     dealTotPrice,
     productLink,
     dealQuantity,
-    showCustomContent, // Flag to determine which content to render
-    buttonLabel = 'Know more', // Default button label
-    onKnowMoreClick, // Handler for 'Know more' button click
-    onAddClick, // Handler for 'Add' button click
+    showCustomContent,
+    buttonLabel = 'Know more',
+    onKnowMoreClick,
+    onAddClick,
     borderColor = 'rgba(148, 21, 21, 1)'
 }) {
-    // Function to handle button click based on buttonLabel
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
             onKnowMoreClick();
         } else if (buttonLabel === 'Add' && onAddClick) {
             onAddClick();
-        }
+        };
     };
+
     // Conditional styles
     const cardStyles = {
         background: 'var(--primary-white)',
         padding: '10px',
         borderRadius: '20px',
-        // border: showCustomContent && buttonLabel === 'Add' ? '1px solid rgba(0, 0, 0, 0.5)' : '2px solid rgba(148, 21, 21, 1)'
         border: `2px solid ${borderColor}`
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';

@@ -20,7 +20,7 @@ export default function PersonalSignUp({ countries, industries }) {
           <MyLoader />
           :
           <div className='signUp__page'>
-            <SignUpHead />
+            {/* <SignUpHead /> */}
             <PersonalSignUpFormMainSec
               countries={countries}
               industries={industries}

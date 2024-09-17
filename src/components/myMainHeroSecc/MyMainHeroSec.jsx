@@ -1,8 +1,7 @@
 import React from 'react'
 import './myMainHeroSec.css';
 
-export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr }) {
-
+export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr , currentCompanyChosen}) {
     return (
         <div className={`myMainHero__handler `}>
             <div className="container">
@@ -16,7 +15,6 @@ export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContaine
                             </h1>
                             <p>
                                 {paraPartOne}
-                                {/* <br /> */}
                                 {paraPartTwo}
                             </p>
                         </div>
@@ -66,8 +64,8 @@ export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContaine
                                                 categoryArr ?
                                                     <div className="form__part select__category__part">
                                                         <i className="bi bi-blockquote-right"></i>
-                                                        <select defaultValue={''} name='company' onChange={handleChangeFilterInputs}>
-                                                        {currentPage === 'shop' && <option value="">Select Company</option>}
+                                                        <select defaultValue={currentCompanyChosen} name='company' onChange={handleChangeFilterInputs}>
+                                                        {currentPage === 'shop' && <option disabled value="">Select Company</option>}
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (

@@ -6,40 +6,35 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function ProductCard({ getCurrentProducts,discountPrice,wishListPage, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
+export default function ProductCard({ getCurrentProducts,fetchCartItems,wishlistItems,discountPrice,wishListPage, product, itemType, token, productImage, productName, productPrice, companyName, prodSlug, productCurrancy }) {
     const navigate = useNavigate();
     const loginType = localStorage.getItem('loginType');
 
     const handleAddProductToCart = (id) => {
         if (token) {
-            if (loginType === 'employee') {
-                toast.error(`Employees Can't Add to Cart!
-                You Must be A user.
-                `);
-            } else {
-                const product = { item_type: itemType, item_id: `${id}` };
-                const toastId = toast.loading('Loading...');
-                axios.post(`${baseURL}/user/add-to-cart?t=${new Date().getTime()}`, product, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    }
-                })
-                    .then(response => {
-                        getCurrentProducts();
-                        toast.success(response?.data?.message || 'Added Successfully!', {
-                            id: toastId,
-                            duration: 1000,
-                        })
+            const product = { item_type: itemType, item_id: `${id}` };
+            const toastId = toast.loading('Loading...');
+            axios.post(`${baseURL}/user/add-to-cart?t=${new Date().getTime()}`, product, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }
+            })
+                .then(response => {
+                    getCurrentProducts();
+                    fetchCartItems();
+                    toast.success(response?.data?.message || 'Added Successfully!', {
+                        id: toastId,
+                        duration: 1000,
                     })
-                    .catch(error => {
-                        toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
-                            id: toastId,
-                            duration: 1000,
-                        });
+                })
+                .catch(error => {
+                    toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+                        id: toastId,
+                        duration: 1000,
                     });
-            };
+                });
         } else {
             toast.error('You Should Login First');
         };
@@ -48,7 +43,7 @@ export default function ProductCard({ getCurrentProducts,discountPrice,wishListP
     const handleAddProductToWishList = (id) => {
         if (token) {
             if (loginType === 'employee') {
-                toast.error(`Employees Can't Add to Cart!
+                toast.error(`Employees Can't Add to WishList!
                 You Must be A user.
                 `);
             } else {
@@ -62,6 +57,7 @@ export default function ProductCard({ getCurrentProducts,discountPrice,wishListP
                     }
                 })
                     .then(response => {
+                        wishlistItems();
                         getCurrentProducts();
                         toast.success(response?.data?.message || 'Added Successfully!', {
                             id: toastId,

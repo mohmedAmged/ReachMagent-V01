@@ -15,6 +15,8 @@ export default function CompanyFollowers({ loginType, token }) {
     const [followers, setFollowers] = useState([]);
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [unAuth, setUnAuth] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -29,7 +31,7 @@ export default function CompanyFollowers({ loginType, token }) {
             const slugCompletion = loginType === 'user' ? 'user/my-followed-companies' : 'employee/followers';
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`${baseURL}/${slugCompletion}?t=${new Date().getTime()}`, {
+                    const response = await axios.get(`${baseURL}/${slugCompletion}?page=${currentPage}?t=${new Date().getTime()}`, {
                         headers: {
                             'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
@@ -40,6 +42,7 @@ export default function CompanyFollowers({ loginType, token }) {
                     } else if (loginType === 'employee') {
                         setFollowers(response?.data?.data?.followers);
                     };
+                    setTotalPages(response?.data?.data?.meta?.last_page);
                 } catch (error) {
                     if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                         setUnAuth(true);
@@ -56,6 +59,12 @@ export default function CompanyFollowers({ loginType, token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        };
+    };
 
     const updatedFollowersAndFollowing = loginType === 'user'
         ?
@@ -80,56 +89,72 @@ export default function CompanyFollowers({ loginType, token }) {
                                 unAuth ?
                                     <UnAuthSec />
                                     :
-        <div className='content__view__handler company__follower__sec'>
-            <ContentViewHeader title={`${loginType === 'user' ? 'All Following' : 'All Followers'}`} />
-            <div className="follower__filter__search">
-                {/* <div className="row">
-                    <div className="col-12">
-                        <div className="form__part input__search__part">
-                            <i className="bi bi-search"></i>
-                            <input type="text" placeholder='Search followers...' />
-                        </div>
-                    </div>
-                </div> */}
-                <div className='followerInfo__handler row'>
-                    {
-                        updatedFollowersAndFollowing?.map((el) => {
-                            return (
-                                <div key={el?.id} className="followerInfo__Item col-12">
-                                    <div className="followerImage">
-                                        <img src={el?.userImage || el?.companyLogo
-                                        } alt={`${el?.userName || el?.companyLogo} avatar`} />
-                                    </div>
-                                    <div className="followerContactInfo">
-                                        <h1>
-                                            {el?.userName || el?.companyName}
-                                        </h1>
-                                        <div className="follower__status">
-                                            <p>
-                                                {el?.userEmail || ''}
-                                            </p>
-                                            <p className='isUsersfollowed'>
+                                    <div className='content__view__handler company__follower__sec'>
+                                        <ContentViewHeader title={`${loginType === 'user' ? 'All Following' : 'All Followers'}`} />
+                                        <div className="follower__filter__search">
+                                            <div className='followerInfo__handler row'>
                                                 {
-                                                    loginType === 'user' ?
-                                                        <>
-                                                            following
-                                                        </>
-                                                        :
-                                                        <>
-                                                            follows you
-                                                        </>
-                                                }
-                                            </p>
-                                        </div>
+                                                    updatedFollowersAndFollowing?.map((el) => {
+                                                        return (
+                                                            <div key={el?.id} className="followerInfo__Item col-12">
+                                                                <div className="followerImage">
+                                                                    <img src={el?.userImage || el?.companyLogo
+                                                                    } alt={`${el?.userName || el?.companyLogo} avatar`} />
+                                                                </div>
+                                                                <div className="followerContactInfo">
+                                                                    <h1>
+                                                                        {el?.userName || el?.companyName}
+                                                                    </h1>
+                                                                    <div className="follower__status">
+                                                                        <p>
+                                                                            {el?.userEmail || ''}
+                                                                        </p>
+                                                                        <p className='isUsersfollowed'>
+                                                                            {
+                                                                                loginType === 'user' ?
+                                                                                    <>
+                                                                                        following
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        follows you
+                                                                                    </>
+                                                                            }
+                                                                        </p>
+                                                                    </div>
 
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div className="col-lg-12">
+                                                    {
+                                                        totalPages > 1 &&
+                                                        <div className="d-flex justify-content-center align-items-center mt-4">
+                                                            <button
+                                                                type="button"
+                                                                className="paginationBtn me-2"
+                                                                disabled={currentPage === 1}
+                                                                onClick={() => handlePageChange(currentPage - 1)}
+                                                            >
+                                                                <i class="bi bi-caret-left-fill"></i>
+                                                            </button>
+                                                            <span className='currentPagePagination'>{currentPage}</span>
+                                                            <button
+                                                                type="button"
+                                                                className="paginationBtn ms-2"
+                                                                disabled={currentPage === totalPages}
+                                                                onClick={() => handlePageChange(currentPage + 1)}
+                                                            >
+                                                                <i class="bi bi-caret-right-fill"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            </div>
-        </div>
                             }
                         </div>
                     </div>

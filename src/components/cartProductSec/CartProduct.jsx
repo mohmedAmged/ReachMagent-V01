@@ -220,7 +220,7 @@ export default function CartProduct({
                         }
                     })
                     .then((response) => {
-                        setCart(response?.data?.data);
+                        setCart(response?.data?.data?.cart);
                         setCurrNotes('');
                         toast.success(`${response?.data?.message || 'Note Removed Successfully!'}`, {
                             id: toastId,

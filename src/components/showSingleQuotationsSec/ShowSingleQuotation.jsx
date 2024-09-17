@@ -7,7 +7,6 @@ import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
-import defaultProdImg from '../../assets/servicesImages/default-store-350x350.jpg'
 import toast from 'react-hot-toast';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
@@ -19,7 +18,9 @@ export default function ShowSingleQuotation({ token }) {
     const [fullData, setFullData] = useState([]);
     const [newData, setNewdata] = useState([]);
     const [acceptedSingleQuotations, setAcceptedSingleQuotations] = useState([]);
-    const [updatedOfferPrices, setUpdatedOfferPrices] = useState([]);
+    const [updatedUnitPrices, setUpdatedUnitPrices] = useState([]);
+    const [updatedQuantity, setUpdatedQuantity] = useState([]);
+    const [updatedTaxPrices, setUpdatedTaxPrices] = useState([]);
     const [submitionData, setSubmitionData] = useState({
         quotation_id: quotationsId,
         status: '',
@@ -32,7 +33,6 @@ export default function ShowSingleQuotation({ token }) {
     });
     const [totalPrice, setTotalPrice] = useState(0);
     const [shippingValue, setShippingValue] = useState(0);
-    const [taxValue, setTaxValue] = useState(0);
     const [servicesValue, setServicesValue] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
@@ -92,40 +92,41 @@ export default function ShowSingleQuotation({ token }) {
     }, [loginType, token]);
 
     useEffect(() => {
-        if (updatedOfferPrices.length === 0) {
-            const totalPriceArray = acceptedSingleQuotations?.map(el => el?.offer_price !== 'N/A' && +el?.offer_price);
-            const totalPrice = totalPriceArray.reduce((acc, current) => +acc + +current, 0);
-            setSubmitionData({ ...submitionData, total_price: +totalPrice });
-        } else {
-            const totalPriceArray = updatedOfferPrices?.map(el => +el?.value);
-            const totalPrice = totalPriceArray.reduce((acc, current) => +acc + +current, 0);
-            setSubmitionData({ ...submitionData, total_price: +totalPrice });
+        if (updatedUnitPrices.length === 0 || updatedQuantity.length === 0) {
+            const totalPriceArray = acceptedSingleQuotations?.map(el => el?.price !== 'N/A' && +el?.price ? +el?.price : +el?.offer_price );
+            const totalQuantityArray = acceptedSingleQuotations?.map(el => el?.quantity !== 'N/A' && el?.quantity);
+            setUpdatedUnitPrices(totalPriceArray);
+            setUpdatedQuantity(totalQuantityArray);
+            setShippingValue(+newData?.shipping_price);
+            setServicesValue(+newData?.services);
         };
-    }, [acceptedSingleQuotations, updatedOfferPrices]);
+    }, [updatedQuantity, updatedUnitPrices]);
 
     useEffect(() => {
-        setTotalPrice(+submitionData?.total_price + +shippingValue + +taxValue + +servicesValue);
-    }, [submitionData?.total_price, taxValue, shippingValue, servicesValue])
+        const subTotalPrice = updatedUnitPrices.reduce(
+            (acc, current, idx) => 
+                +acc 
+            + 
+                ((+current * +updatedQuantity[idx]) 
+                + 
+                (updatedTaxPrices.find(el => +el?.id === +idx) 
+                ? (+updatedTaxPrices.find(el => +el?.id === +idx)?.tax * (+current * +updatedQuantity[idx]) / 100) : 0))
+        , 0);
+        setTotalPrice(subTotalPrice);
+        setSubmitionData({...submitionData,total_price: subTotalPrice});
+    }, [updatedQuantity, updatedTaxPrices, updatedUnitPrices, acceptedSingleQuotations])
 
+    useEffect(() => {
+        setTotalPrice(+submitionData?.total_price + +shippingValue + +servicesValue);
+    }, [submitionData?.total_price, shippingValue, servicesValue]);
+    console.log(totalPrice)
 
     const handleChangeInput = (event) => {
         setSubmitionData({ ...submitionData, [event?.target?.name]: `${event?.target?.value}` });
         if (event.target.name === 'shipping_price') {
             setShippingValue(event?.target?.value);
-        } else if (event.target.name === 'tax') {
-            setTaxValue(event.target.value);
         } else if (event.target.name === 'services') {
             setServicesValue(event.target.value);
-        };
-    };
-
-    const handleChangeOfferPrices = (e, id) => {
-        const founded = updatedOfferPrices?.find(price => +price?.id === +id);
-        if (founded) {
-            const updatedPrices = updatedOfferPrices.map(el => el.id === id ? { ...el, value: e.target.value } : el);
-            setUpdatedOfferPrices(updatedPrices);
-        } else {
-            setUpdatedOfferPrices([...updatedOfferPrices, { id: id, value: e.target.value }]);
         };
     };
 
@@ -186,7 +187,7 @@ export default function ShowSingleQuotation({ token }) {
                 submitData.status = 'accepted';
                 submitData.total_price = +totalPrice;
                 submitData.quotation_detail_id = acceptedSingleQuotations?.map(el => `${el?.id}`);
-                submitData.offer_price = updatedOfferPrices?.map(el => el?.value);
+                submitData.offer_price = updatedUnitPrices;
             } else if (loginType === 'user') {
                 submitData.quotation_id = quotationsId;
                 submitData.status = 'accepted';
@@ -198,8 +199,7 @@ export default function ShowSingleQuotation({ token }) {
             submitData.status = 'accepted';
             submitData.total_price = +totalPrice;
             submitData.negotiate_one_click_quotation_detail_id = acceptedSingleQuotations?.map(el => `${el?.id}`);
-            submitData.offer_price = updatedOfferPrices?.map(el => el?.value);
-            submitData.tax = taxValue;
+            submitData.offer_price = updatedUnitPrices;
             submitData.shipping_price = shippingValue;
             submitData.services = servicesValue;
         };
@@ -260,58 +260,85 @@ export default function ShowSingleQuotation({ token }) {
                                     <UnAuthSec />
                                     :
                                     <div className='content__view__handler'>
-                                        <ContentViewHeader title={'Request a quote'} />
+                                        <ContentViewHeader title={`Quotation: ${newData?.code || fullData?.code} `} />
                                         <div className="quotationTable__content">
                                             <Table responsive>
                                                 <thead>
                                                     <tr className='table__default__header'>
-                                                        <th>Product</th>
-                                                        <th>Category</th>
-                                                        <th>Price</th>
-                                                        <th>QTY</th>
-                                                        <th>Total</th>
+                                                        <th># Item description</th>
+                                                        <th className='text-center'>Item Code</th>
+                                                        <th className='text-center'>Unit Of Measure</th>
+                                                        <th className='text-center'>QTY</th>
+                                                        <th className='text-center'>Unit Price</th>
+                                                        <th className='text-center'>Tax (xx%)</th>
+                                                        <th className='text-center'>Total Price</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        acceptedSingleQuotations?.map((row) => (
-                                                            <tr className='' key={row?.id}>
-                                                                <td className='product__item__content'>
-                                                                    <img src=
-                                                                        {
-                                                                            row?.medias?.[0]?.media
-                                                                                ? row.medias[0].media
-                                                                                : row?.image
-                                                                                    ? row.image
-                                                                                    : defaultProdImg
-                                                                        } alt="" />
+                                                        acceptedSingleQuotations?.map((row, idx) => (
+                                                            <tr key={row?.id}>
+                                                                <td>
+                                                                    <span className='me-2 indexOfTheTable'>{idx + 1}</span>
                                                                     <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
                                                                 </td>
-                                                                <td>
-                                                                    {row?.category ? row?.category : 'N/A'}
+                                                                <td className='text-center'>
+                                                                    Item Code
                                                                 </td>
-                                                                <td>
-                                                                    <input
-                                                                        type="number"
-                                                                        className='form-control'
-                                                                        disabled
-                                                                        defaultValue={
-                                                                            !row?.price ? 0
-                                                                                : row?.price
-                                                                        }
-                                                                    />
+                                                                <td className='text-center'>
+                                                                    Measure Unit
                                                                 </td>
-                                                                <td>
-                                                                    {row?.quantity}
-                                                                </td>
-                                                                <td>
+                                                                <td className='text-center'>
                                                                     <input
                                                                         type="number"
                                                                         className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        defaultValue={row?.offer_price !== 'N/A' ? row?.offer_price : 0}
-                                                                        onChange={(event) => handleChangeOfferPrices(event, row?.id)}
+                                                                        defaultValue={+updatedQuantity[idx] === 0 ? +row?.quantity : +updatedQuantity[idx]}
+                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                        min={1}
+                                                                        minLength={1}
+                                                                        onChange={(e) => {
+                                                                            setUpdatedQuantity(updatedQuantity.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                        }}
+                                                                    />
+                                                                </td>
+                                                                <td className='text-center'>
+                                                                    <input
+                                                                        type="number"
+                                                                        className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                        defaultValue={updatedUnitPrices?.length === 0 ? 0 : +updatedUnitPrices[idx] === 0 ? +row?.price : +updatedUnitPrices[idx] }
+                                                                        min={1}
+                                                                        minLength={1}
+                                                                        onChange={(e) => {
+                                                                            setUpdatedUnitPrices(updatedUnitPrices?.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                        }}
                                                                         disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
                                                                     />
+                                                                </td>
+                                                                <td className='text-center'>
+                                                                    <input
+                                                                        type="number"
+                                                                        className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                        value={updatedTaxPrices[idx]?.tax || row?.tax}
+                                                                        onChange={(e) => {
+                                                                            const updatingObj = updatedTaxPrices?.find(el => +el?.id === +idx);
+                                                                            if(e.target.value >= 0 && e.target.value <= 100){
+                                                                                updatingObj ?
+                                                                                    setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: +e.target.value } : el))
+                                                                                    :
+                                                                                    setUpdatedTaxPrices([...updatedTaxPrices, { id: idx, tax: +e.target.value }]);
+                                                                            }else if(e.target.value < 0){
+                                                                                updatingObj &&
+                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 0 } : el));
+                                                                            }else if(e.target.value > 100){
+                                                                                updatingObj &&
+                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 100 } : el));
+                                                                            };
+                                                                        }}
+                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                    />
+                                                                </td>
+                                                                <td className='text-center'>
+                                                                    ${(updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) + ((updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) * (updatedTaxPrices?.find((el) => +el?.id === +idx) ? (+updatedTaxPrices?.find((el) => +el?.id === +idx).tax) : 0)) / 100}
                                                                 </td>
                                                             </tr>
                                                         ))
@@ -330,12 +357,14 @@ export default function ShowSingleQuotation({ token }) {
                                                             <h5 className='mb-4'>
                                                                 subtotal (Standard)
                                                             </h5>
-                                                            <h5 className='mb-4'>
-                                                                Shipping cost
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                Tax
-                                                            </h5>
+                                                            {
+                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                                                    <h5 className='mb-4'>
+                                                                        Shipping cost
+                                                                    </h5>
+                                                                    :
+                                                                    ''
+                                                            }
                                                             <h5 className='mb-4'>
                                                                 Services
                                                             </h5>
@@ -366,23 +395,12 @@ export default function ShowSingleQuotation({ token }) {
                                                             }
                                                             <h5 className='mb-4'>
                                                                 <input
-                                                                    defaultValue={newData?.tax === 'N/A' ? 0 : newData?.tax}
-                                                                    name='tax'
-                                                                    type="number"
-                                                                    id='quotationTaxPrice'
-                                                                    className='form-control w-50'
-                                                                    maxLength={4}
-                                                                    disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                    onChange={handleChangeInput}
-                                                                />
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                <input
                                                                     defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}
                                                                     name='services'
                                                                     type="number"
-                                                                    id='quotationServicesPrice'
+                                                                    id='quotationservicesPrice'
                                                                     className='form-control w-50'
+                                                                    min={0}
                                                                     maxLength={4}
                                                                     disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
                                                                     onChange={handleChangeInput}
@@ -480,6 +498,7 @@ export default function ShowSingleQuotation({ token }) {
                                                                 <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
                                                             </>
                                                             :
+                                                            (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
                                                             <>
                                                                 <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
                                                                 <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '../../validation/LoginSchema';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useNavigate , NavLink } from 'react-router-dom';
 
@@ -70,7 +70,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                 id: toastId,
                 duration: 1000
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 navigate('/');
             },1000);
             reset();
@@ -90,10 +90,6 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
 
     return (
         <div className='signUpForm__mainSec py-5 mb-5'>
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-            />
             <div className="container">
                 <div className="row">
                     <div className="col-12">

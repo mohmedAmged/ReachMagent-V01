@@ -5,10 +5,8 @@ import ProdDetailsSlider from '../prodDetailsSliderSec/ProdDetailsSlider';
 import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-export default function ProductDetailsSec({ getCurrentProduct, itemType, product, token }) {
-  const navigate = useNavigate();
+export default function ProductDetailsSec({ getCurrentProduct,fetchCartItems,wishlistItems, itemType, product, token }) {
   const loginType = localStorage.getItem('loginType');
   const [currentAttribute,setCurrentAttribute] = useState('');
   const handleAddProductToCart = (id) => {
@@ -32,6 +30,7 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
         })
           .then(response => {
             getCurrentProduct(product?.id);
+            fetchCartItems();
             toast.success(response?.data?.message || 'Added Successfully!', {
               id: toastId,
               duration: 1000,
@@ -67,6 +66,7 @@ export default function ProductDetailsSec({ getCurrentProduct, itemType, product
           }
         })
           .then(response => {
+            wishlistItems();
             getCurrentProduct(product?.id);
             toast.success(response?.data?.message || 'Added Successfully!', {
               id: toastId,

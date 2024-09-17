@@ -10,7 +10,6 @@ import { scrollToTop } from "../../functions/scrollToTop";
 import MyLoader from "../../components/myLoaderSec/MyLoader";
 export default function MyAllCompanies({ token }) {
     const [loading, setLoading] = useState(true);
-    const [loadingCompanies, setLoadingCompanies] = useState(true);
     const [allCompanies, setAllCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
     const [uniqueAllowedCompNames, setUniqueAllowedCompNames] = useState([]);
@@ -28,10 +27,17 @@ export default function MyAllCompanies({ token }) {
     const location = useLocation();
     const navigate = useNavigate();
     const initialized = useRef(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const fetchAllCompanies = async () => {
         try {
             const response = await axios.get(`${baseURL}/all-companies`, {
+                params: {
+                    t: new Date().getTime(),
+                    page: currentPage,
+                    limit: 12,
+                },
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -70,26 +76,39 @@ export default function MyAllCompanies({ token }) {
         };
     };
 
-    // Fetch filtered companies based on formData
     const fetchFilteredCompanies = async () => {
+        const total = totalPages;
         try {
             const queryString = buildQueryString(formData);
             const response = await axios.get(
                 `${baseURL}/filter-companies?${queryString}`,
                 {
+                    params: {
+                        t: new Date().getTime(),
+                        name: formData?.name,
+                        main_type: formData?.main_type,
+                        product_name: formData?.product_name,
+                        service_name: formData?.service_name,
+                        category_id: formData?.category_id,
+                        sub_category_id: formData?.sub_category_id,
+                        page: currentPage,
+                        limit: total,
+                    },
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
             );
+
             const companies = response?.data?.data?.companies || [];
+            const totalPages = response?.data?.data?.total_pages || 1;
             setFilteredCompanies(companies);
+            setTotalPages(totalPages);
         } catch (error) {
             console.error("Error fetching filtered companies:", error);
             setFilteredCompanies([]);
-        };
+        }
     };
-
     const buildQueryString = (params) => {
         const query = new URLSearchParams();
         Object.keys(params).forEach((key) => {
@@ -103,13 +122,11 @@ export default function MyAllCompanies({ token }) {
         return query.toString();
     };
 
-    // Update URL with current filters
     const updateURLWithFilters = () => {
         const queryString = buildQueryString(formData);
         navigate(`?${queryString}`, { replace: true });
     };
 
-    // get formData from URL query parameters if there
     useEffect(() => {
         if (!initialized.current) {
             const queryParams = new URLSearchParams(location.search);
@@ -179,6 +196,13 @@ export default function MyAllCompanies({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+            scrollToTop(500);
+        };
+    };
 
     return (
         <>
@@ -335,83 +359,105 @@ export default function MyAllCompanies({ token }) {
                             <div className="col-lg-9 col-md-8">
                                 <div className="mainContentAllCompanies__handler">
                                     {filteredCompanies?.length === 0 ?
-                                    (
-                                        <div className="row">
-                                            <div className="col-12">
-                                                <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
-                                                    no company with this filter
-                                                </h1>
+                                        (
+                                            <div className="row">
+                                                <div className="col-12">
+                                                    <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
+                                                        no company with this filter
+                                                    </h1>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                    :
-                                    (
-                                        <div className="row gap-3">
-                                            {filteredCompanies?.map((el) => {
-                                                return (
-                                                    <div key={el?.id} className="col-12">
-                                                        <div className="CompanyContentItem">
-                                                            <div className="compImage">
-                                                                <img
-                                                                    src={el?.companyLogo}
-                                                                    alt={el?.companyName}
-                                                                />
-                                                            </div>
-                                                            <div className="compMainInfo">
-                                                                <h5 className="mb-2">{el?.companyName}</h5>
-                                                                <div className="companySubInfo mb-2">
-                                                                    <div className="subInfoItem">
-                                                                        <img src={userIcon} alt="locateion-icon" />
-                                                                        <span>E-Commerce</span>
+                                        )
+                                        :
+                                        (
+                                            <div className="row gap-3">
+                                                {filteredCompanies?.map((el) => {
+                                                    return (
+                                                        <div key={el?.id} className="col-12">
+                                                            <div className="CompanyContentItem">
+                                                                <div className="compImage">
+                                                                    <img
+                                                                        src={el?.companyLogo}
+                                                                        alt={el?.companyName}
+                                                                    />
+                                                                </div>
+                                                                <div className="compMainInfo">
+                                                                    <h5 className="mb-2">{el?.companyName}</h5>
+                                                                    <div className="companySubInfo mb-2">
+                                                                        <div className="subInfoItem">
+                                                                            <img src={userIcon} alt="locateion-icon" />
+                                                                            <span>E-Commerce</span>
+                                                                        </div>
+                                                                        <div className="subInfoItem">
+                                                                            <img
+                                                                                src={locationIcon}
+                                                                                alt="locateion-icon"
+                                                                            />
+                                                                            <span>
+                                                                                {el?.companyBranches[0]?.branchCity}
+                                                                            </span>
+                                                                        </div>
+                                                                        <div className="subInfoItem">
+                                                                            <img src={emailIcon} alt="locateion-icon" />
+
+                                                                            <NavLink to={el?.companyWebsiteLink}>
+                                                                                <span>Website</span>
+                                                                            </NavLink>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className="subInfoItem">
-                                                                        <img
-                                                                            src={locationIcon}
-                                                                            alt="locateion-icon"
-                                                                        />
+                                                                    <div className="companyDescrip mb-2">
+                                                                        <p>{el?.companyAboutUs}</p>
+                                                                    </div>
+                                                                    <div className="companyMainCountry">
+                                                                        {/* <img src={flag} alt="flag" /> */}
+                                                                        <i className="bi bi-crosshair2"></i>
                                                                         <span>
-                                                                            {el?.companyBranches[0]?.branchCity}
+                                                                            {el?.companyBranches[0]?.branchCountry}
                                                                         </span>
                                                                     </div>
-                                                                    <div className="subInfoItem">
-                                                                        <img src={emailIcon} alt="locateion-icon" />
-
-                                                                        <NavLink to={el?.companyWebsiteLink}>
-                                                                            <span>Website</span>
-                                                                        </NavLink>
-                                                                    </div>
                                                                 </div>
-                                                                <div className="companyDescrip mb-2">
-                                                                    <p>{el?.companyAboutUs}</p>
+                                                                <div className="companyActions">
+                                                                    <NavLink
+                                                                        onClick={() => {
+                                                                            scrollToTop();
+                                                                        }}
+                                                                        className={"nav-link"}
+                                                                        to={`/show-company/${el?.companyId}`}
+                                                                    >
+                                                                        <button className="pageMainBtnStyle">
+                                                                            more info
+                                                                        </button>
+                                                                    </NavLink>
                                                                 </div>
-                                                                <div className="companyMainCountry">
-                                                                    {/* <img src={flag} alt="flag" /> */}
-                                                                    <i className="bi bi-crosshair2"></i>
-                                                                    <span>
-                                                                        {el?.companyBranches[0]?.branchCountry}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="companyActions">
-                                                                <NavLink
-                                                                    onClick={() => {
-                                                                        scrollToTop();
-                                                                    }}
-                                                                    className={"nav-link"}
-                                                                    to={`/show-company/${el?.companyId}`}
-                                                                >
-                                                                    <button className="pageMainBtnStyle">
-                                                                        more info
-                                                                    </button>
-                                                                </NavLink>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    ) }
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                 </div>
+                                {
+                                    totalPages > 1 &&
+                                    <div className="d-flex justify-content-center align-items-center mt-4">
+                                        <button
+                                            type="button"
+                                            className="paginationBtn me-2"
+                                            disabled={currentPage === 1}
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                        >
+                                            <i className="bi bi-caret-left-fill"></i>
+                                        </button>
+                                        <span className='currentPagePagination'>{currentPage}</span>
+                                        <button
+                                            type="button"
+                                            className="paginationBtn ms-2"
+                                            disabled={currentPage === totalPages}
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                        >
+                                            <i className="bi bi-caret-right-fill"></i>
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -419,4 +465,4 @@ export default function MyAllCompanies({ token }) {
             )}
         </>
     );
-}
+};

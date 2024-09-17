@@ -7,7 +7,7 @@ import ProductCard from '../../components/productCardSec/ProductCard';
 import { NavLink } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 
-export default function MyWishList({token}) {
+export default function MyWishList({token , fetchCartItems , wishlistItems}) {
   const [loading,setLoading] = useState(true);
   const loginType = localStorage.getItem('loginType');
   const [wishListData, setWishListData] = useState([]);
@@ -80,7 +80,7 @@ export default function MyWishList({token}) {
                     wishListData?.map((el) => {
                       return (
                         <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                          <ProductCard discountPrice={el?.product_discount_price} wishListPage={true} getCurrentProducts={fetchWishListItems} product={el} itemType={'product'} token={token} prodSlug={el?.product_slug} productCurrancy={el?.currency_symbol} productImage={el?.medias[0]?.media} productName={el?.product_title} productPrice={el?.product_price} companyName={el?.company_name} />
+                          <ProductCard fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} discountPrice={el?.product_discount_price} wishListPage={true} getCurrentProducts={fetchWishListItems} product={el} itemType={'product'} token={token} prodSlug={el?.product_slug} productCurrancy={el?.currency_symbol} productImage={el?.medias[0]?.media} productName={el?.product_title} productPrice={el?.product_price} companyName={el?.company_name} />
                         </div>
                       )
                     })

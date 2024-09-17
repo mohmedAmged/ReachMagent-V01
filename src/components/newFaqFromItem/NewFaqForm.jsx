@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { baseURL } from '../../functions/baseUrl';
 import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
@@ -15,6 +15,8 @@ export default function NewFaqForm({ token }) {
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
+    const { id } = useParams();
+    const [currFaq,setCurrFaq] = useState([]);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -31,6 +33,35 @@ export default function NewFaqForm({ token }) {
         answer_en: '',
         status: 'active',
     });
+
+    useEffect(()=>{
+        if(id && loginType === 'employee') {
+            (async ()=> {
+                await axios.get(`${baseURL}/${loginType}/show-faq/${id}?t=${new Date().getTime()}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    setCurrFaq(response?.data?.data);
+                })
+                .catch(error => {
+                    toast.error(error?.response?.data?.message || 'Something went wrong!');
+                });
+            })();
+        };
+    },[id]);
+
+    useEffect(()=>{
+        if(+currFaq?.id === +id){
+            formData.question_ar = currFaq?.question;
+            formData.question_en = currFaq?.question;
+            formData.answer_ar = currFaq?.answer;
+            formData.answer_en = currFaq?.answer;
+            formData.status = currFaq?.status;
+        };
+    },[currFaq]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -46,7 +77,8 @@ export default function NewFaqForm({ token }) {
             submissionData.append(key, formData[key]);
         });
         try {
-            const response = await axios.post(`${baseURL}/${loginType}/add-faq`, submissionData, {
+            const slugCompletion = id ? `update-faq/${id}` : 'add-faq';
+            const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Accept': 'application/json',
@@ -56,12 +88,12 @@ export default function NewFaqForm({ token }) {
             if (response.status === 200) {
                 navigate('/profile/faqs')
                 scrollToTop()
-                toast.success('Faq added successfully');
+                toast.success(response?.data?.message || (id ? 'Faq updated successfully' : 'Faq added successfully'));
             } else {
-                toast.error('Failed to add Faq item');
+                toast.error(id ? 'Failed to update Faq item' : 'Failed to add Faq item');
             }
         } catch (error) {
-            toast.error('Error adding Faq item.');
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
         };
     };
 
@@ -82,7 +114,7 @@ export default function NewFaqForm({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={'Add New Faq to FAQS'} />
+                                <ContentViewHeader title={id ? 'Update Faq' :'Add New Faq to FAQS'} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                     <div className="row">
                                         <div className="col-lg-6">
@@ -140,7 +172,7 @@ export default function NewFaqForm({ token }) {
                                     </div>
                                     <div className="form__submit__button">
                                         <button type="submit" className="btn btn-primary">
-                                            Add New FAQ
+                                            {id? 'Update FAQ' : 'Add New FAQ'}
                                         </button>
                                     </div>
                                 </form>

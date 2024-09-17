@@ -12,6 +12,7 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 
 export default function MyOrders({ token }) {
+  const [activeRole, setActiveRole] = useState('All');
   const loginType = localStorage.getItem('loginType');
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
   const [unAuth, setUnAuth] = useState(false);
@@ -19,8 +20,8 @@ export default function MyOrders({ token }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const getAllOrders = async (page = 1) => {
-    await axios.get(`${baseURL}/${loginType}/all-orders?page=${page}?t=${new Date().getTime()}`, {
+  const getAllOrders = async () => {
+    await axios.get(`${baseURL}/${loginType}/all-orders?page=${currentPage}?t=${new Date().getTime()}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -40,7 +41,7 @@ export default function MyOrders({ token }) {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
-    }
+    };
   };
 
   useEffect(() => {
@@ -72,15 +73,36 @@ export default function MyOrders({ token }) {
       })
   };
 
-  console.log(allOrders);
-
   return (
     <>
       <div className='dashboard__handler d-flex'>
         <MyNewSidebarDash />
         <div className='main__content container'>
           <MainContentHeader currentUserLogin={currentUserLogin} />
-          <div className='myProducts__handler content__view__handler'>
+          <div className='myProducts__handler quotationTable__handler content__view__handler'>
+            {
+              loginType === 'employee' &&
+              <div className="my__roles__actions mb-5 ps-0 ms-0">
+                <button
+                  className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
+                  onClick={() => setActiveRole('All')}
+                >
+                  All
+                </button>
+                <button
+                  className={`def__btn meddle_btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
+                  onClick={() => setActiveRole('Sell')}
+                >
+                  Sell
+                </button>
+                <button
+                  className={`cust__btn px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
+                  onClick={() => setActiveRole('Buy')}
+                >
+                  Buy
+                </button>
+              </div>
+            }
             <ContentViewHeader title={'My Orders'} />
             {
               unAuth ?

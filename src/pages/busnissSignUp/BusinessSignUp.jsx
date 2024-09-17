@@ -19,7 +19,7 @@ export default function BusinessSignUp({ countries, industries, mainCategories, 
           <MyLoader />
           :
           <div className='signUp__page'>
-            <SignUpHead />
+            {/* <SignUpHead /> */}
             <BusinessSignUpFormMainSec
               countries={countries}
               industries={industries}

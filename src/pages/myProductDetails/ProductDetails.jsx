@@ -10,7 +10,7 @@ import { baseURL } from '../../functions/baseUrl';
 import ProductCard from '../../components/productCardSec/ProductCard';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 
-export default function ProductDetails({token}) {
+export default function ProductDetails({token,fetchCartItems,wishlistItems}) {
   const { singleProduct } = useParams();
   const loginType = localStorage.getItem('loginType');
   const [allProducts,setAllProducts] = useState([]);
@@ -64,11 +64,11 @@ export default function ProductDetails({token}) {
     };
   },[token,loginType,singleProduct]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const findedProd = allProducts?.find(prod=> prod.slug === singleProduct);
     if(findedProd){
       const allCompanyProducts = allProducts?.filter(prod => prod?.company_name === findedProd?.company_name);
-      setRelatedProducts(allCompanyProducts?.filter(prod => prod?.slug !== findedProd?.slug));
+      setRelatedProducts(allCompanyProducts?.filter(prod => prod?.slug !== findedProd?.slug).slice(0, 12));
       getCurrentProduct(findedProd?.id);
     };
   },[singleProduct,allProducts]);
@@ -80,16 +80,19 @@ export default function ProductDetails({token}) {
       <MyLoader />
       :
       <div className='productDetailsPage'>
-      <ProductDetailsSec getCurrentProduct={getCurrentProduct} itemType={'product'} product={currentProduct} token={token} />
+      <ProductDetailsSec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} getCurrentProduct={getCurrentProduct} itemType={'product'} product={currentProduct} token={token} />
       <ProductDetailsDescriptionContent product={currentProduct} /> 
-      <ProductDetailsOwnerOfCurrProduct companyName={currentProduct?.company_name} />
+      {
+        relatedProducts.length > 0 &&
+        <ProductDetailsOwnerOfCurrProduct companyName={currentProduct?.company_name} />
+      }
       <div className="container">
             <div className="row">
               {
                 relatedProducts?.map((el) => {
                   return (
                     <div key={el?.id} className="col-lg-3 col-md-4 col-sm-12 my-2 d-flex justify-content-center px-4 mb-5">
-                      <ProductCard discountPrice={el?.discountPrice} token={token} getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                      <ProductCard fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} discountPrice={el?.discountPrice} token={token} getCurrentProducts={getCurrentProducts} product={el} itemType={'product'} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
                     </div>
                   )
                 })

@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
-import './catalogContent.css'
-import { NavLink } from 'react-router-dom'
+import './catalogContent.css';
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
-import toast from 'react-hot-toast'
-import { scrollToTop } from '../../functions/scrollToTop'
+import toast from 'react-hot-toast';
 import MyLoader from '../../components/myLoaderSec/MyLoader'
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
+import AddNewItem from '../../components/addNewItemBtn/AddNewItem'
+import { useNavigate } from 'react-router-dom';
 
 export default function MyCatalog({ token }) {
   const [loading, setLoading] = useState(true);
   const loginType = localStorage.getItem('loginType');
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
   const [newData, setNewdata] = useState([]);
+  const navigate = useNavigate();
+  const [unAuth, setUnAuth] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const fetchCatalogs = async () => {
     try {
-      const response = await axios.get(`${baseURL}/${loginType}/all-catalogs?t=${new Date().getTime()}`, {
+      const response = await axios.get(`${baseURL}/${loginType}/all-catalogs?page=${currentPage}?t=${new Date().getTime()}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setNewdata(response?.data?.data?.catalogs);
+      setTotalPages(response?.data?.data?.meta?.last_page);
     } catch (error) {
       if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
         setUnAuth(true);
@@ -32,27 +38,27 @@ export default function MyCatalog({ token }) {
       toast.error(error?.response?.data.message || 'Something Went Wrong!');
     }
   };
-  const [unAuth, setUnAuth] = useState(false);
 
   useEffect(() => {
     const cookiesData = Cookies.get('currentLoginedData');
     if (!currentUserLogin) {
-        const newShape = JSON.parse(cookiesData);
-        setCurrentUserLogin(newShape);
+      const newShape = JSON.parse(cookiesData);
+      setCurrentUserLogin(newShape);
     }
-}, [Cookies.get('currentLoginedData'), currentUserLogin]);
+  }, [Cookies.get('currentLoginedData'), currentUserLogin]);
+
   useEffect(() => {
     fetchCatalogs();
   }, [loginType, token]);
 
   const handleDeleteThisCatalog = async (id) => {
-      await axios?.delete(`${baseURL}/${loginType}/delete-catalog/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      })
+    await axios?.delete(`${baseURL}/${loginType}/delete-catalog/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => {
         toast.success(response?.data?.message);
         fetchCatalogs();
@@ -67,6 +73,12 @@ export default function MyCatalog({ token }) {
       setLoading(false);
     }, 500);
   }, [loading]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    };
+  };
 
   return (
     <>
@@ -83,7 +95,8 @@ export default function MyCatalog({ token }) {
                   <UnAuthSec />
                   :
                   <div className='content__view__handler'>
-                    <ContentViewHeader title={'Catalog'} />
+                    <ContentViewHeader title={'Product Catalogs'} />
+                    <AddNewItem link={'/profile/catalog/addNewItem'} />
                     <div className="content__card__list">
                       {
                         newData?.length !== 0 ?
@@ -108,7 +121,7 @@ export default function MyCatalog({ token }) {
                                           </button>
                                         </>
                                         <>
-                                          <button className='btn__E'>
+                                          <button className='btn__E' onClick={() => navigate(`/profile/catalog/edit-item/${el?.id}`)}>
                                             Edit
                                           </button>
                                         </>
@@ -118,6 +131,28 @@ export default function MyCatalog({ token }) {
                                 )
                               })
                             }
+                            {
+                              totalPages > 1 &&
+                              <div className="col-12 d-flex justify-content-center align-items-center mt-4">
+                                <button
+                                  type="button"
+                                  className="paginationBtn me-2"
+                                  disabled={currentPage === 1}
+                                  onClick={() => handlePageChange(currentPage - 1)}
+                                >
+                                  <i class="bi bi-caret-left-fill"></i>
+                                </button>
+                                <span className='currentPagePagination'>{currentPage}</span>
+                                <button
+                                  type="button"
+                                  className="paginationBtn ms-2"
+                                  disabled={currentPage === totalPages}
+                                  onClick={() => handlePageChange(currentPage + 1)}
+                                >
+                                  <i class="bi bi-caret-right-fill"></i>
+                                </button>
+                              </div>
+                            }
                           </div>
                           :
                           <div className='row'>
@@ -126,19 +161,6 @@ export default function MyCatalog({ token }) {
                             </div>
                           </div>
                       }
-
-                    </div>
-                    <div className='addNewItem__btn'>
-                      <NavLink
-                        onClick={() => {
-                          scrollToTop();
-                        }}
-                        to='/profile/catalog/addNewItem' className='nav-link'>
-                        <button >
-                          Add New Item
-                        </button>
-                      </NavLink>
-
                     </div>
                   </div>
               }

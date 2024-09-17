@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { baseURL } from '../../functions/baseUrl';
 import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
@@ -15,6 +15,8 @@ export default function NewPostForm({ token }) {
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
+    const { id } = useParams();
+    const [currPost,setCurrPost] = useState([]);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -29,11 +31,38 @@ export default function NewPostForm({ token }) {
         title_en: '',
         description_ar: '',
         description_en: '',
-        category_id: '',
-        sub_category_id: '',
         status: 'active',
         type: ''
     });
+
+    useEffect(()=>{
+        if(id && loginType === 'employee') {
+            (async ()=> {
+                await axios.get(`${baseURL}/${loginType}/show-post/${id}?t=${new Date().getTime()}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    setCurrPost(response?.data?.data);
+                })
+                .catch(error => {
+                    toast.error(error?.response?.data?.message || 'Something went wrong!');
+                });
+            })();
+        };
+    },[id]);
+
+    useEffect(()=>{
+        if(+currPost?.postId === +id){
+            formData.status = currPost?.postStatus.toLowerCase();
+            formData.type = currPost?.postType.toLowerCase();
+            formData.title_ar = currPost?.postTitle;
+            formData.title_en = currPost?.postTitle;
+            formData.description_ar = currPost?.postDescription;
+            formData.description_en = currPost?.postDescription;
+        };
+    },[currPost]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -46,14 +75,14 @@ export default function NewPostForm({ token }) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const submissionData = new FormData();
-        ;
 
         Object.keys(formData).forEach((key) => {
             submissionData.append(key, formData[key]);
         });
 
         try {
-            const response = await axios.post(`${baseURL}/${loginType}/add-post`, submissionData, {
+            const slugCompletion = id ? `update-post/${id}` : 'add-post';
+            const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Accept': 'application/json',
@@ -65,12 +94,12 @@ export default function NewPostForm({ token }) {
 
                 navigate('/profile/posts')
                 scrollToTop()
-                toast.success('post added successfully');
+                toast.success(response?.data?.message || (id ? 'Post updated successfully' : 'Post added successfully'));
             } else {
-                toast.error('Failed to add post');
-            }
+                toast.error(id ? 'Failed to update the post' : 'Failed to add post');
+            };
         } catch (error) {
-            toast.error('Error adding post..');
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
         };
     };
 
@@ -91,7 +120,7 @@ export default function NewPostForm({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={'Add post to posts'} />
+                                <ContentViewHeader title={id ? 'Update Post' : 'Add post to posts'} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                     <div className="row">
                                         <div className="col-lg-6">
@@ -157,7 +186,7 @@ export default function NewPostForm({ token }) {
                                                     value={formData?.type}
                                                     onChange={handleInputChange}
                                                 >
-                                                    <option value="">Select post type</option>
+                                                    <option value="" disabled>Select post type</option>
                                                     <option value="news">News</option>
                                                     <option value="discount">Discount</option>
                                                     <option value="announcement">Announcement</option>
@@ -167,7 +196,7 @@ export default function NewPostForm({ token }) {
                                     </div>
                                     <div className="form__submit__button">
                                         <button type="submit" className="btn btn-primary">
-                                            Add Post
+                                            {id ? 'Update Post' : 'Add Post'}
                                         </button>
                                     </div>
                                 </form>

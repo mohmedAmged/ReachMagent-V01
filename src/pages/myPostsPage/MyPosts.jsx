@@ -2,8 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
-import { scrollToTop } from '../../functions/scrollToTop';
-import { NavLink } from 'react-router-dom';
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader';
@@ -11,6 +9,8 @@ import './myPosts.css';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
+import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyPosts({ token }) {
     const [loading, setLoading] = useState(true);
@@ -18,6 +18,9 @@ export default function MyPosts({ token }) {
     const [newData, setNewdata] = useState([]);
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [unAuth, setUnAuth] = useState(false);
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -29,12 +32,13 @@ export default function MyPosts({ token }) {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/all-posts?t=${new Date().getTime()}`, {
+            const response = await axios.get(`${baseURL}/${loginType}/all-posts?page=${currentPage}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             setNewdata(response?.data?.data?.posts);
+            setTotalPages(response?.data?.data?.meta?.last_page);
         } catch (error) {
             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                 setUnAuth(true);
@@ -69,6 +73,12 @@ export default function MyPosts({ token }) {
         }, 500);
     }, [loading]);
 
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        };
+    };
+
     return (
         <>
             {
@@ -85,6 +95,7 @@ export default function MyPosts({ token }) {
                                     :
                                     <div className='content__view__handler'>
                                         <ContentViewHeader title={'Posts'} />
+                                        <AddNewItem link={'/profile/posts/addNewItem'} />
                                         <div className="content__card__list">
                                             {
                                                 newData?.length !== 0 ?
@@ -105,7 +116,8 @@ export default function MyPosts({ token }) {
                                                                                 </p>
                                                                             </div>
                                                                             <div className="headOfNews__card-rightPart">
-                                                                                <i onClick={() => handleDeleteThispost(el?.postId)} className="bi bi-trash"></i>
+                                                                                <i onClick={() => navigate(`/profile/posts/edit-item/${el?.postId}`)} className="bi bi-pencil-square me-2 text-primary"></i>
+                                                                                <i onClick={() => handleDeleteThispost(el?.postId)} className="bi bi-trash text-danger"></i>
                                                                             </div>
                                                                         </div>
                                                                         <div className="news__card-body">
@@ -119,6 +131,28 @@ export default function MyPosts({ token }) {
                                                                 )
                                                             })
                                                         }
+                                                        {
+                                                            totalPages > 1 &&
+                                                            <div className="col-12 d-flex justify-content-center align-items-center mt-4">
+                                                                <button
+                                                                    type="button"
+                                                                    className="paginationBtn me-2"
+                                                                    disabled={currentPage === 1}
+                                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                                >
+                                                                    <i class="bi bi-caret-left-fill"></i>
+                                                                </button>
+                                                                <span className='currentPagePagination'>{currentPage}</span>
+                                                                <button
+                                                                    type="button"
+                                                                    className="paginationBtn ms-2"
+                                                                    disabled={currentPage === totalPages}
+                                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                                >
+                                                                    <i class="bi bi-caret-right-fill"></i>
+                                                                </button>
+                                                            </div>
+                                                        }
                                                     </div>
                                                     :
                                                     <div className='row'>
@@ -127,18 +161,6 @@ export default function MyPosts({ token }) {
                                                         </div>
                                                     </div>
                                             }
-
-                                        </div>
-                                        <div className='addNewItem__btn'>
-                                            <NavLink
-                                                onClick={() => {
-                                                    scrollToTop();
-                                                }}
-                                                to='/profile/posts/addNewItem' className='nav-link'>
-                                                <button >
-                                                    Add New Post
-                                                </button>
-                                            </NavLink>
 
                                         </div>
                                     </div>

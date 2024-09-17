@@ -11,7 +11,7 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 
-export default function SingleCompanyNewsSec({ token  }) {
+export default function SingleCompanyNewsSec({ token }) {
 
   const [newData, setNewdata] = useState([])
   const fetchHomePosts = async () => {
@@ -67,8 +67,6 @@ export default function SingleCompanyNewsSec({ token  }) {
               },
             }}
           >
-
-
             {
               newData?.map(el => {
                 return (
@@ -77,11 +75,11 @@ export default function SingleCompanyNewsSec({ token  }) {
                       <div className="headOfNews__card d-flex justify-content-between align-items-start">
                         <div className="headOfNews__card-leftPart">
                           <div className="image">
-                            <NavLink  
+                            <NavLink
                               onClick={() => {
-                                    scrollToTop();
-                                }} 
-                                className={'nav-link'} to={`/show-company/${el?.company_id}`}>
+                                scrollToTop();
+                              }}
+                              className={'nav-link'} to={`/show-company/${el?.company_id}`}>
                               <img src={el?.company_logo} alt="newImg" />
                             </NavLink>
                           </div>
@@ -104,9 +102,10 @@ export default function SingleCompanyNewsSec({ token  }) {
               })
             }
           </Swiper>
-          <div className="showAllBtn">
+          <div className="showAllBtn d-flex justify-content-end align-items-center">
             <NavLink className={'nav-link'} to={'/all-insights'}>
-              Show All
+              All Insights
+              <i className="bi bi-arrow-bar-right"></i>
             </NavLink>
           </div>
         </Col>

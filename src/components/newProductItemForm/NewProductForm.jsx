@@ -5,11 +5,10 @@ import toast from 'react-hot-toast';
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
-import UnAuthSec from '../unAuthSection/UnAuthSec';
 
 export default function NewProductForm({ mainCategories, token }) {
   const loginType = localStorage.getItem('loginType');
@@ -34,6 +33,8 @@ export default function NewProductForm({ mainCategories, token }) {
     total_stock: ''
   });
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
+  const { id } = useParams();
+  const [currProd, setCurrProd] = useState([]);
 
   useEffect(() => {
     const cookiesData = Cookies.get('currentLoginedData');
@@ -79,6 +80,48 @@ export default function NewProductForm({ mainCategories, token }) {
     fetchSubCategories();
   }, [formData.category_id, mainCategories]);
 
+  useEffect(() => {
+    if (id && loginType === 'employee') {
+      (async () => {
+        await axios.get(`${baseURL}/${loginType}/show-product/${id}?t=${new Date().getTime()}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            setCurrProd(response?.data?.data);
+          })
+          .catch(error => {
+            toast.error(error?.response?.data?.message || 'Something went wrong!');
+          });
+      })();
+    };
+  }, [id]);
+
+  useEffect(() => {
+    if (+currProd?.id === +id) {
+      formData.price = currProd?.price;
+      formData.discount_price = currProd?.discountPrice;
+      formData.total_stock = currProd?.totalStock;
+      formData.title_en = currProd?.title;
+      formData.title_ar = currProd?.title;
+      formData.description_en = currProd?.description;
+      formData.description_ar = currProd?.description;
+      formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currProd?.category)?.mainCategoryId;
+      formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currProd.subCategory)?.subCategoryId;
+      if(currProd?.productAttribute?.length > 0){
+        formData.has_variation = 'yes';
+        if(formData.has_variation === 'yes'){
+          formData.attribute_ar = currProd?.productAttribute;
+          formData.attribute_en = currProd?.productAttribute;
+          formData.variation_name_ar = currProd?.productAttributeValues?.map(el => el?.value);
+          formData.variation_name_en = currProd?.productAttributeValues?.map(el => el?.value);
+          formData.stock = currProd?.productAttributeValues?.map(el => el?.stock);
+        };
+      };
+    };
+  }, [currProd]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -123,8 +166,7 @@ export default function NewProductForm({ mainCategories, token }) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const submissionData = new FormData();
-    ;
+    const submissionData = new FormData();;
 
     Object.keys(formData).forEach((key) => {
       if (key === 'total_stock' && formData.has_variation === 'yes') return;
@@ -154,7 +196,8 @@ export default function NewProductForm({ mainCategories, token }) {
       submissionData.append(`image[${index}]`, image);
     })
     try {
-      const response = await axios.post(`${baseURL}/${loginType}/add-product`, submissionData, {
+      const slugCompletion = id ? `update-product/${id}` : 'add-product';
+      const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Accept': 'application/json',
@@ -164,13 +207,13 @@ export default function NewProductForm({ mainCategories, token }) {
       if (response.status === 200) {
         navigate('/profile/products')
         scrollToTop()
-        toast.success('product item added successfully');
+        toast.success( response?.data?.message || (id ? 'product item updated successfully!' : 'product item added successfully!'));
       } else {
-        toast.error('Failed to add product item');
-      }
+        toast.error((id ? 'Failed to update product item!' : 'Failed to add product item!'));
+      };
     } catch (error) {
-      toast.error('Error adding product item.');
-    }
+      toast.error(error?.response?.data?.message || (id ? 'Failed to update product item!' : 'Failed to add product item!'));
+    };
   };
 
   return (
@@ -185,7 +228,7 @@ export default function NewProductForm({ mainCategories, token }) {
               <MainContentHeader currentUserLogin={currentUserLogin} />
               {
                 <div className='newCatalogItem__form__handler'>
-                  <ContentViewHeader title={'Add New product'} />
+                  <ContentViewHeader title={`${id ? 'Update Product' :'Add New product'}`} />
                   <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                     <div className="row">
                       <div className="col-lg-6">
@@ -225,7 +268,7 @@ export default function NewProductForm({ mainCategories, token }) {
                             value={formData?.category_id}
                             onChange={handleInputChange}
                           >
-                            <option value="">Select Category</option>
+                            <option value="" disabled>Select Category</option>
                             {mainCategories?.map((cat) => (
                               <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
                                 {cat?.mainCategoryName}
@@ -243,7 +286,7 @@ export default function NewProductForm({ mainCategories, token }) {
                             value={formData?.sub_category_id}
                             onChange={handleInputChange}
                           >
-                            <option value="">Select Sub Category</option>
+                            <option value="" disabled>Select Sub Category</option>
                             {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                               <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
                                 {subCat?.subCategoryName}
@@ -457,7 +500,7 @@ export default function NewProductForm({ mainCategories, token }) {
                     </div>
                     <div className="form__submit__button">
                       <button type="submit" className="btn btn-primary">
-                        Add Product Item
+                        {id ? 'Update Product Item' : 'Add Product Item'}
                       </button>
                     </div>
                   </form>

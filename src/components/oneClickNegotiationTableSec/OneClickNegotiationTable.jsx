@@ -11,6 +11,8 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
   const loginType = localStorage.getItem("loginType");
   const [newData, setNewdata] = useState([]);
   const { negotiateId } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchShowQuotations = async () => {
     const slug =
@@ -19,7 +21,7 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
         : `${loginType}/show-one-click-quotation`;
     try {
       const response = await axios.get(
-        `${baseURL}/${slug}/${negotiateId}?t=${new Date().getTime()}`,
+        `${baseURL}/${slug}/${negotiateId}?page=${currentPage}?t=${new Date().getTime()}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -27,6 +29,7 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
         }
       );
       setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation);
+      setTotalPages(response?.data?.data?.meta?.last_page);
     } catch (error) {
       if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
         setUnAuth(true);
@@ -34,9 +37,16 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
       toast.error(error?.response?.data.message || 'Error!');
     };
   };
+
   useEffect(() => {
     fetchShowQuotations();
   }, [loginType, token]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    };
+  };
 
   return (
     <div className="quotationTable__handler content__view__handler">
@@ -79,6 +89,28 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
             ))}
           </tbody>
         </Table>
+        {
+                          totalPages > 1 &&
+                          <div className="d-flex justify-content-center align-items-center mt-4">
+                            <button
+                              type="button"
+                              className="paginationBtn me-2"
+                              disabled={currentPage === 1}
+                              onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                              <i class="bi bi-caret-left-fill"></i>
+                            </button>
+                            <span className='currentPagePagination'>{currentPage}</span>
+                            <button
+                              type="button"
+                              className="paginationBtn ms-2"
+                              disabled={currentPage === totalPages}
+                              onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                              <i class="bi bi-caret-right-fill"></i>
+                            </button>
+                          </div>
+                        }
       </div>
     </div>
   );

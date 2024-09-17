@@ -13,7 +13,7 @@ import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 
-export default function Home({companies,token}) {
+export default function Home({companies,token,fetchCartItems,wishlistItems}) {
   const [loading,setLoading] = useState(true);
   const arrOfCateg = [
     {
@@ -33,7 +33,6 @@ export default function Home({companies,token}) {
       id: 4
     }
   ];
-  const loginType = localStorage.getItem('loginType');
 
   useEffect(()=>{
     setTimeout(()=>{
@@ -58,7 +57,6 @@ export default function Home({companies,token}) {
         <AboutReachSec />
         <AllCategorySec />
         {
-          loginType === 'user' &&
           <div className='oneClickQuotation__handler'>
             <FranchiseSec
               pageName='discover'
@@ -69,18 +67,10 @@ export default function Home({companies,token}) {
             />
           </div>
         }
-  
-        <ReadyToByProductsHome token={token} secMAinTitle={`Ready-To-Buy Products`}/>
+        <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/>
         <TrendingCompanySec companies={companies} token={token} />
         <GrowBuisnessSec />
         <LastMinuteDeals setLoading={setLoading} token={token}/>
-        {/* <FranchiseSec
-          pageName='home'
-          headText='Franchise Opportunities'
-          paraText='Find secure and verified franchises, or attract franchisees for your current brand'
-          btnOneText='Submit Your Brand'
-          btnTwoText='Explore Now'
-        /> */}
         <div className='mt-3'>
           <HeaderOfSec
             secHead='Companies Insights'

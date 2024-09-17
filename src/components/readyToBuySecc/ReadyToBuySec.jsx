@@ -3,7 +3,7 @@ import './readyToBuySec.css'
 import BorderedNavigationBar from '../borderedNavigationBarSec/BorderedNavigationBar'
 import ProductCard from '../productCardSec/ProductCard'
 import HeaderSec from '../myHeaderSec/HeaderSec'
-export default function ReadyToBuySec({token,secMAinTitle, companies,showCompaniesQuery}) {
+export default function ReadyToBuySec({token,secMAinTitle, companies,showCompaniesQuery,fetchCartItems,wishlistItems}) {
     const listedNavigationItem = [
         {
             item: 'Featured Products',
@@ -58,7 +58,7 @@ export default function ReadyToBuySec({token,secMAinTitle, companies,showCompani
                             companies?.companyProducts?.map((el, index) => {
                                 return (
                                     <div key={index} className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
-                                        <ProductCard discountPrice={el?.productDiscountPrice} getCurrentProducts={showCompaniesQuery?.refetch} token={token}  product={el} itemType={'product'} prodSlug={el?.productSlug} productCurrancy={el?.currency_symbol} productName={el?.productTitle} productPrice={el?.productPrice} companyName={el?.productCompanyName} 
+                                        <ProductCard fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} discountPrice={el?.productDiscountPrice} getCurrentProducts={showCompaniesQuery?.refetch} token={token}  product={el} itemType={'product'} prodSlug={el?.productSlug} productCurrancy={el?.currency_symbol} productName={el?.productTitle} productPrice={el?.productPrice} companyName={el?.productCompanyName} 
                                         productImage={el.productMedias[0]?.image} />
                                     </div>
                                 )

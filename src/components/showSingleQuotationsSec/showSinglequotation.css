@@ -50,18 +50,26 @@
 .showSingleQuotation__handler .totals__prices h5{
     color: rgba(0, 0, 0, 0.5);
 }
-.showSingleQuotation__handler .totals__have__problem .updateBtn{
-display: flex;
-flex-wrap: nowrap;
-gap: 4px;
-align-items: center;
-font-size: 14px;
-background: transparent;
-color: rgba(7, 82, 154, 1);
-padding: 15px 25px;
+.showSingleQuotation__handler .updateBtn{
+    font-size: 14px;
+    background: transparent;
+    color: rgba(7, 82, 154, 1);
+    padding: 20px 35px ;
+    margin-top: 30px;
+    border: 1px solid rgba(7, 82, 154, 1);
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
 }
 
-.showSingleQuotation__handler .totals__have__problem .updateBtn:hover{
+.showSingleQuotation__handler .updateBtn:hover{
     background: rgba(7, 82, 154, 1);
     color: #fff;
 }
@@ -146,5 +154,6 @@ padding: 15px 25px;
         font-size: 8px;
     }
 }
-
-
+.indexOfTheTable {
+    color: rgba(181, 183, 192, 1);
+}

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Table } from 'react-bootstrap';
 import './myProducts.css'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader';
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash';
-import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
+import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 
 export default function MyProducts({ token }) {
   const [loading, setLoading] = useState(true);
@@ -19,6 +19,9 @@ export default function MyProducts({ token }) {
   const [newData, setNewdata] = useState([]);
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
   const [unAuth, setUnAuth] = useState(false);
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const cookiesData = Cookies.get('currentLoginedData');
@@ -30,12 +33,13 @@ export default function MyProducts({ token }) {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${baseURL}/${loginType}/all-products?t=${new Date().getTime()}`, {
+      const response = await axios.get(`${baseURL}/${loginType}/all-products?page=${currentPage}?t=${new Date().getTime()}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setNewdata(response?.data?.data?.products);
+      setTotalPages(response?.data?.data?.meta?.last_page);
     } catch (error) {
       if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
         setUnAuth(true);
@@ -72,6 +76,12 @@ export default function MyProducts({ token }) {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    };
+  };
+
   return (
     <>
       {
@@ -88,16 +98,7 @@ export default function MyProducts({ token }) {
                   :
                   <div className='myProducts__handler content__view__handler'>
                     <ContentViewHeader title={'E-Commerce Products'} />
-                    <div className='addNewItem__btn text-lg-end'>
-                      <NavLink onClick={() => {
-                        scrollToTop();
-                      }}
-                        to='/profile/products/addNewItem' className='nav-link'>
-                        <button>
-                          Add New Item
-                        </button>
-                      </NavLink>
-                    </div>
+                    <AddNewItem link={'/profile/products/addNewItem'} />
                     {
                       newData?.length !== 0 ?
                         <div className="productTable__content">
@@ -110,6 +111,7 @@ export default function MyProducts({ token }) {
                                 <th className='text-center'>Category</th>
                                 <th className='text-center'>Status</th>
                                 <th className='text-center'>Price</th>
+                                <th className='text-center'>Edit</th>
                                 <th className='text-center'>Show</th>
                               </tr>
                             </thead>
@@ -125,8 +127,8 @@ export default function MyProducts({ token }) {
                                       <h2>
                                         {row?.title}
                                       </h2>
-                                      <p>
-                                        {row?.description}
+                                      <p title={row?.description}>
+                                        {row?.description?.slice(0,40)}{row?.description.split('').length > 40 && '...'}
                                       </p>
                                     </div>
                                   </td>
@@ -144,6 +146,11 @@ export default function MyProducts({ token }) {
                                     ${row?.price}
                                   </td>
                                   <td>
+                                    <button className='btn__E tableEditBtn nav-link' onClick={() => navigate(`/profile/products/edit-item/${row?.id}`)}>
+                                      <i className="bi bi-pencil-square"></i>
+                                    </button>
+                                  </td>
+                                  <td>
                                     <NavLink className={'nav-link'} to={`/profile/products/show-one/${row?.id}`}>
                                       <i className="bi bi-eye-fill showProd"></i>
                                     </NavLink>
@@ -152,6 +159,28 @@ export default function MyProducts({ token }) {
                               ))}
                             </tbody>
                           </Table>
+                          {
+                            totalPages > 1 &&
+                            <div className="d-flex justify-content-center align-items-center mt-4">
+                              <button
+                                type="button"
+                                className="paginationBtn me-2"
+                                disabled={currentPage === 1}
+                                onClick={() => handlePageChange(currentPage - 1)}
+                              >
+                                <i class="bi bi-caret-left-fill"></i>
+                              </button>
+                              <span className='currentPagePagination'>{currentPage}</span>
+                              <button
+                                type="button"
+                                className="paginationBtn ms-2"
+                                disabled={currentPage === totalPages}
+                                onClick={() => handlePageChange(currentPage + 1)}
+                              >
+                                <i class="bi bi-caret-right-fill"></i>
+                              </button>
+                            </div>
+                          }
                         </div>
                         :
                         <div className='row'>

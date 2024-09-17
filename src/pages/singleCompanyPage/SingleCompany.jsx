@@ -26,7 +26,7 @@ import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
 import MyLoader from '../../components/myLoaderSec/MyLoader'
 
 
-export default function SingleCompany({ token }) {
+export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
     const loginType = localStorage.getItem('loginType');
@@ -80,7 +80,7 @@ export default function SingleCompany({ token }) {
         setActiveItem(itemName);
     };
     useEffect(() => {
-        if (token && loginType === 'user' && formId) {
+        if (token && formId) {
             (async () => {
                 const toastId = toast.loading('Loading Forms...');
                 await axios.post(`${baseURL}/${loginType}/show-form?t=${new Date().getTime()}`, {
@@ -285,7 +285,7 @@ export default function SingleCompany({ token }) {
 
                         <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company} />
 
-                        <ReadyToBuySec token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
+                        <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
                         <HeaderOfSec
                             secHead='Company Insights'
                             secText='Stay informed with the latest updates, announcements, and specials from our company'
@@ -294,7 +294,7 @@ export default function SingleCompany({ token }) {
                         <SingleCompanyNewsSec />
                         <SingleCompanyAffiliate />
                         {
-                            (token && loginType === 'user') ?
+                            (token) ?
                                 <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} formInputs={formInputs} companyId={companyId} formId={formId} setFormId={setFormId} />
                                 :
                                 ''

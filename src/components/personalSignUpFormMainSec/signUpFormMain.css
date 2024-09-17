@@ -310,3 +310,57 @@
 .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar{
     display: none;
 }
+
+.nextStep__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--main-blue-color);
+    outline: none;
+    background-color: var(--main-blue-color);
+    color: var(--primary-white);
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+    padding: 20px 40px;
+}
+.nextStep__btn:hover {
+    background-color: var(--primary-white);
+    color: var(--main-blue-color);
+}
+.nextStep__btn i {
+    margin-top: 3px;
+}
+.prevStep__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--sale-color);
+    outline: none;
+    background-color: var(--primary-white);
+    color: var(--sale-color);
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+    padding: 20px 40px;
+}
+.prevStep__btn:hover {
+    background-color: var(--sale-color);
+    color: var(--primary-white);
+}
