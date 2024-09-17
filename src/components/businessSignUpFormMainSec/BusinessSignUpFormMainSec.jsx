@@ -814,14 +814,15 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                         }
                       </div>
                       <div className="col-lg-6 mb-4">
-                        <label htmlFor="signUpBusinessdocuments" className='singUp__upLoadBtn'>
-                          Company's Doucuments <span className='fs-6'>( MultiChoice )</span>
+                        <label htmlFor="signUpBusinessdocuments" className=''>
+                          Company's Doucuments <span className="requiredStar"> * </span>
+                          <span className="optional">(MultiChoice)</span>
                         </label>
                         <input
                           onChange={handleGettingFile}
                           type='file'
                           id='signUpBusinessdocuments'
-                          className={`signUpInput ${errors.documents ? 'inputError' : ''}`}
+                          className={`form-control newUploadBtn ${errors.documents ? 'inputError' : ''}`}
                         />
                         <div>
                           {documents?.map((doc, idx) => (
@@ -842,15 +843,16 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                           (<p className='errorMessage'>{errors.documents.message}</p>)
                         }
                       </div>
-                      <div className="col-lg-6 mb-4 position-relative text-center">
-                        <label htmlFor="compnayLogo" className='singUp__upLoadBtn'>
-                          Company's Logo
+                      <div className="col-lg-12 mb-4 position-relative">
+                        <label htmlFor="compnayLogo" className=''>
+                          Company's Logo<span className="requiredStar"> * </span>
+                          
                         </label>
                         <input
                           type='file'
                           id='compnayLogo'
                           multiple
-                          className={`signUpInput ${errors.logo ? 'inputError' : ''}`}
+                          className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
                           {...register('logo')}
                         />
                         {
@@ -1199,15 +1201,15 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                           (<span className='errorMessage'>{errors.employee_password.message}</span>)
                         }
                       </div>
-                      <div className='col-lg-6 text-center'>
-                        <label htmlFor="signUpofficial_id_or_passport" className='singUp__upLoadBtn'>
-                          Employee's <span className="fs-6">(Official-Id / Passport)</span>
+                      <div className='col-lg-6'>
+                        <label htmlFor="signUpofficial_id_or_passport">
+                          Employee's <span className="optional">(Official-Id / Passport)</span><span className="requiredStar"> *</span>
                         </label>
                         <input
                           type='file'
                           id='signUpofficial_id_or_passport'
                           {...register('official_id_or_passport')}
-                          className={`signUpInput ${errors.official_id_or_passport ? 'inputError' : ''}`}
+                          className={`form-control newUploadBtn ${errors.official_id_or_passport ? 'inputError' : ''}`}
                         />
                         {
                           errors.official_id_or_passport

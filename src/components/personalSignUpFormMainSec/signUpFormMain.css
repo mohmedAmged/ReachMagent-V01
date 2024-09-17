@@ -7,6 +7,10 @@
     -o-border-radius: 24px;
     padding: 30px;
 }
+.user__management__main__info .signUpForm__mainSec{
+    transform: translate(0);
+    padding: 0 !important;
+}
 .signUpForm__head {
     font-size: 50px;
     font-weight: 400;
@@ -32,11 +36,17 @@
     -moz-border-radius: 8px;
     -ms-border-radius: 8px;
     -o-border-radius: 8px;
-    min-height: 42px;
+    min-height: 37.33px;
+
 }
 .signUpInput::placeholder {
     color: #809DAD;
     font-size: 14px;
+}
+.newUploadBtn{
+    background-color: #F1F4F8;
+    box-shadow: 0 4px 4px 0 #0000001A !important;
+    border: 0.5px solid #809DAD80;
 }
 .phoneCode {
     font-size: 12px !important;
@@ -115,9 +125,7 @@
     color: #00000080;
     font-size: 12px;
 }
-.signUpInput[type="file"] {
-    display: none;
-}
+
 .singUp__upLoadBtn {
     background-color: #08AAE8;
     border-radius: 8px;

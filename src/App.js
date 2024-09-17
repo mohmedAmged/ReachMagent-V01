@@ -114,7 +114,7 @@ function App() {
     queryFn: () => getDataFromAPI('regions'),
   });
   const fetchCartItems = async () => {
-    if(token){
+    if (token) {
       try {
         const response = await axios.get(`${baseURL}/${loginType}/my-cart?t=${new Date().getTime()}`, {
           headers: {
@@ -128,8 +128,8 @@ function App() {
     };
   };
   const wishlistItems = async () => {
-    if(token){
-      if(loginType === 'user'){
+    if (token) {
+      if (loginType === 'user') {
         try {
           const response = await axios.get(`${baseURL}/${loginType}/my-wishlist?t=${new Date().getTime()}`, {
             headers: {
@@ -149,18 +149,18 @@ function App() {
     wishlistItems()
   }, [loginType, token]);
 
-  if(token){
-    if(
+  if (token) {
+    if (
       location.pathname === '/Login'
-      || location.pathname === '/business-signUp' 
+      || location.pathname === '/business-signUp'
       || location.pathname === '/personalsignUp'
       || location.pathname === '/forget-password'
       || location.pathname === '/reset-password'
-    ){
+    ) {
       navigate('/');
     };
-  }else if(!token){
-    if(location.pathname.includes('profile')){
+  } else if (!token) {
+    if (location.pathname.includes('profile')) {
       navigate('/login');
     };
   };
@@ -178,6 +178,7 @@ function App() {
 
         {/* HomePage Route */}
         <Route path='/' element={<Home fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} companies={companiesQuery?.data?.companies} token={token} />} />
+        
         {/* Shop Routes */}
         <Route path='/discover' element={<Discover />} />
         <Route path='/shop' element={<Shop fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
@@ -189,7 +190,7 @@ function App() {
         <Route path='/show-company/:companyId' element={<SingleCompany fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries} token={token} />} />
 
-        <Route path='/one-click-quotation' element={<OneClickQuotation regions={regionsQuery?.data?.regions} mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />}/>
+        <Route path='/one-click-quotation' element={<OneClickQuotation regions={regionsQuery?.data?.regions} mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />} />
 
         <Route path='/all-insights' element={<MyCompaniesInsights token={token} />} />
 
@@ -211,9 +212,9 @@ function App() {
         <Route path='/all-category/Education' element={<SubCategoryMain />} />
 
         {/* Login & Regester Routes */}
-        <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} /> }/>
-        <Route path='/business-signUp' element={<BusinessSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} /> } />
-        <Route path='/login' element={ <MyLogin type={loginType} setType={setLoginType} />} />
+        <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
+        <Route path='/business-signUp' element={<BusinessSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
+        <Route path='/login' element={<MyLogin type={loginType} setType={setLoginType} />} />
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
 
@@ -221,29 +222,29 @@ function App() {
         <Route path='/profile/followers' element={<CompanyFollowers loginType={loginType} token={token} />} />
 
         <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
-        <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token}/>} />
-        <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token}/>} />
+        <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
+        <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
 
         <Route path='/profile/service' element={<MyService token={token} />} />
         <Route path='/profile/service/addNewItem' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/service/edit-item/:id' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
 
         <Route path='/profile/products' element={<MyProducts token={token} />} />
-        <Route path='/profile/products/addNewItem' element={ <NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
-        <Route path='/profile/products/edit-item/:id' element={ <NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
+        <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
+        <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/products/show-one/:prodInfoId' element={<ShowOneProductInfoInDash token={token} />} />
 
         <Route path='/profile/faqs' element={<MyFaqs token={token} />} />
-        <Route path='/profile/faqs/addNewItem' element={ <NewFaqForm token={token} />} />
-        <Route path='/profile/faqs/edit-item/:id' element={ <NewFaqForm token={token} />} />
+        <Route path='/profile/faqs/addNewItem' element={<NewFaqForm token={token} />} />
+        <Route path='/profile/faqs/edit-item/:id' element={<NewFaqForm token={token} />} />
 
         <Route path='/profile/posts' element={<MyPosts token={token} />} />
-        <Route path='/profile/posts/addNewItem' element={ <NewPostForm token={token} />} />
-        <Route path='/profile/posts/edit-item/:id' element={ <NewPostForm token={token} />} />
+        <Route path='/profile/posts/addNewItem' element={<NewPostForm token={token} />} />
+        <Route path='/profile/posts/edit-item/:id' element={<NewPostForm token={token} />} />
 
         <Route path='/profile/shipping-costs' element={<MyShippingCosts token={token} />} />
-        <Route path='/profile/shipping-costs/addNewCost' element={ <NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
-        <Route path='/profile/shipping-costs/edit-item/:id' element={ <NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
+        <Route path='/profile/shipping-costs/addNewCost' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
+        <Route path='/profile/shipping-costs/edit-item/:id' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
 
         <Route path='/profile/quotations' element={<MyQutations token={token} />} />
         <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation token={token} />} />

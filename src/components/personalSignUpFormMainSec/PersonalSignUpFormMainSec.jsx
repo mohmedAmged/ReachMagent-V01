@@ -487,15 +487,15 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         }
                         {
                           !isSignUp &&
-                          <div className='col-lg-6 text-center'>
-                            <label htmlFor="addEmployeeofficial_id_or_passport" className='singUp__upLoadBtn'>
-                              Official Id Or Passport
+                          <div className='col-lg-12 mb-4'>
+                            <label htmlFor="addEmployeeofficial_id_or_passport" >
+                              Official Id Or Passport<span className="requiredStar"> *</span>
                             </label>
                             <input
                               type='file'
                               id='addEmployeeofficial_id_or_passport'
                               {...register('official_id_or_passport')}
-                              className={`signUpInput ${errors.official_id_or_passport ? 'inputError' : ''}`}
+                              className={`form-control newUploadBtn ${errors.official_id_or_passport ? 'inputError' : ''}`}
                             />
                             {
                               errors.official_id_or_passport
@@ -504,15 +504,16 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             }
                           </div>
                         }
-                        <div className='col-lg-6 text-center'>
-                          <label htmlFor="signUpProfileImage" className='singUp__upLoadBtn'>
+                        <div className='col-lg-12'>
+                          <label htmlFor="signUpProfileImage">
                             Upload Profile Image
-                          </label>
+                               <span className="requiredStar"> *</span>
+                            </label>
                           <input
                             type='file'
                             id='signUpProfileImage'
                             {...register('image')}
-                            className={`signUpInput ${errors.image ? 'inputError' : ''}`}
+                            className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
                           />
                           {
                             errors.image
