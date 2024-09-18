@@ -6,54 +6,57 @@ import { baseURL } from '../../functions/baseUrl';
 
 export default function CompanyActivityFormTable(
   {index,
-  handleDeleteThisTable,
-  activityUpdateStatus,
   errors,
   allActivities,
   currMainActivityName,
   companyActivities,
+  currsubActivityName,
   setUpdatePointer,
   updatePointer,
   subActivityFinal,
   setValue
   }) {
-
   const [mainAct,setMainAct] = useState(allActivities?.find(act=> act?.mainActivityName === currMainActivityName) || {});
   const [subAct,setSubAct] = useState([]);
+  const [defaultSubAct,setDefaultSubAct] = useState([]);
   useEffect(()=>{
     setMainAct(allActivities?.find(act=> act?.mainActivityName === currMainActivityName));
   },[currMainActivityName]);
   const fileInputRef = useRef(null);
 
+  const subActsInsideCurrentMainActs = async (mainActivitySlug,mainActivityName,toastId) => {
+    const response = await axios.get(`${baseURL}/main-activities/${mainActivitySlug}`);
+    if(response?.status === 200){
+      setSubAct(response?.data?.data?.subActivities);
+      toast.success(`( ${mainActivityName} ) Sub-Activities Loaded Successfully.`,{
+        id: toastId,
+        duration: 1000
+      });
+      if(toastId){
+        fileInputRef.current.value = '';
+      };
+      setDefaultSubAct(response?.data?.data?.subActivities?.find(e => e.subActivityName === currsubActivityName)?.subActivityId)
+    }else{
+      toast.error(`something went wrong ,Please try again !`,{
+        id: toastId,
+        duration: 1000
+      });
+    };
+  };
+
   const handleChangeMainActivity = (event) => {
     const toastId = toast.loading('Loading Sub-Activities , Please Wait !');
-    const chosenActivity = allActivities?.find(el => el?.mainActivityId === +event?.target?.value);
+    const chosenActivity = allActivities?.find(el => el?.mainActivityId === +event);
     if(!companyActivities.find(el => el?.mainActivityName === chosenActivity?.mainActivityName)){
       companyActivities[index].mainActivityName = chosenActivity?.mainActivityName;
       setUpdatePointer(!updatePointer);
-      const subActsInsideCurrentMainActs = async () => {
-        const response = await axios.get(`${baseURL}/main-activities/${chosenActivity?.mainActivitySlug}`);
-        if(response?.status === 200){
-          setSubAct(response?.data?.data?.subActivities);
-          toast.success(`( ${chosenActivity?.mainActivityName} ) Sub-Activities Loaded Successfully.`,{
-            id: toastId,
-            duration: 1000
-          });
-          fileInputRef.current.value = '';
-        }else{
-          toast.error(`something went wrong ,Please try again !`,{
-            id: toastId,
-            duration: 1000
-          });
-        };
-      };
-      subActsInsideCurrentMainActs();
+      subActsInsideCurrentMainActs(chosenActivity?.mainActivitySlug,chosenActivity?.mainActivityName,toastId);
     }else {
       toast.error('This Main Activity Added Before!',{
         id: toastId,
         duration: 1000,
       });
-      event.target.value = '';
+      event = '';
     }
   };
 
@@ -87,12 +90,24 @@ export default function CompanyActivityFormTable(
     setValue('sub_activity_id',subActivityFinal);
   },[companyActivities,updatePointer]);
 
+  useEffect(()=>{
+    if(mainAct?.mainActivityId){
+      subActsInsideCurrentMainActs(mainAct?.mainActivitySlug ,mainAct?.mainActivityName);
+    };
+  },[]);
+
+  useEffect(()=>{
+    if(defaultSubAct){
+      fileInputRef.current.value = defaultSubAct;
+    }
+  },[defaultSubAct]);
+
   return (
     <>
       <div className='mt-2 profileFormInputItem activitiesSelect'>
         <select
-          defaultValuevalue={''}
-          onChange={handleChangeMainActivity}
+          defaultValue={mainAct?.mainActivityId}
+          onChange={(e) => handleChangeMainActivity(e.target.value)}
           className={`form-select signUpInput mt-2 ${errors?.activity_id?.message[index] ? 'inputError' : ''}`}
           id="dashboardCompanymainType"
         >
@@ -113,7 +128,7 @@ export default function CompanyActivityFormTable(
       <div className='mt-2 profileFormInputItem activitiesSelect'>
       <select
           ref={fileInputRef}
-          defaultValue={''}
+          defaultValue={defaultSubAct}
           className={`form-select signUpInput mt-2 ${errors?.sub_activity_id?.message[index] ? 'inputError' : ''}`}
           id="dashboardCompanymainType"
           onChange={handleChangeSubActivity}
@@ -132,14 +147,7 @@ export default function CompanyActivityFormTable(
           <span className='errorMessage'>{errors?.sub_activity_id?.message[index]}</span>
         }
       </div>
-      {
-        activityUpdateStatus !== 'notUpdating' &&
-        <div className="removeMoreActivitiesContainer text-center">
-          <span className="removeMoreActivitiesBtn" onClick={()=> handleDeleteThisTable(index)}>
-            <i className="bi bi-trash"></i>
-          </span>
-        </div> 
-      }
+
       </>
   )
 }

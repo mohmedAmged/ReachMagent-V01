@@ -46,6 +46,7 @@ export default function MyBussinessSettings({ token, mainCategories }) {
             };
         };
     }, [Cookies.get('currentLoginedData'), currentUserLogin]);
+
     useEffect(() => {
         const companyUpdatedDataInCookies = Cookies.get('currentUpdatedCompanyData');
         if (companyUpdatedDataInCookies) {

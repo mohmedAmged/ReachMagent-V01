@@ -13,7 +13,6 @@ import defaultImage from '../../assets/images.png';
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
-    console.log(loginType)
 
     function handleOffcanvasToggle() {
         setShowOffcanvas((prevShowOffcanvas) => !prevShowOffcanvas);
@@ -48,6 +47,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                 localStorage.removeItem('updatingProfile');
                 localStorage.removeItem('updatingCompanyActivities');
             } catch (error) {
+                Cookies.remove('authToken');
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
             };
         };

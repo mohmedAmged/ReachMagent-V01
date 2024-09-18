@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
@@ -109,7 +108,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours }) {
                             className="form-control signUpInput mt-2"
                             name="opening_time"
                             value={formData.opening_time[index]}
-                            type="time" // Enforcing time format
+                            type="time"
                             onChange={(e) =>
                                 handleInputChange(index, 'opening_time', e.target.value)
                             }
@@ -121,28 +120,22 @@ export default function CompanyWorkHourFormTable({ token, workingHours }) {
                             className="form-control signUpInput mt-2"
                             name="closing_time"
                             value={formData.closing_time[index]}
-                            type="time" // Enforcing time format
+                            type="time" 
                             onChange={(e) =>
                                 handleInputChange(index, 'closing_time', e.target.value)
                             }
                         />
                     </div>
                     <div className="profileFormInputItem text-center mt-2">
-                        {/*  */}
                         <button onClick={() => handleDeleteWorkingHour(index)} type='button' className='deleteBtn'>
                             delete <i className="bi bi-trash3"></i>
                         </button>
                     </div>
-                    {/* <button>
-                delet
-                </button> */}
-
-
                 </div>
             ))}
             <div className="formActions">
                 <button type="button" className="btn btn-secondary mt-3" onClick={handleAddWorkingHour}>
-                   + Add More Working Hours 
+                    + Add More Working Hours 
                 </button>
                 <button type="submit" className="updateBtn mt-3">
                     Submit Changes

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import SignUpHead from '../../components/signUpHeadSec/SignUpHead';
 import BusinessSignUpFormMainSec from '../../components/businessSignUpFormMainSec/BusinessSignUpFormMainSec';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 

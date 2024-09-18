@@ -29,7 +29,7 @@
     background: var( --main-turquoise);
     color: #fff;
 }
-.companyWorkHourTable__handler .WorkHourTables__box .profileFormInputItem .deleteBtn{
+.profileFormInputItem .deleteBtn{
     border: 1px solid rgba(213, 0, 18, 1);
     background: rgba(213, 0, 18, 1);
     padding: 10px 25px;
@@ -46,7 +46,7 @@
     gap: 4px;
 }
 
-.companyWorkHourTable__handler .WorkHourTables__box .profileFormInputItem .deleteBtn:hover{
+.profileFormInputItem .deleteBtn:hover{
     background: #fff;
     color: rgba(213, 0, 18, 1);
 }

@@ -28,16 +28,15 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
         fetchShowCompany();
     }, [loginType, token]);
 
-
     return (
         <div className='companyWorkHourTable__handler'>
-                <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
+            <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
                 {editMode ? 'Cancel Update' : 'Update Work Hours'}
             </button>
             {!editMode ? (
                 <form>
                     {newData?.workingHours?.map((el, index) => (
-                        <div key={index} className="w-100  WorkHourTables__box">
+                        <div key={index} className="w-100 WorkHourTables__box">
                             <div className="mt-2 profileFormInputItem">
                                 <label>Day of Week</label>
                                 <input
