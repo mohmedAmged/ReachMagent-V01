@@ -67,22 +67,22 @@
     color: #000;
 }
 
-.changeOrderStatu__handler .order__statue.Pending {
+ .order__statue.Pending {
     color: var(--main-blue-color);
 }
-.changeOrderStatu__handler .order__statue.Accepted {
+ .order__statue.Accepted {
     color: rgba(144, 238, 159, 1);
 }
-.changeOrderStatu__handler .order__statue.Inprocess  {
+ .order__statue.Inprocess  {
     color: yellowgreen;
 }
-.changeOrderStatu__handler .order__statue.Inshipping   {
+ .order__statue.Inshipping   {
     color: orangered;
 }
-.changeOrderStatu__handler .order__statue.Completed {
+ .order__statue.Completed {
     color: green;
 }
-.changeOrderStatu__handler .order__statue.Rejected {
+ .order__statue.Rejected {
     color: #ff2020;
 }
  @media screen and (max-width: 600px) {

@@ -10,7 +10,7 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
-
+import './myOrderStyle.css'
 export default function MyOrders({ token }) {
   const [activeRole, setActiveRole] = useState('All');
   const loginType = localStorage.getItem('loginType');
@@ -72,6 +72,7 @@ export default function MyOrders({ token }) {
         toast.error(error?.response?.data?.message || 'Something Went Wrong!');
       })
   };
+  console.log(allOrders);
 
   return (
     <>
@@ -112,73 +113,127 @@ export default function MyOrders({ token }) {
                   {
                     allOrders?.length > 0 ?
                       <>
-                        <Table responsive>
-                          <thead>
-                            <tr className='table__default__header'>
-                              <th>
-                                Order Info
-                              </th>
-                              <th className='text-center'>{loginType === 'user' ? 'Company Name' : 'User Name'}</th>
-                              <th className='text-center'>Date</th>
-                              <th className='text-center'>Status</th>
-                              <th className='text-center'>Price</th>
-                              <th className='text-center'></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {
-                              allOrders?.map(el => (
-                                <tr className='' key={''}>
-                                  <td className='product__breif__detail d-flex '>
-                                    <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
-                                    <div className="product__img">
-                                      <img src={testImg} alt="product" />
-                                    </div>
-                                    <div className="product__info">
-                                      <h2>
-                                        {el?.type}
-                                      </h2>
-                                      <p>
-                                        {el?.code}
-                                      </p>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="product__created">
-                                      {
-                                        loginType === 'user' ?
-                                          el?.company_name
-                                          :
-                                          el?.user_name
-                                      }
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className={`product__statue `}>
-                                      {el?.created_at}
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className={`product__statue ${el?.order_status}`}>
-                                      {el?.order_status}
-                                    </div>
-                                  </td>
-                                  <td>
-                                    {el?.currency_symbol}{el?.total_price}
-                                  </td>
-                                  <td>
-                                    {
-                                      el?.order_status !== 'Rejected' &&
-                                      <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
-                                        <i className="bi bi-eye-fill showProd"></i>
-                                      </NavLink>
-                                    }
-                                  </td>
+                        {
+                          loginType === 'employee' ?
+                            <Table responsive>
+                              <thead>
+                                <tr className='table__default__header'>
+                                  <th>
+                                    Order Info
+                                  </th>
+                                  <th className='text-center'>{loginType === 'user' ? 'Company Name' : 'User Name'}</th>
+                                  <th className='text-center'>Date</th>
+                                  <th className='text-center'>Status</th>
+                                  <th className='text-center'>Price</th>
+                                  <th className='text-center'></th>
                                 </tr>
-                              ))
-                            }
-                          </tbody>
-                        </Table>
+                              </thead>
+                              <tbody>
+                                {
+                                  allOrders?.map(el => (
+                                    <tr className='' key={''}>
+                                      <td className='product__breif__detail d-flex '>
+                                        <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
+                                        <div className="product__img">
+                                          <img src={testImg} alt="product" />
+                                        </div>
+                                        <div className="product__info">
+                                          <h2>
+                                            {el?.type}
+                                          </h2>
+                                          <p>
+                                            {el?.code}
+                                          </p>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="product__created">
+                                          {
+                                            loginType === 'user' ?
+                                              el?.company_name
+                                              :
+                                              el?.user_name
+                                          }
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className={`product__statue `}>
+                                          {el?.created_at}
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className={`product__statue ${el?.order_status}`}>
+                                          {el?.order_status}
+                                        </div>
+                                      </td>
+                                      <td>
+                                        {el?.currency_symbol}{el?.total_price}
+                                      </td>
+                                      <td>
+                                        {
+                                          el?.order_status !== 'Rejected' &&
+                                          <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
+                                            <i className="bi bi-eye-fill showProd"></i>
+                                          </NavLink>
+                                        }
+                                      </td>
+                                    </tr>
+                                  ))
+                                }
+                              </tbody>
+                            </Table>
+                            :
+                            <div className="ordersLayoutUser_handler">
+                              <div className="row">
+                                {
+                                  allOrders?.map((el, idx) => (
+                                    <div key={idx} className="col-12">
+                                      <div className="order_item_handler">
+                                        <div className="order_item_header">
+                                          <p className='card_title'>
+                                            order created at<span> ({el?.created_at})</span>
+                                          </p>
+                                          <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
+                                        </div>
+                                        <div className="order_item_details row">
+                                          <div className="col-lg-2 col-md-2 image_handler">
+                                            <img src={testImg} alt="shop-icon" />
+                                          </div>
+                                          <div className="col-lg-6 col-md-6">
+                                            <div className="order_details_info">
+                                              <p>
+                                                order from:<span> {el?.company_name}</span>
+                                              </p>
+                                              <p>
+                                                order status: <span className={`order__statue ${el?.order_status}`}> {el?.order_status}</span>
+                                              </p>
+                                              <p>
+                                                sub total: <span> {el?.currency_symbol}{el?.sub_total}</span>
+                                              </p>
+                                              <p>
+                                                shipping price: <span> {el?.currency_symbol}{el?.shipping_price}</span>
+                                              </p>
+                                              <p>
+                                                total: <span> {el?.currency_symbol}{el?.total_price}</span>
+                                              </p>
+                                            </div>
+                                          </div>
+                                          <div className="col-lg-4 col-md-4 orderId_handler">
+                                            <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
+                                              <p>
+                                                order Id: <span> #{el?.code}</span> <i className="bi bi-arrow-up-right"></i>
+                                              </p>
+                                            </NavLink>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))
+                                }
+
+                              </div>
+                            </div>
+                        }
                         {
                           totalPages > 1 &&
                           <div className="d-flex justify-content-center align-items-center mt-4">
