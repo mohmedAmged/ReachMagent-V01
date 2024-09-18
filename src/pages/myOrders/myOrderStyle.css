@@ -75,8 +75,11 @@
     }
 }
 @media screen and (max-width: 600px){
+    .order_item_handler{
+        padding: 15px;
+    }
     .order_item_handler p.card_title{
-        font-size: 14px;
+        font-size: 11px;
     }
     .order_item_details .image_handler{
         text-align: center;
@@ -86,6 +89,10 @@
         margin-bottom: 15px;
     }
     .order_details_info p {
-        font-size: 12px;
+        font-size: 9px;
     }
+    .order_item_details .orderId_handler p {
+        font-size: 8px;
+    }
+
 } 

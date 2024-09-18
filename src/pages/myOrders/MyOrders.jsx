@@ -196,10 +196,10 @@ export default function MyOrders({ token }) {
                                           <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
                                         </div>
                                         <div className="order_item_details row">
-                                          <div className="col-lg-2 col-md-2 image_handler">
+                                          <div className="col-lg-2 col-md-2 col-sm-12 image_handler">
                                             <img src={testImg} alt="shop-icon" />
                                           </div>
-                                          <div className="col-lg-6 col-md-6">
+                                          <div className="col-lg-6 col-md-6 col-sm-12">
                                             <div className="order_details_info">
                                               <p>
                                                 order from:<span> {el?.company_name}</span>
@@ -218,7 +218,7 @@ export default function MyOrders({ token }) {
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-lg-4 col-md-4 orderId_handler">
+                                          <div className="col-lg-4 col-md-4 col-sm-12 orderId_handler">
                                             <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
                                               <p>
                                                 order Id: <span> #{el?.code}</span> <i className="bi bi-arrow-up-right"></i>
