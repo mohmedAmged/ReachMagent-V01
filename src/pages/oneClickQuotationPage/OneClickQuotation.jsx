@@ -47,7 +47,6 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         sub_category_id: requestIntries?.sub_category_id ? requestIntries?.sub_category_id : '',
     });
 
-
     useEffect(() => {
         if (token && (loginType === 'user')) {
             setloadingCart(true);
@@ -619,19 +618,18 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                             </div>
                                                         </div>
                                                         <div className="col-lg-6">
-                                                            <div className="customizationQuote__actions">
-                                                                <label htmlFor="customProductImageBtn" className='addedButtonStyle'>
-                                                                    Add Files
-                                                                </label>
+                                                            <div className="customizationQuote__actions singleQuoteInput">
+                                                                <label>UpLoad A Reference</label>
+                                                                <p className='fw-light mb-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
                                                                 <input
                                                                     type='file'
-                                                                    id='customProductImageBtn'
+                                                                    id='customProductImageOneClickQuotation'
                                                                     multiple
                                                                     onChange={handleCustomProductChangeImage}
-                                                                    className={`d-none`}
+                                                                    className={`form-control`}
                                                                 />
-                                                                <span className='pageMainBtnStyle' onClick={handleAddCustomProduct}>
-                                                                    Add to Quotation
+                                                                <span className='pageMainBtnStyle mt-4' onClick={handleAddCustomProduct}>
+                                                                    Add Item to Quotation
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -667,6 +665,30 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                     <DestinationForm isOneClickQuotation={true} countries={countries} distinationData={distinationData} setDistinationData={setDistinationData} />
                                                 </div>
                                             )}
+                                            <div className="col-12">
+                                                <div className="customizationQuote__handler">
+                                                    <h3 className='text-capitalize customizationHead'>
+
+                                                    </h3>
+                                                    <div className="customization__form row">
+                                                        <div className="col-lg-12">
+                                                            <div className="singleQuoteInput">
+                                                                <label htmlFor="oneClickQuotationNote">
+                                                                    Add Note To One Click Quotation
+                                                                </label>
+                                                                <textarea
+                                                                    id="oneClickQuotationNote"
+                                                                    name="user_notes"
+                                                                    className="form-control customizedInput"
+                                                                    rows="3"
+                                                                    placeholder='Ex: Add any notes or specific terms and conditions for your request in this section.'
+                                                                    onChange={handleCustomProductChange}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div className="col-12">
                                                 <button disabled={loadingSubmit || cart?.on_click_quotation_cart?.length === 0} className='addedButtonStyle btnSubmitQuote mt-5'>
                                                     Submit quotation

@@ -10,9 +10,9 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
+import toast from 'react-hot-toast';
 
-export default function SingleCompanyNewsSec({ token }) {
-
+export default function SingleCompanyNewsSec({token}) {
   const [newData, setNewdata] = useState([])
   const fetchHomePosts = async () => {
     try {
@@ -23,12 +23,14 @@ export default function SingleCompanyNewsSec({ token }) {
       });
       setNewdata(response?.data?.data?.posts);
     } catch (error) {
-      setNewdata(error?.response?.data.message);
+      toast.error(error?.response?.data?.message);
     };
   };
 
   useEffect(() => {
-    fetchHomePosts();
+    if(token){
+      fetchHomePosts();
+    };
   }, [token]);
 
   return (

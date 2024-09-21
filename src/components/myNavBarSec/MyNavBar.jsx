@@ -49,6 +49,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
             } catch (error) {
                 Cookies.remove('authToken');
                 toast.error(`${JSON.stringify(error?.response?.data?.message)}`);
+                window.location.reload();
             };
         };
         closeOffcanvas();
@@ -155,7 +156,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 alt='img-check'
                                             />
                                         </NavLink>
-                                        {
+                                        {/* {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                     scrollToTop();
@@ -188,7 +189,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                     <span>{totalCartItemsInCart}</span>
                                                 }
                                             </NavLink>
-                                        }
+                                        } */}
                                         
                                     </>
                                     :
@@ -253,7 +254,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 alt='img-check'
                                             />
                                         </NavLink>
-                                        {
+                                        {/* {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
                                                 scrollToTop();
@@ -277,7 +278,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                     <span>{totalCartItemsInCart}</span>
                                                 }
                                             </NavLink>
-                                        }
+                                        } */}
                                     </>
                                 }
                                 <NavLink

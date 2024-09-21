@@ -174,7 +174,7 @@ export default function CompanyActivitiesForm(token, setUnAuth) {
         editMode &&
         <div className="formActions text-center">
           <button type="button" className="btn btn-secondary my-3 w-100" onClick={handleAddMoreActivities}>
-            + Add More Working Hours
+            + Add More Company Activities
           </button>
           <button type="submit" className="updateBtn mt-3">
             Submit Changes

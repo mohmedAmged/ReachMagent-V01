@@ -285,13 +285,13 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
 
                         <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company} />
 
-                        <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} />
+                        {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
                         <HeaderOfSec
                             secHead='Company Insights'
                             secText='Stay informed with the latest updates, announcements, and specials from our company'
                         />
 
-                        <SingleCompanyNewsSec />
+                        <SingleCompanyNewsSec token={token} />
                         <SingleCompanyAffiliate />
                         {
                             (token) ?

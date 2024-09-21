@@ -18,7 +18,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     const loginType = localStorage.getItem('loginType')
     const navigate = useNavigate();
     const { id } = useParams();
-    const [currCatalog,setCurrCatalog] = useState([]);
+    const [currCatalog, setCurrCatalog] = useState([]);
     const allTypes = [
         {
             id: 1,
@@ -43,7 +43,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
         }
     ];
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
-
+    const [allUnitsOfMeasure, setAllUnitsOfMeasure] = useState([])
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
         if (!currentUserLogin) {
@@ -53,35 +53,55 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
     const [formData, setFormData] = useState({
-        title_ar: '',
+        title_ar: '', /*optional*/
         title_en: '',
-        description_ar: '',
+        description_ar: '', /*optional*/
         description_en: '',
-        price: '',
+        price: '', /*optional*/
         category_id: '',
         sub_category_id: '',
         status: 'active',
+        code: '',
+        unit_of_measure_id: '',
+        tax: '', /*optional  0 => 100*/
         type: [],
         image: [],
     });
-
-    useEffect(()=>{
-        if(id && loginType === 'employee') {
-            (async ()=> {
-                await axios.get(`${baseURL}/${loginType}/show-catalog/${id}?t=${new Date().getTime()}`,{
+    const fetchUnitsOfMeasure = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/${loginType}/units-of-measure?t=${new Date().getTime()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setAllUnitsOfMeasure(response?.data?.data?.units_of_measure);
+        } catch (error) {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
+        }
+    };
+    useEffect(() => {
+        fetchUnitsOfMeasure();
+    }, [loginType, token]);
+    useEffect(() => {
+        if (id && loginType === 'employee') {
+            (async () => {
+                await axios.get(`${baseURL}/${loginType}/show-catalog/${id}?t=${new Date().getTime()}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                .then(response => {
-                    setCurrCatalog(response?.data?.data);
-                })
-                .catch(error => {
-                    toast.error(error?.response?.data?.message || 'Something went wrong!');
-                });
+                    .then(response => {
+                        setCurrCatalog(response?.data?.data);
+                    })
+                    .catch(error => {
+                        toast.error(error?.response?.data?.message || 'Something went wrong!');
+                    });
             })();
         };
-    },[id]);
+    }, [id]);
 
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
 
@@ -115,9 +135,12 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
         fetchSubCategories();
     }, [formData.category_id, mainCategories]);
 
-    useEffect(()=>{
-        if(+currCatalog?.id === +id){
+    useEffect(() => {
+        if (+currCatalog?.id === +id) {
             formData.price = currCatalog?.price;
+            formData.unit_of_measure_id = +currCatalog?.unit_of_measure_id;
+            formData.tax = currCatalog?.tax;
+            formData.code = currCatalog?.code;
             formData.title_en = currCatalog?.title;
             formData.title_ar = currCatalog?.title;
             formData.description_en = currCatalog?.description;
@@ -127,14 +150,26 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currCatalog.subCategory)?.subCategoryId;
             formData.image = currCatalog?.media?.map(el => el?.image);
         };
-    },[currCatalog]);
-
+    }, [currCatalog]);
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        if (name === 'tax' && value < 0 ) {
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: 0,
+            }));
+        }else if(name === 'tax' && value >= 100 ){
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: 100,
+            }));
+        }else{
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
     const handleCheckboxChange = (id, name) => {
@@ -213,7 +248,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={id ? 'Update Catalog Item' :'Add Item to Catalog'} />
+                                <ContentViewHeader title={id ? 'Update Catalog Item' : 'Add Item to Catalog'} />
                                 {
                                     unAuth ?
                                         <UnAuthSec />
@@ -222,7 +257,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_en">Product Name in English</label>
+                                                        <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span></label>
                                                         <input
                                                             type="text"
                                                             name="title_en"
@@ -235,7 +270,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_ar">Product Name in Arabic</label>
+                                                        <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span></label>
                                                         <input
                                                             type="text"
                                                             name="title_ar"
@@ -250,7 +285,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="category_id">Category</label>
+                                                        <label htmlFor="category_id">Category <span className="requiredStar"> *</span></label>
                                                         <select
                                                             name="category_id"
                                                             className="form-control custom-select"
@@ -268,7 +303,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="sub_category_id">Sub Category</label>
+                                                        <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span></label>
                                                         <select
                                                             name="sub_category_id"
                                                             className="form-control custom-select"
@@ -286,9 +321,43 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                             </div>
                                             <div className="row">
+                                                <div className="col-lg-6">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="unit_of_measure_id">
+                                                            unit of measure <span className="requiredStar"> *</span></label>
+                                                        <select
+                                                            name="unit_of_measure_id"
+                                                            className="form-control custom-select"
+                                                            value={formData?.unit_of_measure_id}
+                                                            onChange={handleInputChange}
+                                                        >
+                                                            <option value="" disabled>Select unit of measure</option>
+                                                            {allUnitsOfMeasure?.map((unit) => (
+                                                                <option key={unit?.id} value={unit?.id}>
+                                                                    {unit?.unit}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-6">
+                                                <div className="catalog__new__input">
+                                                        <label htmlFor="code">product code <span className="requiredStar"> *</span></label>
+                                                        <input
+                                                            type="text"
+                                                            name="code"
+                                                            className="form-control"
+                                                            placeholder="Enter your text"
+                                                            value={formData?.code}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_en">Description in English</label>
+                                                        <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span></label>
                                                         <textarea
                                                             name="description_en"
                                                             className="form-control"
@@ -300,7 +369,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_ar">Description in Arabic</label>
+                                                        <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span></label>
                                                         <textarea
                                                             name="description_ar"
                                                             className="form-control"
@@ -312,9 +381,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                             </div>
                                             <div className="row">
-                                                <div className="col-lg-6">
+                                                <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="price">Price</label>
+                                                        <label htmlFor="price">Price <span className='optional'>(optional)</span></label>
                                                         <div className="custom-input-container">
                                                             <input
                                                                 type="text"
@@ -325,15 +394,25 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                                 value={formData?.price}
                                                                 onChange={handleInputChange}
                                                             />
-                                                            <label htmlFor="currency" className="currency__label">Currency:</label>
-                                                            <select
-                                                                name="currency"
-                                                                className="form-control custom-select"
-                                                            >
-                                                                <option value="USD">USD</option>
-                                                                <option value="EGP">EGP</option>
-                                                                <option value="EUR">EUR</option>
-                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-8">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="tax">Tax % <span className='optional'>(optional)</span></label>
+                                                        <div className="custom-input-container">
+                                                            <input
+                                                                type="number"
+                                                                id="cata-tax"
+                                                                name="tax"
+                                                                min={0}
+                                                                max={100}
+                                                                className="form-control custom-input"
+                                                                placeholder="tax between (0% -100%)"
+                                                                value={formData?.tax}
+                                                                onChange={handleInputChange}
+                                                            />
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>

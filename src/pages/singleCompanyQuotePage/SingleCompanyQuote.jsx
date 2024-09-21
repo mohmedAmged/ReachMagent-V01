@@ -56,23 +56,18 @@ export default function SingleCompanyQuote({ token, countries }) {
         if (token && loginType && companyIdWantedToHaveQuoteWith) {
             setloadingCart(true);
             (async () => {
-                try {
-                    const response = await fetch(`${baseURL}/${loginType}/prepare-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`, {
+                    await axios.get(`${baseURL}/${loginType}/prepare-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`
                         },
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    };
-                    const result = await response.json();
-                    setCart(result?.data?.cart);
-                    setCustomizationCondition(result?.data?.company_customization);
-                } catch (err) {
-                    toast.error(err.message);
-                }
+                    }).then(res => {
+                        setCart(res?.data?.data?.cart);
+                        setCustomizationCondition(res?.data?.data?.company_customization);
+                    }).catch(err => {
+                        toast.error(err.message);
+                    })
                 setloadingCart(false);
             })();
         };
@@ -95,35 +90,28 @@ export default function SingleCompanyQuote({ token, countries }) {
                 setloadingCart(true);
                 (async () => {
                     const toastId = toast.loading('Loading...');
-                    try {
-                        const response = await fetch(`${baseURL}/${loginType}/filter-to-make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                    await axios.post(`${baseURL}/${loginType}/filter-to-make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                            requestIntries,
                             {
-                                method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                     Accept: 'application/json',
                                     Authorization: `Bearer ${token}`
                                 },
-                                body: JSON.stringify(requestIntries),
                             },
-                        );
-                        const result = await response.json();
-                        if (result?.status === 200) {
-                            setCurrentCategories(result?.data?.categories);
-                            setCurrentProd(result?.data?.catalogs || result?.data?.services);
-                            toast.success(result?.message || 'Loaded Successfully', {
+                        ).then(res => {
+                            setCurrentCategories(res?.data?.categories);
+                            setCurrentProd(res?.data?.catalogs || res?.data?.services);
+                            toast.success(res?.message || 'Loaded Successfully', {
                                 id: toastId,
                                 duration: 1000,
                             });
-                        } else {
-                            throw new Error(result?.errors?.type[0] || result?.message || 'Network response was not ok');
-                        }
-                    } catch (err) {
-                        toast.error(`${err}`, {
-                            id: toastId,
-                            duration: 1000,
+                        }).catch((err) => {
+                            toast.error(`${err.response?.data?.message}`, {
+                                id: toastId,
+                                duration: 1000,
+                            });
                         });
-                    };
                 })();
                 setloadingCart(false);
             }
@@ -636,11 +624,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                     <div className="customization__form row">
                                                         <div className="col-lg-12">
                                                             <div className="singleQuoteInput">
-                                                                <label htmlFor="customProductDescription">
+                                                                <label htmlFor="quotationNote">
                                                                     Add Note To Quotation
                                                                 </label>
                                                                 <textarea
-                                                                    id="customProductDescription"
+                                                                    id="quotationNote"
                                                                     name="user_notes"
                                                                     className="form-control customizedInput"
                                                                     rows="3"

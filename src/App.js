@@ -39,18 +39,12 @@ import ShowSingleQuotation from './components/showSingleQuotationsSec/ShowSingle
 import OneClickQuotationsDashboard from './pages/oneClickQuotationsDashboardPage/OneClickQuotationsDashboard';
 import ShowOneClickQuotation from './components/showOneClickQuotationSec/ShowOneClickQuotation';
 import OneClickNegotiationCompanies from './pages/oneClickNegotiationCompaniesPage/OneClickNegotiationCompanies';
-import NewProductForm from './components/newProductItemForm/NewProductForm';
-import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
 import MyFaqs from './pages/myFaqsPage/MyFaqs';
 import NewFaqForm from './components/newFaqFromItem/NewFaqForm';
 import MyPosts from './pages/myPostsPage/MyPosts';
 import NewPostForm from './components/newPostFormItem/NewPostForm';
-import LastMinuteDetails from './pages/LastMinuteDetailsPage/LastMinuteDetails';
 import MyAllCompanies from './pages/myAllCompaniesPage/MyAllCompanies';
 import MyCompaniesInsights from './pages/myCompaniesInsightsPage/MyCompaniesInsights';
-import MyCart from './pages/myCartPage/MyCart';
-import MyWishList from './pages/myWishListPage/MyWishList';
-import MyCheckout from './pages/myCheckoutPage/MyCheckout';
 import ShowOneOrderInfo from './components/showOneOrderInfoSec/ShowOneOrderInfo';
 import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
@@ -113,41 +107,42 @@ function App() {
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
   });
-  const fetchCartItems = async () => {
-    if (token) {
-      try {
-        const response = await axios.get(`${baseURL}/${loginType}/my-cart?t=${new Date().getTime()}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setTotalCartItemsInCart(response?.data?.data?.cart?.total_quantity);
-      } catch (error) {
-        toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
-      };
-    };
-  };
-  const wishlistItems = async () => {
-    if (token) {
-      if (loginType === 'user') {
-        try {
-          const response = await axios.get(`${baseURL}/${loginType}/my-wishlist?t=${new Date().getTime()}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          setTotalWishlistItems(response?.data?.data?.wish_list?.length);
-        }
-        catch (error) {
-          toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
-        };
-      };
-    };
-  };
-  useEffect(() => {
-    fetchCartItems()
-    wishlistItems()
-  }, [loginType, token]);
+  // const fetchCartItems = async () => {
+  //   if (token) {
+  //     try {
+  //       const response = await axios.get(`${baseURL}/${loginType}/my-cart?t=${new Date().getTime()}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       });
+  //       setTotalCartItemsInCart(response?.data?.data?.cart?.total_quantity);
+  //     } catch (error) {
+  //       toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+  //     };
+  //   };
+  // };
+
+  // const wishlistItems = async () => {
+  //   if (token) {
+  //     if (loginType === 'user') {
+  //       try {
+  //         const response = await axios.get(`${baseURL}/${loginType}/my-wishlist?t=${new Date().getTime()}`, {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`
+  //           }
+  //         });
+  //         setTotalWishlistItems(response?.data?.data?.wish_list?.length);
+  //       }
+  //       catch (error) {
+  //         toast.error(error?.response?.data.message || 'Faild To get Cart Products!');
+  //       };
+  //     };
+  //   };
+  // };
+  // useEffect(() => {
+  //   fetchCartItems();
+  //   wishlistItems();
+  // }, [loginType, token]);
 
   if (token) {
     if (
@@ -160,7 +155,31 @@ function App() {
       navigate('/');
     };
   } else if (!token) {
-    if (location.pathname.includes('profile')) {
+    if (
+      location.pathname.includes('profile') ||
+      location.pathname === '/profile/followers' ||
+      location.pathname === '/profile/catalog' ||
+      location.pathname === '/profile/catalog/addNewItem' ||
+      location.pathname === '/profile/catalog/edit-item' ||
+      location.pathname === '/profile/service' ||
+      location.pathname === '/profile/service/addNewItem' ||
+      location.pathname === '/profile/service/edit-item' ||
+      location.pathname === '/profile/products' ||
+      location.pathname === '/profile/products/addNewItem' ||
+      location.pathname === '/profile/products/edit-item' ||
+      location.pathname === '/profile/faqs' ||
+      location.pathname === '/profile/faqs/addNewItem' ||
+      location.pathname === '/profile/faqs/edit-item' ||
+      location.pathname === '/profile/posts' ||
+      location.pathname === '/profile/posts/addNewItem' ||
+      location.pathname === '/profile/posts/edit-item' ||
+      location.pathname === '/profile/shipping-costs' ||
+      location.pathname === '/profile/shipping-costs/addNewItem' ||
+      location.pathname === '/profile/shipping-costs/edit-item' ||
+      location.pathname === '/profile/quotations' ||
+      location.pathname === '/profile/oneclick-quotations' ||
+      location.pathname === '/profile/orders'
+    ) {
       navigate('/login');
     };
   };
@@ -169,7 +188,7 @@ function App() {
     <>
 
       {
-        location.pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} totalCartItemsInCart={totalCartItemsInCart} totalWishlistItems={totalWishlistItems} />
+        location.pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} />
       }
 
       <Toaster position="top-right" reverseOrder={false} />
@@ -177,27 +196,27 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} companies={companiesQuery?.data?.companies} token={token} />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} token={token} />} />
         
         {/* Shop Routes */}
-        <Route path='/discover' element={<Discover />} />
-        <Route path='/shop' element={<Shop fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
-        <Route path='/shop/:singleProduct' element={<ProductDetails fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
+        {/* <Route path='/discover' element={<Discover />} /> */}
+        {/* <Route path='/shop' element={<Shop fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
+        {/* <Route path='/shop/:singleProduct' element={<ProductDetails fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
 
-        <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} />
+        {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
 
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
-        <Route path='/show-company/:companyId' element={<SingleCompany fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
+        <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries} token={token} />} />
 
         <Route path='/one-click-quotation' element={<OneClickQuotation regions={regionsQuery?.data?.regions} mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />} />
 
         <Route path='/all-insights' element={<MyCompaniesInsights token={token} />} />
 
-        <Route path='/my-wishlist' element={<MyWishList fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} />
+        {/* <Route path='/my-wishlist' element={<MyWishList fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
 
-        <Route path='/my-cart' element={<MyCart fetchCartItems={fetchCartItems} token={token} />} />
-        <Route path='/check-out/:companyId' element={<MyCheckout token={token} />} />
+        {/* <Route path='/my-cart' element={<MyCart fetchCartItems={fetchCartItems} token={token} />} /> */}
+        {/* <Route path='/check-out/:companyId' element={<MyCheckout token={token} />} /> */}
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />
@@ -229,10 +248,10 @@ function App() {
         <Route path='/profile/service/addNewItem' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/service/edit-item/:id' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
 
-        <Route path='/profile/products' element={<MyProducts token={token} />} />
-        <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
-        <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
-        <Route path='/profile/products/show-one/:prodInfoId' element={<ShowOneProductInfoInDash token={token} />} />
+        {/* <Route path='/profile/products' element={<MyProducts token={token} />} /> */}
+        {/* <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
+        {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
+        {/* <Route path='/profile/products/show-one/:prodInfoId' element={<ShowOneProductInfoInDash token={token} />} /> */}
 
         <Route path='/profile/faqs' element={<MyFaqs token={token} />} />
         <Route path='/profile/faqs/addNewItem' element={<NewFaqForm token={token} />} />

@@ -67,10 +67,10 @@ export default function Home({companies,token,fetchCartItems,wishlistItems}) {
             />
           </div>
         }
-        <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/>
+        {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
         <TrendingCompanySec companies={companies} token={token} />
         <GrowBuisnessSec />
-        <LastMinuteDeals setLoading={setLoading} token={token}/>
+        {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
         <div className='mt-3'>
           <HeaderOfSec
             secHead='Companies Insights'

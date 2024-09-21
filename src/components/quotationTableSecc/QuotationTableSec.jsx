@@ -34,7 +34,9 @@ export default function QuotationTableSec({ token, setUnAuth }) {
         }
     };
     useEffect(() => {
-        fetchAllQuotations();
+        if(token){
+            fetchAllQuotations();
+        };
     }, [loginType, token]);
 
     const handlePageChange = (newPage) => {
@@ -42,6 +44,8 @@ export default function QuotationTableSec({ token, setUnAuth }) {
             setCurrentPage(newPage);
         };
     };
+
+    console.log(newData);
 
     return (
         <div className='quotationTable__handler content__view__handler'>
@@ -82,24 +86,26 @@ export default function QuotationTableSec({ token, setUnAuth }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {newData?.map((row, index) => (
-                            <tr key={index}>
-                                <td className='mx-0 px-0'>
-                                    <NavLink to={`/profile/quotations/${row?.id}`} className={'nav-link fw-bold'}>
-                                        {row?.code === 'N/A' ? '' : row?.code}
-                                    </NavLink>
-                                </td>
-                                <td >{row?.created_at === 'N/A' ? 'InProgress' : row?.created_at}</td>
-                                <td>{loginType === 'user' ? row?.company_name : row?.user_name}</td>
-                                <td>{row?.type === 'N/A' ? '' : row?.type}</td>
-                                <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
-                                <td className='adjust__flex'>
-                                    <button className={`${row?.user_status} table__statu__btn`}>
-                                        {row?.user_status}
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {
+                            newData?.map((row, index) => (
+                                <tr key={index}>
+                                    <td className='mx-0 px-0'>
+                                        <NavLink to={`/profile/quotations/${row?.id}`} className={'nav-link fw-bold'}>
+                                            {row?.code === 'N/A' ? '' : row?.code}
+                                        </NavLink>
+                                    </td>
+                                    <td >{row?.created_at === 'N/A' ? 'InProgress' : row?.created_at}</td>
+                                    <td>{loginType === 'user' ? row?.company_name : row?.user_name}</td>
+                                    <td>{row?.type === 'N/A' ? '' : row?.type}</td>
+                                    <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
+                                    <td className='adjust__flex'>
+                                        <button className={`${row?.user_status} table__statu__btn`}>
+                                            {row?.user_status}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </Table>
                 {

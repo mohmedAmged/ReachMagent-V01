@@ -77,7 +77,6 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
                     to={`/profile/oneclick-quotations/${negotiateId}/${row?.id}`}
                   >
                     {
-                      (row?.company_status === 'Accepted') &&
                       <button className={`table__statu__btn show__btn`}>
                         <span>show</span>
                         <i className="bi bi-eye"></i>
@@ -90,27 +89,27 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
           </tbody>
         </Table>
         {
-                          totalPages > 1 &&
-                          <div className="d-flex justify-content-center align-items-center mt-4">
-                            <button
-                              type="button"
-                              className="paginationBtn me-2"
-                              disabled={currentPage === 1}
-                              onClick={() => handlePageChange(currentPage - 1)}
-                            >
-                              <i class="bi bi-caret-left-fill"></i>
-                            </button>
-                            <span className='currentPagePagination'>{currentPage}</span>
-                            <button
-                              type="button"
-                              className="paginationBtn ms-2"
-                              disabled={currentPage === totalPages}
-                              onClick={() => handlePageChange(currentPage + 1)}
-                            >
-                              <i class="bi bi-caret-right-fill"></i>
-                            </button>
-                          </div>
-                        }
+          totalPages > 1 &&
+          <div className="d-flex justify-content-center align-items-center mt-4">
+            <button
+              type="button"
+              className="paginationBtn me-2"
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              <i class="bi bi-caret-left-fill"></i>
+            </button>
+            <span className='currentPagePagination'>{currentPage}</span>
+            <button
+              type="button"
+              className="paginationBtn ms-2"
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              <i class="bi bi-caret-right-fill"></i>
+            </button>
+          </div>
+        }
       </div>
     </div>
   );
