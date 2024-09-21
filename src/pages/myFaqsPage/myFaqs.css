@@ -17,5 +17,8 @@
 .allFaqsDash__handler .singleCompany__rectangleSec-slide .deleteFaq__btn i:hover{
     color: rgba(238, 155, 144, 1);
 }
+.allFaqsDash__handler .singleCompany__rectangleSec-slide{
+height: auto;
+}
 
 /* --main-turquoise */

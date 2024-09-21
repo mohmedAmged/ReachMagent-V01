@@ -119,7 +119,7 @@ export default function NewFaqForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="question_en">Faq Question in English</label>
+                                                <label htmlFor="question_en">Faq Question in English <span className="requiredStar"> *</span></label>
                                                 <input
                                                     type="text"
                                                     name="question_en"
@@ -132,7 +132,7 @@ export default function NewFaqForm({ token }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="question_ar">Faq Question in Arabic</label>
+                                                <label htmlFor="question_ar">Faq Question in Arabic <span className="requiredStar"> *</span></label>
                                                 <input
                                                     type="text"
                                                     name="question_ar"
@@ -147,7 +147,7 @@ export default function NewFaqForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="answer_en">Asnwer in English</label>
+                                                <label htmlFor="answer_en">Asnwer in English <span className="requiredStar"> *</span></label>
                                                 <textarea
                                                     name="answer_en"
                                                     className="form-control"
@@ -159,7 +159,7 @@ export default function NewFaqForm({ token }) {
                                         </div>
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="answer_ar">Answer in Arabic</label>
+                                                <label htmlFor="answer_ar">Answer in Arabic <span className="requiredStar"> *</span></label>
                                                 <textarea
                                                     name="answer_ar"
                                                     className="form-control"

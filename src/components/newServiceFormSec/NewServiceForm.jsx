@@ -36,6 +36,7 @@ export default function NewServiceForm({ mainCategories, token }) {
         category_id: '',
         sub_category_id: '',
         status: 'active',
+        code:'',
         image: '',
     });
 
@@ -93,6 +94,7 @@ export default function NewServiceForm({ mainCategories, token }) {
         if (+currSevice?.id === +id) {
             formData.title_en = currSevice?.title;
             formData.title_ar = currSevice?.title;
+            formData.code = currSevice?.code;
             formData.description_en = currSevice?.description;
             formData.description_ar = currSevice?.description;
             formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currSevice?.category)?.mainCategoryId;
@@ -178,7 +180,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_en">Product Name in English</label>
+                                                        <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span></label>
                                                         <input
                                                             type="text"
                                                             name="title_en"
@@ -191,7 +193,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_ar">Product Name in Arabic</label>
+                                                        <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span></label>
                                                         <input
                                                             type="text"
                                                             name="title_ar"
@@ -206,7 +208,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="category_id">Category</label>
+                                                        <label htmlFor="category_id">Category <span className="requiredStar"> *</span></label>
                                                         <select
                                                             name="category_id"
                                                             className="form-control custom-select"
@@ -224,7 +226,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="sub_category_id">Sub Category</label>
+                                                        <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span></label>
                                                         <select
                                                             name="sub_category_id"
                                                             className="form-control custom-select"
@@ -244,7 +246,20 @@ export default function NewServiceForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_en">Description in English</label>
+                                                            <label htmlFor="code">service code <span className="requiredStar"> *</span></label>
+                                                            <input
+                                                                type="text"
+                                                                name="code"
+                                                                className="form-control"
+                                                                placeholder="Enter your text"
+                                                                value={formData?.code}
+                                                                onChange={handleInputChange}
+                                                            />
+                                                        </div>
+                                                </div>
+                                                <div className="col-lg-8">
+                                                    <div className="catalog__new__input">
+                                                        <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span></label>
                                                         <textarea
                                                             name="description_en"
                                                             className="form-control"
@@ -256,7 +271,7 @@ export default function NewServiceForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_ar">Description in Arabic</label>
+                                                        <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span></label>
                                                         <textarea
                                                             name="description_ar"
                                                             className="form-control"
