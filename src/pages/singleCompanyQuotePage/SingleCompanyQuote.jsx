@@ -300,6 +300,8 @@ export default function SingleCompanyQuote({ token, countries }) {
         }, 500);
     }, [loading]);
 
+    
+
     return (
         <>
             {

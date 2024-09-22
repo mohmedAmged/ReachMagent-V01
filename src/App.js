@@ -261,9 +261,9 @@ function App() {
         <Route path='/profile/posts/addNewItem' element={<NewPostForm token={token} />} />
         <Route path='/profile/posts/edit-item/:id' element={<NewPostForm token={token} />} />
 
-        <Route path='/profile/shipping-costs' element={<MyShippingCosts token={token} />} />
-        <Route path='/profile/shipping-costs/addNewCost' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
-        <Route path='/profile/shipping-costs/edit-item/:id' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} />
+        {/* <Route path='/profile/shipping-costs' element={<MyShippingCosts token={token} />} /> */}
+        {/* <Route path='/profile/shipping-costs/addNewCost' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} /> */}
+        {/* <Route path='/profile/shipping-costs/edit-item/:id' element={<NewShippingCostForm token={token} countries={countriesQuery?.data?.countries} />} /> */}
 
         <Route path='/profile/quotations' element={<MyQutations token={token} />} />
         <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation token={token} />} />

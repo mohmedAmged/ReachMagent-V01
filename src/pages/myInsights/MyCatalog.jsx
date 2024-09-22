@@ -62,7 +62,6 @@ export default function MyCatalog({ token }) {
       .then(response => {
         toast.success(response?.data?.message || 'Deleted Successufuly');
         fetchCatalogs();
-        console.log(response?.message);
         
       })
       .catch(error => {
@@ -81,7 +80,6 @@ export default function MyCatalog({ token }) {
       setCurrentPage(newPage);
     };
   };
-console.log(newData);
 
   return (
     <>

@@ -253,10 +253,11 @@ export default function ShowSingleQuotation({ token }) {
                     <div className='dashboard__handler showSingleQuotation__handler d-flex'>
                         <MyNewSidebarDash />
                         <div className='main__content container'>
-                            <MainContentHeader currentUserLogin={currentUserLogin} />
+                            <MainContentHeader search={false} currentUserLogin={currentUserLogin} />
                             {
                                 loginType === 'employee' &&
-                                unAuth ?
+                                (
+                                    unAuth ?
                                     <UnAuthSec />
                                     :
                                     <div className='content__view__handler'>
@@ -265,80 +266,83 @@ export default function ShowSingleQuotation({ token }) {
                                             <Table responsive>
                                                 <thead>
                                                     <tr className='table__default__header'>
-                                                        <th># Item description</th>
-                                                        <th className='text-center'>Item Code</th>
+                                                        <th># Title ( Code )</th>
                                                         <th className='text-center'>Unit Of Measure</th>
                                                         <th className='text-center'>QTY</th>
                                                         <th className='text-center'>Unit Price</th>
                                                         <th className='text-center'>Tax (xx%)</th>
                                                         <th className='text-center'>Total Price</th>
+                                                        <th className='text-center'>Available For (##days)</th>
+                                                        <th className='text-center'>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
                                                         acceptedSingleQuotations?.map((row, idx) => (
                                                             <tr key={row?.id}>
-                                                                <td>
+                                                                <td className='text-capitalize'>
                                                                     <span className='me-2 indexOfTheTable'>{idx + 1}</span>
-                                                                    <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
+                                                                    <span>{
+                                                                    `${row?.title} (${row?.code ?
+                                                                    `${row?.code}` :
+                                                                    '####'
+                                                                    })`
+                                                                    }
+                                                                    </span>
                                                                 </td>
-                                                                <td className='text-center'>
-                                                                    Item Code
+                                                                <td className='text-center text-capitalize'>
+                                                                    {
+                                                                        row?.unit_of_measure !== 'N/A' ? row?.unit_of_measure : 'Customized Product'
+                                                                    }
                                                                 </td>
-                                                                <td className='text-center'>
-                                                                    Measure Unit
-                                                                </td>
-                                                                <td className='text-center'>
+                                                                <td className='text-center text-capitalize'>
                                                                     <input
                                                                         type="number"
                                                                         className={`form-control ${(newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        defaultValue={+updatedQuantity[idx] === 0 ? +row?.quantity : +updatedQuantity[idx]}
+                                                                        defaultValue={row?.quantity !== 'N/A' ? +row?.quantity : 0}
                                                                         disabled={newData?.company_status !== 'Pending'}
                                                                         min={1}
                                                                         minLength={1}
                                                                         onChange={(e) => {
-                                                                            setUpdatedQuantity(updatedQuantity.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                            
                                                                         }}
                                                                     />
                                                                 </td>
-                                                                <td className='text-center'>
+                                                                <td className='text-center text-capitalize'>
                                                                     <input
                                                                         type="number"
-                                                                        className={`form-control ${(newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        defaultValue={updatedUnitPrices?.length === 0 ? 0 : +updatedUnitPrices[idx] === 0 ? +row?.price : +updatedUnitPrices[idx] }
+                                                                        className={`form-control w-75 m-auto ${(newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                        value={row?.price !== 'N/A' ? +row?.price : 0}
                                                                         min={1}
                                                                         minLength={1}
                                                                         onChange={(e) => {
-                                                                            setUpdatedUnitPrices(updatedUnitPrices?.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                            
                                                                         }}
                                                                         disabled={newData?.company_status !== 'Pending'}
                                                                     />
                                                                 </td>
-                                                                <td className='text-center'>
+                                                                <td className='text-center text-capitalize'>
                                                                     <input
                                                                         type="number"
                                                                         className={`form-control ${(newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        value={updatedTaxPrices[idx]?.tax || row?.tax}
+                                                                        value={row?.tax !== 'N/A' ? +row?.tax : 0}
                                                                         onChange={(e) => {
-                                                                            const updatingObj = updatedTaxPrices?.find(el => +el?.id === +idx);
-                                                                            if(e.target.value >= 0 && e.target.value <= 100){
-                                                                                updatingObj ?
-                                                                                    setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: +e.target.value } : el))
-                                                                                    :
-                                                                                    setUpdatedTaxPrices([...updatedTaxPrices, { id: idx, tax: +e.target.value }]);
-                                                                            }else if(e.target.value < 0){
-                                                                                updatingObj &&
-                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 0 } : el));
-                                                                            }else if(e.target.value > 100){
-                                                                                updatingObj &&
-                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 100 } : el));
-                                                                            };
+                                                                            
                                                                         }}
                                                                         disabled={newData?.company_status !== 'Pending'}
                                                                     />
                                                                 </td>
-                                                                <td className='text-center'>
-                                                                    ${(updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || (row?.price !== 'N/A' && row?.price) || 0 ) + ((updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || (row?.price !== 'N/A' && row?.price) || 0 ) * (updatedTaxPrices?.find((el) => +el?.id === +idx) ? (+updatedTaxPrices?.find((el) => +el?.id === +idx).tax) : 0)) / 100}
+                                                                <td className='text-center text-capitalize'>
+                                                                    ${row?.expected_price !== 'N/A' ? +row?.expected_price : 0}
+                                                                </td>
+                                                                <td className='text-center text-capitalize'>
+                                                                    <input type="number" className={`form-control m-auto ${(newData?.company_status === 'Pending') ? 'bg-white' : ''}`} />
+                                                                </td>
+                                                                <td className='text-center text-capitalize p-0'>
+                                                                    <div className="actions w-100">
+                                                                        <i className="bi bi-x-circle me-2" onClick={''}></i>
+                                                                        <i class="bi bi-check-circle" onClick={''}></i>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         ))
@@ -508,261 +512,264 @@ export default function ShowSingleQuotation({ token }) {
                                             </div>
                                         </div>
                                     </div>
+                                )
                             }
                             {/* {
                                 loginType === 'user' &&
-                                unAuth ?
+                                (
+                                    unAuth ?
                                     <UnAuthSec />
                                     :
                                     <div className='content__view__handler'>
-                                        <ContentViewHeader title={`Quotation: ${newData?.code || fullData?.code} `} />
-                                        <div className="quotationTable__content">
-                                            <Table responsive>
-                                                <thead>
-                                                    <tr className='table__default__header'>
-                                                        <th># Item description</th>
-                                                        <th className='text-center'>Item Code</th>
-                                                        <th className='text-center'>Unit Of Measure</th>
-                                                        <th className='text-center'>QTY</th>
-                                                        <th className='text-center'>Unit Price</th>
-                                                        <th className='text-center'>Tax (xx%)</th>
-                                                        <th className='text-center'>Total Price</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        acceptedSingleQuotations?.map((row, idx) => (
-                                                            <tr key={row?.id}>
-                                                                <td>
-                                                                    <span className='me-2 indexOfTheTable'>{idx + 1}</span>
-                                                                    <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    Item Code
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    Measure Unit
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    <input
-                                                                        type="number"
-                                                                        className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        defaultValue={+updatedQuantity[idx] === 0 ? +row?.quantity : +updatedQuantity[idx]}
-                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                        min={1}
-                                                                        minLength={1}
-                                                                        onChange={(e) => {
-                                                                            setUpdatedQuantity(updatedQuantity.map((el, id) => +id === +idx ? +e.target.value : el));
-                                                                        }}
-                                                                    />
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    <input
-                                                                        type="number"
-                                                                        className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        defaultValue={updatedUnitPrices?.length === 0 ? 0 : +updatedUnitPrices[idx] === 0 ? +row?.price : +updatedUnitPrices[idx] }
-                                                                        min={1}
-                                                                        minLength={1}
-                                                                        onChange={(e) => {
-                                                                            setUpdatedUnitPrices(updatedUnitPrices?.map((el, id) => +id === +idx ? +e.target.value : el));
-                                                                        }}
-                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                    />
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    <input
-                                                                        type="number"
-                                                                        className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
-                                                                        value={updatedTaxPrices[idx]?.tax || row?.tax}
-                                                                        onChange={(e) => {
-                                                                            const updatingObj = updatedTaxPrices?.find(el => +el?.id === +idx);
-                                                                            if(e.target.value >= 0 && e.target.value <= 100){
-                                                                                updatingObj ?
-                                                                                    setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: +e.target.value } : el))
-                                                                                    :
-                                                                                    setUpdatedTaxPrices([...updatedTaxPrices, { id: idx, tax: +e.target.value }]);
-                                                                            }else if(e.target.value < 0){
-                                                                                updatingObj &&
-                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 0 } : el));
-                                                                            }else if(e.target.value > 100){
-                                                                                updatingObj &&
-                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 100 } : el));
-                                                                            };
-                                                                        }}
-                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                    />
-                                                                </td>
-                                                                <td className='text-center'>
-                                                                    ${(updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) + ((updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) * (updatedTaxPrices?.find((el) => +el?.id === +idx) ? (+updatedTaxPrices?.find((el) => +el?.id === +idx).tax) : 0)) / 100}
-                                                                </td>
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                </tbody>
-                                            </Table>
-                                        </div>
-                                        <div className="quoteTotals__handler">
-                                            <h3>
-                                                Quote Totals
-                                            </h3>
-                                            <div className="row align-items-center">
-                                                <div className="col-lg-6">
-                                                    <div className="totals__full__info">
-                                                        <div className="totals__text">
-                                                            <h5 className='mb-4'>
-                                                                subtotal (Standard)
-                                                            </h5>
-                                                            {
-                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-4'>
-                                                                        Shipping cost
-                                                                    </h5>
-                                                                    :
-                                                                    ''
-                                                            }
-                                                            <h5 className='mb-4'>
-                                                                Services
-                                                            </h5>
-                                                            <h5>
-                                                                Total
-                                                            </h5>
-                                                        </div>
-                                                        <div className="totals__prices">
-                                                            <h5 className='mb-4'>
-                                                                ${submitionData?.total_price}
-                                                            </h5>
-                                                            {
-                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-4'>
-                                                                        <input
-                                                                            defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
-                                                                            name='shipping_price'
-                                                                            type="number"
-                                                                            id='quotationShippingPrice'
-                                                                            className='form-control w-50'
-                                                                            maxLength={4}
-                                                                            disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                            onChange={handleChangeInput}
-                                                                        />
-                                                                    </h5>
-                                                                    :
-                                                                    ''
-                                                            }
-                                                            <h5 className='mb-4'>
+                                    <ContentViewHeader title={`Quotation: ${newData?.code || fullData?.code} `} />
+                                    <div className="quotationTable__content">
+                                        <Table responsive>
+                                            <thead>
+                                                <tr className='table__default__header'>
+                                                    <th># Item description</th>
+                                                    <th className='text-center'>Item Code</th>
+                                                    <th className='text-center'>Unit Of Measure</th>
+                                                    <th className='text-center'>QTY</th>
+                                                    <th className='text-center'>Unit Price</th>
+                                                    <th className='text-center'>Tax (xx%)</th>
+                                                    <th className='text-center'>Total Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    acceptedSingleQuotations?.map((row, idx) => (
+                                                        <tr key={row?.id}>
+                                                            <td className='text-capitalize'>
+                                                                <span className='me-2 indexOfTheTable'>{idx + 1}</span>
+                                                                <span>{row?.slug ? row?.slug : `${row?.title}`}</span>
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
+                                                                Item Code
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
+                                                                Measure Unit
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
                                                                 <input
-                                                                    defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}
-                                                                    name='services'
                                                                     type="number"
-                                                                    id='quotationservicesPrice'
-                                                                    className='form-control w-50'
-                                                                    min={0}
-                                                                    maxLength={4}
+                                                                    className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                    defaultValue={+updatedQuantity[idx] === 0 ? +row?.quantity : +updatedQuantity[idx]}
                                                                     disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
-                                                                    onChange={handleChangeInput}
+                                                                    min={1}
+                                                                    minLength={1}
+                                                                    onChange={(e) => {
+                                                                        setUpdatedQuantity(updatedQuantity.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                    }}
                                                                 />
-                                                            </h5>
-                                                            <h5>
-                                                                ${(newData?.total_price === 'N/A') ? totalPrice : newData?.total_price}
-                                                            </h5>
-                                                        </div>
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
+                                                                <input
+                                                                    type="number"
+                                                                    className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                    defaultValue={updatedUnitPrices?.length === 0 ? 0 : +updatedUnitPrices[idx] === 0 ? +row?.price : +updatedUnitPrices[idx] }
+                                                                    min={1}
+                                                                    minLength={1}
+                                                                    onChange={(e) => {
+                                                                        setUpdatedUnitPrices(updatedUnitPrices?.map((el, id) => +id === +idx ? +e.target.value : el));
+                                                                    }}
+                                                                    disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                />
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
+                                                                <input
+                                                                    type="number"
+                                                                    className={`form-control ${(loginType !== 'user' && newData?.company_status === 'Pending') ? 'bg-white' : ''}`}
+                                                                    value={updatedTaxPrices[idx]?.tax || row?.tax}
+                                                                    onChange={(e) => {
+                                                                        const updatingObj = updatedTaxPrices?.find(el => +el?.id === +idx);
+                                                                        if(e.target.value >= 0 && e.target.value <= 100){
+                                                                            updatingObj ?
+                                                                                setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: +e.target.value } : el))
+                                                                                :
+                                                                                setUpdatedTaxPrices([...updatedTaxPrices, { id: idx, tax: +e.target.value }]);
+                                                                        }else if(e.target.value < 0){
+                                                                            updatingObj &&
+                                                                            setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 0 } : el));
+                                                                        }else if(e.target.value > 100){
+                                                                            updatingObj &&
+                                                                            setUpdatedTaxPrices(updatedTaxPrices.map(el => +el?.id === +updatingObj?.id ? { id: idx, tax: 100 } : el));
+                                                                        };
+                                                                    }}
+                                                                    disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                />
+                                                            </td>
+                                                            <td className='text-center text-capitalize'>
+                                                                ${(updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) + ((updatedQuantity[idx] || row?.quantity) * (updatedUnitPrices[idx] || row?.price) * (updatedTaxPrices?.find((el) => +el?.id === +idx) ? (+updatedTaxPrices?.find((el) => +el?.id === +idx).tax) : 0)) / 100}
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                    <div className="quoteTotals__handler">
+                                        <h3>
+                                            Quote Totals
+                                        </h3>
+                                        <div className="row align-items-center">
+                                            <div className="col-lg-6">
+                                                <div className="totals__full__info">
+                                                    <div className="totals__text">
+                                                        <h5 className='mb-4'>
+                                                            subtotal (Standard)
+                                                        </h5>
+                                                        {
+                                                            (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                                                <h5 className='mb-4'>
+                                                                    Shipping cost
+                                                                </h5>
+                                                                :
+                                                                ''
+                                                        }
+                                                        <h5 className='mb-4'>
+                                                            Services
+                                                        </h5>
+                                                        <h5>
+                                                            Total
+                                                        </h5>
                                                     </div>
-                                                </div>
-                                                <div className="col-lg-6 adjustPositione">
-                                                    <div className="totals__have__problem">
-                                                        <h3>
-                                                            Having a problem?
-                                                        </h3>
-                                                        <button className='updateBtn'>
-                                                            <i className="bi bi-wechat fs-4"></i>
-                                                            <span>
-                                                                Chat with requester
-                                                            </span>
-                                                        </button>
+                                                    <div className="totals__prices">
+                                                        <h5 className='mb-4'>
+                                                            ${submitionData?.total_price}
+                                                        </h5>
+                                                        {
+                                                            (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                                                <h5 className='mb-4'>
+                                                                    <input
+                                                                        defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
+                                                                        name='shipping_price'
+                                                                        type="number"
+                                                                        id='quotationShippingPrice'
+                                                                        className='form-control w-50'
+                                                                        maxLength={4}
+                                                                        disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                        onChange={handleChangeInput}
+                                                                    />
+                                                                </h5>
+                                                                :
+                                                                ''
+                                                        }
+                                                        <h5 className='mb-4'>
+                                                            <input
+                                                                defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}
+                                                                name='services'
+                                                                type="number"
+                                                                id='quotationservicesPrice'
+                                                                className='form-control w-50'
+                                                                min={0}
+                                                                maxLength={4}
+                                                                disabled={loginType === 'user' || newData?.company_status !== 'Pending'}
+                                                                onChange={handleChangeInput}
+                                                            />
+                                                        </h5>
+                                                        <h5>
+                                                            ${(newData?.total_price === 'N/A') ? totalPrice : newData?.total_price}
+                                                        </h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="requesterDetails__handler">
-                                            <h3>
-                                                Requester Details
-                                            </h3>
-                                            <div className="row">
-                                                <div className="col-lg-12 requesterDetails__content">
-                                                    <div className="requesterDetails__mainInfo">
-                                                        <div className="mainInfo__title">
-                                                            <h5 className='mb-4'>
-                                                                Full Name:
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                Phone Number:
-                                                            </h5>
-                                                            <h5>
-                                                                Street address:
-                                                            </h5>
-                                                        </div>
-                                                        <div className="mainInfo__texts">
-                                                            <h5 className='mb-4'>
-                                                                {newData?.user_name || fullData?.user_name}
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                {newData?.user_phone || fullData?.user_phone
-                                                                }
-                                                            </h5>
-                                                            <h5>
-                                                                {newData?.address || fullData?.address}
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                    <div className="requesterDetails__subInfo">
-                                                        <div className="mainInfo__title">
-                                                            <h5 className='mb-4'>
-                                                                City:
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                Area:
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                Postal Code:
-                                                            </h5>
-                                                            <h5>
-                                                                Country:
-                                                            </h5>
-                                                        </div>
-                                                        <div className="mainInfo__texts">
-                                                            <h5 className='mb-4'>
-                                                                {newData?.city || fullData?.destination_city}
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                {newData?.area || fullData?.destination_area}
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                {newData?.code || fullData?.code}
-                                                            </h5>
-                                                            <h5>
-                                                                {newData?.country || fullData?.destination_country}
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 d-flex justify-content-around">
-                                                    {
-                                                        loginType === 'employee' ?
-                                                            newData?.company_status === 'Pending' &&
-                                                            <>
-                                                                <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                            </>
-                                                            :
-                                                            (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
-                                                            <>
-                                                                <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                            </>
-                                                    }
+                                            <div className="col-lg-6 adjustPositione">
+                                                <div className="totals__have__problem">
+                                                    <h3>
+                                                        Having a problem?
+                                                    </h3>
+                                                    <button className='updateBtn'>
+                                                        <i className="bi bi-wechat fs-4"></i>
+                                                        <span>
+                                                            Chat with requester
+                                                        </span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="requesterDetails__handler">
+                                        <h3>
+                                            Requester Details
+                                        </h3>
+                                        <div className="row">
+                                            <div className="col-lg-12 requesterDetails__content">
+                                                <div className="requesterDetails__mainInfo">
+                                                    <div className="mainInfo__title">
+                                                        <h5 className='mb-4'>
+                                                            Full Name:
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            Phone Number:
+                                                        </h5>
+                                                        <h5>
+                                                            Street address:
+                                                        </h5>
+                                                    </div>
+                                                    <div className="mainInfo__texts">
+                                                        <h5 className='mb-4'>
+                                                            {newData?.user_name || fullData?.user_name}
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            {newData?.user_phone || fullData?.user_phone
+                                                            }
+                                                        </h5>
+                                                        <h5>
+                                                            {newData?.address || fullData?.address}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                <div className="requesterDetails__subInfo">
+                                                    <div className="mainInfo__title">
+                                                        <h5 className='mb-4'>
+                                                            City:
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            Area:
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            Postal Code:
+                                                        </h5>
+                                                        <h5>
+                                                            Country:
+                                                        </h5>
+                                                    </div>
+                                                    <div className="mainInfo__texts">
+                                                        <h5 className='mb-4'>
+                                                            {newData?.city || fullData?.destination_city}
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            {newData?.area || fullData?.destination_area}
+                                                        </h5>
+                                                        <h5 className='mb-4'>
+                                                            {newData?.code || fullData?.code}
+                                                        </h5>
+                                                        <h5>
+                                                            {newData?.country || fullData?.destination_country}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 d-flex justify-content-around">
+                                                {
+                                                    loginType === 'employee' ?
+                                                        newData?.company_status === 'Pending' &&
+                                                        <>
+                                                            <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
+                                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
+                                                        </>
+                                                        :
+                                                        (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
+                                                        <>
+                                                            <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
+                                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
+                                                        </>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                )
                             } */}
                         </div>
                     </div>

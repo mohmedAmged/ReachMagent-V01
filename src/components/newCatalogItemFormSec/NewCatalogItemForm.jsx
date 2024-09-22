@@ -53,17 +53,17 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
     const [formData, setFormData] = useState({
-        title_ar: '', /*optional*/
+        title_ar: '',
         title_en: '',
-        description_ar: '', /*optional*/
+        description_ar: '',
         description_en: '',
-        price: '', /*optional*/
+        price: '',
         category_id: '',
         sub_category_id: '',
         status: 'active',
         code: '',
         unit_of_measure_id: '',
-        tax: '', /*optional  0 => 100*/
+        tax: '',
         type: [],
         image: [],
     });
@@ -141,10 +141,10 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             formData.unit_of_measure_id = +currCatalog?.unit_of_measure_id;
             formData.tax = currCatalog?.tax;
             formData.code = currCatalog?.code;
-            formData.title_en = currCatalog?.title;
-            formData.title_ar = currCatalog?.title;
-            formData.description_en = currCatalog?.description;
-            formData.description_ar = currCatalog?.description;
+            formData.title_en = currCatalog?.title_en;
+            formData.title_ar = currCatalog?.title_ar;
+            formData.description_en = currCatalog?.description_en;
+            formData.description_ar = currCatalog?.description_ar;
             formData.type = currCatalog?.catalogTypes?.map(el => el?.type);
             formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currCatalog?.category)?.mainCategoryId;
             formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currCatalog.subCategory)?.subCategoryId;
@@ -236,6 +236,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+
 
     return (
         <>

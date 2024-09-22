@@ -14,6 +14,9 @@
 .showSingleQuotation__handler table tr{
     vertical-align: middle;
 }
+.showSingleQuotation__handler table tbody tr {
+    height: 150px;
+}
 .showSingleQuotation__handler table tr input{
     width: 50px;
     font-size: 12px;
@@ -130,7 +133,16 @@
 .product__item__content i {
     cursor: pointer;
 }
-
+.actions .bi-x-circle {
+    color: #ff2020;
+    font-size: 22px;
+    cursor: pointer;
+}
+.actions .bi-check-circle {
+    color: green;
+    font-size: 22px;
+    cursor: pointer;
+}
 @media screen and (max-width: 600px) {
     .showSingleQuotation__handler .totals__text h5, 
     .showSingleQuotation__handler .totals__prices h5 {
