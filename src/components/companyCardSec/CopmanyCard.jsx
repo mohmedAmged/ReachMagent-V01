@@ -16,7 +16,8 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-            await axios.post(`${baseURL}/${loginType}/control-follow-company?t=${new Date().getTime()}`, 
+        const slug = loginType === 'user' ? 'user/control-follow-company' : 'employee/control-follow'
+            await axios.post(`${baseURL}/${slug}?t=${new Date().getTime()}`, 
             currentCompanyWantedToFollow ,
             {
                 headers: {
@@ -94,10 +95,10 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                     </div>
                 </div>
                 {
-                    loginType === 'user' && 
+                    
                     <div className="card__actions">
                     {
-                        (token && loginType === 'user') ? 
+                        (token) ? 
                             (currentFollowedCompanies) ?
                             currentFollowedCompanies?.find(el => +el?.companyId === +companyId) ?
                                 <button 

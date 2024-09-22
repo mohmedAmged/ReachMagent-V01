@@ -107,7 +107,7 @@ export default function MyQutations({ token }) {
           <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />
             <div className='main__content container'>
-              <MainContentHeader search={true} placeholder={'Quotation Code'} filteration={filteration} setFilteration={setFilteration} currentUserLogin={currentUserLogin} />
+              <MainContentHeader search={true} placeholder={'Quotation Code'} filteration={filteration} name={'code'} setFilteration={setFilteration} currentUserLogin={currentUserLogin} />
               <div className='myQuotations__handler '>
                 <QuotationStateSec />
                 {

@@ -23,15 +23,16 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
             company_id: `${id}`
         };
         const toastId = toast.loading('loading...');
-        await axios.post(`${baseURL}/${loginType}/control-follow-company?t=${new Date().getTime()}`,
-            currentCompanyWantedToFollow,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-            })
+        const slug = loginType === 'user' ? 'user/control-follow-company' : 'employee/control-follow'
+        await axios.post(`${baseURL}/${slug}?t=${new Date().getTime()}`, 
+        currentCompanyWantedToFollow ,
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                Authorization : `Bearer ${token}`
+            },
+        })
             .then(response => {
                 Cookies.set('CurrentFollowedCompanies', JSON.stringify([...response?.data?.data?.followedCompanies]), { expires: 999999999999999999999999999999 * 99999999999999999999999999999999999 * 99999999999999999999999999999999 });
                 setCurrentFollowedCompanies([...response?.data?.data?.followedCompanies]);

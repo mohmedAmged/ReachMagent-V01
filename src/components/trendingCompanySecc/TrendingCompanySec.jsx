@@ -21,6 +21,7 @@ export default function TrendingCompanySec({ companies, token }) {
             };
         };
     }, [companies]);
+console.log(companies);
 
     return (
         <div className='trendingCompany__handler'>
@@ -45,11 +46,12 @@ export default function TrendingCompanySec({ companies, token }) {
                                             companyUser={el.companyEmail}
                                             companyId={el.companyId}
                                             // ************* static info
-                                            coverImg={cover3}
+                                            // 356 × 58 px
+                                            coverImg={el?.companyCover}
                                             productsCount={'112'}
                                             dealsCount={'261'}
                                             ownerCount={'2'}
-                                            cardDesc={'Lorem ipsum Dolor Sit Amet Consecteture Adipsciing Elit Tristique Hac Lectus Facillsi Convallis'}
+                                            cardDesc={el?.companyAboutUs}
                                         />
                                     </div>
                                 )

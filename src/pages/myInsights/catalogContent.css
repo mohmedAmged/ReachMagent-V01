@@ -34,7 +34,22 @@
     border-radius: 8px;
     border: 1px solid rgba(229, 229, 229, 1)
 }
-
+.card__name{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+}
+.card__name p{
+font-size: 14px;
+}
+.card__name i{
+    font-size: 18px;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+}
 .card__name h3 {
     font-size: 18px;
     font-weight: 600;
@@ -42,7 +57,11 @@
     text-align: left;
     margin: 10px 0;
 }
-
+.card__name:hover,
+.card__name:hover i
+{
+    color: var(--main-turquoise);
+}
 .card__btns button {
     width: 100%;
     border: 0;
@@ -74,8 +93,8 @@
     left: 556px;
     gap: 0px;
     border-radius: 0px 0px 20px 0px;
-    background: rgba(0, 158, 246, 1);
-    border: 2px solid rgba(0, 158, 246, 1);
+    background: var(--main-turquoise);
+    border: 2px solid var( --main-turquoise);
     transition: ease-in-out .3s;
 }
 
@@ -85,7 +104,7 @@
 }
 
 .card__btns button.btn__E:hover {
-    color: rgba(0, 158, 246, 1);
+    color: var( --main-turquoise);
     background: var(--primary-white);
 }
 
@@ -101,8 +120,8 @@
     padding: 8px 14px 8px 14px;
     gap: 0px;
     border-radius: 6px;
-    background: rgba(0, 158, 246, 1);
-    border: 2px solid rgba(0, 158, 246, 1);
+    background: var(--main-blue-color);
+    border: 2px solid var(--main-blue-color);
     color: var(--primary-white);
     font-size: 16px;
     font-weight: 600;
@@ -111,7 +130,7 @@
 }
 .addNewItem__btn button:hover{
     background: var(--primary-white);
-    color: rgba(0, 158, 246, 1);
+    color: var(--main-blue-color);
 
 }
 

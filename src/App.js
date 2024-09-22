@@ -50,6 +50,7 @@ import { baseURL } from './functions/baseUrl';
 import axios from 'axios';
 import MyShippingCosts from './pages/myShippingCostsPage/MyShippingCosts';
 import NewShippingCostForm from './components/newShippingCostFromItem/NewShippingCostForm';
+import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
 
 function App() {
   useEffect(() => {
@@ -243,15 +244,17 @@ function App() {
         <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
         <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
+        <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-catalog'} />} />
 
         <Route path='/profile/service' element={<MyService token={token} />} />
         <Route path='/profile/service/addNewItem' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/service/edit-item/:id' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
+        <Route path='/profile/service/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-service'} />} />
 
         {/* <Route path='/profile/products' element={<MyProducts token={token} />} /> */}
         {/* <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
         {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
-        {/* <Route path='/profile/products/show-one/:prodInfoId' element={<ShowOneProductInfoInDash token={token} />} /> */}
+        {/* <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-catalog'} />} /> */}
 
         <Route path='/profile/faqs' element={<MyFaqs token={token} />} />
         <Route path='/profile/faqs/addNewItem' element={<NewFaqForm token={token} />} />

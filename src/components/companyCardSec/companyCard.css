@@ -20,6 +20,14 @@
     height: 100%;
 
 }
+.card__cover img{
+    /* // 356 × 58 px */
+height: 58px;
+/* border-radius: 9px; */
+border-top-left-radius: 9px;
+border-top-right-radius: 9px;
+
+}
 .card__content .company__name h2{
     font-size: 14px;
     font-weight: 600;

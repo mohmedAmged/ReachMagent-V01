@@ -5,10 +5,10 @@
     margin-top: 30px !important;
 }
 .showOneProductInDash__handler .showOneProductDash__item h5{
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 600;
     text-transform: capitalize;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: var(--main-blue-color);
 }
 .showOneProductInDash__handler .showOneProductDash__item h6{
@@ -35,6 +35,10 @@
 }
 .showOneProductInDash__handler .showOneProductDash__item p span{
     margin-left: 8px;
+}
+.showOneProductDash__item .bi-check2-circle{
+    margin-inline-end: 8px;
+    color: rgb(43, 240, 86);
 }
 @media screen and (max-width: 600px) {
     .showOneProductInDash__handler .content__view__header h1{
