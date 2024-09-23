@@ -10,8 +10,7 @@ import { scrollToTop } from "../../functions/scrollToTop";
 import MyLoader from "../../components/myLoaderSec/MyLoader";
 export default function MyAllCompanies({ token }) {
     const [loading, setLoading] = useState(true);
-    const [allCompanies, setAllCompanies] = useState([]);
-    const [filteredCompanies, setFilteredCompanies] = useState([]);
+    const [companies, setCompanies] = useState([]);
     const [uniqueAllowedCompNames, setUniqueAllowedCompNames] = useState([]);
     const [uniqueAllowedCompTypes, setUniqueAllowedCompTypes] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -30,85 +29,6 @@ export default function MyAllCompanies({ token }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const fetchAllCompanies = async () => {
-        try {
-            const response = await axios.get(`${baseURL}/all-companies`, {
-                params: {
-                    t: new Date().getTime(),
-                    page: currentPage,
-                    limit: 12,
-                },
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const companies = response?.data?.data?.companies || [];
-            setAllCompanies(companies);
-
-            const companyAllowedNames = companies.map((item) => item.companyName);
-            const companyAllowedTypes = companies.flatMap((item) =>
-                item.companyTypes.map((typeObj) => typeObj.type)
-            );
-            const companyCategories = companies.map((item) => ({
-                categoryId: item.companyCategoryId,
-                categoryName: item.companyCategory,
-            }));
-            const companySubCategories = companies.map((item) => ({
-                subCategoryId: item.companySubCategoryId,
-                subCategoryName: item.companySubCategory,
-            }));
-            setUniqueAllowedCompNames([...new Set(companyAllowedNames)]);
-            setUniqueAllowedCompTypes([...new Set(companyAllowedTypes)]);
-            setCategories(
-                [...new Set(companyCategories.map((cat) => JSON.stringify(cat)))].map(
-                    (str) => JSON.parse(str)
-                )
-            );
-            setSubCategories(
-                [
-                    ...new Set(
-                        companySubCategories.map((subCat) => JSON.stringify(subCat))
-                    ),
-                ].map((str) => JSON.parse(str))
-            );
-        } catch (error) {
-            console.log("Error fetching all companies:", error);
-        };
-    };
-
-    const fetchFilteredCompanies = async () => {
-        const total = totalPages;
-        try {
-            const queryString = buildQueryString(formData);
-            const response = await axios.get(
-                `${baseURL}/filter-companies?${queryString}`,
-                {
-                    params: {
-                        t: new Date().getTime(),
-                        name: formData?.name,
-                        main_type: formData?.main_type,
-                        product_name: formData?.product_name,
-                        service_name: formData?.service_name,
-                        category_id: formData?.category_id,
-                        sub_category_id: formData?.sub_category_id,
-                        page: currentPage,
-                        limit: total,
-                    },
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            const companies = response?.data?.data?.companies || [];
-            const totalPages = response?.data?.data?.total_pages || 1;
-            setFilteredCompanies(companies);
-            setTotalPages(totalPages);
-        } catch (error) {
-            console.error("Error fetching filtered companies:", error);
-            setFilteredCompanies([]);
-        }
-    };
     const buildQueryString = (params) => {
         const query = new URLSearchParams();
         Object.keys(params).forEach((key) => {
@@ -120,6 +40,66 @@ export default function MyAllCompanies({ token }) {
             }
         });
         return query.toString();
+    };
+
+    const hasFilters = () => {
+        return Object.values(formData).some((value) => {
+            if (Array.isArray(value)) {
+                return value.length > 0;
+            }
+            return value && value !== "";
+        });
+    };
+console.log(hasFilters());
+
+    const fetchCompanies = async () => {
+        try {
+            const queryString = hasFilters() ? buildQueryString(formData) : "";
+            let endpoint = hasFilters() 
+                ? `${baseURL}/filter-companies?${queryString}` 
+                : `${baseURL}/filter-companies`;
+                
+            const response = await axios.get(endpoint, {
+                params: {
+                    t: new Date().getTime(), // Avoid caching issues
+                    page: currentPage,
+                    limit: 12,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(endpoint);
+
+            const companiesData = response?.data?.data?.companies || [];
+            const totalPagesData = response?.data?.data?.total_pages || 1;
+            setCompanies(companiesData);
+            setTotalPages(totalPagesData);
+
+            const companyAllowedNames = companiesData.map((item) => item.companyName);
+            const companyAllowedTypes = companiesData.flatMap((item) =>
+                item.companyTypes.map((typeObj) => typeObj.type)
+            );
+            const companyCategories = companiesData.map((item) => ({
+                categoryId: item.companyCategoryId,
+                categoryName: item.companyCategory,
+            }));
+            const companySubCategories = companiesData.map((item) => ({
+                subCategoryId: item.companySubCategoryId,
+                subCategoryName: item.companySubCategory,
+            }));
+
+            setUniqueAllowedCompNames([...new Set(companyAllowedNames)]);
+            setUniqueAllowedCompTypes([...new Set(companyAllowedTypes)]);
+            setCategories(
+                [...new Set(companyCategories.map((cat) => JSON.stringify(cat)))].map((str) => JSON.parse(str))
+            );
+            setSubCategories(
+                [...new Set(companySubCategories.map((subCat) => JSON.stringify(subCat)))].map((str) => JSON.parse(str))
+            );
+        } catch (error) {
+            console.error("Error fetching companies:", error);
+        }
     };
 
     const updateURLWithFilters = () => {
@@ -140,19 +120,18 @@ export default function MyAllCompanies({ token }) {
             };
             setFormData(initialFormData);
             initialized.current = true;
+            fetchCompanies()
         }
     }, [location.search]);
 
-    useEffect(() => {
-        fetchAllCompanies();
-    }, [allCompanies]);
 
     useEffect(() => {
-        if (allCompanies.length > 0) {
-            fetchFilteredCompanies();
-            updateURLWithFilters();
+        if (initialized.current) {
+            fetchCompanies(); 
+            updateURLWithFilters(); 
         }
-    }, [allCompanies]);
+    }, [formData, currentPage]);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -232,13 +211,13 @@ export default function MyAllCompanies({ token }) {
                                     </div>
                                     <div className="sidebarItemFilter">
                                         <div className="catalog__new__input">
-                                            <label htmlFor="shopFilterationtitle">
+                                            <label htmlFor="shopFilterationServ">
                                                 Filter by Service
                                             </label>
                                             <input
                                                 type="text"
                                                 name="service_name"
-                                                id="shopFilterationtitle"
+                                                id="shopFilterationServ"
                                                 className="form-control"
                                                 placeholder={`Enter your text`}
                                                 value={formData?.service_name}
@@ -358,7 +337,7 @@ export default function MyAllCompanies({ token }) {
                             </div>
                             <div className="col-lg-9 col-md-8">
                                 <div className="mainContentAllCompanies__handler">
-                                    {filteredCompanies?.length === 0 ?
+                                    {companies?.length === 0 ?
                                         (
                                             <div className="row">
                                                 <div className="col-12">
@@ -370,70 +349,70 @@ export default function MyAllCompanies({ token }) {
                                         )
                                         :
                                         (
-                                            <div className="row gap-3">
-                                                {filteredCompanies?.map((el) => {
-                                                    return (
-                                                        <div key={el?.id} className="col-12">
-                                                            <div className="CompanyContentItem">
-                                                                <div className="compImage">
-                                                                    <img
-                                                                        src={el?.companyLogo}
-                                                                        alt={el?.companyName}
-                                                                    />
-                                                                </div>
-                                                                <div className="compMainInfo">
-                                                                    <h5 className="mb-2">{el?.companyName}</h5>
-                                                                    <div className="companySubInfo mb-2">
-                                                                        <div className="subInfoItem">
-                                                                            <img src={userIcon} alt="locateion-icon" />
-                                                                            <span>E-Commerce</span>
-                                                                        </div>
-                                                                        <div className="subInfoItem">
-                                                                            <img
-                                                                                src={locationIcon}
-                                                                                alt="locateion-icon"
-                                                                            />
-                                                                            <span>
-                                                                                {el?.companyBranches[0]?.branchCity}
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="subInfoItem">
-                                                                            <img src={emailIcon} alt="locateion-icon" />
+        <div className="row gap-3">
+            {companies?.map((el) => {
+                return (
+                    <div key={el?.id} className="col-12">
+                        <div className="CompanyContentItem">
+                            <div className="compImage">
+                                <img
+                                    src={el?.companyLogo}
+                                    alt={el?.companyName}
+                                />
+                            </div>
+                            <div className="compMainInfo">
+                                <h5 className="mb-2">{el?.companyName}</h5>
+                                <div className="companySubInfo mb-2">
+                                    <div className="subInfoItem">
+                                        <img src={userIcon} alt="locateion-icon" />
+                                        <span>E-Commerce</span>
+                                    </div>
+                                    <div className="subInfoItem">
+                                        <img
+                                            src={locationIcon}
+                                            alt="locateion-icon"
+                                        />
+                                        <span>
+                                            {el?.companyBranches[0]?.branchCity}
+                                        </span>
+                                    </div>
+                                    <div className="subInfoItem">
+                                        <img src={emailIcon} alt="locateion-icon" />
 
-                                                                            <NavLink to={el?.companyWebsiteLink}>
-                                                                                <span>Website</span>
-                                                                            </NavLink>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="companyDescrip mb-2">
-                                                                        <p>{el?.companyAboutUs}</p>
-                                                                    </div>
-                                                                    <div className="companyMainCountry">
-                                                                        {/* <img src={flag} alt="flag" /> */}
-                                                                        <i className="bi bi-crosshair2"></i>
-                                                                        <span>
-                                                                            {el?.companyBranches[0]?.branchCountry}
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="companyActions">
-                                                                    <NavLink
-                                                                        onClick={() => {
-                                                                            scrollToTop();
-                                                                        }}
-                                                                        className={"nav-link"}
-                                                                        to={`/show-company/${el?.companyId}`}
-                                                                    >
-                                                                        <button className="pageMainBtnStyle">
-                                                                            more info
-                                                                        </button>
-                                                                    </NavLink>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
+                                        <NavLink to={el?.companyWebsiteLink}>
+                                            <span>Website</span>
+                                        </NavLink>
+                                    </div>
+                                </div>
+                                <div className="companyDescrip mb-2">
+                                    <p>{el?.companyAboutUs}</p>
+                                </div>
+                                <div className="companyMainCountry">
+                                    {/* <img src={flag} alt="flag" /> */}
+                                    <i className="bi bi-crosshair2"></i>
+                                    <span>
+                                        {el?.companyBranches[0]?.branchCountry}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="companyActions">
+                                <NavLink
+                                    onClick={() => {
+                                        scrollToTop();
+                                    }}
+                                    className={"nav-link"}
+                                    to={`/show-company/${el?.companyId}`}
+                                >
+                                    <button className="pageMainBtnStyle">
+                                        more info
+                                    </button>
+                                </NavLink>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
                                         )}
                                 </div>
                                 {
