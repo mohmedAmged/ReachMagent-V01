@@ -48,7 +48,8 @@ export default function SingleCompanyQuote({ token, countries }) {
         address: '',
         po_box: '',
         postal_code: '',
-        user_notes: ''
+        user_notes: '',
+        request_by_notes: ''
     });
 
     // getting Cart Between CurrentUserLoginned and CompanyWantedToSendQuotationFor
@@ -56,7 +57,7 @@ export default function SingleCompanyQuote({ token, countries }) {
         if (token && loginType && companyIdWantedToHaveQuoteWith) {
             setloadingCart(true);
             (async () => {
-                    await axios.get(`${baseURL}/${loginType}/prepare-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`, {
+                    await axios.get(`${baseURL}/user/prepare-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
@@ -64,6 +65,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                         },
                     }).then(res => {
                         setCart(res?.data?.data?.cart);
+                        setCurrentProd(res?.data?.data?.data);
                         setCustomizationCondition(res?.data?.data?.company_customization);
                     }).catch(err => {
                         toast.error(err.message);
@@ -90,7 +92,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                 setloadingCart(true);
                 (async () => {
                     const toastId = toast.loading('Loading...');
-                    await axios.post(`${baseURL}/${loginType}/filter-to-make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                    await axios.post(`${baseURL}/user/filter-to-make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                             requestIntries,
                             {
                                 headers: {
@@ -125,7 +127,7 @@ export default function SingleCompanyQuote({ token, countries }) {
             setloadingCart(true);
             setRequestIntries({ type: '', category_id: '', sub_category_id: '', title: '' });
             const toastId = toast.loading('Loading...');
-            const res = await fetch(`${baseURL}/${loginType}/reset-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`
+            const res = await fetch(`${baseURL}/user/reset-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`
                 , {
                     method: 'POST',
                     headers: {
@@ -158,7 +160,7 @@ export default function SingleCompanyQuote({ token, countries }) {
         };
         (async () => {
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 addedProduct
                 , {
                     headers: {
@@ -193,7 +195,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                 , include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
             };
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 data, {
                 headers: {
                     'Content-type': 'application/json',
@@ -262,7 +264,7 @@ export default function SingleCompanyQuote({ token, countries }) {
         });
         (async () => {
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/add-cutomized-item-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/add-cutomized-item-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 formData
                 , {
                     headers: {
@@ -299,8 +301,6 @@ export default function SingleCompanyQuote({ token, countries }) {
             setLoading(false);
         }, 500);
     }, [loading]);
-
-    
 
     return (
         <>
@@ -457,7 +457,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                                     return (
                                                                         <SwiperSlide className=' my-3' key={el?.id}>
                                                                             <LastMinuteCard
-                                                                                productImage={el?.image ? el?.image : el?.media[0]}
+                                                                                productImage={el?.image ? el?.image : el?.media[0].image ? el?.media[0].image : el.media[0]}
                                                                                 productName={el?.title}
                                                                                 dealQuantity={el?.dealQuantity}
                                                                                 showCustomContent={true}
@@ -631,11 +631,14 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                                 </label>
                                                                 <textarea
                                                                     id="quotationNote"
-                                                                    name="user_notes"
+                                                                    name="request_by_notes"
                                                                     className="form-control customizedInput"
                                                                     rows="3"
+                                                                    defaultValue={distinationData?.request_by_notes}
                                                                     placeholder='Ex: Add any notes or specific terms and conditions for your request in this section.'
-                                                                    onChange={handleCustomProductChange}
+                                                                    onChange={(e)=>{
+                                                                        setDistinationData({ ...distinationData, [e.target.name]: e.target.value })
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>
@@ -655,5 +658,5 @@ export default function SingleCompanyQuote({ token, countries }) {
                     </div>
             }
         </>
-    )
-}
+    );
+};

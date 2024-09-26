@@ -76,7 +76,13 @@
  .order__statue.Inprocess  {
     color: yellowgreen;
 }
+.order__statue.Processing  {
+    color: yellowgreen;
+}
  .order__statue.Inshipping   {
+    color: orangered;
+}
+.order__statue.Delivering   {
     color: orangered;
 }
  .order__statue.Completed {
@@ -84,6 +90,9 @@
 }
  .order__statue.Rejected {
     color: #ff2020;
+}
+.order__statue.Cancelled {
+    color: #ff0101;
 }
  @media screen and (max-width: 600px) {
     .showOrder__handler .sub_header_for_order{

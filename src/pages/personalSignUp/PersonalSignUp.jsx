@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './regester.css';
-import SignUpHead from '../../components/signUpHeadSec/SignUpHead';
 import PersonalSignUpFormMainSec from '../../components/personalSignUpFormMainSec/PersonalSignUpFormMainSec';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 
@@ -20,7 +19,6 @@ export default function PersonalSignUp({ countries, industries }) {
           <MyLoader />
           :
           <div className='signUp__page'>
-            {/* <SignUpHead /> */}
             <PersonalSignUpFormMainSec
               countries={countries}
               industries={industries}

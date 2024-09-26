@@ -100,7 +100,16 @@ text-transform: capitalize;
     background: yellowgreen;
     color: var(--primary-white);
 }
+.productTable__content .product__statue.Processing
+{
+    background: yellowgreen;
+    color: var(--primary-white);
+}
 .productTable__content .product__statue.Inshipping   {
+    background: orangered;
+    color: var(--primary-white);
+}
+.productTable__content .product__statue.Delivering   {
     background: orangered;
     color: var(--primary-white);
 }
@@ -110,6 +119,10 @@ text-transform: capitalize;
 }
 .productTable__content .product__statue.Rejected {
     background: #ff2020;
+    color: var(--primary-white);
+}
+.productTable__content .product__statue.Cancelled {
+    background: #ff0101;
     color: var(--primary-white);
 }
 .tableEditBtn {

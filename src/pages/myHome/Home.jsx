@@ -12,74 +12,76 @@ import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
 import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
+import SearchInHome from '../../components/searchInHome/SearchInHome';
 
-export default function Home({companies,token,fetchCartItems,wishlistItems}) {
-  const [loading,setLoading] = useState(true);
+export default function Home({ companies, token, countries, fetchCartItems, wishlistItems }) {
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(false);
+  const [currentSearchedData,setCurrentSearchedData] = useState([]);
   const arrOfCateg = [
     {
-      name: 'All',
+      name: 'Companies',
       id: 1
     },
-    {
-      name: 'One',
-      id: 2
-    },
-    {
-      name: 'Two',
-      id: 3
-    },
-    {
-      name: "Three",
-      id: 4
-    }
   ];
 
-  useEffect(()=>{
-    setTimeout(()=>{
+
+  useEffect(() => {
+    setTimeout(() => {
       setLoading(false);
-    },500);
-  },[loading]);
+    }, 500);
+  }, [loading]);
 
   return (
     <>
       {
-        loading ? 
-        <MyLoader />
-      :
-      <div className='myHomeSec__handler'>
-        <MyMainHeroSec
-          heroSecContainerType='heroSec__container'
-          headText='We Make Things Better'
-          paraPartOne=' Save  thousands to millions of bucks by using single tool for different'
-          paraPartTwo='amazing and outstanding cool and great useful admin'
-          categoryArr={arrOfCateg}
-        />
-        <AboutReachSec />
-        <AllCategorySec />
-        {
-          <div className='oneClickQuotation__handler'>
-            <FranchiseSec
-              pageName='discover'
-              headText='One-click Quotation'
-              paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
-              btnOneText='Start Now'
-              btnOnelink='/one-click-quotation'
+        loading ?
+          <MyLoader />
+          :
+          <div className='myHomeSec__handler'>
+            <MyMainHeroSec
+              heroSecContainerType='heroSec__container'
+              headText='We Make Things Better'
+              paraPartOne=' Save  thousands to millions of bucks by using single tool for different'
+              paraPartTwo='amazing and outstanding cool and great useful admin'
+              categoryArr={arrOfCateg}
+              countries={countries}
+              setSearch={setSearch}
+              setCurrentSearchedData={setCurrentSearchedData}
             />
+            {
+              (search) ?
+                <SearchInHome currentData={currentSearchedData} />
+              : 
+              <>
+                <AboutReachSec />
+                <AllCategorySec />
+                {
+                  <div className='oneClickQuotation__handler'>
+                    <FranchiseSec
+                      pageName='discover'
+                      headText='One-click Quotation'
+                      paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
+                      btnOneText='Start Now'
+                      btnOnelink='/one-click-quotation'
+                    />
+                  </div>
+                }
+                {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
+                <TrendingCompanySec companies={companies} token={token} />
+                <GrowBuisnessSec />
+                {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
+                <div className='mt-3'>
+                  <HeaderOfSec
+                    secHead='Companies Insights'
+                    secText='Stay informed with the latest updates, announcements, and specials from top companies'
+                  />
+                  <SingleCompanyNewsSec setLoading={setLoading} token={token} />
+                </div>
+                <DownloadApp />
+              </>
+            }
           </div>
-        }
-        {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
-        <TrendingCompanySec companies={companies} token={token} />
-        <GrowBuisnessSec />
-        {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
-        <div className='mt-3'>
-          <HeaderOfSec
-            secHead='Companies Insights'
-            secText='Stay informed with the latest updates, announcements, and specials from top companies'
-          />
-          <SingleCompanyNewsSec setLoading={setLoading} token={token}/>
-        </div>
-        <DownloadApp />
-      </div>
       }
     </>
   )

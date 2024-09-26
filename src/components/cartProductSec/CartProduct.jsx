@@ -25,7 +25,7 @@ export default function CartProduct({
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 {
                     quotation_cart_id: `${id}`,
                 }
@@ -54,7 +54,7 @@ export default function CartProduct({
         }else {
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/delete-item-from-one-click-quotation-cart?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/delete-item-from-one-click-quotation-cart?t=${new Date().getTime()}`,
                 {
                     one_click_quotation_cart_id: `${id}`,
                 }
@@ -90,7 +90,7 @@ export default function CartProduct({
         };
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
-                await axios.post(`${baseURL}/${loginType}/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                 {
                     quotation_cart_id: `${id}`,
                     quantity_type: `${type}`,
@@ -114,7 +114,7 @@ export default function CartProduct({
             
         }else {
             (async () => {
-                await axios.post(`${baseURL}/${loginType}/control-quantity-for-one-click-quotation-cart?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/control-quantity-for-one-click-quotation-cart?t=${new Date().getTime()}`,
                 {
                     one_click_quotation_cart_id: `${id}`,
                     quantity_type: `${type}`,
@@ -146,7 +146,7 @@ export default function CartProduct({
             };
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/add-note-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/add-note-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                     value
                     , {
                         headers: {
@@ -177,7 +177,7 @@ export default function CartProduct({
             };
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/add-note-to-one-click-quotation-cart?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/add-note-to-one-click-quotation-cart?t=${new Date().getTime()}`,
                     value
                     , {
                         headers: {
@@ -208,7 +208,7 @@ export default function CartProduct({
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/remove-note-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/remove-note-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
                     {
                         quotation_cart_id: id,
                     }
@@ -237,7 +237,7 @@ export default function CartProduct({
         }else {
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/${loginType}/remove-note-from-one-click-quotation-cart?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/remove-note-from-one-click-quotation-cart?t=${new Date().getTime()}`,
                     {
                         one_click_quotation_cart_id: id,
                     }

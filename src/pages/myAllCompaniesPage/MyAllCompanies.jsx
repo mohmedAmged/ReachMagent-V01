@@ -190,6 +190,7 @@ console.log(hasFilters());
             ) : (
                 <div className="MyAllCompanies__handler">
                     <div className="container">
+                    <h1 className="mb-4">Companies</h1>
                         <div className="row">
                             <div className="col-lg-3 col-md-4">
                                 <div className="sidebarForItemsFilter__handler">

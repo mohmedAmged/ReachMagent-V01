@@ -45,6 +45,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         type: requestIntries?.type ? requestIntries?.type : '',
         category_id: requestIntries?.category_id ? requestIntries?.category_id : '',
         sub_category_id: requestIntries?.sub_category_id ? requestIntries?.sub_category_id : '',
+        user_notes: '',
     });
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
             setloadingCart(true);
             (async () => {
                 try {
-                    const response = await fetch(`${baseURL}/${loginType}/prepare-one-click-quotation?t=${new Date().getTime()}`, {
+                    const response = await fetch(`${baseURL}/user/prepare-one-click-quotation?t=${new Date().getTime()}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
@@ -84,7 +85,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                 city_id: ''
             });
             const toastId = toast.loading('Loading...');
-            const res = await fetch(`${baseURL}/${loginType}/reset-one-click-quotation-cart?t=${new Date().getTime()}`
+            const res = await fetch(`${baseURL}/user/reset-one-click-quotation-cart?t=${new Date().getTime()}`
                 , {
                     method: 'POST',
                     headers: {
@@ -200,7 +201,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
             (async () => {
                 const toastId = toast.loading('Loading...');
                 try {
-                    const response = await fetch(`${baseURL}/${loginType}/filter-to-make-one-click-quotation?t=${new Date().getTime()}`,
+                    const response = await fetch(`${baseURL}/user/filter-to-make-one-click-quotation?t=${new Date().getTime()}`,
                         {
                             method: 'POST',
                             headers: {
@@ -274,7 +275,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         });
         (async () => {
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/add-cutomized-item-for-one-click-quotation-cart?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/add-cutomized-item-for-one-click-quotation-cart?t=${new Date().getTime()}`,
                 formData
                 , {
                     headers: {
@@ -323,7 +324,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                 , include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
             };
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/${loginType}/make-one-click-quotation?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/make-one-click-quotation?t=${new Date().getTime()}`,
                 data, {
                 headers: {
                     'Content-type': 'application/json',
@@ -681,8 +682,11 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                                     name="user_notes"
                                                                     className="form-control customizedInput"
                                                                     rows="3"
+                                                                    defaultValue={distinationData.user_notes}
                                                                     placeholder='Ex: Add any notes or specific terms and conditions for your request in this section.'
-                                                                    onChange={handleCustomProductChange}
+                                                                    onChange={(e)=>{
+                                                                        setDistinationData({ ...distinationData, [e.target.name]: e.target.value });
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>

@@ -20,17 +20,20 @@ export default function MyOrders({ token }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const getAllOrders = async () => {
-    await axios.get(`${baseURL}/${loginType}/all-orders?page=${currentPage}?t=${new Date().getTime()}`, {
+  const getAllOrders = async (params) => {
+    const slug = loginType === 'user' ? 'all-quotation-orders' : 'quotation-orders';
+    await axios.get(`${baseURL}/${loginType}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
-        setAllOrders(response?.data?.data?.orders);
+        setAllOrders(response?.data?.data?.quotationOrders);
         setTotalPages(response?.data?.data?.meta?.last_page);
       })
       .catch(error => {
+        console.log(`${baseURL}/${loginType}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`);
+        
         if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
           setUnAuth(true);
         };
@@ -45,7 +48,7 @@ export default function MyOrders({ token }) {
   };
 
   useEffect(() => {
-    getAllOrders(currentPage);
+    getAllOrders();
   }, [currentPage]);
 
   useEffect(() => {
@@ -86,19 +89,28 @@ export default function MyOrders({ token }) {
               <div className="my__roles__actions mb-5 ps-0 ms-0">
                 <button
                   className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
-                  onClick={() => setActiveRole('All')}
+                  onClick={() =>{
+                    setActiveRole('All');
+                    getAllOrders('');
+                  } }
                 >
                   All
                 </button>
                 <button
                   className={`def__btn meddle_btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
-                  onClick={() => setActiveRole('Sell')}
+                  onClick={() =>{
+                    setActiveRole('Sell');
+                    getAllOrders('?q=sell');
+                  } }
                 >
                   Sell
                 </button>
                 <button
                   className={`cust__btn px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
-                  onClick={() => setActiveRole('Buy')}
+                  onClick={() =>{
+                    setActiveRole('Buy');
+                    getAllOrders('?q=buy');
+                  } }
                 >
                   Buy
                 </button>
@@ -115,14 +127,14 @@ export default function MyOrders({ token }) {
                       <>
                         {
                           loginType === 'employee' ?
-                            <Table responsive>
+                            <Table responsive >
                               <thead>
                                 <tr className='table__default__header'>
                                   <th>
                                     Order Info
                                   </th>
-                                  <th className='text-center'>{loginType === 'user' ? 'Company Name' : 'User Name'}</th>
                                   <th className='text-center'>Date</th>
+                                  <th className='text-center'>rquested by</th>
                                   <th className='text-center'>Status</th>
                                   <th className='text-center'>Price</th>
                                   <th className='text-center'></th>
@@ -133,27 +145,10 @@ export default function MyOrders({ token }) {
                                   allOrders?.map(el => (
                                     <tr className='' key={''}>
                                       <td className='product__breif__detail d-flex '>
-                                        <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
-                                        <div className="product__img">
-                                          <img src={testImg} alt="product" />
-                                        </div>
-                                        <div className="product__info">
-                                          <h2>
-                                            {el?.type}
-                                          </h2>
+                                        <div className="product__info m-0">
                                           <p>
                                             {el?.code}
                                           </p>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <div className="product__created">
-                                          {
-                                            loginType === 'user' ?
-                                              el?.company_name
-                                              :
-                                              el?.user_name
-                                          }
                                         </div>
                                       </td>
                                       <td>
@@ -161,6 +156,14 @@ export default function MyOrders({ token }) {
                                           {el?.created_at}
                                         </div>
                                       </td>
+                                      <td>
+                                        <div className="product__created">
+                                          {
+                                              el?.order_by_name
+                                          }
+                                        </div>
+                                      </td>
+                                      
                                       <td>
                                         <div className={`product__statue ${el?.order_status}`}>
                                           {el?.order_status}
@@ -172,7 +175,7 @@ export default function MyOrders({ token }) {
                                       <td>
                                         {
                                           el?.order_status !== 'Rejected' &&
-                                          <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
+                                          <NavLink className={'nav-link'} to={`/profile/quotation-orders/${el?.id}`}>
                                             <i className="bi bi-eye-fill showProd"></i>
                                           </NavLink>
                                         }
@@ -219,7 +222,7 @@ export default function MyOrders({ token }) {
                                             </div>
                                           </div>
                                           <div className="col-lg-4 col-md-4 col-sm-12 orderId_handler">
-                                            <NavLink className={'nav-link'} to={`/profile/orders/${el?.id}`}>
+                                            <NavLink className={'nav-link'} to={`/profile/quotation-orders/${el?.id}`}>
                                               <p>
                                                 order Id: <span> #{el?.code}</span> <i className="bi bi-arrow-up-right"></i>
                                               </p>

@@ -1,11 +1,20 @@
 .signUpForm__mainContent {
     background-color:  #ffffff;
-    border-radius: 24px;
-    -webkit-border-radius: 24px;
-    -moz-border-radius: 24px;
-    -ms-border-radius: 24px;
-    -o-border-radius: 24px;
+    border-radius: 0 24px 24px 24px;
+    -webkit-border-radius: 0 24px 24px 24px;
+    -moz-border-radius: 0 24px 24px 24px;
+    -ms-border-radius: 0 24px 24px 24px;
+    -o-border-radius: 0 24px 24px 24px;
     padding: 30px;
+}
+@media (max-width: 600px) {
+    .signUpForm__mainContent {
+        border-radius: 0 0 24px 24px;
+        -webkit-border-radius: 0 0 24px 24px;
+        -moz-border-radius: 0 0 24px 24px;
+        -ms-border-radius: 0 0 24px 24px;
+        -o-border-radius: 0 0 24px 24px;
+}
 }
 .user__management__main__info .signUpForm__mainSec{
     transform: translate(0);

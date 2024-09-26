@@ -157,29 +157,7 @@ function App() {
     };
   } else if (!token) {
     if (
-      location.pathname.includes('profile') ||
-      location.pathname === '/profile/followers' ||
-      location.pathname === '/profile/catalog' ||
-      location.pathname === '/profile/catalog/addNewItem' ||
-      location.pathname === '/profile/catalog/edit-item' ||
-      location.pathname === '/profile/service' ||
-      location.pathname === '/profile/service/addNewItem' ||
-      location.pathname === '/profile/service/edit-item' ||
-      location.pathname === '/profile/products' ||
-      location.pathname === '/profile/products/addNewItem' ||
-      location.pathname === '/profile/products/edit-item' ||
-      location.pathname === '/profile/faqs' ||
-      location.pathname === '/profile/faqs/addNewItem' ||
-      location.pathname === '/profile/faqs/edit-item' ||
-      location.pathname === '/profile/posts' ||
-      location.pathname === '/profile/posts/addNewItem' ||
-      location.pathname === '/profile/posts/edit-item' ||
-      location.pathname === '/profile/shipping-costs' ||
-      location.pathname === '/profile/shipping-costs/addNewItem' ||
-      location.pathname === '/profile/shipping-costs/edit-item' ||
-      location.pathname === '/profile/quotations' ||
-      location.pathname === '/profile/oneclick-quotations' ||
-      location.pathname === '/profile/orders'
+      location.pathname.includes('profile') 
     ) {
       navigate('/login');
     };
@@ -271,13 +249,13 @@ function App() {
         <Route path='/profile/quotations' element={<MyQutations token={token} />} />
         <Route path='/profile/quotations/:quotationsId' element={<ShowSingleQuotation token={token} />} />
 
-        <Route path='/profile/companyoneclick-quotations/:quotationsId' element={<ShowSingleQuotation token={token} />} />
         <Route path='/profile/oneclick-quotations' element={<OneClickQuotationsDashboard token={token} />} />
+        <Route path='/profile/companyoneclick-quotations/:quotationsId' element={<ShowSingleQuotation token={token} />} />
         <Route path='/profile/oneclick-quotations/:negotiateId' element={<OneClickNegotiationCompanies token={token} />} />
         <Route path='/profile/oneclick-quotations/:negotiateId/:offerId' element={<ShowOneClickQuotation token={token} />} />
 
-        <Route path='/profile/orders' element={<MyOrders token={token} />} />
-        <Route path='/profile/orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
+        <Route path='/profile/quotation-orders' element={<MyOrders token={token} />} />
+        <Route path='/profile/quotation-orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
 
         <Route path='/company-messages' element={<CompanyMessage />} />
         <Route path='/your-messages' element={<MyMessage />} />

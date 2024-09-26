@@ -30,12 +30,12 @@ export default function ShowOneOrderInfo({ token }) {
     const [newData, setNewdata] = useState([]);
     const fetchOrderInfo = async () => {
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/show-order/${orderId}?t=${new Date().getTime()}`, {
+            const response = await axios.get(`${baseURL}/${loginType}/quotation-order/${orderId}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setNewdata(response?.data?.data?.order);
+            setNewdata(response?.data?.data?.quotation_order);
         } catch (error) {
             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
                 setUnAuth(true);
@@ -53,23 +53,26 @@ export default function ShowOneOrderInfo({ token }) {
     const currencySymbol = newData?.currency_symbol;
     
 
-    const handleChangeStatue = async (id, orderNextSatus) => {
-        await axios.post(`${baseURL}/${loginType}/update-order-status?t=${new Date().getTime()}`, {
-          order_id: `${id}`,
-          order_status: `${orderNextSatus}`
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-          .then(response => {
-            toast.success(response?.data?.message || 'Changed Successfully!');
-            fetchOrderInfo();
-          })
-          .catch(error => {
-            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
-          })
-      };
+    const handleChangeStatue = async (id, status) => {
+        console.log(id);
+        
+            await axios.post(`${baseURL}/${loginType}/update-quotation-order-status?t=${new Date().getTime()}`, {
+                quotation_order_id: `${id}`,
+                status: status
+            }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+            })
+            .then(response => {
+                toast.success(response?.data?.message || 'Changed Successfully!');
+                fetchOrderInfo();
+            })
+            .catch(error => {
+                toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+            })            
+        };
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -77,6 +80,8 @@ export default function ShowOneOrderInfo({ token }) {
         }, 500);
     }, [loading]);
 
+    console.log(newData);
+    
     return (
         <>
             {
@@ -92,7 +97,7 @@ export default function ShowOneOrderInfo({ token }) {
                                     <UnAuthSec />
                                     :
         <div className='content__view__handler'>
-            <ContentViewHeader title={`main order Details #${newData?.code} (${newData?.type})`} />
+            <ContentViewHeader title={`main order Details #${newData?.code} (${newData?.order_type})`} />
             <div className="content__card__list showOrder__handler">
                 <div className="row">
                     <div className="col-12 main_header_for_order">
@@ -108,19 +113,31 @@ export default function ShowOneOrderInfo({ token }) {
                                     <p className={`order__statue ${newData?.order_status}`}>
                                         {newData?.order_status}
                                     </p>
-                                    {
-                                        newData?.order_status !== 'Completed' && loginType !== 'user' &&
-                                        <button  onClick={() => handleChangeStatue(newData?.id, newData?.next_status)} className='changeSatusBtn'>
-                                        change status
-                                        </button>
-                                    }
+                    {
+                        newData?.order_type !== 'buy' && newData?.order_status !== 'Completed'  && loginType !== 'user' && (
+                        <select
+                            className="changeSatusSelect form-select w-50"
+                            onChange={(e) => handleChangeStatue(newData?.id, e.target.value)} 
+                            defaultValue=""
+                        >
+                            <option value="" disabled>Select Status</option> 
+                            <option value="Accepted">accepted</option>
+                            <option value="processing">Processing</option>
+                            <option value="delivering">Delivering</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled_by_admin">Cancelled by admin</option>
+                        </select>
+                        )
+                    }
                                     
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-12 mt-4">
-                        <div className="row">
+                        {
+                            newData?.order_type !== 'buy' ?
+                            <div className="row">
                             <div className="col-lg-6 col-md-6 sub_header_for_order">
                                 <div className="icon_handler">
                                     <i className="bi bi-person-circle"></i>
@@ -129,10 +146,10 @@ export default function ShowOneOrderInfo({ token }) {
                                     Customer Information
                                 </p>
                                 <h5>
-                                    {newData?.user_name}
+                                    {newData?.order_by_name}                              
                                 </h5>
                                 <p>
-                                    {newData?.user_phone}
+                                    {newData?.order_by_phone}
                                 </p>
                                 <p>
                                     {newData?.city}
@@ -156,7 +173,30 @@ export default function ShowOneOrderInfo({ token }) {
                                     payment statue: {newData?.payment_status}
                                 </p>
                             </div>
-                        </div>
+                            </div>
+                            :
+                            <div className="row">
+                                <div className="col-lg-6 col-md-6 sub_header_for_order">
+                                    <div className="icon_handler">
+                                        <i className="bi bi-person-circle"></i>
+                                    </div>
+                                    <p className='specialP text-capitalize'>
+                                        seller Information
+                                    </p>
+                                    <h5>
+                                        {newData?.company_name}                              
+                                    </h5>
+                                    <p>
+                                        {newData?.company_email}
+                                    </p>
+                                    <p>
+                                        {newData?.city !== 'N/A' ? newData?.city : newData?.address}
+                                    </p>
+                                </div>
+                            
+                            </div>
+                        }
+                        
                     </div>
                     <div className="col-12">
                         {
@@ -177,7 +217,7 @@ export default function ShowOneOrderInfo({ token }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {newData?.order_details?.map((row, index) => (
+                                            {newData?.quotation_order_details?.map((row, index) => (
                                                 <tr className='' key={index}>
                                                     <td className='product__breif__detail d-flex '>
                                                         <div className="product__img">

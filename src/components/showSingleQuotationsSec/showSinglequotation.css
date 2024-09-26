@@ -5,6 +5,55 @@
     align-items: center;
 
 }
+.quotationTable__NewStyle table {
+    border-radius: 24px;
+}
+.quotationTable__NewStyle .table tr {
+    background: #011f5b !important;
+}
+.quotationTable__NewStyle .options-box{
+    position: absolute;
+    bottom: -80px;
+    left: 8px;
+    transform: translateX(-50%);
+    background-color: rgb(46, 45, 45);
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.quotationTable__NewStyle .actions .options-box {
+    opacity: 1;
+    visibility: visible;
+}
+.quotationTable__NewStyle .option {
+    margin: 0;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    transition: background-color 0.2s ease;
+}
+.quotationTable__NewStyle .option:hover {
+    background-color: rgba(229, 219, 219, 0.708);
+}
+.quotationTable__NewStyle table tbody td {
+    font-size: 12px;
+    padding: 20px 7px;
+}
+.quotationTable__NewStyle .note_order{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 4px;
+    border-radius: 8px;
+}
+.quotationTable__NewStyle .tableBtnSingleQuote{
+    padding: 4px 8px;
+    background: rgba(241, 249, 248, 1);
+    border-radius: 8px;
+}
 .showSingleQuotation__handler .product__item__content img{
     width: 52px;
     height: 52px;
@@ -142,6 +191,35 @@
     color: green;
     font-size: 22px;
     cursor: pointer;
+}
+.tableBtnSingleQuote {
+    border: 1px solid;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    outline: none;
+    cursor: default !important;
+}
+.tableBtnSingleQuote.Rejected {
+    border-color: #ff2020;
+    background-color: #ff2020;
+}
+.tableBtnSingleQuote.Accepted {
+    border-color: green;
+    background-color: green;
+}
+.tableBtnSingleQuote.Pending {
+    background-color: black;
+    border-color: black;
+}
+.Modified {
+    background-color: aqua !important;
+    border-color: aqua !important;
+    /* color: var(--primary-black) !important; */
 }
 @media screen and (max-width: 600px) {
     .showSingleQuotation__handler .totals__text h5, 

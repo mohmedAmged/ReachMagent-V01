@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 export default function OneClickNegotiationTable({ token, setUnAuth }) {
   const loginType = localStorage.getItem("loginType");
   const [newData, setNewdata] = useState([]);
+  const [fullData, setFulldata] = useState([]);
   const { negotiateId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -50,7 +51,7 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
 
   return (
     <div className="quotationTable__handler content__view__handler">
-      <ContentViewHeader title={"All Customers"} />
+      <ContentViewHeader title={`All Requested Companies`} />
       <div className="quotationTable__content">
         <Table responsive>
           <thead>
@@ -66,7 +67,7 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
                   {row?.company_name}
                 </td>
                 <td className="adjust__flex">
-                  <button className={`${loginType === 'user' && row?.company_status} table__statu__btn`}>
+                  <button className={`${row?.company_status} table__statu__btn`}>
                     {row?.company_status}
                   </button>
                   <NavLink

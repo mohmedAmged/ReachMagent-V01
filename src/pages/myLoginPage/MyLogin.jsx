@@ -24,7 +24,6 @@ export default function MyLogin({type,setType}) {
                     <MyLoader />
                     :
                     <div className='signUp__page'>
-                        {/* <SignUpHead /> */}
                         <SignInFormMainSec loginType={loginType} setLoginType={setLoginType} />
                     </div>
             }

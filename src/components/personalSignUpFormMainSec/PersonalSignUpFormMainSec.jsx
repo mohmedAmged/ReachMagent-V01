@@ -161,6 +161,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
             <div className="container">
               <div className="row">
                 <div className="col-12">
+                  <ul className='row loginToggler'>
+                    <li className={`col-md-3 cursorPointer active`} onClick={()=>navigate('/personalsignUp')}>
+                      User
+                    </li>
+                    <li className={`col-md-3 cursorPointer`} onClick={()=> navigate('/business-signUp')}>
+                      Business
+                    </li>
+                  </ul>
                   <div className="signUpForm__mainContent">
                     <div className="row">
                       <h3 className="col-12 text-center py-5 signUpForm__head">
@@ -230,14 +238,6 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             Mobile Number <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
-                            {/* <div className="col-3">
-                              <input
-                                type='text'
-                                value={`+962`}
-                                className={`form-control signUpInput`}
-                                disabled
-                              />
-                            </div> */}
                             <div className="col-12">
                               <input
                                 type='text'
@@ -507,8 +507,8 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         <div className='col-lg-12'>
                           <label htmlFor="signUpProfileImage">
                             Upload Profile Image
-                               <span className="requiredStar"> *</span>
-                            </label>
+                            <span className="requiredStar"> *</span>
+                          </label>
                           <input
                             type='file'
                             id='signUpProfileImage'
@@ -531,16 +531,6 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           <div className="serviceTerms">
                             <p>
                               By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy.
-                            </p>
-                            <p className="businessQuestion">
-                              Are you a business?
-                              <br />
-                              <span className="getStarted" onClick={() => {
-                                navigate('/business-signup');
-                                scrollToTop();
-                              }}>
-                                Get started here!
-                              </span>
                             </p>
                           </div>
                           <div className="signInNavigation mb-5">

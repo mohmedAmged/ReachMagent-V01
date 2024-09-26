@@ -59,7 +59,7 @@ export default function MyNewSidebarDash({ token }) {
         // { title: "Shipping Costs", link: "/profile/shipping-costs", icon: currencyIcon },
         { title: "Quotations", link: "/profile/quotations", icon: icon3 },
         { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
-        { title: "Orders", link: "/profile/orders", icon: icon4 },
+        { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
         // { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
@@ -83,7 +83,7 @@ export default function MyNewSidebarDash({ token }) {
             { title: "Quotations", link: "/profile/quotations", icon: icon3 },
             { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
             // { title: "Products", link: "/profile/products", icon: icon4 },
-            { title: "Orders", link: "/profile/orders", icon: icon4 },
+            { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
             // { title: "Insights", link: "/profile/insights", icon: icon5 },
             { title: "Messages", link: "/your-messages", icon: icon6 },
             { title: "Notifications", link: "/profile/notifications", icon: icon7 },
@@ -119,7 +119,7 @@ export default function MyNewSidebarDash({ token }) {
                         key={index}
                         className={`d-flex justify-content-between align-items-center 
                             ${el.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''} 
-                            ${activePath === el.link && !showSettingsSubmenu ? 'active' : ''}
+                            ${activePath?.includes(el.link) && !showSettingsSubmenu ? 'active' : ''}
                             ${el.submenu && showSettingsSubmenu ? 'active' : ''}`}
                         onClick={() => {
                             if (el.submenu) {

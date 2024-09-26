@@ -1,41 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ContentViewHeader from "../contentViewHeaderSec/ContentViewHeader";
 import { Table } from "react-bootstrap";
-import axios from "axios";
-import { baseURL } from "../../functions/baseUrl";
 import { NavLink } from "react-router-dom";
-import toast from "react-hot-toast";
 
-export default function OneClickQuotationTable({ token, setUnAuth }) {
+export default function OneClickQuotationTable({ token, fetchAllQuotations, totalPages, newData, currentPage, setCurrentPage, filteration, setFilteration }) {
   const [activeRole, setActiveRole] = useState('All');
-  const loginType = localStorage.getItem("loginType");
-  const [newData, setNewdata] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const fetchAllQuotations = async () => {
-    const slug =
-      loginType === "user"
-        ? `${loginType}/my-one-click-quotations`
-        : `${loginType}/all-one-click-quotations`;
-    try {
-      const response = await axios.get(
-        `${baseURL}/${slug}?page=${currentPage}?t=${new Date().getTime()}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setNewdata(response?.data?.data?.one_click_quotations);
-      setTotalPages(response?.data?.data?.meta?.last_page);
-    } catch (error) {
-      if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-        setUnAuth(true);
-      };
-      toast.error(error?.response?.data.message || 'Something Went Wrong!');
-    };
-  };
+  const loginType = localStorage.getItem('loginType');
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -47,8 +17,6 @@ export default function OneClickQuotationTable({ token, setUnAuth }) {
     fetchAllQuotations();
   }, [loginType, token]);
 
-  console.log(newData);
-
   return (
     <div className="quotationTable__handler content__view__handler">
       {
@@ -56,19 +24,29 @@ export default function OneClickQuotationTable({ token, setUnAuth }) {
         <div className="my__roles__actions mb-5 ps-0 ms-0">
           <button
             className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
-            onClick={() => setActiveRole('All')}
+            onClick={() => {
+              fetchAllQuotations();
+              setFilteration({ ...filteration, type: '' })
+              setActiveRole('All')
+            }}
           >
             All
           </button>
           <button
             className={`def__btn meddle_btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
-            onClick={() => setActiveRole('Sell')}
+            onClick={() => {
+              setFilteration({ ...filteration, type: 'sell' })
+              setActiveRole('Sell')
+            }}
           >
             Sell
           </button>
           <button
             className={`cust__btn px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
-            onClick={() => setActiveRole('Buy')}
+            onClick={() => {
+              setFilteration({ ...filteration, type: 'buy' })
+              setActiveRole('Buy')
+            }}
           >
             Buy
           </button>
@@ -82,24 +60,29 @@ export default function OneClickQuotationTable({ token, setUnAuth }) {
               <th>ID</th>
               <th>Submission Date</th>
               <th>Requested {loginType === 'user' ? 'From' : 'By'}</th>
-              <th>Request type</th>
+              {
+                loginType === 'employee' &&
+                <th>Requester Phone</th>
+              }
               <th>Country</th>
             </tr>
           </thead>
           <tbody>
-            {console.log(newData)}
             {newData?.map((row, index) => {
               return (
                 <tr key={index}>
                   <td>
-                    <NavLink to={loginType === 'user' ? `/profile/oneclick-quotations/${row?.id}` : `/profile/companyoneclick-quotations/${row?.id}`} className={'nav-link fw-bold'}>
+                    <NavLink to={loginType === 'user' ? `/profile/oneclick-quotations/${row?.id}` : row?.quotation_type === 'buy' ? `/profile/oneclick-quotations/${row?.id}` : `/profile/companyoneclick-quotations/${row?.id}`} className={'nav-link fw-bold'}>
                       {row?.code === 'N/A' ? '' : row?.code}
                     </NavLink>
                   </td>
-                  <td >{row?.created_at}</td>
-                  <td>{loginType === 'user' ? row?.company_name : row?.user_name}</td>
-                  <td>{row?.type}</td>
-                  <td >{row?.country}</td>
+                  <td>{row?.created_at}</td>
+                  <td>{loginType === 'user' ? row?.company_name : row?.request_by_name}</td>
+                  {
+                    loginType === 'employee' &&
+                    <td>{row?.request_by_phone}</td>
+                  }
+                  <td >{row?.destination_country}</td>
                 </tr>
               )
             })}

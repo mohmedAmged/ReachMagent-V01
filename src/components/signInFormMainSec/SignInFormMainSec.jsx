@@ -26,12 +26,8 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
         resolver: zodResolver(LoginSchema),
     });
 
-    const handleChangeLoginType = () => {
-        if(loginType === 'user'){
-            localStorage.setItem('loginType','employee');
-        }else{
-            localStorage.setItem('loginType','user');
-        };
+    const handleChangeLoginType = (type) => {
+        localStorage.setItem('loginType',type);
         setLoginType(localStorage.getItem('loginType'));
     };
 
@@ -93,20 +89,20 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
+                        <ul className='row loginToggler'>
+                            <li className={`col-md-3 cursorPointer ${loginType === 'user' && 'active'}`} onClick={()=>handleChangeLoginType('user')}>
+                                User
+                            </li>
+                            <li className={`col-md-3 cursorPointer ${loginType === 'employee' && 'active'}`} onClick={()=>handleChangeLoginType('employee')}>
+                                Business
+                            </li>
+                        </ul>
                         <div className="signUpForm__mainContent">
                             <div className="row">
                                 <h3 className="col-12 text-center pt-5 signUpForm__head">
-                                    {loginType === 'user' ? 'User' : 'Employee' } Login
+                                    {loginType === 'user' ? 'User' : 'Business' } Login
                                 </h3>
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
-                                    <div className="col-12 text-center pb-5">
-                                        <label className="toggle-switch">
-                                            <input type="checkbox" checked={loginType === 'employee'}  onClick={handleChangeLoginType} />
-                                            <div className="toggle-switch-background">
-                                                <div className="toggle-switch-handle"></div>
-                                            </div>
-                                        </label>
-                                    </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInEmailAddress">
                                             E-mail Address <span className="requiredStar">*</span>

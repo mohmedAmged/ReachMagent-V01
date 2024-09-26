@@ -1,7 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './myMainHeroSec.css';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
 
-export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr , currentCompanyChosen}) {
+export default function MyMainHeroSec({setSearch,setCurrentSearchedData,countries,handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr , currentCompanyChosen}) {
+    const [submitSearchData ,setSubmitSearchData] = useState({
+        name: '',
+        country_id: ''
+    });
+
+    const handleChangeSearchData = (e)=>{
+        setSubmitSearchData({...submitSearchData , [e.target.name]: e.target.value});
+    };
+
+    const handleSubmitSearchData = async ()=>{
+        await axios.get(`${baseURL}/general-search`,{
+            params: submitSearchData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            setSearch(true);
+            setCurrentSearchedData(res?.data?.data?.companies);
+        })
+        .catch(err=>{
+            console.log(err?.response?.data);
+        })
+    };
+
     return (
         <div className={`myMainHero__handler `}>
             <div className="container">
@@ -26,8 +54,8 @@ export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContaine
                                         <>
                                             {
                                                 categoryArr ?
-                                                    <div className="form__part select__category__part">
-                                                        <select>
+                                                    <div className="form__part select__category__part w-25">
+                                                        <select name='type' onChange={handleChangeSearchData}>
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (
@@ -40,23 +68,31 @@ export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContaine
                                                     :
                                                     ''
                                             }
-                                            <div className="form__part input__search__part">
+                                            <div className="form__part input__search__part w-50">
                                                 <i className="bi bi-search"></i>
-                                                <input type="text" onChange={handleChangeFilterInputs} placeholder='Search for Services, Business Owners,etc..' />
+                                                <input id='searchByNameHomePage' name='name' type="text" defaultValue={''} onChange={handleChangeSearchData} placeholder='Search for Services, Business Owners,etc..' />
                                             </div>
-                                            <div className="form__part select__area__part">
-                                                <select name="" id="">
-                                                    <option selected>Area</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
+                                            <div className="form__part select__area__part w-25">
+                                                <select
+                                                defaultValue={''}
+                                                name="country_id"
+                                                onChange={handleChangeSearchData}
+                                                className='form-select'
+                                                id="homeSearchForCountryId"
+                                                >
+                                                    <option value="" disabled>Select Country</option>
+                                                    {countries?.map(country =>(
+                                                        <option value={country?.id} key={country?.id}>
+                                                            {country?.name}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
-                                            <div className="form__part filter__btn__part">
+                                            {/* <div className="form__part filter__btn__part">
                                                 <button>
                                                     <i className="bi bi-sliders"></i>
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </>
                                         :
                                         <>
@@ -85,7 +121,7 @@ export default function MyMainHeroSec({handleChangeFilterInputs, heroSecContaine
                                         </>
                                 }
                                 <div className="form__part quick__search__btn__part">
-                                    <button>
+                                    <button onClick={handleSubmitSearchData}>
                                         <i className="bi bi-search"></i>
                                     </button>
                                 </div>

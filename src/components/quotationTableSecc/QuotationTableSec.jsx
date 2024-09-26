@@ -14,8 +14,6 @@ export default function QuotationTableSec({fetchAllQuotations ,newData , setCurr
         };
     };
 
-    console.log(newData)
-
     return (
         <div className='quotationTable__handler content__view__handler'>
             {
@@ -25,6 +23,7 @@ export default function QuotationTableSec({fetchAllQuotations ,newData , setCurr
                         className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
                         onClick={() => {
                             fetchAllQuotations();
+                            setFilteration({ ...filteration, type: '' })
                             setActiveRole('All')
                         }}
                     >

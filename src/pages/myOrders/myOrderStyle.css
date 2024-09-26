@@ -62,6 +62,7 @@
     color: var(--main-blue-color);
 }
 
+
 @media screen and (max-width: 992px) {
     .order_item_details img{
         width: 60px;
