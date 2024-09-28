@@ -57,8 +57,8 @@ export default function QuotationTableSec({fetchAllQuotations ,newData , setCurr
                         <thead>
                             <tr className='table__default__header'>
                                 <th>ID</th>
-                                <th>Submission Date</th>
-                                <th>Expiration Date</th>
+                                <th>Subm-Date</th>
+                                <th>Expi-Date</th>
                                 <th>Requested By</th>
                                 <th>Country</th>
                                 <th>Status</th>
@@ -77,7 +77,7 @@ export default function QuotationTableSec({fetchAllQuotations ,newData , setCurr
                                         <td >{row?.valid_to === 'N/A' ? 'InProgress' : row?.valid_to}</td>
                                         <td>{row?.requested_by_name}</td>
                                         <td >{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
-                                        <td className='adjust__flex'>
+                                        <td className=''>
                                             <button className={`${row?.user_status} table__statu__btn`}>
                                                 {row?.user_status}
                                             </button>

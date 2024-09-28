@@ -51,6 +51,8 @@ import axios from 'axios';
 import MyShippingCosts from './pages/myShippingCostsPage/MyShippingCosts';
 import NewShippingCostForm from './components/newShippingCostFromItem/NewShippingCostForm';
 import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/ShowOneProductInfoInDash';
+import SearchInHome from './components/searchInHome/SearchInHome';
+import UserVirificationSec from './pages/userVirification/UserVirificationSec';
 
 function App() {
   useEffect(() => {
@@ -81,7 +83,11 @@ function App() {
   // Webside dataQueries
   const countriesQuery = useQuery({
     queryKey: ['countries'],
-    queryFn: () => getDataFromAPI('countries'),
+    queryFn: () => getDataFromAPI('countries',{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }),
   });
   const industriesQuery = useQuery({
     queryKey: ['industries'],
@@ -175,7 +181,10 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} token={token} />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} countries={countriesQuery?.data?.countries} token={token} />} />
+        
+        {/* Search Page */}
+        <Route path='/reach-magnet' element={<SearchInHome countries={countriesQuery?.data?.countries} />} />
         
         {/* Shop Routes */}
         {/* <Route path='/discover' element={<Discover />} /> */}
@@ -212,9 +221,10 @@ function App() {
         {/* Login & Regester Routes */}
         <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
         <Route path='/business-signUp' element={<BusinessSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
-        <Route path='/login' element={<MyLogin type={loginType} setType={setLoginType} />} />
+        <Route path='/login' element={<MyLogin type={loginType} companiesQuery setType={setLoginType} />} />
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path='/user-verification' element={<UserVirificationSec token={token} />} />
 
         {/* Profile Routes */}
         <Route path='/profile/followers' element={<CompanyFollowers loginType={loginType} token={token} />} />

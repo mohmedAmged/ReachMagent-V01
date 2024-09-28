@@ -29,8 +29,9 @@ export default function ShowOneOrderInfo({ token }) {
 
     const [newData, setNewdata] = useState([]);
     const fetchOrderInfo = async () => {
+        const slug = loginType === 'user' ? 'show-quotation-order' : 'quotation-order';
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/quotation-order/${orderId}?t=${new Date().getTime()}`, {
+            const response = await axios.get(`${baseURL}/${loginType}/${slug}/${orderId}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -53,9 +54,7 @@ export default function ShowOneOrderInfo({ token }) {
     const currencySymbol = newData?.currency_symbol;
     
 
-    const handleChangeStatue = async (id, status) => {
-        console.log(id);
-        
+    const handleChangeStatue = async (id, status) => {        
             await axios.post(`${baseURL}/${loginType}/update-quotation-order-status?t=${new Date().getTime()}`, {
                 quotation_order_id: `${id}`,
                 status: status
@@ -189,11 +188,32 @@ export default function ShowOneOrderInfo({ token }) {
                                     <p>
                                         {newData?.company_email}
                                     </p>
-                                    <p>
+                                    <p className='text-capitalize'>
                                         {newData?.city !== 'N/A' ? newData?.city : newData?.address}
                                     </p>
                                 </div>
-                            
+                                <div className="col-lg-6 col-md-6  sub_header_for_order">
+                                <div className="icon_handler">
+                                    <i className="bi bi-geo-alt-fill"></i>
+
+                                </div>
+                                <p className='specialP'>
+                                    Destination & Payment
+                                </p>
+                                {
+                                    newData?.city !== 'N/A' && newData?.country !== 'N/A' &&
+                                    <h5 className='text-capitalize'>
+                                    {newData?.city !== 'N/A' ? `${newData?.city},`  : ''} {newData?.country !== 'N/A' ? newData?.country : ''}
+                                    </h5>
+                                }
+                                
+                                <p className='text-capitalize'>
+                                    Adress: {newData?.address}
+                                </p>
+                                <p className='text-capitalize'>
+                                    order type: {newData?.order_type}
+                                </p>
+                            </div>
                             </div>
                         }
                         
@@ -221,7 +241,11 @@ export default function ShowOneOrderInfo({ token }) {
                                                 <tr className='' key={index}>
                                                     <td className='product__breif__detail d-flex '>
                                                         <div className="product__img">
-                                        <img src={row?.medias?.length !== 0 ? row?.medias[0]?.media : defaulImg} alt="product" />
+                                                        <img src={
+                                                            row?.medias?.length > 0 
+                                                            ? row?.medias[0]?.media 
+                                                            : row?.image || defaulImg
+                                                        } alt="product" />
                                                         </div>
                                                         <div className="product__info">
                                                             <h2 className='cursorPointer' title={row?.title}>

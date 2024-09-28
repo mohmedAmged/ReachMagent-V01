@@ -221,6 +221,65 @@
     border-color: aqua !important;
     /* color: var(--primary-black) !important; */
 }
+.quoteTotals__handler .allQuote__notes__handler{
+    margin-top: 20px;
+}
+.quoteTotals__handler .allQuote__notes{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.quoteTotals__handler .allQuote__notes p{
+    text-transform: capitalize;
+    font-size: 16px;
+    color: var(--main-blue-color);
+    font-weight: 500;
+
+}
+.quoteTotals__handler .allQuote__notes .user_note
+{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: capitalize;
+    width: 50%;
+
+}
+.quoteTotals__handler .allQuote__notes i
+{
+    color: var(--main-blue-color);
+    font-size: 20px;
+}
+.quoteTotals__handler .replayBackForNote i{
+    font-size: 20px !important;
+    color: var(--main-blue-color);
+}
+.quoteTotals__handler .replayBackForNote{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+.quoteTotals__handler .replayBackForNote p{
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--main-blue-color);
+}
+.quoteTotals__handler .replyTextarea{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.quoteTotals__handler .replyTextarea textarea{
+    margin-inline-end: 10px;
+}
+
 @media screen and (max-width: 600px) {
     .showSingleQuotation__handler .totals__text h5, 
     .showSingleQuotation__handler .totals__prices h5 {

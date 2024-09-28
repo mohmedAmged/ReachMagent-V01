@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './trendingCompanySec.css'
-import cover3 from '../../assets/companyCards/cover 3.png'
 import CopmanyCard from '../companyCardSec/CopmanyCard'
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import Cookies from 'js-cookie'
@@ -21,7 +20,7 @@ export default function TrendingCompanySec({ companies, token }) {
             };
         };
     }, [companies]);
-console.log(companies);
+    console.log(companies)
 
     return (
         <div className='trendingCompany__handler'>

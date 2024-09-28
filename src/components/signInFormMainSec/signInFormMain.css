@@ -22,20 +22,20 @@ ul.loginToggler li {
     -moz-border-radius: 10px 10px 0 0;
     -ms-border-radius: 10px 10px 0 0;
     -o-border-radius: 10px 10px 0 0;
-    color: var(--primary-white);
-    border: 1px solid var(--main-blue-color);
     border-bottom: none;
-    background-color: var(--main-blue-color);
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
-}
-ul.loginToggler li.active {
     background-color: var(--primary-white);
     color: var(--main-blue-color);
     border-color: var(--primary-white);
+}
+ul.loginToggler li.active {
+    background-color: var(--main-blue-color);
+    color: var(--primary-white);
+    border: 1px solid var(--main-blue-color);
 }
 .toggle-switch input[type="checkbox"] {
     display: none;

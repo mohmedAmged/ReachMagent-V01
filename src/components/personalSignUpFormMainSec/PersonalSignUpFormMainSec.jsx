@@ -10,6 +10,7 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import { AddEmployeeSchema } from '../../validation/AddEmployee';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
+import Cookies from 'js-cookie';
 
 export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp }) {
   const [unAuth, setUnAuth] = useState(false);
@@ -126,15 +127,28 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     await axios.post(`${baseURL}/${currentSlug}?t=${new Date().getTime()}`, formData, {
       headers: currentHeaders,
     }).then(response => {
-      toast.success(`${response?.data?.message}` || 'Created Successfully!', {
-        id: toastId,
-        duration: 2000
-      });
-      isSignUp && (setTimeout(() => {
-        navigate('/logIn');
-      }, 2000));
-      scrollToTop();
-      reset();
+      const token = response?.data?.data?.token;
+      if (token) {
+        Cookies.set('authToken', token, { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
+
+        Cookies.set('currentLoginedData', JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
+        toast.success(`${response?.data?.message}` || 'Created Successfully!', {
+          id: toastId,
+          duration: 2000
+        });
+        isSignUp && 
+          (!response?.data?.data?.user?.verified) &&
+            (setTimeout(() => {
+              navigate('/user-verification');
+            }, 1000));
+        isSignUp && 
+          (response?.data?.data?.user?.verified) &&
+            (setTimeout(() => {
+              navigate('/');
+            }, 1000));
+        scrollToTop();
+        reset();
+      }
     })
       .catch(error => {
         if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
@@ -162,10 +176,10 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
               <div className="row">
                 <div className="col-12">
                   <ul className='row loginToggler'>
-                    <li className={`col-md-3 cursorPointer active`} onClick={()=>navigate('/personalsignUp')}>
+                    <li className={`col-md-3 cursorPointer active`} onClick={() => navigate('/personalsignUp')}>
                       User
                     </li>
-                    <li className={`col-md-3 cursorPointer`} onClick={()=> navigate('/business-signUp')}>
+                    <li className={`col-md-3 cursorPointer`} onClick={() => navigate('/business-signUp')}>
                       Business
                     </li>
                   </ul>

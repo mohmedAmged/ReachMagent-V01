@@ -59,22 +59,22 @@ export default function MyOrders({ token }) {
     }
   }, [Cookies.get('currentLoginedData'), currentUserLogin]);
 
-  const handleDeleteOrder = async (id) => {
-    await axios.post(`${baseURL}/${loginType}/reject-order?t=${new Date().getTime()}`, {
-      order_id: `${id}`
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => {
-        toast.success(response?.data?.message || 'Deleted Successfully!');
-        getAllOrders(currentPage);
-      })
-      .catch(error => {
-        toast.error(error?.response?.data?.message || 'Something Went Wrong!');
-      })
-  };
+  // const handleDeleteOrder = async (id) => {
+  //   await axios.post(`${baseURL}/${loginType}/reject-order?t=${new Date().getTime()}`, {
+  //     order_id: `${id}`
+  //   }, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //     .then(response => {
+  //       toast.success(response?.data?.message || 'Deleted Successfully!');
+  //       getAllOrders(currentPage);
+  //     })
+  //     .catch(error => {
+  //       toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+  //     })
+  // };
   console.log(allOrders);
 
   return (
@@ -196,7 +196,7 @@ export default function MyOrders({ token }) {
                                           <p className='card_title'>
                                             order created at<span> ({el?.created_at})</span>
                                           </p>
-                                          <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i>
+                                          {/* <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i> */}
                                         </div>
                                         <div className="order_item_details row">
                                           <div className="col-lg-2 col-md-2 col-sm-12 image_handler">

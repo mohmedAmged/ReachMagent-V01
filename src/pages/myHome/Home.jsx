@@ -16,15 +16,12 @@ import SearchInHome from '../../components/searchInHome/SearchInHome';
 
 export default function Home({ companies, token, countries, fetchCartItems, wishlistItems }) {
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState(false);
-  const [currentSearchedData,setCurrentSearchedData] = useState([]);
   const arrOfCateg = [
     {
       name: 'Companies',
       id: 1
     },
   ];
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -46,41 +43,32 @@ export default function Home({ companies, token, countries, fetchCartItems, wish
               paraPartTwo='amazing and outstanding cool and great useful admin'
               categoryArr={arrOfCateg}
               countries={countries}
-              setSearch={setSearch}
-              setCurrentSearchedData={setCurrentSearchedData}
             />
+            <AboutReachSec />
+            <AllCategorySec />
             {
-              (search) ?
-                <SearchInHome currentData={currentSearchedData} />
-              : 
-              <>
-                <AboutReachSec />
-                <AllCategorySec />
-                {
-                  <div className='oneClickQuotation__handler'>
-                    <FranchiseSec
-                      pageName='discover'
-                      headText='One-click Quotation'
-                      paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
-                      btnOneText='Start Now'
-                      btnOnelink='/one-click-quotation'
-                    />
-                  </div>
-                }
-                {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
-                <TrendingCompanySec companies={companies} token={token} />
-                <GrowBuisnessSec />
-                {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
-                <div className='mt-3'>
-                  <HeaderOfSec
-                    secHead='Companies Insights'
-                    secText='Stay informed with the latest updates, announcements, and specials from top companies'
-                  />
-                  <SingleCompanyNewsSec setLoading={setLoading} token={token} />
-                </div>
-                <DownloadApp />
-              </>
+              <div className='oneClickQuotation__handler'>
+                <FranchiseSec
+                  pageName='discover'
+                  headText='One-click Quotation'
+                  paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
+                  btnOneText='Start Now'
+                  btnOnelink='/one-click-quotation'
+                />
+              </div>
             }
+            {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
+            <TrendingCompanySec companies={companies} token={token} />
+            <GrowBuisnessSec />
+            {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
+            <div className='mt-3'>
+              <HeaderOfSec
+                secHead='Companies Insights'
+                secText='Stay informed with the latest updates, announcements, and specials from top companies'
+              />
+              <SingleCompanyNewsSec setLoading={setLoading} token={token} />
+            </div>
+            <DownloadApp />
           </div>
       }
     </>

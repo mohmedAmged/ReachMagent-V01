@@ -156,7 +156,7 @@ export default function CartProduct({
                         }
                     })
                     .then((response) => {
-                        setCurrNotes(response?.data?.data?.cart[0].note);
+                        setCurrNotes(response?.data?.data?.cart.find(el=>el.quotation_cart_id === cartId)?.note);
                         toast.success(`${response?.data?.message || 'Note Added Successfully!'}`, {
                             id: toastId,
                             duration: 1000

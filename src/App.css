@@ -313,3 +313,6 @@
 .loader .dot:nth-child(10) {
     animation-delay: 0.5s;
 }
+.opacityDisabled {
+    opacity: 0.5;
+}

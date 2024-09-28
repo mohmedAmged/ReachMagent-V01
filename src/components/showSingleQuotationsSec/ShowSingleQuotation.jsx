@@ -169,9 +169,11 @@ export default function ShowSingleQuotation({ token }) {
                 slug = 'update-quotation-status';
                 submitData = submitionData;
                 submitData.status = 'accepted'
+                submitData.company_notes= replyText
             }else {
                 slug = 'complete-quotation-data';
                 submitData = submitionData;
+                submitData.company_notes= replyText
             }
         } else {
             slug = 'complete-negotiation-quotation-data';
@@ -179,6 +181,7 @@ export default function ShowSingleQuotation({ token }) {
             submitData.shipping_price = shippingValue;
             submitData.services = servicesValue;
             submitData.offer_validaty = submitionData.offer_validaty;
+            submitData.company_notes= replyText
         };
         (async () => {
             await axios.post(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`,
@@ -385,6 +388,31 @@ export default function ShowSingleQuotation({ token }) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    const [showTextarea, setShowTextarea] = useState(false);
+    const [replyText, setReplyText] = useState('');
+    const [isReplied, setIsReplied] = useState(false);
+
+    const handleToggle = () => {
+        setShowTextarea(prevState => !prevState);
+    };
+
+    const handleReplySubmit = () => {
+        if (!isReplied) {
+            // Submit the reply
+            setIsReplied(true);
+            setShowTextarea(true); // Keep textarea visible but disabled
+        } else {
+            // Clear the reply and reset the state
+            setIsReplied(false);
+            setReplyText(''); // Clear the text
+            setShowTextarea(false); // Hide the textarea
+        }
+    };
+    console.log(acceptedSingleQuotations);
+    console.log('newData:', newData);
+    console.log('fullData:', fullData);
+    
     return (
         <>
             {
@@ -416,6 +444,7 @@ export default function ShowSingleQuotation({ token }) {
                                                         <th className='text-center'>Duration</th>
                                                         
                                                         <th className='text-center'> Status</th>
+                                                        
                                                         <th className='text-center'> Notes</th>
                                                         {
                                                             ((loginType === 'employee' && newData?.quotation_type === 'sell') || (isOneClickQuotation && fullData?.quotation_type === 'sell')) &&
@@ -430,17 +459,23 @@ export default function ShowSingleQuotation({ token }) {
                         <tr key={`${row?.id}${row?.title}`}>
                             <td className='text-capitalize'>
                                 <span className='me-2 indexOfTheTable'>{idx + 1}</span>
-                                <span>{
-                                    `(${row?.code ?
-                                        `${row?.code}` :
+                                <span title={`${row?.title}`} className=' cursorPointer'>{
+                                    `${row?.code ?
+                                        `(${row?.code})` :
                                         ''
-                                    }) ${row?.title.slice(0,5)}${row?.title.length > 5 && '...'} `
+                                    } ${row?.title.slice(0,5)}${row?.title.length > 5 ? '...' : ''} `
                                 }
                                 </span>
                             </td>
                             <td className='text-center text-capitalize'>
                                 {
-                                    row?.unit_of_measure ? row?.unit_of_measure !== 'N/A' ? row?.unit_of_measure : '' : 'Customized Product'
+                                    row?.unit_of_measure 
+                                        ? row?.unit_of_measure !== 'N/A' 
+                                        ? row?.unit_of_measure 
+                                        : '' 
+                                        : row?.type === 'service' 
+                                        ? 'services item' 
+                                        : 'Customized Product'
                                 }
                             </td>
                             <td className='text-center text-capitalize'>
@@ -537,7 +572,7 @@ export default function ShowSingleQuotation({ token }) {
                             </td>
                             <td>
                                 <div className="note_order">
-                                {row?.note}
+                                {row?.note !== 'N/A' ? row?.note : 'No Note'}
                                 </div>
                             </td>
                         
@@ -560,125 +595,190 @@ export default function ShowSingleQuotation({ token }) {
                     ))
                 }
             </tbody>
-                                            </Table>
-                                        </div>
-                                        <div className="quoteTotals__handler">
-                                            <h3>
-                                                Quote Totals
-                                            </h3>
-                                            <div className="row align-items-center">
-                                                <div className="col-lg-6">
-                                                    <div className="totals__full__info">
-                                                        <div className="totals__text">
-                                                            <h5 className='mb-4'>
-                                                                subtotal <span className="optional">(Accepted Only)</span>
-                                                            </h5>
-                                                            <h5 className='mb-4'>
-                                                                Offer Valid for <span className="optional">(##days)</span>
-                                                            </h5>
-                                                            {
-                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-4'>
-                                                                        Shipping cost
-                                                                    </h5>
-                                                                    :
-                                                                    ''
-                                                            }
-                                                            <h5 className='mb-4'>
-                                                                Extra <span className='optional'>(Specified in notes)</span>
-                                                            </h5>
-                                                            <h5>
-                                                                Total
-                                                            </h5>
-                                                        </div>
-                                                        <div className="totals__prices">
-                                                            <h5 className='mb-4 mt-2'>
-                                                                ${subTotalPrice}
-                                                            </h5>
-                                                            <h5 className='mb-3'>
-                                                                <input
-                                                                    defaultValue={
-                                                                        !isOneClickQuotation ?
-                                                                            newData?.offer_validaty === 'N/A' ? 0
-                                                                            :
-                                                                            fullData?.offer_validaty : fullData?.offer_validaty === 'N/A' ? 0 : fullData?.offer_validaty
-                                                                    }
-                                                                    name='offer_validaty'
-                                                                    type="number"
-                                                                    id='quotationservicesPrice'
-                                                                    className='form-control w-50'
-                                                                    min={0}
-                                                                    maxLength={4}
-                                                                    disabled={
-                                                                        !isOneClickQuotation ?
-                                                                            loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
-                                                                            :
-                                                                            fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
-                                                                    }
-                                                                    onChange={handleChangeInput}
-                                                                />
-                                                            </h5>
-                                                            {
-                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-3'>
-                                                                        <input
-                                                                            defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
-                                                                            name='shipping_price'
-                                                                            type="number"
-                                                                            id='quotationShippingPrice'
-                                                                            className='form-control w-50'
-                                                                            maxLength={4}
-                                                                            disabled={
-                                                                                !isOneClickQuotation ?
-                                                                                    loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
-                                                                                    :
-                                                                                    fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
-                                                                            }
-                                                                            onChange={handleChangeInput}
-                                                                        />
-                                                                    </h5>
-                                                                    :
-                                                                    ''
-                                                            }
-                                                            <h5 className='mb-3'>
-                                                                <input
-                                                                    defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}
-                                                                    name='services'
-                                                                    type="number"
-                                                                    id='quotationservicesPrice'
-                                                                    className='form-control w-50'
-                                                                    min={0}
-                                                                    maxLength={4}
-                                                                    disabled={
-                                                                        !isOneClickQuotation ?
-                                                                            loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
-                                                                            :
-                                                                            fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
-                                                                    }
-                                                                    onChange={handleChangeInput}
-                                                                />
-                                                            </h5>
-                                                            <h5>
-                                                                ${(newData?.total_price !== 'N/A' && newData?.total_price) || totalPrice || 0}
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-6 adjustPositione">
-                                                    <div className="totals__have__problem">
-                                                        <h3>
-                                                            Having a problem?
-                                                        </h3>
-                                                        <button className='updateBtn'>
-                                                            <i className="bi bi-wechat fs-4"></i>
-                                                            <span>
-                                                                Chat with requester
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+        </Table>
+    </div>
+    <div className="quoteTotals__handler">
+        <h3>
+            Quote Totals
+        </h3>
+        <div className="row align-items-center">
+            <div className="col-lg-6">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className='mb-4'>
+                            subtotal <span className="optional">(Accepted Only)</span>
+                        </h5>
+                        {
+                            (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                <h5 className='mb-4'>
+                                    Shipping cost
+                                </h5>
+                                :
+                                ''
+                        }
+                        <h5 className='mb-4'>
+                            Extra <span className='optional'>(Specified in notes)</span>
+                        </h5>
+                        <h5>
+                            Total
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className='mb-4 mt-2'>
+                            ${subTotalPrice}
+                        </h5>
+                        {
+                            (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                <h5 className='mb-3'>
+                                    <input
+                                        defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
+                                        name='shipping_price'
+                                        type="number"
+                                        id='quotationShippingPrice'
+                                        className='form-control w-50'
+                                        maxLength={4}
+                                        disabled={
+                                            !isOneClickQuotation ?
+                                                loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
+                                                :
+                                                fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
+                                        }
+                                        onChange={handleChangeInput}
+                                    />
+                                </h5>
+                                :
+                                ''
+                        }
+                        <h5 className='mb-4'>
+                            <input
+                                defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}
+                                name='services'
+                                type="number"
+                                id='quotationservicesPrice'
+                                className='form-control w-50'
+                                min={0}
+                                maxLength={4}
+                                disabled={
+                                    !isOneClickQuotation ?
+                                        loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
+                                        :
+                                        fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
+                                }
+                                onChange={handleChangeInput}
+                            />
+                        </h5>
+                        <h5>
+                            ${(newData?.total_price !== 'N/A' && newData?.total_price) || totalPrice || 0}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div className="col-lg-6 adjustPositione">
+                <div className="totals__have__problem">
+                    <h3>
+                        Having a problem?
+                    </h3>
+                    <button className='updateBtn'>
+                        <i className="bi bi-wechat fs-4"></i>
+                        <span>
+                            Chat with requester
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div className="quoteTotals__handler">
+        <h3 className='text-capitalize'>
+            Quote offer validaty
+        </h3>
+        <div className="row align-items-center">
+            <div className="col-lg-6">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className=''>
+                            Offer Valid for <span className="optional">(##days)</span>
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className=''>
+                            <input
+                                defaultValue={
+                                    !isOneClickQuotation ?
+                                        newData?.offer_validaty !== 'N/A' ? newData?.offer_validaty ? newData?.offer_validaty
+                                        :
+                                        fullData?.offer_validaty : fullData?.offer_validaty === 'N/A' ? 0 : fullData?.offer_validaty
+                                        : 
+                                        0
+                                }
+                                name='offer_validaty'
+                                type="number"
+                                id='quotationservicesPrice'
+                                className='form-control w-50'
+                                min={0}
+                                maxLength={4}
+                                disabled={
+                                    !isOneClickQuotation ?
+                                        loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
+                                        :
+                                        fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
+                                }
+                                onChange={handleChangeInput}
+                            />
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div className="quoteTotals__handler mt-5">
+        <h3>
+            Notes on Quote
+        </h3>
+    <div className="row align-items-center">
+        <div className="col-lg-12 allQuote__notes__handler">
+                <div className="allQuote__notes">
+                    <i className="bi bi-envelope-exclamation"></i>
+                    <p className='text-capitalize'>
+                        requester Notes :
+                    </p>
+                    <p className='user_note'>
+                        { !isOneClickQuotation ? 
+                        newData?.user_notes === 'N/A' ? 'No Notes' : newData?.user_notes
+                        :
+                        fullData?.user_notes === 'N/A' ? 'No Notes' : fullData?.user_notes
+                        }
+                    </p>
+                </div>
+            <div className="replayBackForNote" >
+                <i className="bi bi-envelope-paper"></i>
+                <p>
+                    replaied note :
+                </p>
+                <div className="replayDynamicly_handler">
+                    <div className="replyTextarea">
+                        <textarea
+                            // rows="4"
+                            className="form-control"
+                            defaultValue={newData?.company_notes !== 'N/A' ? newData?.company_notes ? newData?.company_notes : fullData?.company_notes !== 'N/A' ? fullData?.company_notes ? fullData?.company_notes : '' : '' : ''}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            disabled={
+                                !isOneClickQuotation ?
+                                    loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
+                                    :
+                                    fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
+                            }
+                        />
+                        
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+            
+    </div>
+</div>
 
                                         <div className="requesterDetails__handler">
                                             {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import './signInFormMain.css'
+import React, { useState } from 'react';
+import './signInFormMain.css';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '../../validation/LoginSchema';
@@ -31,7 +31,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
         setLoginType(localStorage.getItem('loginType'));
     };
 
-    const onSubmit = async(data) => {
+    const onSubmit = async (data) => {
         const toastId = toast.loading('Please Wait...');
         await axios.post(`${baseURL}/${loginType}/login?t=${new Date().getTime()}`, data, {
             headers: {
@@ -66,9 +66,16 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                 id: toastId,
                 duration: 1000
             });
-            setTimeout(() => {
-                navigate('/');
-            },1000);
+            if( loginType === 'user' && !response?.data?.data?.user?.verified){
+                setTimeout(() => {
+                    navigate('/user-verification');
+                },1000);
+            }else {
+                setTimeout(() => {
+                    navigate('/');
+                window.location.reload();
+                },1000);
+            };
             reset();
         })
         .catch(error => {

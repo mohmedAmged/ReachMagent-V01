@@ -8,10 +8,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateEmployeeProfileSchema } from '../../validation/UpdateEmployeeProfile';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,setCurrentImageUpdateError,setCurrentImage,currentUserLogin,setProfileUpdateStatus,profileUpdateStatus,countries}) {
     const currentChosenCountry = countries?.find(el => el?.name === currentUserLogin?.country );
-
+    const navigate = useNavigate();
     const [currentCities,setCurrentCities] = useState([]);
     const [defaultChosenCity,setDefaultChosenCity] = useState(null);
     const loginType =localStorage.getItem('loginType');
@@ -52,7 +53,6 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
         },
         resolver: zodResolver(UpdateEmployeeProfileSchema),
     });
-
 
     useEffect(()=>{
         setValue('image',currnetImageUpdateFile);
@@ -136,17 +136,14 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
                 :
                     Cookies.set('currentLoginedData',JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
-
                 localStorage.setItem('updatingProfile','notUpdating');
-                window.location.reload();
+                if(response?.data.data?.user?.verified){
+                    window.location.reload();
+                }else {
+                    navigate('/user-verification');
+                };
             })
             .catch(error => {
-                Object.keys(error?.response?.data?.errors).forEach((key) => {
-                    setError(key, {message: error?.response?.data?.errors[key][0]});
-                });
-                if(error?.response?.data?.errors.image){
-                    setCurrentImageUpdateError(error?.response?.data?.errors.image[0]);
-                };
                 toast.error(error?.response?.data?.message,{
                     id: toastId,
                     duration: 2000

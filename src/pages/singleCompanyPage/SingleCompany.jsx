@@ -30,8 +30,6 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
     const loginType = localStorage.getItem('loginType');
-    const [formId, setFormId] = useState(undefined);
-    const [formInputs, setFormInputs] = useState({});
 
     const companyData = {
         aboutMark: aboutMarkImage,
@@ -66,6 +64,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
             }
         }),
     });
+
     const [activeItem, setActiveItem] = useState('Overview');
 
     const items = [
@@ -75,36 +74,11 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
         { name: 'Products', active: activeItem === 'Products' },
         { name: 'Media', active: activeItem === 'Media' },
         { name: 'Pranches', active: activeItem === 'Pranches' },
-    ]
+    ];
+
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
-    useEffect(() => {
-        if (token && formId) {
-            (async () => {
-                const toastId = toast.loading('Loading Forms...');
-                await axios.post(`${baseURL}/${loginType}/show-form?t=${new Date().getTime()}`, {
-                    form_id: `${formId}`,
-                    company_id: companyId
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }).then((response) => {
-                    setFormInputs(response?.data?.data);
-                    toast.success(`Form Feilds Loaded Successfully.`, {
-                        id: toastId,
-                        duration: 1000,
-                    });
-                }).catch(errors => {
-                    toast.error(`${errors?.response?.data?.message}`, {
-                        id: toastId,
-                        duration: 1000,
-                    })
-                })
-            })();
-        };
-    }, [companyId, formId, loginType, token]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -295,7 +269,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                         <SingleCompanyAffiliate />
                         {
                             (token) ?
-                                <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} formInputs={formInputs} companyId={companyId} formId={formId} setFormId={setFormId} />
+                                <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} companyId={companyId} />
                                 :
                                 ''
                         }

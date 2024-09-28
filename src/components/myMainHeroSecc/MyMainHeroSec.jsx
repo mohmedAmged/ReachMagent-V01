@@ -1,33 +1,31 @@
 import React, { useState } from 'react'
 import './myMainHeroSec.css';
-import axios from 'axios';
-import { baseURL } from '../../functions/baseUrl';
+import { useNavigate } from 'react-router-dom';
 
-export default function MyMainHeroSec({setSearch,setCurrentSearchedData,countries,handleChangeFilterInputs, heroSecContainerType,currentPage, headText, paraPartOne, paraPartTwo, categoryArr , currentCompanyChosen}) {
-    const [submitSearchData ,setSubmitSearchData] = useState({
+export default function MyMainHeroSec({ countries, handleChangeFilterInputs, heroSecContainerType, currentPage, headText, paraPartOne, paraPartTwo, categoryArr, currentCompanyChosen }) {
+    const [submitSearchData, setSubmitSearchData] = useState({
         name: '',
         country_id: ''
     });
+    const navigate = useNavigate();
 
-    const handleChangeSearchData = (e)=>{
-        setSubmitSearchData({...submitSearchData , [e.target.name]: e.target.value});
+    function objectToParams(obj) {
+        const params = new URLSearchParams();
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key) && obj[key] !== '') {
+                params.append(key, obj[key]);
+            };
+        };
+        return params.toString();
     };
 
-    const handleSubmitSearchData = async ()=>{
-        await axios.get(`${baseURL}/general-search`,{
-            params: submitSearchData,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            setSearch(true);
-            setCurrentSearchedData(res?.data?.data?.companies);
-        })
-        .catch(err=>{
-            console.log(err?.response?.data);
-        })
+    const handleChangeSearchData = (e) => {
+        setSubmitSearchData({ ...submitSearchData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmitSearchData = () => {
+        const slug = objectToParams(submitSearchData);
+        navigate(`reach-magnet?${slug}`);
     };
 
     return (
@@ -74,14 +72,14 @@ export default function MyMainHeroSec({setSearch,setCurrentSearchedData,countrie
                                             </div>
                                             <div className="form__part select__area__part w-25">
                                                 <select
-                                                defaultValue={''}
-                                                name="country_id"
-                                                onChange={handleChangeSearchData}
-                                                className='form-select'
-                                                id="homeSearchForCountryId"
+                                                    defaultValue={''}
+                                                    name="country_id"
+                                                    onChange={handleChangeSearchData}
+                                                    className='form-select'
+                                                    id="homeSearchForCountryId"
                                                 >
                                                     <option value="" disabled>Select Country</option>
-                                                    {countries?.map(country =>(
+                                                    {countries?.map(country => (
                                                         <option value={country?.id} key={country?.id}>
                                                             {country?.name}
                                                         </option>
@@ -101,7 +99,7 @@ export default function MyMainHeroSec({setSearch,setCurrentSearchedData,countrie
                                                     <div className="form__part select__category__part">
                                                         <i className="bi bi-blockquote-right"></i>
                                                         <select defaultValue={currentCompanyChosen} name='company' onChange={handleChangeFilterInputs}>
-                                                        {currentPage === 'shop' && <option disabled value="">Select Company</option>}
+                                                            {currentPage === 'shop' && <option disabled value="">Select Company</option>}
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (
@@ -116,7 +114,7 @@ export default function MyMainHeroSec({setSearch,setCurrentSearchedData,countrie
                                             }
                                             <div className="form__part input__search__part">
                                                 <i className="bi bi-search"></i>
-                                                <input type="text" name='title' onChange={handleChangeFilterInputs} placeholder={currentPage === 'shop' && 'Search with Product Name'}/>
+                                                <input type="text" name='title' onChange={handleChangeFilterInputs} placeholder={currentPage === 'shop' && 'Search with Product Name'} />
                                             </div>
                                         </>
                                 }

@@ -74,8 +74,8 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                         <p className='companyinfo__Tit'>
                                             Headquarters:
                                         </p>
-                                        <p className='companyinfo__subTit'>
-                                            {showCompaniesQuery?.companyFullAddress}
+                                        <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyFullAddress}>
+                                            {showCompaniesQuery?.companyFullAddress?.length >= 25 ? showCompaniesQuery?.companyFullAddress?.slice(0,25) + '...' : showCompaniesQuery?.companyFullAddress}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -126,8 +126,8 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                         <p className='companyinfo__Tit'>
                                             type:
                                         </p>
-                                        <p className='companyinfo__subTit'>
-                                            {showCompaniesQuery?.companyTypes[1]?.type}
+                                        <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyTypes[0]?.type}>
+                                            {showCompaniesQuery?.companyTypes[0]?.type?.length >= 15 ? showCompaniesQuery?.companyTypes[0]?.type?.slice(0,15) + '...' : showCompaniesQuery?.companyTypes[0]?.type }
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -135,8 +135,8 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             Website:
                                         </p>
                                         <p className='companyinfo__subTit'>
-                                            <NavLink to={`${showCompaniesQuery?.companyWebsiteLink}`} className='nav-link'>
-                                            {showCompaniesQuery?.companyWebsiteLink}
+                                            <NavLink to={`${showCompaniesQuery?.companyWebsiteLink}`} className='nav-link' title={showCompaniesQuery?.companyWebsiteLink}>
+                                            {showCompaniesQuery?.companyWebsiteLink?.length >= 25 ? showCompaniesQuery?.companyWebsiteLink?.slice(0,25) + '...' : showCompaniesQuery?.companyWebsiteLink}
                                             </NavLink>
                                         </p>
                                     </div>  
@@ -181,12 +181,24 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            {(token) &&
+                            {(token) ?
                                 <NavLink onClick={() => {
                                     scrollToTop();
                                     Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companyId);
                                 }}
                                     className='nav-link' to={`/${showCompaniesQuery?.companyName}/request-quote`}>
+
+                                    <button className='btnColoredBlue'>
+                                        Request Quotation
+                                    </button>
+
+                                </NavLink>
+                                :
+                                <NavLink onClick={() => {
+                                    toast.error('You Should Login First!');
+                                    scrollToTop();
+                                }}
+                                    className='nav-link' to={`/login`}>
 
                                     <button className='btnColoredBlue'>
                                         Request Quotation
