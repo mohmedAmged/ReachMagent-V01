@@ -229,6 +229,7 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 .quoteTotals__handler .allQuote__notes p{
     text-transform: capitalize;
@@ -263,6 +264,7 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    flex-wrap: wrap;
 }
 .quoteTotals__handler .replayBackForNote p{
     text-transform: capitalize;
@@ -302,6 +304,15 @@
     .showSingleQuotation__handler .requesterDetails__subInfo .mainInfo__texts h5{
         font-size: 8px;
     }
+.quoteTotals__handler .allQuote__notes .user_note
+{
+
+    width: 100%;
+
+}
+.quoteTotals__handler .totals__prices input{
+    width: 80% !important;
+}
 }
 .indexOfTheTable {
     color: rgba(181, 183, 192, 1);
