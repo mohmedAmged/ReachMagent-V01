@@ -18,52 +18,52 @@ export default function AllCategorySec() {
         {
             img: furnitre,
             title: 'furnitre',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: kitchen,
             title: 'kitchen',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: sport,
             title: 'sports',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: lighting,
             title: 'lighting',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: decor,
             title: 'decoration',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: kids,
             title: 'kids',
-            link: '/business-profile'
+            link: '/all-category/:subCategID'
         },
         {
             img: makeUp,
             title: 'make-up',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: health,
             title: 'health',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: pets,
             title: 'pets',
-            link: '/your-messages'
+            link: '/all-category/:subCategID'
         },
         {
             img: other,
             title: 'other',
-            link: '/all-category'
+            link: '/all-category/:subCategID'
         },
     ];
     return (

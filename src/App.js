@@ -208,6 +208,7 @@ function App() {
 
         {/* all category routes */}
         <Route path='/all-category' element={<OtherCategories />} />
+        <Route path='/all-category/:subCategID' element={<SubCategoryMain />} />
         <Route path='/all-category/Fashion&Apparel' element={<SubCategoryMain />} />
         <Route path='/all-category/Beauty&PersonalCare' element={<SubCategoryMain />} />
         <Route path='/all-category/Health&Wellness' element={<SubCategoryMain />} />

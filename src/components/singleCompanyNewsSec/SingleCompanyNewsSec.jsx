@@ -28,9 +28,9 @@ export default function SingleCompanyNewsSec({token}) {
   };
 
   useEffect(() => {
-    if(token){
+   
       fetchHomePosts();
-    };
+  
   }, [token]);
 
   return (
