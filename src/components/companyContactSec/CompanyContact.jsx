@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import FranchiseSec from '../franchiseSecc/FranchiseSec';
 
 export default function CompanyContact({ loginType, token, companyId , company }) {
   const convertToUnderscore = (str) => {
@@ -140,7 +141,9 @@ export default function CompanyContact({ loginType, token, companyId , company }
     <div className='contact__mainSec'>
       <div className="container">
         <div className="row">
-          <div className="col-lg-12">
+          {
+            token ? 
+            <div className="col-lg-12">
             <div className="contactCompany-type">
               <ul className='d-flex flex-wrap'>
                 {company?.data?.company?.companyForms?.map((el) => {
@@ -156,10 +159,8 @@ export default function CompanyContact({ loginType, token, companyId , company }
               </ul>
             </div>
             <div className="contactCompany__form">
-              <h4>
-                If you would like to contact Homzmart please fill out the form below and someone from their department will reach out to you
-              </h4>
-              <form method='POST' className='p-5' onSubmit={handleSubmit(onSubmit)}>
+              
+              <form method='POST' className='p-3' onSubmit={handleSubmit(onSubmit)}>
                 {gettingInputData(formInputs)}
                 <input
                   className='contactCompany__form-submitBtn'
@@ -170,9 +171,20 @@ export default function CompanyContact({ loginType, token, companyId , company }
                   disabled={isSubmitting}
                 />
               </form>
-
             </div>
-          </div>
+            </div>
+            : 
+            <div className="col-12">
+              <FranchiseSec
+                  pageName='discover'
+                  headText='Contact Form'
+                  paraText='From general Inqueries to booking appointements'
+                  btnOneText='Login To Continue'
+                  btnOnelink='/login'
+                />
+            </div>
+          }
+          
         </div>
       </div>
     </div>

@@ -12,6 +12,9 @@ import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import './showOneOrderInfo.css'
 import { Table } from 'react-bootstrap';
 import defaulImg from '../../assets/servicesImages/default-store-350x350.jpg'
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { findRenderedDOMComponentWithTag } from 'react-dom/test-utils';
 export default function ShowOneOrderInfo({ token }) {
     const [loading, setLoading] = useState(true);
     const { orderId } = useParams();
@@ -78,6 +81,10 @@ export default function ShowOneOrderInfo({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     console.log(newData);
     
@@ -124,7 +131,7 @@ export default function ShowOneOrderInfo({ token }) {
                             <option value="processing">Processing</option>
                             <option value="delivering">Delivering</option>
                             <option value="completed">Completed</option>
-                            <option value="cancelled_by_admin">Cancelled by admin</option>
+                            <option value="cancelled_by_admin" disabled>Cancelled by admin</option>
                         </select>
                         )
                     }
@@ -167,9 +174,6 @@ export default function ShowOneOrderInfo({ token }) {
                                 </h5>
                                 <p>
                                     Adress: {newData?.address}
-                                </p>
-                                <p>
-                                    payment statue: {newData?.payment_status}
                                 </p>
                             </div>
                             </div>
@@ -221,67 +225,145 @@ export default function ShowOneOrderInfo({ token }) {
                     <div className="col-12">
                         {
                             newData?.length !== 0 ?
-                                <div className="productTable__content">
-                                    <Table responsive>
+<div className="productTable__content">
+<Table responsive>
                                         <thead>
-                                            <tr className='table__default__header'>
-                                                <th>
-                                                    product
-                                                </th>
-                                                <th className='text-center'>Qty</th>
-                                                <th className='text-center'>Price</th>
-                                                <th className='text-center'>shipping</th>
-                                                <th className='text-center'>taxes</th>
-                                                <th className='text-center'>services</th>
-                                                <th className='text-center'>total</th>
-                                            </tr>
+            <tr className='table__default__header'>
+                <th>
+                    product
+                </th>
+                <th className='text-center'>Qty</th>
+                <th className='text-center'>Unit</th>
+                
+                <th 
+                className='text-center'>Total Price</th>
+                <th className='text-center'>Notes</th>
+                <th className='text-center'>Files</th>
+                
+            </tr>
                                         </thead>
                                         <tbody>
                                             {newData?.quotation_order_details?.map((row, index) => (
-                                                <tr className='' key={index}>
-                                                    <td className='product__breif__detail d-flex '>
-                                                        <div className="product__img">
-                                                        <img src={
-                                                            row?.medias?.length > 0 
-                                                            ? row?.medias[0]?.media 
-                                                            : row?.image || defaulImg
-                                                        } alt="product" />
-                                                        </div>
-                                                        <div className="product__info">
-                                                            <h2 className='cursorPointer' title={row?.title}>
-        {row?.title?.length > 5 ? `${row?.title.substring(0, 5)}...` : row?.title}
-                                                            </h2>
-                                                        </div>
-                                                    </td>
-
-
-
-                                                    <td>
-                                                        {row?.quantity}
-                                                    </td>
-                                                    <td>
-                                                        {currencySymbol}{row?.total_price}
-                                                    </td>
-                                                    <td>
-                                                    {currencySymbol}{shippingPrice}
-                                                    </td>
-                                                    <td>
-                                                    {currencySymbol}{taxesPrice}
-                                                    </td>
-                                                    <td>
-                                                    {currencySymbol}{servicePrice}
-                                                    </td>
-                                                    <td>
-                                                    {currencySymbol}
+    <tr className='' key={index}>
+        <td className='product__breif__detail d-flex '>
+            <div className="product__img">
+            <img src={
+                row?.medias?.length > 0 
+                ? row?.medias[0]?.media 
+                : row?.image || defaulImg
+            } alt="product" />
+            </div>
+            <div className="product__info">
+                <h2 className='cursorPointer' title={row?.title}>
+                    {/* {row?.title?.length > 5 ? `${row?.title.substring(0, 5)}...` : row?.title} */}
+                    {row?.title} <span className='optional'>
+                                    {
+                                        row?.code ? `(${row?.code})` : '' 
+                                    }
+                                </span>
+                </h2>
+            </div>
+        </td>
+        <td>
+            {row?.quantity}
+        </td>
+        <td>
+        {
+            row?.unit_of_measure 
+                ? row?.unit_of_measure !== 'N/A' 
+                ? row?.unit_of_measure 
+                : '' 
+                : row?.type === 'service' 
+                ? 'services item' 
+                : 'Customized Product'
+        }
+        </td>
+        <td>
+            {currencySymbol}{row?.total_price}
+        </td>
+        <td className='text-center'>
+        {
+        row?.notes !== 'N/A' ?
+            <i onClick={handleShow} className="bi bi-eye cursorPointer"></i>
+            : 
+            'No Notes'
+        }
+        </td>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>Notes</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{row?.notes}</Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+            </Modal.Footer>
+        </Modal>
+        <td className='text-center'>
+            <i className="bi bi-cloud-download cursorPointer"></i>
+        </td>
+    </tr>
+))}
+    </tbody>
+</Table>
+<div className="quoteTotals__handler">
+        <h3 className='text-capitalize'>
+            order Total
+        </h3>
+        <div className="row align-items-center">
+            <div className="col-lg-6">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className='mb-4'>
+                            Sub-Total <span className="optional">(before tax)</span>
+                        </h5>
                         {
-                            ((parseFloat(row?.total_price) * parseFloat(row?.quantity)) + parseFloat(shippingPrice) + parseFloat(taxesPrice) + + parseFloat(servicePrice))
+                            newData?.taxes !== 'N/A' &&
+                            <h5 className='mb-4'>
+                            Total Tax 
+                            </h5>
                         }
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                        {
+                            
+                                <h5 className='mb-4'>
+                                    Shipping cost 
+                                </h5>
+                        }
+                        <h5 className='mb-4'>
+                            Extra <span className='optional'>(Specified in notes)</span>
+                        </h5>
+                        <h5>
+                            Total Price 
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className='mb-4 '>
+                                $ {newData?.sub_total
+                                }
+                        </h5>
+                        {
+                            newData?.taxes !== 'N/A' &&
+                            <h5 className='mb-4'>
+                                $ {newData?.taxes}
+                            </h5>
+                        }
+                        <h5 className='mb-4 mt-2'>
+                                $ {newData?.shipping_price}
+                        </h5>
+                        <h5 className='mb-4 mt-2'>
+                                $ {newData?.services}
+                        </h5>
+                        <h5 className=' mt-2'>
+                                $ {newData?.total_price
+                                }
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                                 :
                                 <div className='row'>
                                     <div className="col-12 text-danger fs-5">

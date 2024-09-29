@@ -49,6 +49,8 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
             showCompaniesQuery?.companyBranches[0]?.branchLongitude
         ])
     },[showCompaniesQuery]);
+    console.log(showCompaniesQuery);
+    
     return (
         <div className='aboutCompany__handler'>
             <div className="container">
@@ -57,8 +59,9 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                         <img src={company.aboutMark} alt="mark" />
                         <h1>About Us</h1>
                     </div>
-                    <div className="aboutCompany__content__info">
-                        <h3 className='breif__desc'>
+                    <div className="aboutCompany__content__info my-3">
+                        <p className='fixed__desc'>{showCompaniesQuery?.companyAboutUs}</p>
+                        {/* <h3 className='breif__desc'>
                             {company.briefDescription}
                         </h3>
                         <ul>
@@ -71,7 +74,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                                 <h3 className='fixed__titles'>{faqItem.title}</h3>
                                 <p className='fixed__desc'>{faqItem.description}</p>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                 </div>
                 <div className="aboutCompany__workHour">

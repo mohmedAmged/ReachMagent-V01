@@ -60,7 +60,7 @@ export default function QuotationTableSec({fetchAllQuotations ,newData , setCurr
                                 <th>Subm-Date</th>
                                 <th>Expi-Date</th>
                                 <th>Requested By</th>
-                                <th>Country</th>
+                                <th>Destination</th>
                                 <th>Status</th>
                             </tr>
                         </thead>

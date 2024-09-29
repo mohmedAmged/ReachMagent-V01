@@ -74,32 +74,32 @@
     color: rgba(51, 51, 51, 1);
     text-align: center;
 }
-.showSingleQuotation__handler .quoteTotals__handler{
+.quoteTotals__handler{
     margin-top: 30px;
 }
-.showSingleQuotation__handler .quoteTotals__handler h3{
+.quoteTotals__handler h3{
     font-size: 20px;
     font-weight: 500;
 }
-.showSingleQuotation__handler .totals__full__info{
+.totals__full__info{
     display: flex;
     align-items: center;
     gap: 20px;
     margin-top: 30px;
 }
-.showSingleQuotation__handler .totals__text{
+.totals__text{
     background: rgba(0, 0, 0, 0.05);
     padding: 15px 30px;
     border-radius: 7px;
 }
-.showSingleQuotation__handler .totals__text h5,
-.showSingleQuotation__handler .totals__prices h5
+.totals__text h5,
+.totals__prices h5
 {
     font-size: 16px;
     font-weight: 400;
     text-transform: capitalize;
 }
-.showSingleQuotation__handler .totals__prices h5{
+.totals__prices h5{
     color: rgba(0, 0, 0, 0.5);
 }
 .showSingleQuotation__handler .updateBtn{
@@ -283,11 +283,11 @@
 }
 
 @media screen and (max-width: 600px) {
-    .showSingleQuotation__handler .totals__text h5, 
-    .showSingleQuotation__handler .totals__prices h5 {
+    .totals__text h5, 
+    .totals__prices h5 {
         font-size: 12px;
     }
-    .showSingleQuotation__handler .totals__full__info{
+    .totals__full__info{
         margin-bottom: 30px;
     }
     .adjustPositione{

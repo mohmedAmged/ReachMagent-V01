@@ -144,6 +144,11 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                 };
             })
             .catch(error => {
+                if (error?.response?.data?.errors) {
+                    Object.keys(error.response.data.errors).forEach((key) => {
+                        setError(key, { message: error.response.data.errors[key][0] });
+                    });
+                };
                 toast.error(error?.response?.data?.message,{
                     id: toastId,
                     duration: 2000
@@ -326,7 +331,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                         scrollToTop();
                         localStorage.setItem('updatingProfile', 'updating');
                         setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
-                    }}>Update</span>
+                    }}>Edit</span>
                     :
                     <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn mt-0' />
             }

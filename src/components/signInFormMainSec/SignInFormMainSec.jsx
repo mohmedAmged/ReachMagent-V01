@@ -107,7 +107,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
                         <div className="signUpForm__mainContent">
                             <div className="row">
                                 <h3 className="col-12 text-center pt-5 signUpForm__head">
-                                    {loginType === 'user' ? 'User' : 'Business' } Login
+                                    {loginType === 'user' ? 'User Login' : 'Login as a Business' } 
                                 </h3>
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
                                     <div className="col-lg-8 mb-4">

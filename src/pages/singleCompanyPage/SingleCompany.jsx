@@ -70,10 +70,10 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
     const items = [
         { name: 'Overview', active: activeItem === 'Overview' },
         { name: 'Services', active: activeItem === 'Services' },
-        { name: 'Catalogs', active: activeItem === 'Catalogs' },
-        { name: 'Products', active: activeItem === 'Products' },
-        { name: 'Media', active: activeItem === 'Media' },
-        { name: 'Pranches', active: activeItem === 'Pranches' },
+        { name: 'Product Catalog', active: activeItem === 'Product Catalog' },
+        // { name: 'Products', active: activeItem === 'Products' },
+        // { name: 'Media', active: activeItem === 'Media' },
+        // { name: 'branches', active: activeItem === 'branches' },
     ];
 
     const handleItemClick = (itemName) => {
@@ -155,7 +155,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                                     </>
                                 }
                                 {
-                                    activeItem === 'Catalogs' &&
+                                    activeItem === 'Product Catalog' &&
                                     <>
                                         <Swiper
                                             className='mySwiper'
@@ -266,12 +266,11 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                         />
 
                         <SingleCompanyNewsSec token={token} />
-                        <SingleCompanyAffiliate />
+                        {/* <SingleCompanyAffiliate /> */}
                         {
-                            (token) ?
+                           
                                 <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} companyId={companyId} />
-                                :
-                                ''
+                              
                         }
 
                     </div>

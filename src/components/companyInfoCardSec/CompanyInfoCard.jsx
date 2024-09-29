@@ -130,17 +130,51 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             {showCompaniesQuery?.companyTypes[0]?.type?.length >= 15 ? showCompaniesQuery?.companyTypes[0]?.type?.slice(0,15) + '...' : showCompaniesQuery?.companyTypes[0]?.type }
                                         </p>
                                     </div>
-                                    <div className="company__boxInfo">
-                                        <p className='companyinfo__Tit'>
+                                    <div className="company__boxInfo mt-2">
+                                        {/* <p className='companyinfo__Tit'>
                                             Website:
                                         </p>
                                         <p className='companyinfo__subTit'>
                                             <NavLink to={`${showCompaniesQuery?.companyWebsiteLink}`} className='nav-link' title={showCompaniesQuery?.companyWebsiteLink}>
                                             {showCompaniesQuery?.companyWebsiteLink?.length >= 25 ? showCompaniesQuery?.companyWebsiteLink?.slice(0,25) + '...' : showCompaniesQuery?.companyWebsiteLink}
                                             </NavLink>
-                                        </p>
+                                        </p> */}
+                                        <div className="companyFollow__btn">
+                                        {
+                                            (token) ?
+                                                (currentFollowedCompanies) ?
+                                                    currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
+                                                        <button
+                                                            className='pageMainBtnStyle unFollowCompanyBtn'
+                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                        >
+                                                            unFollow
+                                                        </button>
+                                                        :
+                                                        <button
+                                                            className='pageMainBtnStyle followCompanyBtn'
+                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                        >
+                                                            + follow
+                                                        </button>
+                                                    : ''
+                                                :
+                                                <button
+                                                    className='pageMainBtnStyle followCompanyBtn'
+                                                    onClick={() => {
+                                                        toast.error(`${(!token) && 'You Should Login First!' }`);
+                                                        setTimeout(() => {
+                                                            navigate('/login');
+                                                            scrollToTop();
+                                                        }, 1000);
+                                                    }}
+                                                >
+                                                    + follow
+                                                </button>
+                                        }
+                                        </div>
                                     </div>  
-                                    <div className="companyFollow__btn">
+                                    {/* <div className="companyFollow__btn">
                                     {
                                         (token) ?
                                             (currentFollowedCompanies) ?
@@ -173,7 +207,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                                 + follow
                                             </button>
                                     }
-                                    </div>
+                                    </div> */}
                                 </div>
 
                             </div>

@@ -28,14 +28,17 @@ ul.loginToggler li {
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
+
+    background-color: #808080;
+    color: var(--primary-white);
+    border: 1px solid #808080;
+
+
+}
+ul.loginToggler li.active {
     background-color: var(--primary-white);
     color: var(--main-blue-color);
     border-color: var(--primary-white);
-}
-ul.loginToggler li.active {
-    background-color: var(--main-blue-color);
-    color: var(--primary-white);
-    border: 1px solid var(--main-blue-color);
 }
 .toggle-switch input[type="checkbox"] {
     display: none;

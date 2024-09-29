@@ -11,6 +11,9 @@ import toast from 'react-hot-toast';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 
 export default function ShowSingleQuotation({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -313,6 +316,7 @@ export default function ShowSingleQuotation({ token }) {
                         duration: 1000
                     });
                 });
+                fetchShowQuotations()
         } else {
             const submitData = updatedData?.find(el => +el?.negotiate_one_click_quotation_detail_id === +id);
             submitData.status = type;
@@ -393,22 +397,11 @@ export default function ShowSingleQuotation({ token }) {
     const [replyText, setReplyText] = useState('');
     const [isReplied, setIsReplied] = useState(false);
 
-    const handleToggle = () => {
-        setShowTextarea(prevState => !prevState);
-    };
+    const [show, setShow] = useState(false);
 
-    const handleReplySubmit = () => {
-        if (!isReplied) {
-            // Submit the reply
-            setIsReplied(true);
-            setShowTextarea(true); // Keep textarea visible but disabled
-        } else {
-            // Clear the reply and reset the state
-            setIsReplied(false);
-            setReplyText(''); // Clear the text
-            setShowTextarea(false); // Hide the textarea
-        }
-    };
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     console.log(acceptedSingleQuotations);
     console.log('newData:', newData);
     console.log('fullData:', fullData);
@@ -441,11 +434,12 @@ export default function ShowSingleQuotation({ token }) {
                                                         <th className='text-center'>Unit Price</th>
                                                         <th className='text-center'>Tax(%)</th>
                                                         <th className='text-center'>Price</th>
-                                                        <th className='text-center'>Duration</th>
+                                                        <th className='text-center'>Duration (Days)</th>
                                                         
                                                         <th className='text-center'> Status</th>
                                                         
                                                         <th className='text-center'> Notes</th>
+                                                        <th className='text-center'> Files</th>
                                                         {
                                                             ((loginType === 'employee' && newData?.quotation_type === 'sell') || (isOneClickQuotation && fullData?.quotation_type === 'sell')) &&
                                                             <th className='text-center'>Action</th>
@@ -486,7 +480,7 @@ export default function ShowSingleQuotation({ token }) {
                                     !isOneClickQuotation ?
                                         <input
                                             type="number"
-                                            className={`form-control w-50 m-auto ${(!isOneClickQuotation &&
+                                            className={`form-control w-75 m-auto ${(!isOneClickQuotation &&
                                                 (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell'))}`}
                                             defaultValue={
                                                 (row?.offer_price !== 'N/A' ? (row?.offer_price ? +row?.offer_price : 0) : 0)
@@ -570,11 +564,29 @@ export default function ShowSingleQuotation({ token }) {
                                     </p>
                                 </div>
                             </td>
-                            <td>
-                                <div className="note_order">
-                                {row?.note !== 'N/A' ? row?.note : 'No Note'}
-                                </div>
+                            <td className='text-center'>
+                                {
+                                row?.note !== 'N/A' ?
+                                    <i onClick={handleShow} className="bi bi-eye cursorPointer"></i>
+                                    : 
+                                    'No Notes'
+                                }
                             </td>
+                            <td className='text-center'>
+                                <i className="bi bi-cloud-download cursorPointer"></i>
+                                
+                            </td>
+                            <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Notes</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>{row?.note}</Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
                         
                                 {(!isOneClickQuotation ? (loginType === 'employee' && newData?.quotation_type === 'sell') : (fullData?.quotation_type === 'sell')) &&
                                 <td className='text-center text-capitalize p-0'>
@@ -588,8 +600,8 @@ export default function ShowSingleQuotation({ token }) {
                                         )}
                                     </div>
                                 </td>}
-
                         </tr>
+                        
                         
                         </>
                     ))
@@ -605,13 +617,19 @@ export default function ShowSingleQuotation({ token }) {
             <div className="col-lg-6">
                 <div className="totals__full__info">
                     <div className="totals__text">
-                        <h5 className='mb-4'>
+                        <h5 className='mb-4 '>
                             subtotal <span className="optional">(Accepted Only)</span>
                         </h5>
                         {
+                            newData?.tax !== 'N/A' &&
+                            <h5 className='mb-4'>
+                            Total Tax <span className="optional">(Accepted Only)</span>
+                            </h5>
+                        }
+                        {
                             (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
                                 <h5 className='mb-4'>
-                                    Shipping cost
+                                    Shipping cost 
                                 </h5>
                                 :
                                 ''
@@ -620,13 +638,19 @@ export default function ShowSingleQuotation({ token }) {
                             Extra <span className='optional'>(Specified in notes)</span>
                         </h5>
                         <h5>
-                            Total
+                            Total Price 
                         </h5>
                     </div>
                     <div className="totals__prices">
                         <h5 className='mb-4 mt-2'>
                             ${subTotalPrice}
                         </h5>
+                        {
+                            newData?.tax !== 'N/A' &&
+                            <h5 className='mb-4 mt-2'>
+                                $ {newData?.tax}
+                            </h5>
+                        }
                         {
                             (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
                                 <h5 className='mb-3'>
@@ -667,7 +691,8 @@ export default function ShowSingleQuotation({ token }) {
                                 onChange={handleChangeInput}
                             />
                         </h5>
-                        <h5>
+                        
+                        <h5 className='mt-3'>
                             ${(newData?.total_price !== 'N/A' && newData?.total_price) || totalPrice || 0}
                         </h5>
                     </div>
@@ -754,7 +779,7 @@ export default function ShowSingleQuotation({ token }) {
             <div className="replayBackForNote" >
                 <i className="bi bi-envelope-paper"></i>
                 <p>
-                    replaied note :
+                    note from seller :
                 </p>
                 <div className="replayDynamicly_handler">
                     <div className="replyTextarea">

@@ -982,6 +982,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                               <input
                                 onChange={handleGettingFile}
                                 type='file'
+                                multiple
                                 id='signUpBusinessdocuments'
                                 className={`form-control newUploadBtn ${errors.documents ? 'inputError' : ''}`}
                               />
@@ -1012,10 +1013,10 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                               <input
                                 type='file'
                                 id='compnayLogo'
-                                multiple
                                 className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
                                 {...register('logo')}
                               />
+                              
                               {
                                 errors.logo
                                 &&
