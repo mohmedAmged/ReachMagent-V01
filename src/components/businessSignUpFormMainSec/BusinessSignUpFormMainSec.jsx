@@ -876,7 +876,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 (<span className='errorMessage'>{errors.sub_category_id.message}</span>)
                               }
                             </div>
-                            <div className="col-lg-6 mb-4">
+                            {/* <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpactivity_id">
                                 Business Main Activity
                                 <span className="requiredStar"> * </span>
@@ -955,7 +955,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 &&
                                 (<span className='errorMessage'>{errors.sub_activity_id.message}</span>)
                               }
-                            </div>
+                            </div> */}
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpwebsite_link">
                                 WebSite Link
@@ -1028,11 +1028,11 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 Next Step <i className="bi bi-arrow-right-circle"></i>
                               </button>
                             </div>
-                            <div className="col-12 text-center mt-4">
+                            {/* <div className="col-12 text-center mt-4">
                                 <NavLink to='/business-signUp/complete-registeration' className='compleetRegisteration__btn'>
                                   Complete Your Registeration
                                 </NavLink>
-                              </div>
+                              </div> */}
                           </>
                         }
 
