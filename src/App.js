@@ -89,6 +89,22 @@ function App() {
       }
     }),
   });
+  const [allowedCountrySearch, setAllowedcountrySearch] = useState([])
+  const fetchAllowedCountries = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/company-countries?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setAllowedcountrySearch(response?.data?.data?.countries);
+    } catch (error) {
+      toast.error(error?.response?.data.message || 'Something Went Wrong!');
+    }
+  };
+  useEffect(() => {
+    fetchAllowedCountries();
+  }, []);
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
@@ -181,10 +197,10 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} countries={countriesQuery?.data?.countries} token={token} />} />
+        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} countries={allowedCountrySearch} token={token} />} />
         
         {/* Search Page */}
-        <Route path='/reach-magnet' element={<SearchInHome countries={countriesQuery?.data?.countries} />} />
+        <Route path='/reach-magnet' element={<SearchInHome countries={allowedCountrySearch} />} />
         
         {/* Shop Routes */}
         {/* <Route path='/discover' element={<Discover />} /> */}

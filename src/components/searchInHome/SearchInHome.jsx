@@ -26,10 +26,14 @@ export default function SearchInHome({ countries }) {
 
     const getCurrentSearchedData = async () => {
         const toastId = toast.loading('Loading...');
-        await axios.get(`${baseURL}/general-search?${search}`, {
+        await axios.get(`${baseURL}/general-search${search}`, {
+            params:{
+                t: new Date().getTime(),
+            },
             headers: {
                 "Content-Type": 'application/json',
-                Accept: 'application/json'
+                Accept: 'application/json',
+
             }
         })
             .then((res) => {
@@ -38,6 +42,8 @@ export default function SearchInHome({ countries }) {
                     id: toastId,
                     duration: 1000
                 })
+                console.log(filteration);
+                
             })
             .catch(err => {
                 toast.error(err?.res?.data?.message || 'Something Went Wrong!', {
@@ -48,11 +54,12 @@ export default function SearchInHome({ countries }) {
     };
 
     useEffect(() => {
-        if (search) {
+        
             getCurrentSearchedData();
-        }
+        
     }, [search]);
-
+    console.log(search);
+    
     function objectToParams(obj) {
         const params = new URLSearchParams();
         for (const key in obj) {

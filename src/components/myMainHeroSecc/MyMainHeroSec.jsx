@@ -25,7 +25,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
 
     const handleSubmitSearchData = () => {
         const slug = objectToParams(submitSearchData);
-        navigate(`reach-magnet?${slug}`);
+        navigate(`reach-magnet?${slug}`);  
     };
 
     return (

@@ -91,7 +91,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             >
                                 About us
                             </NavLink>
-                            <NavLink
+                            {/* <NavLink
                                 onClick={() => {
                                     scrollToTop();
                                 }}
@@ -100,8 +100,8 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 to={`/shop`}
                             >
                                 Shop
-                            </NavLink>
-                            <NavLink
+                            </NavLink> */}
+                            {/* <NavLink
                                 onClick={() => {
                                     scrollToTop();
                                 }}
@@ -110,7 +110,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 to={`/Discover`}
                             >
                                 Discover
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink
                                 onClick={() => {
                                     scrollToTop();
@@ -302,7 +302,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     to={`/about-us`}>
                                     About us
                                 </NavLink>
-                                <NavLink
+                                {/* <NavLink
                                     onClick={() => {
                                         scrollToTop();
                                         closeOffcanvas();
@@ -311,9 +311,9 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     className={`nav-link nav__link__style`}
                                     to={`/shop`}>
                                     Shop
-                                </NavLink>
+                                </NavLink> */}
 
-                                <NavLink
+                                {/* <NavLink
                                     onClick={() => {
                                         scrollToTop();
                                         closeOffcanvas();
@@ -322,7 +322,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     className={`nav-link nav__link__style`}
                                     to={`/discover`}>
                                     discover
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink
                                     onClick={() => {
                                         scrollToTop();
