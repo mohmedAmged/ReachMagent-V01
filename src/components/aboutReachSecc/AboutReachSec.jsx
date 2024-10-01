@@ -4,16 +4,16 @@ import frame from '../../assets/aboutReach/Frame 1321315457.png'
 export default function AboutReachSec() {
     const numbersInfo = [
         {
-            number: '144 k+',
+            number: '0',
             title: 'Companies'
         },
         {
-            number: '2234 K',
+            number: '0',
             title: 'Users'
         },
         {
-            number: '4768 K+',
-            title: 'Users'
+            number: '0',
+            title: 'Products'
         },
     ]
     return (

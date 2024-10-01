@@ -182,6 +182,7 @@ console.log(hasFilters());
             scrollToTop(500);
         };
     };
+console.log(companies);
 
     return (
         <>
@@ -366,7 +367,7 @@ console.log(hasFilters());
                                 <div className="companySubInfo mb-2">
                                     <div className="subInfoItem">
                                         <img src={userIcon} alt="locateion-icon" />
-                                        <span>E-Commerce</span>
+                                        <span>{el?.companySubCategory}</span>
                                     </div>
                                     <div className="subInfoItem">
                                         <img
@@ -377,13 +378,13 @@ console.log(hasFilters());
                                             {el?.companyBranches[0]?.branchCity}
                                         </span>
                                     </div>
-                                    <div className="subInfoItem">
+                                    {/* <div className="subInfoItem">
                                         <img src={emailIcon} alt="locateion-icon" />
 
                                         <NavLink to={el?.companyWebsiteLink}>
                                             <span>Website</span>
                                         </NavLink>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="companyDescrip mb-2">
                                     <p>{el?.companyAboutUs}</p>

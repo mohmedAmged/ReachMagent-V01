@@ -211,8 +211,10 @@ export default function MyNewSidebarDash({ token }) {
                     <Offcanvas show={show} onHide={handleClose} className="mySidebar__handler">
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>
-                                <h1 className="logo__text">
-                                    ReachMag<span className='letter__color'>n</span>et
+                                <h1 className="logo__text cursorPointer">
+                                   <NavLink className={'nav-link'} to={'/'}>
+                                   ReachMag<span className='letter__color'>n</span>et
+                                   </NavLink>
                                 </h1>
                             </Offcanvas.Title>
                         </Offcanvas.Header>
@@ -224,9 +226,11 @@ export default function MyNewSidebarDash({ token }) {
             ) : (
                 <div className="mySidebar__handler">
                     <div className="container">
-                        <h1 className="logo__text">
-                            ReachMag<span className='letter__color'>n</span>et
-                        </h1>
+                                <h1 className="logo__text cursorPointer">
+                                   <NavLink className={'nav-link'} to={'/'}>
+                                   ReachMag<span className='letter__color'>n</span>et
+                                   </NavLink>
+                                </h1>
                         {renderSidebarContent()}
                     </div>
                 </div>

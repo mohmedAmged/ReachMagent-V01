@@ -15,8 +15,9 @@ export default function MainContentHeader({ isSidebarExpanded, search ,placehold
                         search &&
                         <MySearchSec name={name} placeholder={placeholder} filteration={filteration} setFilteration={setFilteration} />
                     }
-                    <NavLink className='btn btn-outline-success py-1 ms-2' to='/'>
+                    <NavLink className='btn btn-outline-success p-2 ms-2' to='/'>
                         <i className="bi bi-box-arrow-left "></i>
+                        <span className='ms-2'>Back To Home</span>
                     </NavLink>
                 </div>
 

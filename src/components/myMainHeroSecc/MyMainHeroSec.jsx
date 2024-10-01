@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './myMainHeroSec.css';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function MyMainHeroSec({ countries, handleChangeFilterInputs, heroSecContainerType, currentPage, headText, paraPartOne, paraPartTwo, categoryArr, currentCompanyChosen }) {
     const [submitSearchData, setSubmitSearchData] = useState({
@@ -25,7 +26,11 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
 
     const handleSubmitSearchData = () => {
         const slug = objectToParams(submitSearchData);
-        navigate(`reach-magnet?${slug}`);  
+        if (!slug) {
+            toast.error("You need to add a filter to search");
+        } else {
+            navigate(`reach-magnet?${slug}`);
+        }
     };
 
     return (
@@ -45,14 +50,14 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                             </p>
                         </div>
                         <div className="col-lg-10 col-md-10 col-sm-10 none__on__small__screen">
-                            <div className="hero__form__bar d-flex justify-content-center">
+                            <div className="hero__form__bar justify-content-center">
 
                                 {
                                     heroSecContainerType === 'heroSec__container' ?
                                         <>
                                             {
                                                 categoryArr ?
-                                                    <div className="form__part select__category__part w-25">
+                                                    <div className="form__part select__category__part ">
                                                         <select name='type' onChange={handleChangeSearchData}>
                                                             {
                                                                 categoryArr?.map(el => {
@@ -66,11 +71,11 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                     :
                                                     ''
                                             }
-                                            <div className="form__part input__search__part w-50">
+                                            <div className="form__part input__search__part">
                                                 <i className="bi bi-search"></i>
-                                                <input id='searchByNameHomePage' name='name' type="text" defaultValue={''} onChange={handleChangeSearchData} placeholder='Search for Services, Business Owners,etc..' />
+                                                <input id='searchByNameHomePage' name='name' type="text" defaultValue={''} onChange={handleChangeSearchData} placeholder='Search....' />
                                             </div>
-                                            <div className="form__part select__area__part w-25">
+                                            <div className="form__part select__area__part ">
                                                 <select
                                                     defaultValue={''}
                                                     name="country_id"
@@ -126,7 +131,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                             </div>
 
                         </div>
-                        <div className="col-lg-10 col-md-10 col-sm-10 display__on__small__screen">
+                        {/* <div className="col-lg-10 col-md-10 col-sm-10 display__on__small__screen">
                             <div className="hero__form__bar d-flex justify-content-center">
 
                                 {
@@ -152,14 +157,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                 <i className="bi bi-search"></i>
                                                 <input type="text" placeholder='Search for Services, Business Owners,etc..' />
                                             </div>
-                                            {/* <div className="form__part select__area__part">
-                                                <select name="" id="">
-                                                    <option selected>Area</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div> */}
+                                            
                                             <div className="form__part filter__btn__part">
                                                 <button>
                                                     <i className="bi bi-sliders"></i>
@@ -198,7 +196,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                 </div>
                             </div>
 
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

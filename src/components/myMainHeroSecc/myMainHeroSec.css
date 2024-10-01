@@ -106,6 +106,7 @@
     position: relative;
     flex-grow: 2;
     padding: 5px 0;
+    width: 50%;
 }
 
 .shopHeroSec__container .input__search__part {
@@ -119,7 +120,12 @@
     padding-right: 4px;
     border-right: 1px solid rgba(229, 229, 229, 1);
 }
-
+.select__category__part{
+width: 25%;
+}
+.select__area__part{
+    width: 25%;
+}
 .shopHeroSec__container .select__category__part {
     font-size: 12px;
 }
@@ -195,9 +201,9 @@
         font-size: 12px;
     }
 
-    .none__on__small__screen {
+    /* .none__on__small__screen {
         display: none;
-    }
+    } */
 
     .display__on__small__screen {
         display: flex;
@@ -205,7 +211,27 @@
     }
 
     .hero__form__bar {
-        width: 95%;
+        width: 100%;
         text-align: center;
+        display: block;
+        padding: 20px;
+    }
+    .form__part select, .form__part input, .form__part button {
+        border: 1px solid #dee2e6;
+    }
+    .select__category__part,
+    .input__search__part,
+    .select__area__part
+    {
+        width: 100%;
+    }
+    .quick__search__btn__part{
+        justify-content: end;
+    }
+    .quick__search__btn__part button{
+        margin-top: 20px;
+    }
+    .select__category__part, .select__area__part{
+        border-right: 0;
     }
 }

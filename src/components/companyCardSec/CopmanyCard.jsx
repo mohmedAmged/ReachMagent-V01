@@ -81,7 +81,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                 {dealsCount}
                             </h3>
                             <p>
-                                deals
+                                services
                             </p>
                         </div>
                         <div className="company__owner compDataStyle">
@@ -89,7 +89,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                 {ownerCount}
                             </h3>
                             <p>
-                                owners
+                                orders
                             </p>
                         </div>
                     </div>

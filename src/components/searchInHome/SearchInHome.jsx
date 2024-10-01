@@ -42,7 +42,6 @@ export default function SearchInHome({ countries }) {
                     id: toastId,
                     duration: 1000
                 })
-                console.log(filteration);
                 
             })
             .catch(err => {
@@ -58,7 +57,6 @@ export default function SearchInHome({ countries }) {
             getCurrentSearchedData();
         
     }, [search]);
-    console.log(search);
     
     function objectToParams(obj) {
         const params = new URLSearchParams();

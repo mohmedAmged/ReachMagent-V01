@@ -8,16 +8,18 @@ import { Pagination } from 'swiper/modules';
 import './singleCompanyRectangle.css';
 
 export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
+  console.log(showCompaniesQuery);
+  
   return (
     <div className='singleCompany__rectangleSec'>
       <div className="rectangleBg"></div>
       <div className="container">
         <div className="singleCompany__rectangleSec-head text-center">
-          <h3>
-            Popular <span>Questions</span>
+          <h3 className='text-capitalize'>
+            {showCompaniesQuery?.companyName} Popular <span>Questions</span>
           </h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at libero.
+          Find the answers you need before you even ask
           </p>
         </div>
         <div className="singleCompany__rectangleSec-slider">

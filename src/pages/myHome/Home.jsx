@@ -38,14 +38,16 @@ export default function Home({ companies, token, countries, fetchCartItems, wish
           <div className='myHomeSec__handler'>
             <MyMainHeroSec
               heroSecContainerType='heroSec__container'
-              headText='We Make Things Better'
-              paraPartOne=' Save  thousands to millions of bucks by using single tool for different'
-              paraPartTwo='amazing and outstanding cool and great useful admin'
+              headText='Search for your next opportunity'
+              paraPartOne='Unlock full potential by finding exactly what you need'
               categoryArr={arrOfCateg}
               countries={countries}
             />
-            <AboutReachSec />
-            <AllCategorySec />
+            
+            {/* <AboutReachSec /> */}
+            <div className='mt-5'>
+              <TrendingCompanySec companies={companies} token={token} />
+            </div>
             {
               <div className='oneClickQuotation__handler'>
                 <FranchiseSec
@@ -58,7 +60,7 @@ export default function Home({ companies, token, countries, fetchCartItems, wish
               </div>
             }
             {/* <ReadyToByProductsHome fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} secMAinTitle={`Ready-To-Buy Products`}/> */}
-            <TrendingCompanySec companies={companies} token={token} />
+            
             <GrowBuisnessSec />
             {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
             <div className='mt-3'>

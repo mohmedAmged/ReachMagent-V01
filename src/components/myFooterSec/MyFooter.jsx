@@ -3,21 +3,21 @@ import './myFooter.css';
 
 export default function MyFooter() {
   const listFooterData = [
+    // {
+    //   title: "Resources",
+    //   items: ["Download", "Help centre", "Guide Book", "App Directory"]
+    // },
+    // {
+    //   title: "Travellers",
+    //   items: ["Why Travellers", "Enterprice", "Customer Stories", "Instgram post"]
+    // },
+    // {
+    //   title: "Company",
+    //   items: ["Travelling", "About Locato", "Success", "Information"]
+    // },
     {
-      title: "Resources",
-      items: ["Download", "Help centre", "Guide Book", "App Directory"]
-    },
-    {
-      title: "Travellers",
-      items: ["Why Travellers", "Enterprice", "Customer Stories", "Instgram post"]
-    },
-    {
-      title: "Company",
-      items: ["Travelling", "About Locato", "Success", "Information"]
-    },
-    {
-      title: "Get App",
-      items: ["App Store", "Google App Store"]
+      title: "Pages",
+      items: ["About Us", "Privacy Policy", "Terms & Conditions"]
     },
   ];
   return (
@@ -27,7 +27,7 @@ export default function MyFooter() {
           <div className="col-lg-6 col-md-6 col-sm-12 adjustFlexDir">
             <div className="footer__desc">
               <p>
-                Lorem ipsum dolor sit amet consectetur. Lectus fermentum amet id luctus at
+              ReachMagnet is a cutting-edge platform designed to redefine interactions between businesses and individuals in the digital age.
               </p>
             </div>
             <ul className='footer__icons'>
@@ -77,7 +77,7 @@ export default function MyFooter() {
                 })
               }
             </div> */}
-            <div className="row">
+            <div className="row justify-content-end">
               {
                 listFooterData.map((list, index) => {
                   return (
