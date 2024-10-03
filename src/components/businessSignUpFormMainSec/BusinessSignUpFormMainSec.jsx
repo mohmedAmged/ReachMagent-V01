@@ -627,6 +627,20 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
     };
   };
 
+  // image preview
+  const [imagePreviews, setImagePreviews] = useState({});
+
+  const handleImageChange = (e) => {
+    const { id, files } = e.target; 
+    if (files && files[0]) {
+      setImagePreviews((prevState) => ({
+        ...prevState,
+        [id]: URL.createObjectURL(files[0]) 
+      }));
+    }
+  };
+
+
   return (
     <>
       {
@@ -1008,13 +1022,13 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                             <div className="col-lg-12 mb-4 position-relative">
                               <label htmlFor="compnayLogo" className=''>
                                 Company's Logo<span className="requiredStar"> * </span>
-
                               </label>
                               <input
                                 type='file'
                                 id='compnayLogo'
                                 className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
                                 {...register('logo')}
+                                onChange={handleImageChange}
                               />
                               
                               {
@@ -1022,6 +1036,11 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 &&
                                 (<p className='errorMessage'>{errors.logo.message}</p>)
                               }
+                               {imagePreviews['compnayLogo'] && (
+                                  <div className='image-preview'>
+                                    <img src={imagePreviews['compnayLogo']} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
+                                  </div>
+                                )}
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
@@ -1383,6 +1402,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 &&
                                 (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
                               }
+                              
                             </div>
                             <div className="col-lg-8 mb-4">
                               <label

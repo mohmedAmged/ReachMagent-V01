@@ -164,7 +164,15 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
         });
       });
   };
+  // image preview
+  const [imagePreview, setImagePreview] = useState(null);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
   return (
     <>
       {
@@ -528,12 +536,18 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             id='signUpProfileImage'
                             {...register('image')}
                             className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
+                            onChange={handleImageChange}
                           />
                           {
                             errors.image
                             &&
                             (<p className='errorMessage'>{errors.image.message}</p>)
                           }
+                            {imagePreview && (
+                              <div className='image-preview'>
+                                <img src={imagePreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius:'12px' }} />
+                              </div>
+                            )}
                         </div>
                         <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                           <input disabled={isSubmitting} type="submit" value={isSignUp ? 'Sign Up' : 'Add Employee'} />
