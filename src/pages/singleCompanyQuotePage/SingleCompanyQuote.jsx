@@ -512,6 +512,30 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         <span>{companyName}</span> tailors solutions to fit your unique needs
                                     </h3>
                                     <div className="customization__form row">
+                                        <div className="col-lg-7">
+                                            <div className="singleQuoteInput">
+                                            <label htmlFor="qoutationSelectTheType">
+                                                Type
+                                            </label>
+                                            <select
+                                                className='form-select w-100'
+                                                id="qoutationSelectTheType"
+                                                value={requestIntries?.type}
+                                                onChange={(event) => {
+                                                    setRequestIntries({ ...requestIntries, type: event?.target?.value })
+                                                }}
+                                            >
+                                                <option value={''} disabled>Select Type</option>
+                                                {
+                                                    typesOfQuotations?.map(type => (
+                                                        <option className='text-capitalize' value={type?.name} key={type?.id}>
+                                                            {type?.name}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+                                            </div>
+                                        </div>
                                         <div className="col-lg-6">
                                             <div className="singleQuoteInput">
                                                 <label htmlFor="customProductTitle">

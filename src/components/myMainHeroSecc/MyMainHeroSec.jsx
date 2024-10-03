@@ -49,7 +49,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                 {paraPartTwo}
                             </p>
                         </div>
-                        <div className="col-lg-10 col-md-10 col-sm-10 none__on__small__screen">
+                        <div className="col-lg-10 col-md-10 col-sm-10  justify-content-center d-flex">
                             <div className="hero__form__bar justify-content-center">
 
                                 {
@@ -58,7 +58,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                             {
                                                 categoryArr ?
                                                     <div className="form__part select__category__part ">
-                                                        <select name='type' onChange={handleChangeSearchData}>
+                                                        <select className='form-select' name='type' onChange={handleChangeSearchData}>
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (
@@ -67,6 +67,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                                 })
                                                             }
                                                         </select>
+                                                        
                                                     </div>
                                                     :
                                                     ''
@@ -91,11 +92,6 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                     ))}
                                                 </select>
                                             </div>
-                                            {/* <div className="form__part filter__btn__part">
-                                                <button>
-                                                    <i className="bi bi-sliders"></i>
-                                                </button>
-                                            </div> */}
                                         </>
                                         :
                                         <>

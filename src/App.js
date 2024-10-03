@@ -54,6 +54,7 @@ import ShowOneProductInfoInDash from './components/showOneProductInfoInDashSec/S
 import SearchInHome from './components/searchInHome/SearchInHome';
 import UserVirificationSec from './pages/userVirification/UserVirificationSec';
 import AboutUs from './pages/aboutUsPage/AboutUs';
+import MyContactUs from './pages/myContactUsPage/MyContactUs';
 
 function App() {
   useEffect(() => {
@@ -210,6 +211,7 @@ function App() {
 
         {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
+        <Route path='/contact-us' element={<MyContactUs />} />
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries} token={token} />} />
