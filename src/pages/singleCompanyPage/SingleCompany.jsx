@@ -268,7 +268,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                         <SingleCompanyNewsSec token={token} />
                         {/* <SingleCompanyAffiliate /> */}
                         {
-                                <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} companyId={companyId} />
+                            <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} companyId={companyId} />
                         }
 
                     </div>

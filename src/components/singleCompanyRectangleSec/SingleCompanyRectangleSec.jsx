@@ -8,8 +8,6 @@ import { Pagination } from 'swiper/modules';
 import './singleCompanyRectangle.css';
 
 export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
-  console.log(showCompaniesQuery);
-  
   return (
     <div className='singleCompany__rectangleSec'>
       <div className="rectangleBg"></div>
@@ -43,9 +41,9 @@ export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
             className="mySwiper"
           >
             {
-              showCompaniesQuery?.companyFaqs?.map(question=>{
+              showCompaniesQuery?.companyFaqs?.map((question,idx)=>{
                 return(
-                  <SwiperSlide key={question.id} className='singleCompany__rectangleSec-slide'>
+                  <SwiperSlide key={idx} className='singleCompany__rectangleSec-slide'>
                     <h4>{question?.question}</h4>
                     <p>{question?.answer}</p>
                   </SwiperSlide>

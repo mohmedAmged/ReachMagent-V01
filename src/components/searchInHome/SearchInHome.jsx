@@ -41,14 +41,13 @@ export default function SearchInHome({ countries }) {
                 toast.success(res?.data?.message || 'Data Loaded Successfully!', {
                     id: toastId,
                     duration: 1000
-                })
-                
+                });
             })
             .catch(err => {
                 toast.error(err?.res?.data?.message || 'Something Went Wrong!', {
                     id: toastId,
                     duration: 1000
-                })
+                });
             });
     };
 

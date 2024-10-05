@@ -49,7 +49,6 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
             showCompaniesQuery?.companyBranches[0]?.branchLongitude
         ])
     },[showCompaniesQuery]);
-    console.log(showCompaniesQuery);
     
     return (
         <div className='aboutCompany__handler'>
