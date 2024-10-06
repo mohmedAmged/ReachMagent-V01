@@ -53,6 +53,7 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Followers", link: "/profile/followers", icon: icon11 },
         { title: "Product Catalog", link: "/profile/catalog", icon: icon2 },
         { title: "Services", link: "/profile/service", icon: icon2 },
+        { title: "Medias", link: "/profile/media", icon: icon2 },
         // { title: "E-commerce Items", link: "/profile/products", icon: icon4 },
         { title: "FAQS", link: "/profile/faqs", icon: icon5 },
         { title: "Posts", link: "/profile/posts", icon: icon5 },

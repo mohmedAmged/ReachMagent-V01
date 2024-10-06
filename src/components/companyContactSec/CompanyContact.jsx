@@ -6,7 +6,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import FranchiseSec from '../franchiseSecc/FranchiseSec';
 
-export default function CompanyContact({ loginType, token, companyId, company }) {
+export default function CompanyContact({ token, companyId, company }) {
   const convertToUnderscore = (str) => {
     return str.replace(/\s+/g, '_');
   };
@@ -34,7 +34,7 @@ export default function CompanyContact({ loginType, token, companyId, company })
     if (token && formId) {
       (async () => {
         const toastId = toast.loading('Loading Forms...');
-        await axios.post(`${baseURL}/${loginType}/show-form?t=${new Date().getTime()}`, {
+        await axios.post(`${baseURL}/user/show-form?t=${new Date().getTime()}`, {
           form_id: `${formId}`,
           company_id: companyId
         }, {
@@ -55,7 +55,7 @@ export default function CompanyContact({ loginType, token, companyId, company })
         });
       })();
     };
-  }, [companyId, formId, loginType, token]);
+  }, [companyId, formId, token]);
 
   const onSubmit = async (data) => {
     data.company_id = companyId;
@@ -72,7 +72,7 @@ export default function CompanyContact({ loginType, token, companyId, company })
       }
     });
     const toastId = toast.loading('Please Wait...');
-    await axios.post(`${baseURL}/${loginType}/fill-form`, formData, {
+    await axios.post(`${baseURL}/user/fill-form`, formData, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',

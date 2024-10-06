@@ -47,9 +47,9 @@ export default function TrendingCompanySec({ companies, token }) {
                                             // ************* static info
                                             // 356 × 58 px
                                             coverImg={el?.companyCover}
-                                            productsCount={'0'}
-                                            dealsCount={'0'}
-                                            ownerCount={'0'}
+                                            productsCount={el?.catalogs_count}
+                                            dealsCount={el?.services_count}
+                                            ownerCount={el?.quotation_orders_count}
                                             cardDesc={el?.companyAboutUs}
                                         />
                                     </div>

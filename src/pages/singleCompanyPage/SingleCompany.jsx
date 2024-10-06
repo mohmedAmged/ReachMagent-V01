@@ -24,6 +24,7 @@ import 'swiper/css';
 import "swiper/css/autoplay";
 import Autoplay from "../../../node_modules/swiper/modules/autoplay.mjs";
 import MyLoader from '../../components/myLoaderSec/MyLoader'
+import CompanyMediaCard from '../../components/companyMediaCardSec/CompanyMediaCard'
 
 
 export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
@@ -72,7 +73,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
         { name: 'Services', active: activeItem === 'Services' },
         { name: 'Product Catalog', active: activeItem === 'Product Catalog' },
         // { name: 'Products', active: activeItem === 'Products' },
-        // { name: 'Media', active: activeItem === 'Media' },
+        { name: 'Media', active: activeItem === 'Media' },
         // { name: 'branches', active: activeItem === 'branches' },
     ];
 
@@ -86,6 +87,8 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
         }, 500);
     }, [loading]);
 
+    console.log(showCompaniesQuery?.data);
+    
     return (
         <>
             {
@@ -107,101 +110,117 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                                 {
                                     activeItem === 'Services' &&
                                     <>
-                                        <Swiper
-                                            className='mySwiper'
-                                            modules={[Autoplay]}
-                                            autoplay={{
-                                                delay: 2500,
-                                                pauseOnMouseEnter: true,
-                                                disableOnInteraction: false
-                                            }}
-                                            breakpoints={{
-                                                300: {
-                                                    slidesPerView: 1.1,
-                                                    spaceBetween: 10
-                                                },
-                                                426: {
-                                                    slidesPerView: 1.2,
-                                                    spaceBetween: 20
-                                                },
-                                                600: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                768: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                995: {
-                                                    slidesPerView: 3.2,
-                                                    spaceBetween: 20
-                                                },
-                                            }}
-                                        >
-                                            {showCompaniesQuery?.data?.company?.companyServices?.map((el) => {
-                                                return (
-                                                    <SwiperSlide className=' my-3' key={el?.serviceId}>
-                                                        <LastMinuteCard
-                                                            productImage={el?.serviceImage}
-                                                            productName={el?.serviceTitle}
-                                                            showCustomContent={true}
-                                                            borderColor={'rgba(0, 0, 0, 0.5)'}
-                                                            onAddClick={''}
-                                                        />
-                                                    </SwiperSlide>
-                                                )
-                                            })}
-                                        </Swiper>
+                                    {
+                                        showCompaniesQuery?.data?.company?.companyServices?.length !== 0 ?
+                                            <Swiper
+                                                className='mySwiper'
+                                                modules={[Autoplay]}
+                                                autoplay={{
+                                                    delay: 2500,
+                                                    pauseOnMouseEnter: true,
+                                                    disableOnInteraction: false
+                                                }}
+                                                breakpoints={{
+                                                    300: {
+                                                        slidesPerView: 1.1,
+                                                        spaceBetween: 10
+                                                    },
+                                                    426: {
+                                                        slidesPerView: 1.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                    600: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    768: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    995: {
+                                                        slidesPerView: 3.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                }}
+                                            >
+                                                {showCompaniesQuery?.data?.company?.companyServices?.map((el) => {
+                                                    return (
+                                                        <SwiperSlide className=' my-3' key={el?.serviceId}>
+                                                            <LastMinuteCard
+                                                                productImage={el?.serviceImage}
+                                                                productName={el?.serviceTitle}
+                                                                showCustomContent={true}
+                                                                borderColor={'rgba(0, 0, 0, 0.5)'}
+                                                                onAddClick={''}
+                                                            />
+                                                        </SwiperSlide>
+                                                    )
+                                                })}
+                                            </Swiper>
+                                        :
+                                        <h5 className='text-center text-danger text-capitalize mb-4'>
+                                        No Services for this company
+                                        </h5>     
+                                    }
+                                        
                                     </>
                                 }
                                 {
                                     activeItem === 'Product Catalog' &&
                                     <>
-                                        <Swiper
-                                            className='mySwiper'
-                                            modules={[Autoplay]}
-                                            autoplay={{
-                                                delay: 2500,
-                                                pauseOnMouseEnter: true,
-                                                disableOnInteraction: false
-                                            }}
-                                            breakpoints={{
-                                                300: {
-                                                    slidesPerView: 1.1,
-                                                    spaceBetween: 10
-                                                },
-                                                426: {
-                                                    slidesPerView: 1.2,
-                                                    spaceBetween: 20
-                                                },
-                                                600: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                768: {
-                                                    slidesPerView: 2.2,
-                                                    spaceBetween: 15
-                                                },
-                                                995: {
-                                                    slidesPerView: 3.2,
-                                                    spaceBetween: 20
-                                                },
-                                            }}
-                                        >
-                                            {showCompaniesQuery?.data?.company?.companyCatalogs?.map((el) => {
-                                                return (
-                                                    <SwiperSlide className=' my-3' key={el?.catalogId}>
-                                                        <LastMinuteCard
-                                                            productImage={el?.catalogImages[0].media}
-                                                            productName={el?.catalogTitle}
-                                                            showCustomContent={true}
-                                                            borderColor={'rgba(0, 0, 0, 0.5)'}
-                                                            onAddClick={''}
-                                                        />
-                                                    </SwiperSlide>
-                                                )
-                                            })}
-                                        </Swiper>
+                                    {
+                                        showCompaniesQuery?.data?.company?.companyCatalogs?.length !== 0 ?
+                                            <Swiper
+                                                className='mySwiper'
+                                                modules={[Autoplay]}
+                                                autoplay={{
+                                                    delay: 2500,
+                                                    pauseOnMouseEnter: true,
+                                                    disableOnInteraction: false
+                                                }}
+                                                breakpoints={{
+                                                    300: {
+                                                        slidesPerView: 1.1,
+                                                        spaceBetween: 10
+                                                    },
+                                                    426: {
+                                                        slidesPerView: 1.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                    600: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    768: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    995: {
+                                                        slidesPerView: 3.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                }}
+                                            >
+                                                {showCompaniesQuery?.data?.company?.companyCatalogs?.map((el) => {
+                                                    return (
+                                                        <SwiperSlide className=' my-3' key={el?.catalogId}>
+                                                            <LastMinuteCard
+                                                                productImage={el?.catalogImages[0].media}
+                                                                productName={el?.catalogTitle}
+                                                                showCustomContent={true}
+                                                                borderColor={'rgba(0, 0, 0, 0.5)'}
+                                                                onAddClick={''}
+                                                            />
+                                                        </SwiperSlide>
+                                                    )
+                                                })}
+                                            </Swiper>
+                                        :
+                                        <h5 className='text-center text-danger text-capitalize mb-4'>
+                                            No Product Catalog for this company
+                                        </h5>    
+                                    }
+                                        
                                     </>
                                 }
                                 {
@@ -254,6 +273,58 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                                         </Swiper>
                                     </>
                                 }
+                                {
+                                    activeItem === 'Media' &&
+                                    <>
+                                    {
+                                        showCompaniesQuery?.data?.company?.companyPortfolio?.length !== 0 ?
+                                            <Swiper
+                                                className='mySwiper'
+                                                modules={[Autoplay]}
+                                                autoplay={{
+                                                    delay: 2500,
+                                                    pauseOnMouseEnter: true,
+                                                    disableOnInteraction: false
+                                                }}
+                                                breakpoints={{
+                                                    300: {
+                                                        slidesPerView: 1.1,
+                                                        spaceBetween: 10
+                                                    },
+                                                    426: {
+                                                        slidesPerView: 1.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                    600: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    768: {
+                                                        slidesPerView: 2.2,
+                                                        spaceBetween: 15
+                                                    },
+                                                    995: {
+                                                        slidesPerView: 3.2,
+                                                        spaceBetween: 20
+                                                    },
+                                                }}
+                                            >
+                                                {showCompaniesQuery?.data?.company?.companyPortfolio?.map((el) => {
+                                                    return (
+                                                        <SwiperSlide className=' my-3' key={el?.id}>
+                                                            <CompanyMediaCard type={el?.type} mediaSrc={el?.link}/>
+                                                        </SwiperSlide>
+                                                    )
+                                                })}
+                                            </Swiper>
+                                        :
+                                        <h5 className='text-center text-danger text-capitalize mb-4'>
+                                            No added media for this company
+                                        </h5>
+                                    }
+                                        
+                                    </>
+                                }
                             </div>
                         }
 
@@ -268,7 +339,7 @@ export default function SingleCompany({ token ,fetchCartItems,wishlistItems}) {
                         <SingleCompanyNewsSec token={token} />
                         {/* <SingleCompanyAffiliate /> */}
                         {
-                            <CompanyContact loginType={loginType} company={showCompaniesQuery} token={token} companyId={companyId} />
+                            <CompanyContact company={showCompaniesQuery} token={token} companyId={companyId} />
                         }
 
                     </div>

@@ -55,6 +55,8 @@ import SearchInHome from './components/searchInHome/SearchInHome';
 import UserVirificationSec from './pages/userVirification/UserVirificationSec';
 import AboutUs from './pages/aboutUsPage/AboutUs';
 import MyContactUs from './pages/myContactUsPage/MyContactUs';
+import MyMedia from './pages/myMediaPAge/MyMedia';
+import NewMediaForm from './components/newMediaFormSec/NewMediaForm';
 
 function App() {
   useEffect(() => {
@@ -132,6 +134,10 @@ function App() {
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
   });
+  const citizenshipsQuery = useQuery({
+    queryKey: ['citizenships'],
+    queryFn: () => getDataFromAPI('citizenships'),
+  });
   // const fetchCartItems = async () => {
   //   if (token) {
   //     try {
@@ -240,7 +246,7 @@ function App() {
 
         {/* Login & Regester Routes */}
         <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
-        <Route path='/business-signUp' element={<BusinessSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
+        <Route path='/business-signUp' element={<BusinessSignUp citizenships={citizenshipsQuery?.data?.citizenships} countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
         <Route path='/login' element={<MyLogin type={loginType} companiesQuery setType={setLoginType} />} />
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
@@ -259,6 +265,9 @@ function App() {
         <Route path='/profile/service/edit-item/:id' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/service/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-service'} />} />
 
+        <Route path='/profile/media' element={<MyMedia token={token} />} />
+        <Route path='/profile/media/addNewItem' element={<NewMediaForm token={token} />} />
+        <Route path='/profile/media/edit-item/:id' element={<NewMediaForm token={token} />} />
         {/* <Route path='/profile/products' element={<MyProducts token={token} />} /> */}
         {/* <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
         {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}

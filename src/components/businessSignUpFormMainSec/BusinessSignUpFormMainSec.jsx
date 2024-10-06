@@ -80,12 +80,13 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
   );
 };
 
-export default function BusinessSignUpFormMainSec({ countries, industries, mainCategories, mainActivities }) {
+export default function BusinessSignUpFormMainSec({ countries, citizenships, industries, mainCategories, mainActivities }) {
   const loginType = localStorage.getItem('loginType')
   const [initialPosition, setInitialPosition] = useState([0, 0]);
   const [location, setLocation] = useState({ lat: initialPosition[0], lng: initialPosition[1] });
   const [showPassword, setShowPassword] = useState(false);
-  const [currentStep, setCurrentStep] = useState(Cookies.get('currentStep') ? Cookies.get('currentStep') :'One');
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [currentStep, setCurrentStep] = useState(Cookies.get('currentStep') ? Cookies.get('currentStep') : 'One');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const {
@@ -101,7 +102,9 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
       company_name: '',
       company_email: '',
       phone_one: '',
+      phone_one_code: '',
       phone_two: '',
+      phone_two_code: '',
       referral_code: '',
       company_main_type: '',
       registeration_number: '',
@@ -124,13 +127,15 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
       employee_name: '',
       employee_email: '',
       employee_phone: '',
+      employee_phone_code: '',
       employee_title: '',
       employee_country_id: '',
       employee_city_id: '',
       employee_full_address: '',
-      employee_citizenship: '',
+      employee_citizenship_id: '',
       official_id_or_passport: '',
       employee_password: '',
+      employee_password_confirmation: '',
       comfirm_policies: false,
       is_benifical_owner: false,
     },
@@ -216,72 +221,72 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
   const [allMainActivitiesChosen, setAllMainActivitiesChosen] = useState([]);
   const [allSubActsInsideMainActsChosen, setAllSubActsInsideMainActsChosen] = useState([]);
   const [chosenSubActivities, setChosenSubActivities] = useState([]);
-  const handleChangeMainActivities = (event) => {
-    const toastId = toast.loading('Loading Sub Categories , Please Wait !');
-    const chosenActivity = mainActivities?.find(el => el?.mainActivityId === +event?.target?.value);
-    if (!allMainActivitiesChosen?.find(el => chosenActivity?.mainActivityId === el.mainActivityId)) {
-      setAllMainActivitiesChosen([...allMainActivitiesChosen, chosenActivity]);
-      const subActsInsideCurrentMainActs = async () => {
-        const response = await axios.get(`${baseURL}/main-activities/${chosenActivity?.mainActivitySlug}`);
-        if (response?.status === 200) {
-          setAllSubActsInsideMainActsChosen([...allSubActsInsideMainActsChosen, response?.data?.data]);
-          toast.success(`( ${chosenActivity?.mainActivityName} ) Sub Activities Loaded Successfully.`, {
-            id: toastId,
-            duration: 2000
-          })
-        } else {
-          toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
-            id: toastId,
-            duration: 2000
-          });
-        };
-      };
-      subActsInsideCurrentMainActs();
-      setSelectValue('');
-    } else {
-      toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
-        id: toastId,
-        duration: 2000
-      });
-    };
-  };
-  const handleDeleteMainActivity = (act) => {
-    setAllMainActivitiesChosen(allMainActivitiesChosen.filter(el => +el?.mainActivityId !== +act?.mainActivityId));
-    const deletedActivity = allMainActivitiesChosen.filter(el => +el?.mainActivityId === +act?.mainActivityId);
-    const subActsInsideDeletedActivity = async () => {
-      const response = await axios.get(`${baseURL}/main-activities/${deletedActivity[0].mainActivitySlug}`);
-      const subActivitiesInsideDeletedActivity = [...response?.data?.data?.subActivities];
-      setChosenSubActivities(chosenSubActivities.filter((subAct) =>
-        !subActivitiesInsideDeletedActivity.some(el => subAct.subActivityId === el.subActivityId)
-      ));
-    };
-    subActsInsideDeletedActivity();
-    setAllSubActsInsideMainActsChosen(
-      allSubActsInsideMainActsChosen.filter(el => +el?.mainActivityId !== +deletedActivity[0]?.mainActivityId)
-    );
-  };
-  // getting SlectedArrOfSubActivities Logic
-  const handleChangeSubActivity = (event) => {
-    const toastId = toast.loading('Loading Sub Categories , Please Wait !');
-    const chosenSubActivityArr = allSubActsInsideMainActsChosen?.map(el =>
-      el?.subActivities?.find(subAct => +subAct?.subActivityId === +event?.target?.value));
-    const chosenSubActivity = chosenSubActivityArr.find(el => el && el);
-    if (!chosenSubActivities?.find(el => chosenSubActivity?.subActivityId === +el?.subActivityId)) {
-      setChosenSubActivities([...chosenSubActivities, chosenSubActivity]);
-      toast.success(`( ${chosenSubActivity?.subActivityName} ) Added Successfully`, {
-        id: toastId,
-        duration: 2000
-      });
-    } else {
-      toast.error(`( ${chosenSubActivity?.subActivityName} ) were Added Before`, {
-        id: toastId,
-        duration: 2000
-      });
-    };
-  };
-  const handleDeleteSubActivity = (subAct) => {
-    setChosenSubActivities(chosenSubActivities.filter(el => +el?.subActivityId !== +subAct?.subActivityId));
-  };
+  // const handleChangeMainActivities = (event) => {
+  //   const toastId = toast.loading('Loading Sub Categories , Please Wait !');
+  //   const chosenActivity = mainActivities?.find(el => el?.mainActivityId === +event?.target?.value);
+  //   if (!allMainActivitiesChosen?.find(el => chosenActivity?.mainActivityId === el.mainActivityId)) {
+  //     setAllMainActivitiesChosen([...allMainActivitiesChosen, chosenActivity]);
+  //     const subActsInsideCurrentMainActs = async () => {
+  //       const response = await axios.get(`${baseURL}/main-activities/${chosenActivity?.mainActivitySlug}`);
+  //       if (response?.status === 200) {
+  //         setAllSubActsInsideMainActsChosen([...allSubActsInsideMainActsChosen, response?.data?.data]);
+  //         toast.success(`( ${chosenActivity?.mainActivityName} ) Sub Activities Loaded Successfully.`, {
+  //           id: toastId,
+  //           duration: 2000
+  //         })
+  //       } else {
+  //         toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
+  //           id: toastId,
+  //           duration: 2000
+  //         });
+  //       };
+  //     };
+  //     subActsInsideCurrentMainActs();
+  //     setSelectValue('');
+  //   } else {
+  //     toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
+  //       id: toastId,
+  //       duration: 2000
+  //     });
+  //   };
+  // };
+  // const handleDeleteMainActivity = (act) => {
+  //   setAllMainActivitiesChosen(allMainActivitiesChosen.filter(el => +el?.mainActivityId !== +act?.mainActivityId));
+  //   const deletedActivity = allMainActivitiesChosen.filter(el => +el?.mainActivityId === +act?.mainActivityId);
+  //   const subActsInsideDeletedActivity = async () => {
+  //     const response = await axios.get(`${baseURL}/main-activities/${deletedActivity[0].mainActivitySlug}`);
+  //     const subActivitiesInsideDeletedActivity = [...response?.data?.data?.subActivities];
+  //     setChosenSubActivities(chosenSubActivities.filter((subAct) =>
+  //       !subActivitiesInsideDeletedActivity.some(el => subAct.subActivityId === el.subActivityId)
+  //     ));
+  //   };
+  //   subActsInsideDeletedActivity();
+  //   setAllSubActsInsideMainActsChosen(
+  //     allSubActsInsideMainActsChosen.filter(el => +el?.mainActivityId !== +deletedActivity[0]?.mainActivityId)
+  //   );
+  // };
+  // // getting SlectedArrOfSubActivities Logic
+  // const handleChangeSubActivity = (event) => {
+  //   const toastId = toast.loading('Loading Sub Categories , Please Wait !');
+  //   const chosenSubActivityArr = allSubActsInsideMainActsChosen?.map(el =>
+  //     el?.subActivities?.find(subAct => +subAct?.subActivityId === +event?.target?.value));
+  //   const chosenSubActivity = chosenSubActivityArr.find(el => el && el);
+  //   if (!chosenSubActivities?.find(el => chosenSubActivity?.subActivityId === +el?.subActivityId)) {
+  //     setChosenSubActivities([...chosenSubActivities, chosenSubActivity]);
+  //     toast.success(`( ${chosenSubActivity?.subActivityName} ) Added Successfully`, {
+  //       id: toastId,
+  //       duration: 2000
+  //     });
+  //   } else {
+  //     toast.error(`( ${chosenSubActivity?.subActivityName} ) were Added Before`, {
+  //       id: toastId,
+  //       duration: 2000
+  //     });
+  //   };
+  // };
+  // const handleDeleteSubActivity = (subAct) => {
+  //   setChosenSubActivities(chosenSubActivities.filter(el => +el?.subActivityId !== +subAct?.subActivityId));
+  // };
 
   // Getting DocumentsArray
   const [documents, setDocuments] = useState([]);
@@ -461,7 +466,9 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
           company_name: watch('company_name'),
           company_email: watch('company_email'),
           phone_one: watch('phone_one'),
+          phone_one_code: watch('phone_one_code'),
           phone_two: watch('phone_two'),
+          phone_two_code: watch('phone_two_code'),
           referral_code: watch('referral_code'),
           company_main_type: watch('company_main_type'),
           registeration_number: watch('registeration_number'),
@@ -482,7 +489,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
             data[key].forEach((item, index) => {
               formData.append(`${key}[${index}]`, item);
             });
-          }else if (key === 'documents') {
+          } else if (key === 'documents') {
             data[key].forEach((file, index) => {
               formData.append(`documents[${index}]`, file[0]);
             });
@@ -497,7 +504,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
             'Content-Type': 'multipart/form-data',
           },
         }).then(response => {
-          Cookies.set('companyRegId',response?.data?.data?.companyId);
+          Cookies.set('companyRegId', response?.data?.data?.companyId);
           toast.success(`${response?.data?.message}`, {
             id: toastId,
             duration: 1000
@@ -506,7 +513,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
           setCurrentStep('Two');
         }).catch(error => {
           setCurrentStep('One');
-          if(error?.response?.data?.errors){
+          if (error?.response?.data?.errors) {
             Object.keys(error?.response?.data?.errors).forEach((key) => {
               setError(key, { message: error?.response?.data?.errors[key][0] });
             });
@@ -576,19 +583,21 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
             employee_name: watch('employee_name'),
             employee_email: watch('employee_email'),
             employee_phone: watch('employee_phone'),
+            employee_phone_code: watch('employee_phone_code'),
             employee_title: watch('employee_title'),
             employee_country_id: watch('employee_country_id'),
             employee_city_id: watch('employee_city_id'),
             employee_full_address: watch('employee_full_address'),
-            employee_citizenship: watch('employee_citizenship'),
+            employee_citizenship_id: watch('employee_citizenship_id'),
             official_id_or_passport: watch('official_id_or_passport'),
             employee_password: watch('employee_password'),
+            employee_password_confirmation: watch('employee_password_confirmation'),
             comfirm_policies: watch('comfirm_policies'),
             is_benifical_owner: watch('is_benifical_owner'),
           };
           const formData = new FormData();
           Object.keys(data).forEach((key) => {
-            if ( key !== 'official_id_or_passport') {
+            if (key !== 'official_id_or_passport') {
               formData.append(key, data[key]);
             }
           });
@@ -605,7 +614,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
               id: toastId,
               duration: 1000
             });
-            Cookies.remove('currentStep')
+            Cookies.remove('currentStep');
             scrollToTop();
             navigate('/');
           }).catch(error => {
@@ -631,15 +640,14 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
   const [imagePreviews, setImagePreviews] = useState({});
 
   const handleImageChange = (e) => {
-    const { id, files } = e.target; 
+    const { id, files } = e.target;
     if (files && files[0]) {
       setImagePreviews((prevState) => ({
         ...prevState,
-        [id]: URL.createObjectURL(files[0]) 
+        [id]: URL.createObjectURL(files[0])
       }));
     }
   };
-
 
   return (
     <>
@@ -712,36 +720,86 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 First Phone Number
                                 <span className="requiredStar"> *</span>
                               </label>
-                              <input
-                                type='number'
-                                id='signUpPhone_numberOne'
-                                placeholder="Company's First Phone Number"
-                                {...register('phone_one')}
-                                className={`form-control signUpInput ${errors.phone_one ? 'inputError' : ''}`}
-                              />
-                              {
-                                errors.phone_one
-                                &&
-                                (<span className='errorMessage'>{errors.phone_one.message}</span>)
-                              }
+                              <div className="row">
+                                <div className="col-3">
+                                  <select
+                                    className={`form-select signUpInput ${errors.phone_one_code ? 'inputError' : ''}`}
+                                    defaultValue={''}
+                                    {...register('phone_one_code')}
+                                  >
+                                    <option value='' disabled>000</option>
+                                    {
+                                      countries?.map(country => (
+                                        <option key={country?.phoneCode} value={country?.phoneCode}>
+                                          {country?.phoneCode}
+                                        </option>
+                                      ))
+                                    }
+                                  </select>
+                                  {
+                                    errors.phone_one_code
+                                    &&
+                                    (<span className='errorMessage'>{errors.phone_one_code.message}</span>)
+                                  }
+                                </div>
+                                <div className="col-9">
+                                  <input
+                                    type='number'
+                                    id='signUpPhone_numberOne'
+                                    placeholder="Company's First Phone Number"
+                                    {...register('phone_one')}
+                                    className={`form-control signUpInput ${errors.phone_one ? 'inputError' : ''}`}
+                                  />
+                                  {
+                                    errors.phone_one
+                                    &&
+                                    (<span className='errorMessage'>{errors.phone_one.message}</span>)
+                                  }
+                                </div>
+                              </div>
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpPhone_numberTwo">
                                 Second Phone Number
                                 <span className="optional">(Optional)</span>
                               </label>
-                              <input
-                                type='number'
-                                id='signUpPhone_numberTwo'
-                                placeholder="Company's Second Phone Number"
-                                {...register('phone_two')}
-                                className={`form-control signUpInput ${errors.phone_two ? 'inputError' : ''}`}
-                              />
-                              {
-                                errors.phone_two
-                                &&
-                                (<span className='errorMessage'>{errors.phone_two.message}</span>)
-                              }
+                              <div className="row">
+                                <div className="col-3">
+                                  <select
+                                    className={`form-select signUpInput ${errors.phone_two_code ? 'inputError' : ''}`}
+                                    defaultValue={''}
+                                    {...register('phone_two_code')}
+                                  >
+                                    <option value='' disabled>000</option>
+                                    {
+                                      countries?.map(country => (
+                                        <option key={country?.phoneCode} value={country?.phoneCode}>
+                                          {country?.phoneCode}
+                                        </option>
+                                      ))
+                                    }
+                                  </select>
+                                  {
+                                    errors.phone_two_code
+                                    &&
+                                    (<span className='errorMessage'>{errors.phone_two_code.message}</span>)
+                                  }
+                                </div>
+                                <div className="col-9">
+                                  <input
+                                    type='number'
+                                    id='signUpPhone_numberTwo'
+                                    placeholder="Company's Second Phone Number"
+                                    {...register('phone_two')}
+                                    className={`form-control signUpInput ${errors.phone_two ? 'inputError' : ''}`}
+                                  />
+                                  {
+                                    errors.phone_two
+                                    &&
+                                    (<span className='errorMessage'>{errors.phone_two.message}</span>)
+                                  }
+                                </div>
+                              </div>
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpregisteration_number">
@@ -1030,17 +1088,17 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 {...register('logo')}
                                 onChange={handleImageChange}
                               />
-                              
+
                               {
                                 errors.logo
                                 &&
                                 (<p className='errorMessage'>{errors.logo.message}</p>)
                               }
-                               {imagePreviews['compnayLogo'] && (
-                                  <div className='image-preview'>
-                                    <img src={imagePreviews['compnayLogo']} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
-                                  </div>
-                                )}
+                              {imagePreviews['compnayLogo'] && (
+                                <div className='image-preview'>
+                                  <img src={imagePreviews['compnayLogo']} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
+                                </div>
+                              )}
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
@@ -1248,18 +1306,43 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                               <label htmlFor="signUpemployee_phone">
                                 Mobile Number <span className="requiredStar"> * </span>
                               </label>
-                              <input
-                                type='number'
-                                id='signUpemployee_phone'
-                                placeholder='Enter Employee phone number'
-                                {...register('employee_phone')}
-                                className={`form-control signUpInput ${errors.employee_phone ? 'inputError' : ''}`}
-                              />
-                              {
-                                errors.employee_phone
-                                &&
-                                (<span className='errorMessage'>{errors.employee_phone.message}</span>)
-                              }
+                              <div className="row">
+                                <div className="col-3">
+                                  <select
+                                    className={`form-select signUpInput ${errors.employee_phone_code ? 'inputError' : ''}`}
+                                    defaultValue={''}
+                                    {...register('employee_phone_code')}
+                                  >
+                                    <option value='' disabled>000</option>
+                                    {
+                                      countries?.map(country => (
+                                        <option key={country?.phoneCode} value={country?.phoneCode}>
+                                          {country?.phoneCode}
+                                        </option>
+                                      ))
+                                    }
+                                  </select>
+                                  {
+                                    errors.employee_phone_code
+                                    &&
+                                    (<span className='errorMessage'>{errors.employee_phone_code.message}</span>)
+                                  }
+                                </div>
+                                <div className="col-9">
+                                  <input
+                                    type='number'
+                                    id='signUpemployee_phone'
+                                    placeholder='Enter Employee phone number'
+                                    {...register('employee_phone')}
+                                    className={`form-control signUpInput ${errors.employee_phone ? 'inputError' : ''}`}
+                                  />
+                                  {
+                                    errors.employee_phone
+                                    &&
+                                    (<span className='errorMessage'>{errors.employee_phone.message}</span>)
+                                  }
+                                </div>
+                              </div>
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_title">
@@ -1344,20 +1427,28 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                               }
                             </div>
                             <div className="col-lg-6 mb-4">
-                              <label htmlFor="signUpemployee_citizenship">
+                              <label htmlFor="signUpemployee_citizenship_id">
                                 Citizenship <span className="requiredStar"> *</span>
                               </label>
-                              <input
-                                type='text'
-                                id='signUpemployee_citizenship'
-                                placeholder="Enter Employee's CitizenShip"
-                                {...register('employee_citizenship')}
-                                className={`form-control signUpInput ${errors.employee_citizenship ? 'inputError' : ''}`}
-                              />
+                              <select
+                                id='signUpemployee_citizenship_id'
+                                defaultValue={''}
+                                {...register('employee_citizenship_id')}
+                                className={`form-select signUpInput ${errors.employee_citizenship_id ? 'inputError' : ''}`}
+                              >
+                                <option value='' disabled>Select Your Citizenship</option>
+                                {
+                                  citizenships?.map(el => (
+                                    <option key={el?.id} value={el?.id}>
+                                      {el?.name}
+                                    </option>
+                                  ))
+                                }
+                              </select>
                               {
-                                errors.employee_citizenship
+                                errors.employee_citizenship_id
                                 &&
-                                (<span className='errorMessage'>{errors.employee_citizenship.message}</span>)
+                                (<span className='errorMessage'>{errors.employee_citizenship_id.message}</span>)
                               }
                             </div>
                             <div className="col-lg-6 mb-4">
@@ -1387,6 +1478,33 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 (<span className='errorMessage'>{errors.employee_password.message}</span>)
                               }
                             </div>
+                            <div className="col-lg-6 mb-4">
+                              <label htmlFor="signUpemployee_password_confirmation">
+                                Confirm Password <span className="requiredStar"> *</span>
+                              </label>
+                              <div className="position-relative">
+                                <input
+                                  type={`${showConfirmPassword ? 'text' : 'password'}`}
+                                  id='signUpemployee_password_confirmation'
+                                  placeholder='Enter 8-digit password'
+                                  {...register('employee_password_confirmation')}
+                                  className={`form-control signUpInput ${errors.employee_password_confirmation ? 'inputError' : ''}`}
+                                />
+                                <div className="leftShowPasssord" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                  {
+                                    showConfirmPassword ?
+                                      <i className="bi bi-eye-slash"></i>
+                                      :
+                                      <i className="bi bi-eye-fill"></i>
+                                  }
+                                </div>
+                              </div>
+                              {
+                                errors.employee_password_confirmation
+                                &&
+                                (<span className='errorMessage'>{errors.employee_password_confirmation.message}</span>)
+                              }
+                            </div>
                             <div className='col-lg-6'>
                               <label htmlFor="signUpofficial_id_or_passport">
                                 Owner's <span className="optional">(Official-Id / Passport)</span><span className="requiredStar"> *</span>
@@ -1402,7 +1520,7 @@ export default function BusinessSignUpFormMainSec({ countries, industries, mainC
                                 &&
                                 (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
                               }
-                              
+
                             </div>
                             <div className="col-lg-8 mb-4">
                               <label

@@ -176,7 +176,8 @@ export default function ShowSingleQuotation({ token }) {
             }else {
                 slug = 'complete-quotation-data';
                 submitData = submitionData;
-                submitData.company_notes= replyText
+                submitData.company_notes= replyText;
+                submitData.extras_note= extrasNoteInput;
             }
         } else {
             slug = 'complete-negotiation-quotation-data';
@@ -184,7 +185,8 @@ export default function ShowSingleQuotation({ token }) {
             submitData.shipping_price = shippingValue;
             submitData.services = servicesValue;
             submitData.offer_validaty = submitionData.offer_validaty;
-            submitData.company_notes= replyText
+            submitData.company_notes= replyText;
+            submitData.extras_note= extrasNoteInput;
         };
         (async () => {
             await axios.post(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`,
@@ -393,15 +395,19 @@ export default function ShowSingleQuotation({ token }) {
         };
     }, []);
 
-    const [showTextarea, setShowTextarea] = useState(false);
     const [replyText, setReplyText] = useState('');
-    const [isReplied, setIsReplied] = useState(false);
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [editExtrasNote, setEditExtrasNote] = useState(false);
+    const [extrasNoteInput, setExtrasNoteInput] = useState(newData?.extras_note === 'N/A' ? '' : newData?.extras_note);
+
+    const handleExtrasNoteChange = () => {
+        setEditExtrasNote(true);
+    };
     console.log(acceptedSingleQuotations);
     console.log('newData:', newData);
     console.log('fullData:', fullData);
@@ -635,7 +641,36 @@ export default function ShowSingleQuotation({ token }) {
                                 ''
                         }
                         <h5 className='mb-4'>
-                            Extra <span className='optional'>(Specified in notes)</span>
+                            Extra 
+                            <span className='optional'>
+                            {loginType === 'employee' ? (
+                                editExtrasNote ? (
+                                    <>
+                                    <input
+                                        type="text"
+                                        name='extras_note'
+                                        value={extrasNoteInput}
+                                        onChange={(e) => setExtrasNoteInput(e.target.value)}
+                                        className="form-control d-inline-block w-auto"
+                                    />
+                                    <i
+                                        className="bi bi-check-lg ms-2"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => setEditExtrasNote(false)} 
+                                    />
+                                    </>
+                                ) : (
+                                    <>
+                                    {newData?.extras_note === 'N/A' ? "(Specified in notes)" : newData?.extras_note}
+                                    
+                                    </>
+                                )
+                                ) : (
+                                <>
+                                    {newData?.extras_note === 'N/A' ? "(Specified in notes)" : newData?.extras_note}
+                                </>
+                            )}
+                            </span>
                         </h5>
                         <h5>
                             Total Price 

@@ -17,6 +17,8 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [defaultValue, setDefaultValue] = useState([]);
+  const [selectedIndustries, setSelectedIndustries] = useState([]);
   const navigate = useNavigate();
   const loginType = localStorage.getItem('loginType');
 
@@ -32,6 +34,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       name: '',
       email: '',
       phone: '',
+      phone_code: '',
       password: '',
       country_id: '',
       city_id: '',
@@ -102,12 +105,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
   }, []);
 
   const onSubmit = async (data) => {
+    data.industry_id = selectedIndustries?.map(indust => indust?.id);
     const toastId = toast.loading('Please Wait...');
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
-      if (key !== 'image') {
+      if (Array.isArray(data[key]) && key !== 'image') {
+        data[key].forEach((item, index) => {
+          formData.append(`${key}[${index}]`, item);
+        });
+      }else if(key !== 'image') {
         formData.append(key, data[key]);
-      }
+      };
     });
     if (data.image && data.image[0]) {
       formData.append('image', data.image[0]);
@@ -136,16 +144,16 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
           id: toastId,
           duration: 2000
         });
-        isSignUp && 
+        isSignUp &&
           (!response?.data?.data?.user?.verified) &&
-            (setTimeout(() => {
-              navigate('/user-verification');
-            }, 1000));
-        isSignUp && 
+          (setTimeout(() => {
+            navigate('/user-verification');
+          }, 1000));
+        isSignUp &&
           (response?.data?.data?.user?.verified) &&
-            (setTimeout(() => {
-              navigate('/');
-            }, 1000));
+          (setTimeout(() => {
+            navigate('/');
+          }, 1000));
         scrollToTop();
         reset();
       }
@@ -166,6 +174,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
   };
   // image preview
   const [imagePreview, setImagePreview] = useState(null);
+  const [passportPreview, setPassPortPreview] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -173,6 +182,27 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       setImagePreview(URL.createObjectURL(file));
     }
   };
+  const handlePassportChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPassPortPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSelectIndust = (el) => {
+    const currIndust = industries?.find(indust => +indust?.id === +el);
+    const condition = selectedIndustries?.find(indust => +indust?.id === currIndust?.id);
+    if (!condition) {
+      setSelectedIndustries([...selectedIndustries, currIndust]);
+    };
+    setDefaultValue('');
+  };
+
+  const handleDeleteSelectedIndust = (el) => {
+    const currIndust = industries?.find(indust => +indust?.id === +el?.id);
+    setSelectedIndustries(selectedIndustries?.filter(indust => +indust?.id !== +currIndust?.id));
+  };
+
   return (
     <>
       {
@@ -260,7 +290,29 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             Mobile Number <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
-                            <div className="col-12">
+                            <div className="col-3">
+                              <select
+                                id=""
+                                defaultValue={''}
+                                {...register('phone_code')}
+                                className={`form-select signUpInput ${errors.phone_code ? 'inputError' : ''}`}
+                              >
+                                <option value="" disabled>000</option>
+                                {
+                                  countries?.map(country => (
+                                    <option id={country?.phoneCode} value={country?.phoneCode}>
+                                      {country?.phoneCode}
+                                    </option>
+                                  ))
+                                }
+                              </select>
+                              {
+                                errors.phone_code
+                                &&
+                                (<span className='errorMessage'>{errors.phone_code.message}</span>)
+                              }
+                            </div>
+                            <div className="col-9">
                               <input
                                 type='text'
                                 id='signUpMobileNumber'
@@ -432,8 +484,10 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               </label>
                               <select
                                 id="signUpindustry"
+                                defaultValue={defaultValue}
                                 className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
-                                {...register('industry_id')} >
+                                onChange={(el) => handleSelectIndust(el.target.value)}
+                              >
                                 <option value="" disabled>
                                   Select an industry
                                 </option>
@@ -443,6 +497,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                   </option>
                                 ))}
                               </select>
+                              <div>
+                                {selectedIndustries?.map((indust) => (
+                                  <span className='chosen__choice' key={indust.id}>
+                                    {indust.name}
+                                    <i
+                                      onClick={() => handleDeleteSelectedIndust(indust)}
+                                      className="bi bi-trash chosen__choice-delete"
+                                    ></i>
+                                  </span>
+                                ))}
+                              </div>
                               {
                                 errors.industry_id &&
                                 <span className="errorMessage">{errors.industry_id.message}</span>
@@ -526,7 +591,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             }
                           </div>
                         }
-                        <div className='col-lg-12'>
+                        <div className='col-lg-6'>
                           <label htmlFor="signUpProfileImage">
                             Upload Profile Image
                             <span className="requiredStar"> *</span>
@@ -543,11 +608,34 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             &&
                             (<p className='errorMessage'>{errors.image.message}</p>)
                           }
-                            {imagePreview && (
-                              <div className='image-preview'>
-                                <img src={imagePreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius:'12px' }} />
-                              </div>
-                            )}
+                          {imagePreview && (
+                            <div className='image-preview'>
+                              <img src={imagePreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
+                            </div>
+                          )}
+                        </div>
+                        <div className='col-lg-6'>
+                          <label htmlFor="signUpProfileofficial_id_or_passport">
+                            Upload Official Id Or Passport
+                            <span className="requiredStar"> *</span>
+                          </label>
+                          <input
+                            type='file'
+                            id='signUpProfileofficial_id_or_passport'
+                            {...register('official_id_or_passport')}
+                            className={`newUploadBtn form-control ${errors.official_id_or_passport ? 'inputError' : ''}`}
+                            onChange={handlePassportChange}
+                          />
+                          {
+                            errors.official_id_or_passport
+                            &&
+                            (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
+                          }
+                          {passportPreview && (
+                            <div className='image-preview'>
+                              <img src={passportPreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
+                            </div>
+                          )}
                         </div>
                         <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                           <input disabled={isSubmitting} type="submit" value={isSignUp ? 'Sign Up' : 'Add Employee'} />
