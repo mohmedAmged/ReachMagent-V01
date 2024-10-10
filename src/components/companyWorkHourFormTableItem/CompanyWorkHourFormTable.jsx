@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import './companyWorkHourFormTable.css'
-export default function CompanyWorkHourFormTable({ token, workingHours }) {
+export default function CompanyWorkHourFormTable({ token, workingHours, editMode }) {
     const loginType = localStorage.getItem('loginType')
     const navigate = useNavigate()
-
     const [formData, setFormData] = useState(
-        workingHours?.length
+        workingHours?.length !== 0
             ? {
                 day_of_week: workingHours.map((el) => el.day_of_week),
                 opening_time: workingHours.map((el) => el.opening_time),
@@ -21,6 +20,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours }) {
                 closing_time: [""],
             }
     );
+
     const handleInputChange = (index, name, value) => {
         setFormData((prevState) => {
             const updatedField = [...prevState[name]];
@@ -78,6 +78,10 @@ export default function CompanyWorkHourFormTable({ token, workingHours }) {
             toast.error('Error updating work hours.');
         }
     };
+    console.log(formData);
+    
+    
+    
     return (
         <form onSubmit={handleFormSubmit} className='companyWorkHourTable__handler'>
             {formData.day_of_week.map((day, index) => (
@@ -107,7 +111,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours }) {
                         <input
                             className="form-control signUpInput mt-2"
                             name="opening_time"
-                            value={formData.opening_time[index]}
+                            value={!editMode ?  formData.opening_time[index] : formData.opening_time[0]}
                             type="time"
                             onChange={(e) =>
                                 handleInputChange(index, 'opening_time', e.target.value)

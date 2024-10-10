@@ -68,7 +68,7 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
                     ))}
                 </form>
             ) : (
-                <CompanyWorkHourFormTable setUnAuth={setUnAuth} token={token} workingHours={newData?.workingHours} />
+                <CompanyWorkHourFormTable setUnAuth={setUnAuth} token={token} workingHours={newData?.workingHours} editMode={editMode}/>
             )}
             
         </div>

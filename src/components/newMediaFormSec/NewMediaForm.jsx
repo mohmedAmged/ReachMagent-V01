@@ -209,7 +209,7 @@ export default function NewMediaForm({token}) {
                             }
                         </div>
                     </div>
-            }
+    }
     </>
   )
 }

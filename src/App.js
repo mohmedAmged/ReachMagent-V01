@@ -57,6 +57,8 @@ import AboutUs from './pages/aboutUsPage/AboutUs';
 import MyContactUs from './pages/myContactUsPage/MyContactUs';
 import MyMedia from './pages/myMediaPAge/MyMedia';
 import NewMediaForm from './components/newMediaFormSec/NewMediaForm';
+import MyAppointements from './pages/myAppointementsPage/MyAppointements';
+import NewAppointementFrom from './components/newAppointementFromSec/NewAppointementFrom';
 
 function App() {
   useEffect(() => {
@@ -268,6 +270,9 @@ function App() {
         <Route path='/profile/media' element={<MyMedia token={token} />} />
         <Route path='/profile/media/addNewItem' element={<NewMediaForm token={token} />} />
         <Route path='/profile/media/edit-item/:id' element={<NewMediaForm token={token} />} />
+
+        <Route path='/profile/appointments' element={<MyAppointements token={token} />} />
+        <Route path='/profile/appointments/addNewAppointment' element={<NewAppointementFrom token={token} />} />
         {/* <Route path='/profile/products' element={<MyProducts token={token} />} /> */}
         {/* <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
         {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
