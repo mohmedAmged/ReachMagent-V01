@@ -22,6 +22,7 @@
     border-radius: 6px;
     opacity: 0;
     visibility: hidden;
+    z-index: 22;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .quotationTable__NewStyle .actions .options-box {
