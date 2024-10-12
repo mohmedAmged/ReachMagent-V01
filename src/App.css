@@ -316,3 +316,40 @@
 .opacityDisabled {
     opacity: 0.5;
 }
+.bookedAppointementReason{
+    box-shadow: 0 2px 8px rgb(192, 192, 192);
+    color: #000;
+    text-align: center;
+    text-transform: capitalize;
+    /* border: 1px solid rgba(152, 152, 152, 0.733); */
+    background-color: rgb(239, 239, 239);
+    padding: 7px;
+    border-radius: 4px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    outline: none;
+    cursor: default !important;
+}
+.bookedAppointementStatus{
+    color: #000;
+    background-color: rgba(241, 249, 248, 1);
+    padding: 8px;
+    border-radius: 4px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    outline: none;
+    cursor: default !important;
+}
+.bookedAppointementStatus.Rejected{
+    color: #ff2020;
+}
+.bookedAppointementStatus.Accepted{
+    color: rgb(63, 215, 86);
+}
+.bookedAppointementStatus.Pending{
+    color: black;
+}

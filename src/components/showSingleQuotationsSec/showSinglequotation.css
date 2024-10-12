@@ -11,7 +11,7 @@
 .quotationTable__NewStyle .table tr {
     background: #011f5b !important;
 }
-.quotationTable__NewStyle .options-box{
+.options-box{
     position: absolute;
     bottom: -80px;
     left: 8px;
