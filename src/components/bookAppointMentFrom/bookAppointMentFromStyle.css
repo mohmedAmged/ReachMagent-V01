@@ -1,0 +1,8 @@
+.bookAppointMentForm {
+    background-color: #ddd;
+    border-radius: 20px;
+    padding: 30px ;
+}
+.bookAppointMentForm textarea {
+    min-height: 80px;
+}
