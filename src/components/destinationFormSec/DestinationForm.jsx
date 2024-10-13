@@ -95,8 +95,9 @@ export default function DestinationForm({ distinationData, setDistinationData, c
             <form className="destinationQuote__form row">
                 <div className="col-lg-4 col-md-4">
                     <div className="singleQuoteInput">
-                        <label htmlFor="distinationCountry">
+                        <label htmlFor="distinationCountry" className='position-relative'>
                             Country
+                            <i title='choose country that you located for order' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </label>
                         <select
                             defaultValue={''}
@@ -121,8 +122,9 @@ export default function DestinationForm({ distinationData, setDistinationData, c
                 </div>
                 <div className="col-lg-4 col-md-4">
                     <div className="singleQuoteInput">
-                        <label htmlFor="distinationCity">
+                        <label htmlFor="distinationCity" className='position-relative'>
                             City
+                            <i title='choose city that you located for order' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </label>
                         <select
                             className='form-select w-100'
@@ -144,8 +146,10 @@ export default function DestinationForm({ distinationData, setDistinationData, c
                     <div className="singleQuoteInput">
                         <label
                             htmlFor='distinationArea'
+                            className='position-relative'
                         >
                             Area
+                            <i title='choose area that you located for order' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </label>
                         <select
                             className='form-select w-100'
@@ -165,24 +169,27 @@ export default function DestinationForm({ distinationData, setDistinationData, c
                 </div>
                 <div className="col-lg-6">
                     <div className="singleQuote__searchInput">
-                        <h3 className='fs-4'>
+                        <h3 className='fs-4 position-relative'>
                             PO Box
+                            <i title='add PO Box' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </h3>
                         <input name='po_box' className='form-control w-100' type="text" placeholder='Search here' value={distinationData?.po_box} onChange={handleChangeInput} />
                     </div>
                 </div>
                 <div className="col-lg-6">
                     <div className="singleQuote__searchInput">
-                        <h3 className='fs-4'>
+                        <h3 className='fs-4 position-relative'>
                             Postal Code
+                            <i title='add  Postal Code' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </h3>
                         <input name='postal_code' className='form-control w-100' type="text" placeholder='Search here' value={distinationData?.postal_code} onChange={handleChangeInput} />
                     </div>
                 </div>
                 <div className="col-lg-6">
                     <div className="singleQuoteInput">
-                        <label htmlFor="distinationAddress">
+                        <label htmlFor="distinationAddress" className='position-relative'>
                             Address
+                            <i title='write exact address that you located for order' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                         </label>
                         <textarea
                             className="form-control"

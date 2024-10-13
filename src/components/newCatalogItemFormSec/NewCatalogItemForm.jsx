@@ -258,7 +258,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <input
                                                             type="text"
                                                             name="title_en"
@@ -271,7 +273,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span></label>
+                                                        <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <input
                                                             type="text"
                                                             name="title_ar"
@@ -286,7 +290,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="category_id">Category <span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="category_id">Category <span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <select
                                                             name="category_id"
                                                             className="form-control custom-select"
@@ -304,7 +310,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <select
                                                             name="sub_category_id"
                                                             className="form-control custom-select"
@@ -325,7 +333,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
                                                         <label htmlFor="unit_of_measure_id">
-                                                            unit of measure <span className="requiredStar"> *</span></label>
+                                                            unit of measure <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                            </label>
                                                         <select
                                                             name="unit_of_measure_id"
                                                             className="form-control custom-select"
@@ -343,7 +353,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-6">
                                                 <div className="catalog__new__input">
-                                                        <label htmlFor="code">product code <span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="code">product code <span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <input
                                                             type="text"
                                                             name="code"
@@ -358,7 +370,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <textarea
                                                             name="description_en"
                                                             className="form-control"
@@ -370,7 +384,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span></label>
+                                                        <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <textarea
                                                             name="description_ar"
                                                             className="form-control"
@@ -384,7 +400,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             <div className="row">
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="price">Price <span className='optional'>(optional)</span></label>
+                                                        <label htmlFor="price">Price <span className='optional'>(optional)</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <div className="custom-input-container">
                                                             <input
                                                                 type="text"
@@ -400,7 +418,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="tax">Tax % <span className='optional'>(optional)</span></label>
+                                                        <label htmlFor="tax">Tax % <span className='optional'>(optional)</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <div className="custom-input-container">
                                                             <input
                                                                 type="number"
@@ -440,6 +460,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                             />
                                                             <label htmlFor={`type-${type?.id}`} className="form-check-label">
                                                                 {type?.name}
+                                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                             </label>
                                                         </div>
                                                     </div>

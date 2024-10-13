@@ -103,6 +103,7 @@ export default function NewAppointementFrom({token}) {
                                                         <label  htmlFor="date_from"> 
                                                             Date From
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="date" name="date_from" className='form-control'
                                                         value={formData?.date_from}
@@ -116,6 +117,7 @@ export default function NewAppointementFrom({token}) {
                                                         htmlFor="date_to"> 
                                                             Date To
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="date" name="date_to" className='form-control'
                                                         value={formData?.date_to}
@@ -129,6 +131,7 @@ export default function NewAppointementFrom({token}) {
                                                         htmlFor="available_from"> 
                                                         Available From
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="time" name="available_from" className='form-control'
                                                         value={formData?.available_from}
@@ -143,6 +146,7 @@ export default function NewAppointementFrom({token}) {
                                                         htmlFor="available_to"> 
                                                             Available To
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="time" name="available_to" className='form-control'
                                                         value={formData?.available_to}

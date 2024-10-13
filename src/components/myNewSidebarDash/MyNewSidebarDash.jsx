@@ -63,6 +63,7 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
         { title: "Appointments", link: "/profile/appointments", icon: icon3 },
         { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
+        { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
         // { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },

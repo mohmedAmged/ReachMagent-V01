@@ -353,3 +353,9 @@
 .bookedAppointementStatus.Pending{
     color: black;
 }
+.bi-info-circle{
+    color: var(--text-gray-color);
+}
+td{
+    text-transform: capitalize;
+}

@@ -178,7 +178,11 @@ export default function MyBookedAppointements({ token }) {
                                                     'Company Booked Appointments' : 'User Booked Appointments'
                                             }
                                         />
+
             {
+                newData?.length !== 0 ?
+                <>
+                {
                 loginType === 'employee' &&
                 <div className="my__roles__actions my-4 ps-0 ms-0">
                     <button
@@ -211,9 +215,7 @@ export default function MyBookedAppointements({ token }) {
                         Reserved By Us
                     </button>
                 </div>
-            }
-            {
-                newData?.length !== 0 ?
+                }
                 <div className="row">
                     <div className="col-12">
                         <div className="productTable__content quotationTable__NewStyle">
@@ -330,12 +332,14 @@ export default function MyBookedAppointements({ token }) {
                         </div>
                     </div>
                 </div>
-                    :
-                    <div className='row'>
-                        <div className="col-12 text-danger fs-5">
-                            No Booked Appointements Yet
-                        </div>
+                </>
+                
+                :
+                <div className='row'>
+                    <div className="col-12 my-5 text-danger fs-5">
+                        No Booked Appointements Yet
                     </div>
+                </div>
             }
                                     </div>
                             }

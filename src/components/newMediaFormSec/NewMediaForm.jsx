@@ -142,6 +142,7 @@ export default function NewMediaForm({token}) {
                                                         <label htmlFor="category_id"> 
                                                             {id ? 'Edit' : 'Choose'} Type of Media
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <select
                                                             name="type"
@@ -168,7 +169,9 @@ export default function NewMediaForm({token}) {
                                                     formData?.type === 'image' &&
                                                     <div className="col-lg-8">
                                                         <div className="upload__image__btn ">
-                                                        <label htmlFor="image" style={{marginBottom: '8px', fontSize: '16px', fontWeight: '400'}}>{id ? 'Edit' : 'Add'} Image<span className="requiredStar"> *</span></label>
+                                                        <label htmlFor="image" style={{marginBottom: '8px', fontSize: '16px', fontWeight: '400'}}>{id ? 'Edit' : 'Add'} Image<span className="requiredStar"> *</span>
+                                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                        </label>
                                                         <input
                                                             type="file"
                                                             name="image"
@@ -185,6 +188,7 @@ export default function NewMediaForm({token}) {
                                                             <label htmlFor="link">{id ? 'Edit' : 'Add'} Link video 
                                                             <span className='optional'>(link must be youtube format)</span>
                                                             <span className="requiredStar"> *</span>
+                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                             </label>
                                                             <input
                                                                 type="text"

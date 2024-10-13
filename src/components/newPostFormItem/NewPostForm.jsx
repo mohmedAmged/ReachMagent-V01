@@ -125,7 +125,9 @@ export default function NewPostForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="title_en">Post Title in English <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="title_en">Post Title in English <span className="requiredStar"> *</span>
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <input
                                                     type="text"
                                                     name="title_en"
@@ -138,7 +140,9 @@ export default function NewPostForm({ token }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="title_ar">Post Title in Arabic <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="title_ar">Post Title in Arabic <span className="requiredStar"> *</span>
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <input
                                                     type="text"
                                                     name="title_ar"
@@ -153,7 +157,9 @@ export default function NewPostForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span>
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <textarea
                                                     name="description_en"
                                                     className="form-control"
@@ -165,7 +171,9 @@ export default function NewPostForm({ token }) {
                                         </div>
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="description_ar">Description in Arabic <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="description_ar">Description in Arabic <span className="requiredStar"> *</span>
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <textarea
                                                     name="description_ar"
                                                     className="form-control"
@@ -179,7 +187,9 @@ export default function NewPostForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="type">Post Type <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="type">Post Type <span className="requiredStar"> *</span>
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <select
                                                     name="type"
                                                     className="form-control custom-select"

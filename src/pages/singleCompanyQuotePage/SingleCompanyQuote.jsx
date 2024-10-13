@@ -336,8 +336,9 @@ export default function SingleCompanyQuote({ token, countries }) {
                                 </div>
                                 <div className="col-lg-4">
                                     <div className="singleQuoteInput">
-                                        <label htmlFor="qoutationSelectTheType">
+                                        <label htmlFor="qoutationSelectTheType" className='position-relative'>
                                             Type
+                                            <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                         </label>
                                         <select
                                             className='form-select w-100'
@@ -360,8 +361,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                 </div>
                                 <div className="col-lg-4">
                                     <div className="singleQuoteInput">
-                                        <label htmlFor="quotationSelectMainCategory">
+                                        <label htmlFor="quotationSelectMainCategory"
+                                        className='position-relative'
+                                        >
                                             Category
+                                            <i title='select category of item' className="bi bi-info-circle ms-2 cursorPointer" style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                         </label>
                                         <select
                                             className='form-select w-100'
@@ -381,8 +385,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                 </div>
                                 <div className="col-lg-4">
                                     <div className="singleQuoteInput">
-                                        <label htmlFor="qouteSelectSubCategory">
+                                        <label htmlFor="qouteSelectSubCategory" 
+                                        className='position-relative'
+                                        >
                                             Sub-category
+                                            <i title='select sub-category of item' className="bi bi-info-circle ms-2 cursorPointer" style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                         </label>
                                         <select
                                             value={requestIntries?.sub_category_id}
@@ -406,9 +413,10 @@ export default function SingleCompanyQuote({ token, countries }) {
                         <div className="col-12">
                             <div className="row">
                                 <div className="col-lg-6">
-                                    <div className="singleQuote__searchInput">
-                                        <h3 className='fs-4'>
+                                    <div className="singleQuote__searchInput mt-3">
+                                        <h3 className='fs-4 position-relative'>
                                             Or Search For a Specific Item
+                                            <i title='Search For a Specific Item' className="bi bi-info-circle ms-2 cursorPointer" style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                         </h3>
                                         <input className='form-control' type="text" placeholder='Search here' value={requestIntries?.title} onChange={(event) => setRequestIntries({ ...requestIntries, title: event?.target?.value })} />
                                     </div>
@@ -514,8 +522,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                     <div className="customization__form row">
                                         <div className="col-lg-7">
                                             <div className="singleQuoteInput">
-                                            <label htmlFor="qoutationSelectTheType">
+                                            <label htmlFor="qoutationSelectTheType"
+                                            className='position-relative'
+                                            >
                                                 Type
+                                                <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                             </label>
                                             <select
                                                 className='form-select w-100'
@@ -538,8 +549,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="singleQuoteInput">
-                                                <label htmlFor="customProductTitle">
+                                                <label htmlFor="customProductTitle"
+                                                className='position-relative'
+                                                >
                                                     Title
+                                                    <i title='name what you want from company' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                                 </label>
                                                 <input
                                                     id="customProductTitle"
@@ -554,8 +568,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="singleQuoteInput">
-                                                <label htmlFor="customProductQuantity">
+                                                <label htmlFor="customProductQuantity"
+                                                className='position-relative'
+                                                >
                                                     Quantity
+                                                    <i title='select quantity of what you want' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                                 </label>
                                                 <input
                                                     id="customProductQuantity"
@@ -571,8 +588,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="singleQuoteInput">
-                                                <label htmlFor="customProductDescription">
+                                                <label htmlFor="customProductDescription"
+                                                className='position-relative'
+                                                >
                                                     Description
+                                                    <i title='descripe how you want your thing' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                                 </label>
                                                 <textarea
                                                     id="customProductDescription"
@@ -587,7 +607,9 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="customizationQuote__actions singleQuoteInput">
-                                                <label>UpLoad A Reference</label>
+                                                <label className=' position-relative'>UpLoad A Reference
+                                                <i title='upload images or files descripe what you want' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
+                                                </label>
                                                 <p className='fw-light mb-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
                                                 <input
                                                     type='file'
@@ -615,8 +637,11 @@ export default function SingleCompanyQuote({ token, countries }) {
                                         checked={distinationData?.include_shipping}
                                         onChange={handleCheckboxChange}
                                         id="flexCheckDefault" />
-                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                    <label className="form-check-label position-relative" htmlFor="flexCheckDefault"
+                                    
+                                    >
                                         Include Shipping Cost In The Quotation
+                                        <i title='want Shipping to your place' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                     </label>
                                 </div>
                                 {
@@ -629,8 +654,9 @@ export default function SingleCompanyQuote({ token, countries }) {
                                             checked={distinationData?.include_insurance}
                                             onChange={handleCheckboxChange}
                                             id="flexCheckDefault2" />
-                                        <label className="form-check-label" htmlFor="flexCheckDefault2">
+                                        <label className="form-check-label position-relative" htmlFor="flexCheckDefault2">
                                             Include Insurance
+                                            <i title='Include Insurance' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                         </label>
                                     </div>
                                 }
@@ -650,8 +676,9 @@ export default function SingleCompanyQuote({ token, countries }) {
                                 <div className="customization__form row">
                                     <div className="col-lg-12">
                                         <div className="singleQuoteInput">
-                                            <label htmlFor="quotationNote">
+                                            <label htmlFor="quotationNote" className='position-relative'>
                                                 Add Note To Quotation
+                                                <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
                                             </label>
                                             <textarea
                                                 id="quotationNote"
