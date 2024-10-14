@@ -165,7 +165,7 @@ export default function MyBookedAppointements({ token }) {
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />
                         <div className='main__content container'>
-                            <MainContentHeader currentUserLogin={currentUserLogin} search={true} filteration={filteration}  name={'date'} placeholder={'Filter by Date'} setFilteration={setFilteration} inputType={'date'}/>
+                            <MainContentHeader currentUserLogin={currentUserLogin} search={loginType !== 'user' ? true : false} filteration={filteration}  name={'date'} placeholder={'Filter by Date'} setFilteration={setFilteration} inputType={'date'}/>
                             {
                                 unAuth ?
                                     <UnAuthSec />
@@ -178,44 +178,45 @@ export default function MyBookedAppointements({ token }) {
                                                     'Company Booked Appointments' : 'User Booked Appointments'
                                             }
                                         />
+                {
+                    loginType === 'employee' &&
+                    <div className="my__roles__actions my-4 ps-0 ms-0">
+                        <button
+                            className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
+                            onClick={() => {
+                                fetchBookedAppointments();
+                                setFilteration({ ...filteration, type: '' })
+                                setActiveRole('All')
+                            }}
+                        >
+                            All
+                        </button>
+                        <button
+                            className={`def__btn meddle_btn px-5 ${activeRole === 'reservedByOthers' ? 'rolesActiveBtn' : ''}`}
+                            style={{borderBottomLeftRadius: '0px', borderTopLeftRadius: '0px'}}
+                            onClick={() => {
+                                setFilteration({...filteration,type: 'reservedByOthers'})
+                                setActiveRole('reservedByOthers')
+                            }}
+                        >
+                            Reserved By Others
+                        </button>
+                        <button
+                            className={`cust__btn px-5 ${activeRole === 'reservedByUs' ? 'rolesActiveBtn' : ''}`}
+                            onClick={() =>{
+                                setFilteration({...filteration,type: 'reservedByUs'})
+                                setActiveRole('reservedByUs')
+                            }}
+                        >
+                            Reserved By Us
+                        </button>
+                    </div>
+                }
 
             {
                 newData?.length !== 0 ?
                 <>
-                {
-                loginType === 'employee' &&
-                <div className="my__roles__actions my-4 ps-0 ms-0">
-                    <button
-                        className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
-                        onClick={() => {
-                            fetchBookedAppointments();
-                            setFilteration({ ...filteration, type: '' })
-                            setActiveRole('All')
-                        }}
-                    >
-                        All
-                    </button>
-                    <button
-                        className={`def__btn meddle_btn px-5 ${activeRole === 'reservedByOthers' ? 'rolesActiveBtn' : ''}`}
-                        style={{borderBottomLeftRadius: '0px', borderTopLeftRadius: '0px'}}
-                        onClick={() => {
-                            setFilteration({...filteration,type: 'reservedByOthers'})
-                            setActiveRole('reservedByOthers')
-                        }}
-                    >
-                        Reserved By Others
-                    </button>
-                    <button
-                        className={`cust__btn px-5 ${activeRole === 'reservedByUs' ? 'rolesActiveBtn' : ''}`}
-                        onClick={() =>{
-                            setFilteration({...filteration,type: 'reservedByUs'})
-                            setActiveRole('reservedByUs')
-                        }}
-                    >
-                        Reserved By Us
-                    </button>
-                </div>
-                }
+                
                 <div className="row">
                     <div className="col-12">
                         <div className="productTable__content quotationTable__NewStyle">

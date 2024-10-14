@@ -1,8 +1,13 @@
-.bookAppointMentForm {
-    background-color: #ddd;
-    border-radius: 20px;
-    padding: 30px ;
-}
 .bookAppointMentForm textarea {
     min-height: 80px;
+}
+.modal-dialog {
+    display: flex !important;
+    justify-content: center !important;
+}
+.modal-content {
+    min-width: 600px;
+}
+.modal-backdrop.show {
+    opacity: 0.8 !important;
 }

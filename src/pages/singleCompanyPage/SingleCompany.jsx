@@ -9,15 +9,10 @@ import AboutCompany from '../../components/aboutCompanySec/AboutCompany'
 import SingleCompanyRectangleSec from '../../components/singleCompanyRectangleSec/SingleCompanyRectangleSec'
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec'
 import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec'
-import SingleCompanyAffiliate from '../../components/singleCompanyAffiliateSec/SingleCompanyAffiliate'
 import CompanyContact from '../../components/companyContactSec/CompanyContact'
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { getDataFromAPI } from '../../functions/fetchAPI'
-import ReadyToBuySec from '../../components/readyToBuySecc/ReadyToBuySec'
-import axios from 'axios'
-import { baseURL } from '../../functions/baseUrl'
-import toast from 'react-hot-toast'
+import { getDataFromAPI } from '../../functions/fetchAPI';
 import LastMinuteCard from '../../components/lastMinuteCardSec/LastMinuteCard'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -31,7 +26,10 @@ import BookAppointMentFrom from '../../components/bookAppointMentFrom/BookAppoin
 export default function SingleCompany({ token, fetchCartItems, wishlistItems }) {
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
-    const loginType = localStorage.getItem('loginType');
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const companyData = {
         aboutMark: aboutMarkImage,
@@ -97,7 +95,7 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
                     :
                     <div className='singleCompany__handler'>
                         <HeroOnlyCover />
-                        <CompanyInfoCard showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
+                        <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
                         <div className='my-5'>
                             <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
                         </div>
@@ -340,7 +338,7 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
                         {/* <SingleCompanyAffiliate /> */}
                         {
                             token &&
-                            <BookAppointMentFrom token={token} companyId={companyId} company={showCompaniesQuery?.data} />
+                            <BookAppointMentFrom show={show} handleClose={handleClose} token={token} companyId={companyId} company={showCompaniesQuery?.data} />
                         }
                         {
                             <CompanyContact company={showCompaniesQuery} token={token} companyId={companyId} />

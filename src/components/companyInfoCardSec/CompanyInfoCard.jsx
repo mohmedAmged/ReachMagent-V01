@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
 
-export default function CompanyInfoCard({ showCompaniesQuery, token }) {
+export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token }) {
     const loginType = localStorage.getItem('loginType')
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
@@ -24,15 +24,15 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
         };
         const toastId = toast.loading('loading...');
         const slug = loginType === 'user' ? 'user/control-follow-company' : 'employee/control-follow'
-        await axios.post(`${baseURL}/${slug}?t=${new Date().getTime()}`, 
-        currentCompanyWantedToFollow ,
-        {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                Authorization : `Bearer ${token}`
-            },
-        })
+        await axios.post(`${baseURL}/${slug}?t=${new Date().getTime()}`,
+            currentCompanyWantedToFollow,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+            })
             .then(response => {
                 Cookies.set('CurrentFollowedCompanies', JSON.stringify([...response?.data?.data?.followedCompanies]), { expires: 999999999999999999999999999999 * 99999999999999999999999999999999999 * 99999999999999999999999999999999 });
                 setCurrentFollowedCompanies([...response?.data?.data?.followedCompanies]);
@@ -48,7 +48,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                 });
             });
     };
-    
+
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -75,7 +75,7 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             Headquarters:
                                         </p>
                                         <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyFullAddress}>
-                                            {showCompaniesQuery?.companyFullAddress?.length >= 25 ? showCompaniesQuery?.companyFullAddress?.slice(0,25) + '...' : showCompaniesQuery?.companyFullAddress}
+                                            {showCompaniesQuery?.companyFullAddress?.length >= 25 ? showCompaniesQuery?.companyFullAddress?.slice(0, 25) + '...' : showCompaniesQuery?.companyFullAddress}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo">
@@ -127,87 +127,45 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                             type:
                                         </p>
                                         <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyTypes[0]?.type}>
-                                            {showCompaniesQuery?.companyTypes[0]?.type?.length >= 15 ? showCompaniesQuery?.companyTypes[0]?.type?.slice(0,15) + '...' : showCompaniesQuery?.companyTypes[0]?.type }
+                                            {showCompaniesQuery?.companyTypes[0]?.type?.length >= 15 ? showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...' : showCompaniesQuery?.companyTypes[0]?.type}
                                         </p>
                                     </div>
                                     <div className="company__boxInfo mt-2">
-                                        {/* <p className='companyinfo__Tit'>
-                                            Website:
-                                        </p>
-                                        <p className='companyinfo__subTit'>
-                                            <NavLink to={`${showCompaniesQuery?.companyWebsiteLink}`} className='nav-link' title={showCompaniesQuery?.companyWebsiteLink}>
-                                            {showCompaniesQuery?.companyWebsiteLink?.length >= 25 ? showCompaniesQuery?.companyWebsiteLink?.slice(0,25) + '...' : showCompaniesQuery?.companyWebsiteLink}
-                                            </NavLink>
-                                        </p> */}
                                         <div className="companyFollow__btn">
-                                        {
-                                            (token) ?
-                                                (currentFollowedCompanies) ?
-                                                    currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
-                                                        <button
-                                                            className='pageMainBtnStyle unFollowCompanyBtn'
-                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
-                                                        >
-                                                            unFollow
-                                                        </button>
-                                                        :
-                                                        <button
-                                                            className='pageMainBtnStyle followCompanyBtn'
-                                                            onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
-                                                        >
-                                                            + follow
-                                                        </button>
-                                                    : ''
-                                                :
-                                                <button
-                                                    className='pageMainBtnStyle followCompanyBtn'
-                                                    onClick={() => {
-                                                        toast.error(`${(!token) && 'You Should Login First!' }`);
-                                                        setTimeout(() => {
-                                                            navigate('/login');
-                                                            scrollToTop();
-                                                        }, 1000);
-                                                    }}
-                                                >
-                                                    + follow
-                                                </button>
-                                        }
-                                        </div>
-                                    </div>  
-                                    {/* <div className="companyFollow__btn">
-                                    {
-                                        (token) ?
-                                            (currentFollowedCompanies) ?
-                                                currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
-                                                    <button
-                                                        className='pageMainBtnStyle unFollowCompanyBtn'
-                                                        onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
-                                                    >
-                                                        unFollow
-                                                    </button>
+                                            {
+                                                (token) ?
+                                                    (currentFollowedCompanies) ?
+                                                        currentFollowedCompanies?.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ?
+                                                            <button
+                                                                className='pageMainBtnStyle unFollowCompanyBtn'
+                                                                onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                            >
+                                                                unFollow
+                                                            </button>
+                                                            :
+                                                            <button
+                                                                className='pageMainBtnStyle followCompanyBtn'
+                                                                onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                            >
+                                                                + follow
+                                                            </button>
+                                                        : ''
                                                     :
                                                     <button
                                                         className='pageMainBtnStyle followCompanyBtn'
-                                                        onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
+                                                        onClick={() => {
+                                                            toast.error(`${(!token) && 'You Should Login First!'}`);
+                                                            setTimeout(() => {
+                                                                navigate('/login');
+                                                                scrollToTop();
+                                                            }, 1000);
+                                                        }}
                                                     >
                                                         + follow
                                                     </button>
-                                                : ''
-                                            :
-                                            <button
-                                                className='pageMainBtnStyle followCompanyBtn'
-                                                onClick={() => {
-                                                    toast.error(`${(!token) && 'You Should Login First!' }`);
-                                                    setTimeout(() => {
-                                                        navigate('/login');
-                                                        scrollToTop();
-                                                    }, 1000);
-                                                }}
-                                            >
-                                                + follow
-                                            </button>
-                                    }
-                                    </div> */}
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -237,8 +195,13 @@ export default function CompanyInfoCard({ showCompaniesQuery, token }) {
                                     <button className='btnColoredBlue'>
                                         Request Quotation
                                     </button>
-
                                 </NavLink>
+                            }
+                            {
+                                token &&
+                                <button onClick={handleShow} className='btnColoredBlue mt-3'>
+                                    Book AppointMent
+                                </button>
                             }
 
                         </div>
