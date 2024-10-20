@@ -24,7 +24,6 @@ export default function BookAppointMentFrom({ show, handleClose, companyId, comp
         },
         resolver: zodResolver(BookAppointMentSchema),
     });
-    console.log(company)
 
     const submitHandler = async (data) => {
         data.company_id = companyId;

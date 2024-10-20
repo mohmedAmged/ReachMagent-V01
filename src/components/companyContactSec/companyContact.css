@@ -60,9 +60,7 @@
 }
 .contactCompany__form input ,
 .contactCompany__form textarea,
-.contactCompany__form select 
-
-{
+.contactCompany__form select {
     padding: 10px 15px;
     border: 1px solid #263F5B1A;
     background-color: #263F5B1A;
@@ -151,7 +149,7 @@
 }
 @media (max-width: 440px) {
     .contactCompany-type li {
-        padding: 15px 2px;
+        padding: 10px 12px;
         font-size: 10px;
     }
     .contactCompany__form h4 {

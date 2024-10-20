@@ -359,3 +359,16 @@
 td{
     text-transform: capitalize;
 }
+@media (max-width: 600px) {
+    .updateBtn {
+        padding: 10px 15px;
+        font-size: 16px !important;
+    }
+    .my__roles__actions {
+        flex-wrap: nowrap !important;
+    }
+    .my__roles__actions button {
+        font-size: 12px !important;
+        padding: 5px 10px;
+    }
+}

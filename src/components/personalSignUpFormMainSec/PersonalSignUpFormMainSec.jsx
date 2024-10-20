@@ -113,7 +113,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
         data[key].forEach((item, index) => {
           formData.append(`${key}[${index}]`, item);
         });
-      }else if(key !== 'image') {
+      } else if (key !== 'image') {
         formData.append(key, data[key]);
       };
     });
@@ -213,18 +213,21 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
             <div className="container">
               <div className="row">
                 <div className="col-12">
-                  <ul className='row loginToggler'>
-                    <li className={`col-md-3 cursorPointer active`} onClick={() => navigate('/personalsignUp')}>
-                      User
-                    </li>
-                    <li className={`col-md-3 cursorPointer`} onClick={() => navigate('/business-signUp')}>
-                      Business
-                    </li>
-                  </ul>
+                  {
+                    isSignUp &&
+                    <ul className='row loginToggler'>
+                      <li className={`col-md-3 cursorPointer active`} onClick={() => navigate('/personalsignUp')}>
+                        User
+                      </li>
+                      <li className={`col-md-3 cursorPointer`} onClick={() => navigate('/business-signUp')}>
+                        Business
+                      </li>
+                    </ul>
+                  }
                   <div className="signUpForm__mainContent">
                     <div className="row">
                       <h3 className="col-12 text-center py-5 signUpForm__head">
-                        Personal Information
+                        {isSignUp ? 'Personal Information' : 'Employee Information'}
                       </h3>
                       <form onSubmit={handleSubmit(onSubmit)} className='row'>
                         <div className="col-lg-6 mb-4">

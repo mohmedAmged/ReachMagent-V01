@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './companyInfoCard.css'
 import verfuIcon from '../../assets/companyImages/Vector (3).png'
 import callIcon from '../../assets/companyImages/call.svg'

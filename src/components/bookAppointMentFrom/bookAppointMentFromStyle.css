@@ -8,6 +8,11 @@
 .modal-content {
     min-width: 600px;
 }
+@media (max-width: 768px) {
+    .modal-content{
+        min-width: 100%;
+    }
+}
 .modal-backdrop.show {
     opacity: 0.8 !important;
 }
