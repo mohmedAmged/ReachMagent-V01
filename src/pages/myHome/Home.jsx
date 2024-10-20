@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './home.css';
 import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec';
-import AboutReachSec from '../../components/aboutReachSecc/AboutReachSec';
 import AllCategorySec from '../../components/allCategorySecc/AllCategorySec';
 import FranchiseSec from '../../components/franchiseSecc/FranchiseSec';
 import TrendingCompanySec from '../../components/trendingCompanySecc/TrendingCompanySec';
 import GrowBuisnessSec from '../../components/growBuisnessSecc/GrowBuisnessSec';
-import LastMinuteDeals from '../../components/lastMinuteDealsSec/LastMinuteDeals';
 import SingleCompanyNewsSec from '../../components/singleCompanyNewsSec/SingleCompanyNewsSec';
 import HeaderOfSec from '../../components/myHeaderOfSec/HeaderOfSec';
 import DownloadApp from '../../components/downloadAppSec/DownloadApp';
-import ReadyToByProductsHome from '../../components/readyToByProductsHomeSec/ReadyToByProductsHome';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
-import SearchInHome from '../../components/searchInHome/SearchInHome';
 
-export default function Home({ companies, token, countries, fetchCartItems, wishlistItems }) {
+
+export default function Home({ companies, token, countries, selectedIndustries, fetchCartItems, wishlistItems }) {
+
   const [loading, setLoading] = useState(true);
   const arrOfCateg = [
     {
@@ -45,6 +43,10 @@ export default function Home({ companies, token, countries, fetchCartItems, wish
             />
             
             {/* <AboutReachSec /> */}
+            <div className='mt-5'>
+              <AllCategorySec selectedIndustries={selectedIndustries}/>
+            </div>
+            
             <div className='mt-5'>
               <TrendingCompanySec companies={companies} token={token} />
             </div>

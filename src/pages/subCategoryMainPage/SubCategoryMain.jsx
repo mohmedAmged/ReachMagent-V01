@@ -1,62 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './subCategoryMain.css'
 import AllCategorySideBar from '../../components/allCategorySideBarSec/AllCategorySideBar'
-import HeaderSec from '../../components/myHeaderSec/HeaderSec'
-import MainSearchBar from '../../components/mainSearchBarSec/MainSearchBar'
 import SubCategoryMainContent from '../../components/subCategoryMainContentSec/SubCategoryMainContent'
-import sub1 from '../../assets/subCategsImages/sub1.png'
-import sub2 from '../../assets/subCategsImages/sub 2.png'
-import sub3 from '../../assets/subCategsImages/sub 3.png'
-import sub4 from '../../assets/subCategsImages/sub 4.png'
-export default function SubCategoryMain() {
-    const arrOfCateg = [
-        {
-            name: 'All',
-            id: 1
-        },
-        {
-            name: 'One',
-            id: 2
-        },
-        {
-            name: 'Two',
-            id: 3
-        },
-        {
-            name: "Three",
-            id: 4
+import MyLoader from '../../components/myLoaderSec/MyLoader'
+import MyMainHeroSec from '../../components/myMainHeroSecc/MyMainHeroSec'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
+export default function SubCategoryMain({}) {
+    const [loading, setLoading] = useState(true);
+    const {subIndustryID} = useParams()    
+    const [contentData, setContentData] = useState([]);
+    const [industries, setIndustries] = useState([]);
+    
+    const fetchAllIndustries = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/industries?t=${new Date().getTime()}`);
+            setIndustries(response?.data?.data?.industries);
+        } catch (error) {
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
-    ]
-    const subCategsItems = [
-        {
-            subCategImg: sub1,
-            subCategName: 'Home Improvment'
-        },
-        {
-            subCategImg: sub2,
-            subCategName: 'Garden Centers'
-        },
-        {
-            subCategImg: sub3,
-            subCategName: 'Furniture Stores'
-        },
-        {
-            subCategImg: sub4,
-            subCategName: 'Home Appliances'
-        },
-    ]
+        fetchAllContentData()
+    };
+
+    const fetchAllContentData = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/show-industry/${subIndustryID}?t=${new Date().getTime()}`);
+            setContentData(response?.data?.data?.industry);
+        } catch (error) {
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
+        }
+    };
+    useEffect(() => {
+        fetchAllContentData();
+        fetchAllIndustries()
+    }, [subIndustryID]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 500);
+    }, [loading]);
+
+    
     return (
-        <div className='otherCategory__handler subCategoryMain__handler'>
-            <HeaderSec title={'All Category'} />
-            <div className="otherCategory__searchBar d-flex justify-content-center">
-                <MainSearchBar categoryArr={arrOfCateg} heroSecContainerType='heroSec__container' />
-            </div>
-            <div className="otherCategory__display__handler d-flex mb-4">
-                <AllCategorySideBar />
-                <div className="subCategory__mainContent">
-                    <SubCategoryMainContent subCategsItems={subCategsItems}/>
-                </div>
-            </div>
-        </div>
+        <>
+            {
+                loading ?
+                    <MyLoader />
+                    :
+                    <div className='otherCategory__handler subCategoryMain__handler singleCompanyQuote__handler'>
+                        <MyMainHeroSec
+                            heroSecContainerType='singleCompany__quote'
+                            headText='All Industries'
+                        />
+                        <div className="otherCategory__display__handler h-100 d-flex mb-4">
+                            <AllCategorySideBar industries={industries} />
+                            <div className="subCategory__mainContent container">
+                                <SubCategoryMainContent contentData={contentData} />
+                            </div>
+                        </div>
+                    </div>
+            }
+        </>
+
     )
 }

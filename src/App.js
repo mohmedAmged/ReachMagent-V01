@@ -117,6 +117,11 @@ function App() {
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
   });
+  const selectedIndustriesQuery = useQuery({
+    queryKey: ['selected-industries'],
+    queryFn: () => getDataFromAPI('selected-industries'),
+  });
+  
   const mainCategoriesQuery = useQuery({
     queryKey: ['main-categories'],
     queryFn: () => getDataFromAPI('main-categories'),
@@ -209,7 +214,7 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
-        <Route path='/' element={<Home companies={companiesQuery?.data?.companies} countries={allowedCountrySearch} token={token} />} />
+        <Route path='/' element={<Home selectedIndustries={selectedIndustriesQuery?.data?.industries} companies={companiesQuery?.data?.companies} countries={allowedCountrySearch} token={token} />} />
         
         {/* Search Page */}
         <Route path='/reach-magnet' element={<SearchInHome countries={allowedCountrySearch} />} />
@@ -236,17 +241,8 @@ function App() {
         {/* <Route path='/check-out/:companyId' element={<MyCheckout token={token} />} /> */}
 
         {/* all category routes */}
-        <Route path='/all-category' element={<OtherCategories />} />
-        <Route path='/all-category/:subCategID' element={<SubCategoryMain />} />
-        <Route path='/all-category/Fashion&Apparel' element={<SubCategoryMain />} />
-        <Route path='/all-category/Beauty&PersonalCare' element={<SubCategoryMain />} />
-        <Route path='/all-category/Health&Wellness' element={<SubCategoryMain />} />
-        <Route path='/all-category/Automotive' element={<SubCategoryMain />} />
-        <Route path='/all-category/Packaging' element={<SubCategoryMain />} />
-        <Route path='/all-category/Retail' element={<SubCategoryMain />} />
-        <Route path='/all-category/Medical' element={<SubCategoryMain />} />
-        <Route path='/all-category/Technology' element={<SubCategoryMain />} />
-        <Route path='/all-category/Education' element={<SubCategoryMain />} />
+        <Route path='/all-Industries' element={<OtherCategories  />} />
+        <Route path='/all-Industries/:subIndustryID' element={<SubCategoryMain industries={industriesQuery?.data?.industries}/>} />
 
         {/* Login & Regester Routes */}
         <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />

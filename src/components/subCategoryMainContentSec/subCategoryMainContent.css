@@ -1,11 +1,19 @@
 .subCategoryMainContent__handler{
+    /* padding: 0 ; */
+}
+.subCategoryMainContent__handler .subImage img{
     width: 70%;
+    height: 300px;
 }
 .subCategory__item{
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .subCategory__item .subImage{
     margin-bottom: 20px;
+    text-align: center;
 }
 .subCategory__item h1{
     font-size: 32px;

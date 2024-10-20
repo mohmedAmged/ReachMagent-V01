@@ -1,1 +1,1 @@
-export const baseURL = 'https://reachmagnet.net/api';
+export const baseURL = 'https://admin.reachmagnet.net/api';

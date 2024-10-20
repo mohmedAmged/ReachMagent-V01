@@ -1,0 +1,81 @@
+.mySidebar__handler.myAllCategorySidebar__handler{
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+.sidebar__handler{
+    height: auto;
+    margin-top: 60px;
+
+}
+.sidebar__main{
+    height: 100%;
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+}
+/* .sidebar__main{
+    padding: 20px;
+} */
+.sidebar__menu{
+    /* padding: 14px; */
+    margin-bottom: 30px;
+}
+
+.sidebar__menu_active{
+    background: #dfdfdf;
+}
+.sidebar__menu__info{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.sidebar__menu__info img{
+    width: 30px;
+    height: 30px;
+}
+.sidebar__menu__info h5{
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.bi_house{
+    color: var(--main-turquoise);
+    font-size: 30px;
+}
+
+/* Ensure the sidebar remains visible even when collapsed */
+.sidebar__main {
+    transition: width 0.3s;
+    position: relative;
+}
+
+/* Styling when the sidebar is collapsed */
+.ps-sidebar-container {
+    width: 80px; /* Collapsed width */
+}
+
+.ps-sidebar-container .ps-menuitem-root {
+    text-align: center;
+    padding: 10px;
+}
+
+/* Sidebar icon size */
+.ps-sidebar-container .ps-menuitem-root img {
+    width: 30px;
+    height: 30px;
+}
+.iconStyle{
+    cursor: pointer;
+    background: var(--main-blue-color);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@media screen and (max-width: 786px) {
+    /* .sidebar__menu__info h5 {
+        display: none;
+    } */
+}

@@ -25,6 +25,7 @@ export default function MyCatalog({ token }) {
     status: 'active',
     title: ''
   })
+  
   function objectToParams(obj) {
     const params = new URLSearchParams();
     for (const key in obj) {
@@ -73,6 +74,7 @@ export default function MyCatalog({ token }) {
       fetchCatalogs();
     };
   };
+  
   useEffect(() => {
     filterCatalogs();
   }, [filterCatalog]);

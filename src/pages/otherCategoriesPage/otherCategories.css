@@ -7,9 +7,6 @@
 .otherCategory__searchBar{
     margin-top: 50px;
 }
-.otherCategory__display__handler{
-    margin-top: 120px;
-}
 .otherCategory__display__handler .sidebar-toggle{
     background-color: #fff;
     color: var(--primary-black);

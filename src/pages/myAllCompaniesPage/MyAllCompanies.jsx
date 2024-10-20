@@ -50,7 +50,6 @@ export default function MyAllCompanies({ token }) {
             return value && value !== "";
         });
     };
-console.log(hasFilters());
 
     const fetchCompanies = async () => {
         try {
@@ -182,7 +181,6 @@ console.log(hasFilters());
             scrollToTop(500);
         };
     };
-console.log(companies);
 
     return (
         <>
