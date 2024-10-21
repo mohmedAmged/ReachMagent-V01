@@ -4,10 +4,17 @@ import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import locationIcon from "../../assets/icons/Duotone.png";
 import userIcon from "../../assets/icons/Duotone3.png";
-export default function SubCategoryMainContent({ contentData }) {
+import { Button } from 'react-bootstrap';
+export default function SubCategoryMainContent({ contentData, handleShow }) {
 
     return (
-        <div className='subCategoryMainContent__handler mainContentAllCompanies__handler  mt-5'>
+        <div className='subCategoryMainContent__handler mainContentAllCompanies__handler position-relative  mt-5'>
+            <div className="d-flex justify-content-end d-md-none">
+                <Button variant="" onClick={handleShow} className={'menuButton'}>
+                <i className="bi bi-filter"></i>
+                   filter Indusries
+                </Button>
+            </div>
             {
                 contentData?.companies?.length !== 0 ?
                     <>
@@ -75,7 +82,7 @@ export default function SubCategoryMainContent({ contentData }) {
                         }
                     </>
                     :
-                    <div className="row">
+                    <div className="row container">
                         <div className="col-12">
                             <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
                                 no company with this filter

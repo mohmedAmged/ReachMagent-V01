@@ -199,7 +199,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                             }
                             {
                                 token &&
-                                <button onClick={handleShow} className='btnColoredBlue mt-3'>
+                                <button onClick={handleShow} className='btnColoredBlue terquase mt-3'>
                                     Book AppointMent
                                 </button>
                             }

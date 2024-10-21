@@ -86,6 +86,8 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
         }, 500);
     }, [loading]);
 
+    console.log(showCompaniesQuery?.data?.company);
+    
 
     return (
         <>
@@ -325,15 +327,23 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
                                 }
                             </div>
                         }
-
-                        <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company} />
+                        {
+                            showCompaniesQuery?.data?.company?.companyFaqs === 0 ? 
+                            <>
+                            <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company} />
+                            </>
+                               :
+                               '' 
+                            
+                        }
+                        
 
                         {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
                         <HeaderOfSec
                             secHead='Company Insights'
                             secText='Stay informed with the latest updates, announcements, and specials from our company'
                         />
-
+                        
                         <SingleCompanyNewsSec token={token} />
                         {/* <SingleCompanyAffiliate /> */}
                         {

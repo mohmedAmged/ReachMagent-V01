@@ -83,6 +83,7 @@
     margin-bottom: 15px;
     text-align: left;
 }
+
 .btnColoredBlue{
     width: 182px;
     height: 48px;
@@ -96,7 +97,14 @@
     color: var(--main-blue-color);
     background: var(--primary-white);
 }
-
+.btnColoredBlue.terquase{
+    background: var(--main-turquoise);
+    border: 1px solid var(--main-turquoise);
+}
+.btnColoredBlue.terquase:hover{
+    color: var(--main-turquoise);
+    background: var(--primary-white);
+}
 @media screen and (max-width: 600px){
     .companyFollow__btn{
         text-align: left;

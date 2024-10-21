@@ -42,8 +42,10 @@ export default function SubCategoryMain({}) {
             setLoading(false);
         }, 500);
     }, [loading]);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
 
-    
+    const handleShow = () => setShow(true);
     return (
         <>
             {
@@ -55,10 +57,10 @@ export default function SubCategoryMain({}) {
                             heroSecContainerType='singleCompany__quote'
                             headText='All Industries'
                         />
-                        <div className="otherCategory__display__handler h-100 d-flex mb-4">
-                            <AllCategorySideBar industries={industries} />
+                        <div className="otherCategory__display__handler h-100 d-flex w-100 mb-4">
+                            <AllCategorySideBar industries={industries} handleClose={handleClose}  show={show} />
                             <div className="subCategory__mainContent container">
-                                <SubCategoryMainContent contentData={contentData} />
+                                <SubCategoryMainContent handleShow={handleShow} contentData={contentData} />
                             </div>
                         </div>
                     </div>
