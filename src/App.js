@@ -61,6 +61,8 @@ import MyAppointements from './pages/myAppointementsPage/MyAppointements';
 import NewAppointementFrom from './components/newAppointementFromSec/NewAppointementFrom';
 import MyBookedAppointements from './pages/myBookedAppointementsPage/MyBookedAppointements';
 import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
+import {  requestFCMToken } from './functions/firbase';
+
 
 function App() {
   useEffect(() => {
@@ -201,6 +203,24 @@ function App() {
       navigate('/login');
     };
   };
+
+  const [fcmToken, setFcmToken] = useState(null);
+
+  useEffect(() => {
+    const fetchFCMToken = async () => {
+      try {
+        const FCToken = await requestFCMToken();
+        setFcmToken(FCToken)
+        console.log(FCToken);
+        
+      } catch (error) {
+        console.error('Error retrieving FCM token:', error);
+      }
+    };
+    fetchFCMToken();
+
+  }, []);
+
 
   return (
     <>
