@@ -12,7 +12,7 @@ import { AddEmployeeSchema } from '../../validation/AddEmployee';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
 
-export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp }) {
+export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp, fcmToken }) {
   const [unAuth, setUnAuth] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -127,6 +127,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     const currentHeaders = isSignUp ? {
       'Accept': 'application/json',
       'Content-Type': 'multipart/form-data',
+      'fcm_token': fcmToken
     } : {
       Authorization: `Bearer ${token}`,
       'Accept': 'application/json',

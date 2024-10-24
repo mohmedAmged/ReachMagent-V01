@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useNavigate , NavLink } from 'react-router-dom';
 
-export default function SignInFormMainSec({loginType,setLoginType}) {
+export default function SignInFormMainSec({loginType,setLoginType,fcmToken}) {
     const navigate = useNavigate();
     const [showPassword,setShowPassword] = useState(false);
     const {
@@ -37,6 +37,7 @@ export default function SignInFormMainSec({loginType,setLoginType}) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'fcm_token' : fcmToken
             },
         }).then(response => {
             const token = response?.data?.data?.token;

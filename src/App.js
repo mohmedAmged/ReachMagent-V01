@@ -211,10 +211,8 @@ function App() {
       try {
         const FCToken = await requestFCMToken();
         setFcmToken(FCToken)
-        console.log(FCToken);
-        
       } catch (error) {
-        console.error('Error retrieving FCM token:', error);
+       toast.error('error fetch fc token')
       }
     };
     fetchFCMToken();
@@ -265,9 +263,9 @@ function App() {
         <Route path='/all-Industries/:subIndustryID' element={<SubCategoryMain industries={industriesQuery?.data?.industries}/>} />
 
         {/* Login & Regester Routes */}
-        <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
+        <Route path='/personalsignUp' element={<PersonalSignUp fcmToken={fcmToken} countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
         <Route path='/business-signUp' element={<BusinessSignUp citizenships={citizenshipsQuery?.data?.citizenships} countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
-        <Route path='/login' element={<MyLogin type={loginType} companiesQuery setType={setLoginType} />} />
+        <Route path='/login' element={<MyLogin fcmToken={fcmToken} type={loginType} companiesQuery setType={setLoginType} />} />
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/user-verification' element={<UserVirificationSec token={token} />} />

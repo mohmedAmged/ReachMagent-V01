@@ -3,7 +3,7 @@ import './regester.css';
 import PersonalSignUpFormMainSec from '../../components/personalSignUpFormMainSec/PersonalSignUpFormMainSec';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 
-export default function PersonalSignUp({ countries, industries }) {
+export default function PersonalSignUp({ countries, industries, fcmToken}) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function PersonalSignUp({ countries, industries }) {
           :
           <div className='signUp__page'>
             <PersonalSignUpFormMainSec
+            fcmToken={fcmToken}
               countries={countries}
               industries={industries}
               isSignUp={true}
