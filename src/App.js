@@ -61,7 +61,8 @@ import MyAppointements from './pages/myAppointementsPage/MyAppointements';
 import NewAppointementFrom from './components/newAppointementFromSec/NewAppointementFrom';
 import MyBookedAppointements from './pages/myBookedAppointementsPage/MyBookedAppointements';
 import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
-import {  requestFCMToken } from './functions/firbase';
+import {  messaging, requestFCMToken } from './functions/firbase';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 
 function App() {
@@ -216,6 +217,12 @@ function App() {
       }
     };
     fetchFCMToken();
+
+
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+      
+    });
 
   }, []);
 

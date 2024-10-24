@@ -1,6 +1,7 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { useEffect } from "react";
 const firebaseConfig = {
     apiKey: "AIzaSyCja9bfwBnSkuOJsVIWl3y8z2XX8zdZqXA",
     authDomain: "reachmagnet-c509a.firebaseapp.com",
@@ -13,7 +14,7 @@ const firebaseConfig = {
 const vapidKey ='BPlwZruw9aqfQoTLCrHyf6UuPORHBp7PZ8MbyJVavNzlGdIFUr677lTihKgX6tlW9woeSOMAhj8kWzcovliC7eo'
 // Initialize Firebase
 const app = initializeApp(firebaseConfig); 
-const messaging = getMessaging(app);
+export const messaging = getMessaging(app);
 
 export const requestFCMToken = async () => {
   return Notification.requestPermission()
@@ -29,5 +30,15 @@ export const requestFCMToken = async () => {
     throw err;
   })
 }
+export const useFCMNotifications = () => {
+  useEffect(() => {
+    // Handle foreground messages
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log('Received foreground notification:', payload);
+    });
+
+    return () => unsubscribe();
+  }, []);
+};
 
 

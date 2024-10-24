@@ -9,6 +9,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import defaultImage from '../../assets/images.png';
+import NotificationIcon from '../notficationIconSec/NotificationIcon';
 
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -67,7 +68,19 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             </>
                         </NavLink>
                     </Navbar.Brand>
+                    <div className="ms-auto me-2">
+                    <NavLink
+                        // to='/my-wishlist' 
+                        title='wishlist'
+                        className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
+                        aria-label="Close"
+                    >
+                        <NotificationIcon />
+
+                    </NavLink>
+                    </div>
                     <Navbar.Toggle onClick={handleOffcanvasToggle} aria-controls="basic-navbar-nav" />
+
                     {/* start navbar min-width 992px */}
                     <Navbar.Collapse id="navbar-nav" className='Navbar__Collapse__none__on__med'>
                         <Nav className="mx-auto" >
@@ -136,14 +149,23 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             {
                                 token ?
                                     <>
-                                        <NavLink 
-                                        aria-label="Close"
-                                        onClick={handleLogout} 
-                                        to='/' title='Logout' 
-                                        className='nav-link nav__link__style logoutBtn'>
+                                        <NavLink
+                                            aria-label="Close"
+                                            onClick={handleLogout}
+                                            to='/' title='Logout'
+                                            className='nav-link nav__link__style logoutBtn'>
                                             <i className="bi bi-box-arrow-left"></i>
                                         </NavLink>
-                                        <NavLink 
+                                        <NavLink
+                                            // to='/my-wishlist' 
+                                            title='wishlist'
+                                            className='nav-link nav__link__style logoutBtn showNumHandler'
+                                            aria-label="Close"
+                                        >
+                                            <NotificationIcon />
+
+                                        </NavLink>
+                                        <NavLink
                                             onClick={() => {
                                                 scrollToTop();
                                             }}
@@ -156,6 +178,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 alt='img-check'
                                             />
                                         </NavLink>
+
                                         {/* {
                                             loginType === 'user' &&
                                             <NavLink onClick={() => {
@@ -190,7 +213,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 }
                                             </NavLink>
                                         } */}
-                                        
+
                                     </>
                                     :
                                     <>
