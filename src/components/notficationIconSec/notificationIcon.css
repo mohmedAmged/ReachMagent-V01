@@ -14,7 +14,7 @@
     right: 0;
     padding: 20px;
     border-radius: 12px;
-    background:  rgba(1, 187, 233, 0.906);
+    background: rgba(6, 126, 173, 0.909);
     color: #fff;
     transition: all 0.4s ease-out, opacity 0.4s ease-out;
     transform: translateY(-40px); 
@@ -58,7 +58,7 @@
     font-size: 12px;
 }
 .notItem:hover{
-    background: rgba(6, 126, 173, 0.909);
+    background: rgba(1, 187, 233, 0.906);
 }
 /* .viewMoreNotfiBtn{
     padding: 15px;

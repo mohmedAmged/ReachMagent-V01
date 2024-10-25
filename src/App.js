@@ -218,6 +218,7 @@ function App() {
     };
     fetchFCMToken();
 
+console.log(fcmToken);
 
     onMessage(messaging, (payload) => {
       console.log("Message received. ", payload);

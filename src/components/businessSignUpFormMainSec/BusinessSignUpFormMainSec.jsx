@@ -1087,6 +1087,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                 className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
                                 {...register('logo')}
                                 onChange={handleImageChange}
+                                required
                               />
 
                               {
