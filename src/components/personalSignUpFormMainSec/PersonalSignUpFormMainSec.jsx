@@ -127,7 +127,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     const currentHeaders = isSignUp ? {
       'Accept': 'application/json',
       'Content-Type': 'multipart/form-data',
-      'fcm_token': fcmToken
+      // 'fcm_token': fcmToken
     } : {
       Authorization: `Bearer ${token}`,
       'Accept': 'application/json',

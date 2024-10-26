@@ -80,7 +80,6 @@ export default function ProductCard({ getCurrentProducts,fetchCartItems,wishlist
     return (
         <div className='productCard__item'>
             <div className="product__image">
-
                 <img src={productImage ? productImage : ''} alt="product-imag" onClick={() => {
                     scrollToTop();
                     navigate(`/shop/${prodSlug}`);

@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { clearEmptyQueryValues } from '../../functions/slugTransformation';
 import MyMainHeroSec from '../myMainHeroSecc/MyMainHeroSec';
 import MyLoader from '../myLoaderSec/MyLoader';
+import simple from '../../assets/productImages/iphone-15-pro-blue_titanium_5.jpg'
 
 export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
   const [loading, setLoading] = useState(true);
@@ -417,6 +418,24 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                     </div>
                   </div>
                   <div className="col-lg-9 col-md-8">
+                      <div className="row">
+                              <div key={1} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
+                                <ProductCard 
+                                // fetchCartItems={fetchCartItems} 
+                                // wishlistItems={wishlistItems} 
+                                discountPrice={700} 
+                                // getCurrentProducts={search ? filterProducts : getCurrentProducts} 
+                                // product={el} 
+                                itemType={'product'} 
+                                token={token} 
+                                // prodSlug={el?.slug} 
+                                productCurrancy={'$'} productImage={simple} productName={'ipone 15'} 
+                                productPrice={900} 
+                                companyName={'project x'} />
+                              </div>
+                      </div>
+                  </div>
+                  {/* <div className="col-lg-9 col-md-8">
                     {loadingProducts ?
                       <div className="permissionsLoader"></div>
                       :
@@ -425,7 +444,17 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                           products?.map((el) => {
                             return (
                               <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
-                                <ProductCard fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} discountPrice={el?.discountPrice} getCurrentProducts={search ? filterProducts : getCurrentProducts} product={el} itemType={'product'} token={token} prodSlug={el?.slug} productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image} productName={el?.title} productPrice={el?.price} companyName={el?.company_name} />
+                                <ProductCard 
+                                fetchCartItems={fetchCartItems} 
+                                wishlistItems={wishlistItems} 
+                                discountPrice={el?.discountPrice} getCurrentProducts={search ? filterProducts : getCurrentProducts} 
+                                product={el} 
+                                itemType={'product'} 
+                                token={token} 
+                                prodSlug={el?.slug} 
+                                productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image } productName={el?.title} 
+                                productPrice={el?.price} 
+                                companyName={el?.company_name} />
                               </div>
                             )
                           })
@@ -454,7 +483,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                         </button>
                       </div>
                     }
-                  </div>
+                  </div> */}
 
                 </div>
               </div>

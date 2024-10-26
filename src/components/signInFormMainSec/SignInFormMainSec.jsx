@@ -37,7 +37,7 @@ export default function SignInFormMainSec({loginType,setLoginType,fcmToken}) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'fcm_token' : fcmToken
+                // 'fcm_token' : fcmToken
             },
         }).then(response => {
             const token = response?.data?.data?.token;

@@ -61,8 +61,7 @@ import MyAppointements from './pages/myAppointementsPage/MyAppointements';
 import NewAppointementFrom from './components/newAppointementFromSec/NewAppointementFrom';
 import MyBookedAppointements from './pages/myBookedAppointementsPage/MyBookedAppointements';
 import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
-import {  messaging, requestFCMToken } from './functions/firbase';
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
 
 
 function App() {
@@ -205,27 +204,7 @@ function App() {
     };
   };
 
-  const [fcmToken, setFcmToken] = useState(null);
 
-  useEffect(() => {
-    const fetchFCMToken = async () => {
-      try {
-        const FCToken = await requestFCMToken();
-        setFcmToken(FCToken)
-      } catch (error) {
-       toast.error('error fetch fc token')
-      }
-    };
-    fetchFCMToken();
-
-console.log(fcmToken);
-
-    onMessage(messaging, (payload) => {
-      console.log("Message received. ", payload);
-      
-    });
-
-  }, []);
 
 
   return (
@@ -247,8 +226,16 @@ console.log(fcmToken);
         
         {/* Shop Routes */}
         {/* <Route path='/discover' element={<Discover />} /> */}
-        {/* <Route path='/shop' element={<Shop fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
-        {/* <Route path='/shop/:singleProduct' element={<ProductDetails fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
+        <Route path='/shop' 
+        element={<Shop
+        //  fetchCartItems={fetchCartItems}
+          // wishlistItems={wishlistItems} 
+          token={token} />} />
+        <Route path='/shop/:singleProduct'
+         element={<ProductDetails
+          // fetchCartItems={fetchCartItems}
+          //  wishlistItems={wishlistItems} 
+           token={token} />} />
 
         {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
@@ -271,9 +258,9 @@ console.log(fcmToken);
         <Route path='/all-Industries/:subIndustryID' element={<SubCategoryMain industries={industriesQuery?.data?.industries}/>} />
 
         {/* Login & Regester Routes */}
-        <Route path='/personalsignUp' element={<PersonalSignUp fcmToken={fcmToken} countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
+        <Route path='/personalsignUp' element={<PersonalSignUp countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} />} />
         <Route path='/business-signUp' element={<BusinessSignUp citizenships={citizenshipsQuery?.data?.citizenships} countries={countriesQuery?.data?.countries} industries={industriesQuery?.data?.industries} mainCategories={mainCategoriesQuery?.data?.mainCategories} mainActivities={mainActivitiesQuery?.data?.mainActivities} />} />
-        <Route path='/login' element={<MyLogin fcmToken={fcmToken} type={loginType} companiesQuery setType={setLoginType} />} />
+        <Route path='/login' element={<MyLogin  type={loginType} companiesQuery setType={setLoginType} />} />
         <Route path='/forget-password' element={<EnterUrEmail />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/user-verification' element={<UserVirificationSec token={token} />} />
