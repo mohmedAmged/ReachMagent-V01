@@ -417,7 +417,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-9 col-md-8">
+                  {/* <div className="col-lg-9 col-md-8">
                       <div className="row">
                               <div key={1} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
                                 <ProductCard 
@@ -434,8 +434,8 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                                 companyName={'project x'} />
                               </div>
                       </div>
-                  </div>
-                  {/* <div className="col-lg-9 col-md-8">
+                  </div> */}
+                  <div className="col-lg-9 col-md-8">
                     {loadingProducts ?
                       <div className="permissionsLoader"></div>
                       :
@@ -483,7 +483,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                         </button>
                       </div>
                     }
-                  </div> */}
+                  </div>
 
                 </div>
               </div>

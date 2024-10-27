@@ -61,6 +61,8 @@ import MyAppointements from './pages/myAppointementsPage/MyAppointements';
 import NewAppointementFrom from './components/newAppointementFromSec/NewAppointementFrom';
 import MyBookedAppointements from './pages/myBookedAppointementsPage/MyBookedAppointements';
 import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
+import NewProductForm from './components/newProductItemForm/NewProductForm';
+import Pusher from 'pusher-js';
 
 
 
@@ -204,6 +206,27 @@ function App() {
     };
   };
 
+  useEffect(() => {
+    const pusher = new Pusher('9b5d478389d4bbf7919c', {
+      cluster: 'ap2',
+      authEndpoint: '/api/pusher/auth',
+      auth: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+    const channel = pusher.subscribe('user-notification-Employee1');
+
+    channel.bind('user-notification-event', (data) => {
+      toast.success(data);
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [token]);
 
 
 
@@ -288,8 +311,8 @@ function App() {
         <Route path='/profile/booked-appointments' element={<MyBookedAppointements token={token} />} />
 
         <Route path='/profile/contact-form' element={<MyComanyForm token={token} />} />
-        {/* <Route path='/profile/products' element={<MyProducts token={token} />} /> */}
-        {/* <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
+        <Route path='/profile/products' element={<MyProducts token={token} />} />
+        <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />} />
         {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
         {/* <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-catalog'} />} /> */}
 

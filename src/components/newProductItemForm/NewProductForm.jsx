@@ -10,7 +10,23 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 
-export default function NewProductForm({ mainCategories, token }) {
+export default function NewProductForm({ mainCategories, token, countries }) {
+  const allTypes = [
+    {
+      id: 1,
+      name: 'Fragile - Handle with Care',
+    },
+    {
+      id: 2,
+      name: 'Fire Hazard',
+    },
+
+    {
+      id: 3,
+      name: 'Choking Hazard',
+    },
+  ];
+
   const loginType = localStorage.getItem('loginType');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -109,9 +125,9 @@ export default function NewProductForm({ mainCategories, token }) {
       formData.description_ar = currProd?.description;
       formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currProd?.category)?.mainCategoryId;
       formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currProd.subCategory)?.subCategoryId;
-      if(currProd?.productAttribute?.length > 0){
+      if (currProd?.productAttribute?.length > 0) {
         formData.has_variation = 'yes';
-        if(formData.has_variation === 'yes'){
+        if (formData.has_variation === 'yes') {
           formData.attribute_ar = currProd?.productAttribute;
           formData.attribute_en = currProd?.productAttribute;
           formData.variation_name_ar = currProd?.productAttributeValues?.map(el => el?.value);
@@ -207,13 +223,27 @@ export default function NewProductForm({ mainCategories, token }) {
       if (response.status === 200) {
         navigate('/profile/products')
         scrollToTop()
-        toast.success( response?.data?.message || (id ? 'product item updated successfully!' : 'product item added successfully!'));
+        toast.success(response?.data?.message || (id ? 'product item updated successfully!' : 'product item added successfully!'));
       } else {
         toast.error((id ? 'Failed to update product item!' : 'Failed to add product item!'));
       };
     } catch (error) {
       toast.error(error?.response?.data?.message || (id ? 'Failed to update product item!' : 'Failed to add product item!'));
     };
+  };
+
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
+  const handleSelectType = (id) => {
+    const type = allTypes.find((item) => item.id === Number(id));
+
+    if (type && !selectedTypes.some((item) => item.id === type.id)) {
+      setSelectedTypes([...selectedTypes, type]);
+    }
+  };
+
+  const handleDeleteType = (id) => {
+    setSelectedTypes(selectedTypes.filter((item) => item.id !== id));
   };
 
   return (
@@ -228,7 +258,7 @@ export default function NewProductForm({ mainCategories, token }) {
               <MainContentHeader currentUserLogin={currentUserLogin} />
               {
                 <div className='newCatalogItem__form__handler'>
-                  <ContentViewHeader title={`${id ? 'Update Product' :'Add New product'}`} />
+                  <ContentViewHeader title={`${id ? 'Update Product' : 'Add New product'}`} />
                   <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                     <div className="row">
                       <div className="col-lg-6">
@@ -325,54 +355,83 @@ export default function NewProductForm({ mainCategories, token }) {
                     <div className="row">
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
-                          <label htmlFor="price">Price</label>
-                          <div className="custom-input-container">
-                            <input
-                              type="text"
-                              id="price"
-                              name="price"
-                              className="form-control custom-input"
-                              placeholder="Enter your text"
-                              value={formData?.price}
-                              onChange={handleInputChange}
-                            />
-                            <label htmlFor="currency" className="currency__label">Currency:</label>
-                            <select
-                              name="currency"
-                              className="form-control custom-select"
-                            >
-                              <option value="USD">USD</option>
-                              <option value="EGP">EGP</option>
-                              <option value="EUR">EUR</option>
-                            </select>
-                          </div>
+                          <label htmlFor="sub_category_id">Origin</label>
+                          <select
+                            name="category_id"
+                            className="form-control custom-select"
+                            value={formData?.category_id}
+                            onChange={handleInputChange}
+                          >
+                            <option value="" disabled>Select Origin</option>
+                            {countries?.slice(0, 197)?.map((cat) => (
+                              <option key={cat?.name} value={cat?.name}>
+                                {cat?.name}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
-                          <label htmlFor="price">Discount Price</label>
-                          <div className="custom-input-container">
-                            <input
-                              type="text"
-                              id="discount_price"
-                              name="discount_price"
-                              className="form-control custom-input"
-                              placeholder="Enter your text"
-                              value={formData?.discount_price}
-                              onChange={handleInputChange}
-                            />
-                            <label htmlFor="currency" className="currency__label">Currency:</label>
-                            <select
-                              name="currency"
-                              className="form-control custom-select"
-                            >
-                              <option value="USD">USD</option>
-                              <option value="EGP">EGP</option>
-                              <option value="EUR">EUR</option>
-                            </select>
+                          <label htmlFor="description_ar">brand</label>
+                          <select
+                            name="category_id"
+                            className="form-control custom-select"
+                            value={formData?.category_id}
+                            onChange={handleInputChange}
+                          >
+                            <option value="" disabled>Select brand</option>
+                            {mainCategories?.map((cat) => (
+                              <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
+                                {cat?.mainCategoryName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-8">
+                        <div className="catalog__new__input">
+                          <label htmlFor="signUpTypes" className="form-check-label">
+                            Danger Alert
+                          </label>
+                          <select
+                            id="signUpTypes"
+                            className="form-control custom-select"
+                            onChange={(e) => handleSelectType(e.target.value)}
+                            value=""
+                          >
+                            <option value="" disabled>Select Danger</option>
+                            {allTypes.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+
+                          <div className="selected__types" style={{ marginTop: '10px' }}>
+                            {selectedTypes.map((type) => (
+                              <span className="chosen__choice" key={type.id}
+                              >
+                                {type.name}
+                                <i
+                                  onClick={() => handleDeleteType(type.id)}
+                                  className="bi bi-trash chosen__choice-delete"
+
+                                ></i>
+                              </span>
+                            ))}
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="upload__image__btn col-md-8">
+                      <input
+                        type="file"
+                        name="images"
+                        multiple
+                        onChange={handleImageChange}
+                        className="form-control"
+                      />
                     </div>
                     <div className="row">
                       <div className="col-lg-8 my-4">
@@ -385,8 +444,8 @@ export default function NewProductForm({ mainCategories, token }) {
                               checked={formData?.has_variation === 'yes'}
                               onChange={handleCheckboxChange}
                             />
-                            <label htmlFor="has_variation" className="form-check-label">
-                              has variation
+                            <label htmlFor="has_variation" className="form-check-label position-relative fw-bold">
+                              Product has Variation <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer fw-normal" style={{ fontSize: '14px', position: "absolute", top: '0px' }}></i>
                             </label>
                           </div>
                         </div>
@@ -423,7 +482,55 @@ export default function NewProductForm({ mainCategories, token }) {
                           </div>
                         </div>
                         {formData?.variation_name_ar.map((_, index) => (
-                          <div className="row" key={index}>
+                          <div className="row border-bottom mt-3" key={index}>
+                            <div className="row">
+                              <div className="col-lg-8 my-4">
+                                <div className="check__item">
+                                  <div className="form-check">
+                                    <input
+                                      type="checkbox"
+                                      id="has_variation"
+                                      className="form-check-input"
+                                      checked={formData?.has_variation === 'yes'}
+                                      onChange={handleCheckboxChange}
+                                    />
+                                    <label htmlFor="has_variation" className="form-check-label position-relative fw-bold">
+                                      Product has Sub Variation <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer fw-normal" style={{ fontSize: '14px', position: "absolute", top: '0px' }}></i>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="attribute_en">Attribute in English</label>
+                              <input
+                                type="text"
+                                name=""
+                                className="form-control"
+                                placeholder="Enter attribute"
+                                value={formData?.attribute_en}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="attribute_ar">Attribute in Arabic</label>
+                              <input
+                                type="text"
+                                name=""
+                                className="form-control"
+                                placeholder="Enter attribute"
+                                value={formData?.attribute_ar}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                            <h2>
+                              Variation #{index + 1}
+                            </h2>
+
                             <div className="col-lg-4">
                               <div className="catalog__new__input">
                                 <label htmlFor={`variation_name_en_${index}`}>Variation Name in English</label>
@@ -463,19 +570,155 @@ export default function NewProductForm({ mainCategories, token }) {
                                 />
                               </div>
                             </div>
+                            <div className="col-lg-4">
+                              <div className="catalog__new__input">
+                                <label htmlFor="total_stock">SKU/Product ID</label>
+                                <input
+                                  type="text"
+                                  name="total_stock"
+                                  className="form-control"
+                                  placeholder="Enter total stock"
+                                  value={formData?.total_stock}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="catalog__new__input">
+                                <label htmlFor="total_stock">Weight</label>
+                                <input
+                                  type="text"
+                                  name="total_stock"
+                                  className="form-control"
+                                  placeholder="Enter total stock"
+                                  value={formData?.total_stock}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="catalog__new__input">
+                                <label htmlFor="total_stock">Dimensions Without Packging</label>
+                                <input
+                                  type="text"
+                                  name="total_stock"
+                                  className="form-control"
+                                  placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
+                                  value={formData?.total_stock}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="catalog__new__input">
+                                <label htmlFor="total_stock">Dimensions With Packging</label>
+                                <input
+                                  type="text"
+                                  name="total_stock"
+                                  className="form-control"
+                                  placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
+                                  value={formData?.total_stock}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-8">
+                              <div className="catalog__new__input">
+                                <label htmlFor="price">Price In Local Currency</label>
+                                <div className="custom-input-container">
+                                  <input
+                                    type="text"
+                                    id="price"
+                                    name="price"
+                                    className="form-control custom-input"
+                                    placeholder="Enter your text"
+                                    value={formData?.price}
+                                    onChange={handleInputChange}
+                                  />
+
+                                </div>
+                              </div>
+                            </div>
+                            <div className="upload__image__btn col-lg-8">
+                              <input
+                                type="file"
+                                name="images"
+                                multiple
+                                onChange={handleImageChange}
+                                className="form-control"
+                              />
+                            </div>
                           </div>
                         ))}
-                        <div className="form__submit__button">
+                        <div className="form__submit__button mt-3 mb-5">
                           <button type="button" className="btn btn-secondary" onClick={addVariationField}>
                             Add Another Variation
                           </button>
                         </div>
                       </>
                     ) : (
-                      <div className="row">
+                      <div className="row mb-5">
                         <div className="col-lg-8">
                           <div className="catalog__new__input">
-                            <label htmlFor="total_stock">Total Stock</label>
+                            <label htmlFor="price">Price</label>
+                            <div className="custom-input-container">
+                              <input
+                                type="text"
+                                id="price"
+                                name="price"
+                                className="form-control custom-input"
+                                placeholder="Enter your text"
+                                value={formData?.price}
+                                onChange={handleInputChange}
+                              />
+                              <label htmlFor="currency" className="currency__label">Currency:</label>
+                              <select
+                                name="currency"
+                                className="form-control custom-select"
+                              >
+                                <option value="USD">USD</option>
+                                <option value="EGP">EGP</option>
+                                <option value="EUR">EUR</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="price">Amount or Percentage%</label>
+
+
+
+                            <div className="custom-input-container">'
+                              <input
+                                type="text"
+                                id="discount_price"
+                                name="discount_price"
+                                className="form-control custom-input"
+                                placeholder="Enter your text"
+                                value={formData?.discount_price}
+                                onChange={handleInputChange}
+                              />'
+                              <label htmlFor="currency" className="currency__label">Discount Type:</label>
+                              <select
+                                name="currency"
+                                className="form-control custom-select"
+                              >
+                                <option value="USD">Fixed Amount</option>
+                                <option value="EGP">Percentage %</option>
+                              </select>
+
+
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="total_stock">Stock</label>
                             <input
                               type="number"
                               name="total_stock"
@@ -487,17 +730,65 @@ export default function NewProductForm({ mainCategories, token }) {
                             />
                           </div>
                         </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="total_stock">SKU/Product ID</label>
+                            <input
+                              type="text"
+                              name="total_stock"
+                              className="form-control"
+                              placeholder="Enter total stock"
+                              value={formData?.total_stock}
+                              onChange={handleInputChange}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="total_stock">Weight</label>
+                            <input
+                              type="text"
+                              name="total_stock"
+                              className="form-control"
+                              placeholder="Enter total stock"
+                              value={formData?.total_stock}
+                              onChange={handleInputChange}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="total_stock">Dimensions Without Packging</label>
+                            <input
+                              type="text"
+                              name="total_stock"
+                              className="form-control"
+                              placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
+                              value={formData?.total_stock}
+                              onChange={handleInputChange}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-lg-8">
+                          <div className="catalog__new__input">
+                            <label htmlFor="total_stock">Dimensions With Packging</label>
+                            <input
+                              type="text"
+                              name="total_stock"
+                              className="form-control"
+                              placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
+                              value={formData?.total_stock}
+                              onChange={handleInputChange}
+                              required
+                            />
+                          </div>
+                        </div>
                       </div>
                     )}
-                    <div className="upload__image__btn">
-                      <input
-                        type="file"
-                        name="images"
-                        multiple
-                        onChange={handleImageChange}
-                        className="form-control"
-                      />
-                    </div>
+
                     <div className="form__submit__button">
                       <button type="submit" className="btn btn-primary">
                         {id ? 'Update Product Item' : 'Add Product Item'}
