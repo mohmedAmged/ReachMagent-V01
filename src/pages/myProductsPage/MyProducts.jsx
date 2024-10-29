@@ -59,7 +59,7 @@ export default function MyProducts({ token }) {
 
   const handleDeleteThisProduct = async (id) => {
     try {
-      const response = await axios?.delete(`${baseURL}/${loginType}/delete-product/${id}`, {
+      const response = await axios?.delete(`${baseURL}/${loginType}/delete-product-data/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -109,9 +109,9 @@ export default function MyProducts({ token }) {
                                   product
                                 </th>
                                 <th className='text-center'>Category</th>
-                                <th className='text-center'>Status</th>
-                                <th className='text-center'>Price</th>
-                                <th className='text-center'>Edit</th>
+                                <th className='text-center'>Origin</th>
+                                <th className='text-center'>Stock</th>
+                                {/* <th className='text-center'>Edit</th> */}
                                 <th className='text-center'>Show</th>
                               </tr>
                             </thead>
@@ -121,15 +121,13 @@ export default function MyProducts({ token }) {
                                   <td className='product__breif__detail d-flex '>
                                     <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(row?.id)}></i>
                                     <div className="product__img">
-                                      <img src={row?.productImages[0]?.image} alt="product" />
+                                      <img src={row?.images[0]?.image ? row?.images[0]?.image : ''} alt="product" />
                                     </div>
                                     <div className="product__info">
                                       <h2>
                                         {row?.title}
                                       </h2>
-                                      <p title={row?.description}>
-                                        {row?.description?.slice(0,40)}{row?.description.split('').length > 40 && '...'}
-                                      </p>
+                                      
                                     </div>
                                   </td>
                                   <td>
@@ -138,18 +136,18 @@ export default function MyProducts({ token }) {
                                     </div>
                                   </td>
                                   <td>
-                                    <div className={`product__statue ${row?.status}`}>
-                                      {row?.status}
+                                    <div className={`product__statue`}>
+                                      {row?.origin}
                                     </div>
                                   </td>
                                   <td>
-                                    ${row?.price}
+                                    {row?.total_stock}
                                   </td>
-                                  <td>
+                                  {/* <td>
                                     <button className='btn__E tableEditBtn nav-link' onClick={() => navigate(`/profile/products/edit-item/${row?.id}`)}>
                                       <i className="bi bi-pencil-square"></i>
                                     </button>
-                                  </td>
+                                  </td> */}
                                   <td>
                                     <NavLink className={'nav-link'} to={`/profile/products/show-one/${row?.id}`}>
                                       <i className="bi bi-eye-fill showProd"></i>

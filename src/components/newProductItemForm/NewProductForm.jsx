@@ -10,48 +10,123 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 
-export default function NewProductForm({ mainCategories, token, countries }) {
-  const allTypes = [
-    {
-      id: 1,
-      name: 'Fragile - Handle with Care',
-    },
-    {
-      id: 2,
-      name: 'Fire Hazard',
-    },
-
-    {
-      id: 3,
-      name: 'Choking Hazard',
-    },
-  ];
+export default function NewProductForm({ mainCategories, token, countries}) {
 
   const loginType = localStorage.getItem('loginType');
   const navigate = useNavigate();
+  const [currentUserLogin, setCurrentUserLogin] = useState(null);
+  const { id } = useParams();
+  const [currProd, setCurrProd] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
   const [formData, setFormData] = useState({
     title_ar: '',
     title_en: '',
     description_ar: '',
     description_en: '',
-    price: '',
-    discount_price: '',
+    brand_id: '',
     category_id: '',
     sub_category_id: '',
-    status: 'active',
+    country_id: '',
+    unit_of_measure_id: '',
+    dangerous_id: [],
     image: [],
-    has_variation: 'no',
-    attribute_ar: '',
-    attribute_en: '',
-    variation_name_ar: [''],
-    variation_name_en: [''],
-    stock: [''],
-    total_stock: ''
-  });
-  const [currentUserLogin, setCurrentUserLogin] = useState(null);
-  const { id } = useParams();
-  const [currProd, setCurrProd] = useState([]);
 
+    price: '',  /*nullable if has variations*/
+    tax: '',    /*nullable or (0 - 100 ) %*/
+    discount_type: '',   /*nullable if has variations  or (fixed || percent) */
+    discount_amount: '',  /*nullable if has variations */
+    total_stock: '', /*nullable if has variations */
+    dimensions_with_package: '', /*nullable if has variations */
+    dimensions_without_package: '', /*nullable if has variations */
+    weight: '', /*nullable if has variations */
+    has_variation: 'no',     /*yes || no*/
+    has_sub_variation: 'no', /*yes || no*/
+    variation_name: '',
+    sub_variation_name: '',
+    variations: [
+      {
+        value: "",
+        price: "", /*nullable if has sub variations */
+        stock: "", /*nullable if has sub variations */
+        sku: "", /*nullable if has sub variations */
+        dimensions_with_package: "",/*nullable if has sub variations */
+        dimensions_without_package: "", /*nullable if has sub variations */
+        weight: "", /*nullable if has sub variations */
+        images: [], /*nullable if has sub variations */
+        sub_variations: [
+          {
+            value: "",
+            price: "",
+            stock: "",
+            sku: "",
+            dimensions_with_package: "",
+            dimensions_without_package: "",
+            weight: "",
+            images: []
+          },
+        ]
+      }
+    ]
+
+
+  });
+  const [dangerouses, setDangerouses] = useState([])
+  const [productBrand, setProductBrand] = useState([])
+  const [allUnits, setAllUnits] = useState([])
+
+  const fetchAllDangerouse = async () => {
+
+    try {
+      const response = await axios.get(`${baseURL}/${loginType}/all-dangerouses?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setDangerouses(response?.data?.data?.dangerouses);
+    }
+    catch (error) {
+      toast.error(error?.response?.data.message || 'Faild To get Products dangerouses!');
+    };
+
+
+  };
+  const fetchAllBrands = async () => {
+
+    try {
+      const response = await axios.get(`${baseURL}/${loginType}/all-brands?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setProductBrand(response?.data?.data?.brands);
+    }
+    catch (error) {
+      toast.error(error?.response?.data.message || 'Faild To get Products brands!');
+    };
+
+
+  };
+  const fetchUintsOFMeasure = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/${loginType}/units-of-measure?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setAllUnits(response?.data?.data?.units_of_measure);
+    }
+    catch (error) {
+      toast.error(error?.response?.data.message || 'Faild To get Products brands!');
+    };
+
+
+  };
+  useEffect(() => {
+    fetchAllDangerouse()
+    fetchAllBrands()
+    fetchUintsOFMeasure()
+  }, [loginType, token]);
   useEffect(() => {
     const cookiesData = Cookies.get('currentLoginedData');
     if (!currentUserLogin) {
@@ -59,15 +134,6 @@ export default function NewProductForm({ mainCategories, token, countries }) {
       setCurrentUserLogin(newShape);
     }
   }, [Cookies.get('currentLoginedData'), currentUserLogin]);
-
-  const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [loading]);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -138,6 +204,9 @@ export default function NewProductForm({ mainCategories, token, countries }) {
     };
   }, [currProd]);
 
+
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -146,73 +215,180 @@ export default function NewProductForm({ mainCategories, token, countries }) {
     }));
   };
 
-  const handleCheckboxChange = () => {
+  const handleFileChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
-      has_variation: prevState.has_variation === 'yes' ? 'no' : 'yes',
-      total_stock: prevState.has_variation === 'yes' ? '' : prevState.total_stock, // Clear total_stock if switching to variation
+      image: [...prevState.image, ...e.target.files]
     }));
   };
 
-  const handleVariationChange = (e, index, field) => {
-    const newValue = e.target.value;
-    setFormData((prevState) => {
-      const updatedField = [...prevState[field]];
-      updatedField[index] = newValue;
-      return { ...prevState, [field]: updatedField };
+  // Add a new variation
+  const addVariation = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      variations: [
+        ...prevState.variations,
+        {
+          variation_name: '',
+          value: '',
+          price: '',
+          stock: '',
+          sku: '',
+          description: '',
+          dimensions_with_package: '',
+          dimensions_without_package: '',
+          weight: '',
+          images: [],
+          sub_variations: [
+            {
+              sub_variation_name: '',
+              value: '',
+              price: '',
+              stock: '',
+              sku: '',
+              description: '',
+              dimensions_with_package: '',
+              dimensions_without_package: '',
+              weight: '',
+              images: []
+            }
+          ]
+        }
+      ]
+    }));
+  };
+
+  // Add a new sub-variation
+  const addSubVariation = (variationIndex) => {
+    const updatedVariations = [...formData.variations];
+    updatedVariations[variationIndex].sub_variations.push({
+      sub_variation_name: '',
+      value: '',
+      price: '',
+      stock: '',
+      sku: '',
+      description: '',
+      dimensions_with_package: '',
+      dimensions_without_package: '',
+      weight: '',
+      images: []
     });
+    setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
   };
 
-  const addVariationField = () => {
-    setFormData((prevState) => ({
-      ...prevState,
-      variation_name_ar: [...prevState.variation_name_ar, ''],
-      variation_name_en: [...prevState.variation_name_en, ''],
-      stock: [...prevState.stock, ''],
-    }));
+
+
+  // Handle changes for variations
+  const handleVariationChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedVariations = [...formData.variations];
+    updatedVariations[index][name] = value;
+    setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prevState) => ({
-      ...prevState,
-      image: files,
+  // Handle changes for sub-variations
+  const handleSubVariationChange = (varIndex, subVarIndex, e) => {
+    const { name, value } = e.target;
+    const updatedVariations = [...formData.variations];
+    updatedVariations[varIndex].sub_variations[subVarIndex][name] = value;
+    setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
+  };
+
+  // Handle file uploads for variations or sub-variations
+  const handleVariationFileChange = (index, e) => {
+    const updatedVariations = [...formData.variations];
+    updatedVariations[index].images = [...updatedVariations[index].images, ...e.target.files];
+    setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
+  };
+
+  const handleSubVariationFileChange = (varIndex, subVarIndex, e) => {
+    const updatedVariations = [...formData.variations];
+    updatedVariations[varIndex].sub_variations[subVarIndex].images = [
+      ...updatedVariations[varIndex].sub_variations[subVarIndex].images,
+      ...e.target.files
+    ];
+    setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
+  };
+
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
+  const handleSelectType = (id) => {
+    const type = dangerouses?.find((item) => item.id === Number(id));
+
+    if (type && !selectedTypes.some((item) => item.id === type.id)) {
+      const updatedSelectedTypes = [...selectedTypes, type];
+      setSelectedTypes(updatedSelectedTypes);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        dangerous_id: [...prevFormData.dangerous_id, type.id],
+      }));
+    }
+  };
+
+  const handleDeleteType = (id) => {
+    const updatedSelectedTypes = selectedTypes.filter((item) => item.id !== id);
+    setSelectedTypes(updatedSelectedTypes);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      dangerous_id: prevFormData.dangerous_id.filter((typeId) => typeId !== id),
     }));
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const submissionData = new FormData();;
-
-    Object.keys(formData).forEach((key) => {
-      if (key === 'total_stock' && formData.has_variation === 'yes') return;
-      if ((key === 'attribute_ar' || key === 'attribute_en') && formData.has_variation === 'no') return;
-      if (key !== 'image' && !Array.isArray(formData[key])) {
-        submissionData.append(key, formData[key]);
-      }
-    });
+    const submissionData = new FormData();
+    // Construct FormData based on has_variation and has_sub_variation
     if (formData.has_variation === 'yes') {
-      submissionData.append('attribute_ar', formData.attribute_ar);
-      submissionData.append('attribute_en', formData.attribute_en);
+      formData.variations.forEach((variation, index) => {
+        submissionData.append(`variations[${index}][variation_name]`, variation.variation_name);
+        submissionData.append(`variations[${index}][value]`, variation.value);
 
-      formData.variation_name_ar.forEach((variation, index) => {
-        submissionData.append(`variation_name_ar[${index}]`, variation);
+        if (formData.has_sub_variation === 'no') {
+          ['price', 'stock', 'sku', 'dimensions_with_package', 'dimensions_without_package', 'weight'].forEach((field) => {
+            submissionData.append(`variations[${index}][${field}]`, variation[field]);
+          });
+
+          variation.images.forEach((file, fileIndex) => {
+            submissionData.append(`variations[${index}][images][${fileIndex}]`, file);
+          });
+        } else {
+          variation.sub_variations.forEach((subVar, subIndex) => {
+            ['sub_variation_name', 'value', 'price', 'stock', 'sku', 'dimensions_with_package', 'dimensions_without_package', 'weight'].forEach((field) => {
+              submissionData.append(`variations[${index}][sub_variations][${subIndex}][${field}]`, subVar[field]);
+            });
+
+            subVar.images.forEach((file, fileIndex) => {
+              submissionData.append(`variations[${index}][sub_variations][${subIndex}][images][${fileIndex}]`, file);
+            });
+          });
+        }
       });
-      formData.variation_name_en.forEach((variation, index) => {
-        submissionData.append(`variation_name_en[${index}]`, variation);
-      });
-      formData.stock.forEach((stock, index) => {
-        submissionData.append(`stock[${index}]`, stock);
-      });
-    } else {
-      submissionData.append('total_stock', formData.total_stock);
     }
+    else {
+      ['price', 'total_stock', 'dimensions_with_package', 'dimensions_without_package', 'weight'].forEach((field) => {
+        submissionData.append(field, formData[field]);
+      });
+    }
+    Object.keys(formData).forEach((key) => {
+      if (key !== 'variations' && key !== 'image' && !Array.isArray(formData[key])) {
+        submissionData.append(key, formData[key]);
+      } else if (key !== 'variations' && key !== 'image' && Array.isArray(formData[key])) {
+        formData[key].forEach((item, index) => {
+          submissionData.append(`${key}[${index}]`, item);
+        });
+      } else if (key === 'image' && key !== 'variations') {
+        Array.from(formData[key]).forEach((file, index) => {
+          submissionData.append(`${key}[${index}]`, file);
+        });
+      } else if (key === 'variations') {
+        console.log(key);
 
-    formData.image.forEach((image, index) => {
-      submissionData.append(`image[${index}]`, image);
-    })
+      }
+
+    });
     try {
-      const slugCompletion = id ? `update-product/${id}` : 'add-product';
+      const slugCompletion = id ? `update-product/${id}` : 'create-product';
       const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -228,24 +404,29 @@ export default function NewProductForm({ mainCategories, token, countries }) {
         toast.error((id ? 'Failed to update product item!' : 'Failed to add product item!'));
       };
     } catch (error) {
-      toast.error(error?.response?.data?.message || (id ? 'Failed to update product item!' : 'Failed to add product item!'));
-    };
-  };
-
-  const [selectedTypes, setSelectedTypes] = useState([]);
-
-  const handleSelectType = (id) => {
-    const type = allTypes.find((item) => item.id === Number(id));
-
-    if (type && !selectedTypes.some((item) => item.id === type.id)) {
-      setSelectedTypes([...selectedTypes, type]);
+      // If it's a validation error, handle it
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errorMessages = error.response.data.errors;
+        
+        // Loop through the error messages and show each as a toast
+        Object.keys(errorMessages).forEach((field) => {
+          errorMessages[field].forEach((message) => {
+            toast.error(message);
+          });
+        });
+      } else {
+        // Handle any other errors
+        toast.error('Something went wrong, please try again.');
+      }
     }
   };
+  console.log("formData", formData);
 
-  const handleDeleteType = (id) => {
-    setSelectedTypes(selectedTypes.filter((item) => item.id !== id));
-  };
-
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [loading]);
   return (
     <>
       {
@@ -261,6 +442,7 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                   <ContentViewHeader title={`${id ? 'Update Product' : 'Add New product'}`} />
                   <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                     <div className="row">
+                      {/* prod name */}
                       <div className="col-lg-6">
                         <div className="catalog__new__input">
                           <label htmlFor="title_en">Product Name in English</label>
@@ -289,6 +471,7 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                       </div>
                     </div>
                     <div className="row">
+                      {/* Category and sub */}
                       <div className="col-lg-6">
                         <div className="catalog__new__input">
                           <label htmlFor="category_id">Category</label>
@@ -327,6 +510,7 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                       </div>
                     </div>
                     <div className="row">
+                      {/* Discription */}
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
                           <label htmlFor="description_en">Description in English</label>
@@ -353,18 +537,19 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                       </div>
                     </div>
                     <div className="row">
+                      {/* Origin, Brand, unit, Danger */}
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
-                          <label htmlFor="sub_category_id">Origin</label>
+                          <label htmlFor="country_id">Origin</label>
                           <select
-                            name="category_id"
+                            name="country_id"
                             className="form-control custom-select"
-                            value={formData?.category_id}
+                            value={formData?.country_id}
                             onChange={handleInputChange}
                           >
                             <option value="" disabled>Select Origin</option>
                             {countries?.slice(0, 197)?.map((cat) => (
-                              <option key={cat?.name} value={cat?.name}>
+                              <option key={cat?.id} value={cat?.id}>
                                 {cat?.name}
                               </option>
                             ))}
@@ -373,17 +558,17 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                       </div>
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
-                          <label htmlFor="description_ar">brand</label>
+                          <label htmlFor="brand_id">Brand</label>
                           <select
-                            name="category_id"
+                            name="brand_id"
                             className="form-control custom-select"
-                            value={formData?.category_id}
+                            value={formData?.brand_id}
                             onChange={handleInputChange}
                           >
                             <option value="" disabled>Select brand</option>
-                            {mainCategories?.map((cat) => (
-                              <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
-                                {cat?.mainCategoryName}
+                            {productBrand?.map((cat) => (
+                              <option key={cat?.id} value={cat?.id}>
+                                {cat?.name}
                               </option>
                             ))}
                           </select>
@@ -391,17 +576,38 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                       </div>
                       <div className="col-lg-8">
                         <div className="catalog__new__input">
-                          <label htmlFor="signUpTypes" className="form-check-label">
+                          <label htmlFor="unit_of_measure_id">Unit OF Measure:</label>
+                          <select
+                            name="unit_of_measure_id"
+                            className="form-control custom-select"
+                            value={formData?.unit_of_measure_id}
+                            onChange={handleInputChange}
+                          >
+                            <option value="" disabled>Select brand</option>
+                            {allUnits?.map((cat) => (
+                              <option key={cat?.id} value={cat?.id}>
+                                {cat?.unit}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-8">
+                        <div className="catalog__new__input">
+                          <label htmlFor="dangerous_id">
                             Danger Alert
                           </label>
                           <select
-                            id="signUpTypes"
+                            id="dangerous_id"
                             className="form-control custom-select"
-                            onChange={(e) => handleSelectType(e.target.value)}
-                            value=""
+                            onChange={(e) => {
+                              handleSelectType(e.target.value)
+                            }
+                            }
+                            value=''
                           >
                             <option value="" disabled>Select Danger</option>
-                            {allTypes.map((type) => (
+                            {dangerouses?.map((type) => (
                               <option key={type.id} value={type.id}>
                                 {type.name}
                               </option>
@@ -424,371 +630,441 @@ export default function NewProductForm({ mainCategories, token, countries }) {
                         </div>
                       </div>
                     </div>
+                    <div className="row">
+                    <div className="col-lg-8">
+                        <div className="catalog__new__input">
+                          <label htmlFor="tax">tax</label>
+                          <input
+                            type="text"
+                            name="tax"
+                            className="form-control"
+                            placeholder="tax (%)"
+                            value={formData.tax}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="catalog__new__input">
+                          <label htmlFor="discount_type">Discount Type</label>
+                          <select
+                            name="discount_type"
+                            className="form-control custom-select"
+                            value={formData.discount_type}
+                            onChange={handleInputChange}>
+                            <option value="" disabled>Discount Type</option>
+                            <option value="fixed">fixed</option>
+                            <option value="percent">percentage %</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="catalog__new__input">
+                          <label htmlFor="discount_amount">Discount Amount</label>
+                          <input
+                            type="text"
+                            name="discount_amount"
+                            className="form-control"
+                            placeholder="Discount Amount"
+                            value={formData.discount_amount}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      
+                    </div>
+                    {
+                      formData.has_variation === 'no' && (
+                        <div className="row">
+                          {/* nullable if has variations */}
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="price">price</label>
+                              <input
+                                type="text"
+                                name="price"
+                                className="form-control"
+                                placeholder="price"
+                                value={formData.price}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="dimensions_with_package">Dimensions With Package</label>
+                              <input
+                                type="text"
+                                name="dimensions_with_package"
+                                className="form-control"
+                                placeholder="Dimensions With Package"
+                                value={formData.dimensions_with_package}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="dimensions_without_package">Dimensions Without Package</label>
+                              <input
+                                type="text"
+                                name="dimensions_without_package"
+                                className="form-control"
+                                placeholder="Dimensions Without Package"
+                                value={formData.dimensions_without_package}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="weight">Weight</label>
+                              <input
+                                type="text"
+                                name="weight"
+                                className="form-control"
+                                placeholder="weight"
+                                value={formData.weight}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="catalog__new__input">
+                              <label htmlFor="total_stock">Total Stock</label>
+                              <input
+                                type="text"
+                                name="total_stock"
+                                className="form-control"
+                                placeholder="total_stock"
+                                value={formData.total_stock}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    }
+
+                    {/* product main images */}
                     <div className="upload__image__btn col-md-8">
                       <input
                         type="file"
-                        name="images"
+                        name="image"
                         multiple
-                        onChange={handleImageChange}
+                        onChange={handleFileChange}
                         className="form-control"
                       />
                     </div>
                     <div className="row">
-                      <div className="col-lg-8 my-4">
-                        <div className="check__item">
-                          <div className="form-check">
-                            <input
-                              type="checkbox"
-                              id="has_variation"
-                              className="form-check-input"
-                              checked={formData?.has_variation === 'yes'}
-                              onChange={handleCheckboxChange}
-                            />
-                            <label htmlFor="has_variation" className="form-check-label position-relative fw-bold">
-                              Product has Variation <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer fw-normal" style={{ fontSize: '14px', position: "absolute", top: '0px' }}></i>
-                            </label>
-                          </div>
+                      <div className="col-lg-6">
+                        <div className="catalog__new__input">
+                          <label htmlFor="has_variation">product has variatoin</label>
+                          <select
+                            name="has_variation"
+                            className="form-control custom-select"
+                            value={formData.has_variation}
+                            onChange={handleInputChange}>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                          </select>
                         </div>
                       </div>
-                    </div>
-                    {formData?.has_variation === 'yes' ? (
-                      <>
-                        <div className="row">
+                      {
+                        formData.has_variation === 'yes' && (
                           <div className="col-lg-6">
                             <div className="catalog__new__input">
-                              <label htmlFor="attribute_en">Attribute in English</label>
-                              <input
-                                type="text"
-                                name="attribute_en"
-                                className="form-control"
-                                placeholder="Enter attribute"
-                                value={formData?.attribute_en}
-                                onChange={handleInputChange}
-                              />
+                              <label htmlFor="has_sub_variation">product has sub variatoin</label>
+                              <select
+                                name="has_sub_variation"
+                                value={formData.has_sub_variation}
+                                className="form-control custom-select"
+                                onChange={handleInputChange}>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                              </select>
                             </div>
                           </div>
-                          <div className="col-lg-6">
-                            <div className="catalog__new__input">
-                              <label htmlFor="attribute_ar">Attribute in Arabic</label>
-                              <input
-                                type="text"
-                                name="attribute_ar"
-                                className="form-control"
-                                placeholder="Enter attribute"
-                                value={formData?.attribute_ar}
-                                onChange={handleInputChange}
-                              />
-                            </div>
+                        )
+                      }
+                    </div>
+
+
+                    {formData.has_variation === 'yes' && (
+                      <>
+                        <div className="col-lg-6">
+                          <div className="catalog__new__input">
+                            <label htmlFor="variation_name">Variation Name</label>
+                            <input
+                              type="text"
+                              name="variation_name"
+                              className="form-control"
+                              placeholder="Variation Name"
+                              value={formData.variation_name}
+                              onChange={handleInputChange}
+                            />
                           </div>
                         </div>
-                        {formData?.variation_name_ar.map((_, index) => (
-                          <div className="row border-bottom mt-3" key={index}>
-                            <div className="row">
-                              <div className="col-lg-8 my-4">
-                                <div className="check__item">
-                                  <div className="form-check">
-                                    <input
-                                      type="checkbox"
-                                      id="has_variation"
-                                      className="form-check-input"
-                                      checked={formData?.has_variation === 'yes'}
-                                      onChange={handleCheckboxChange}
-                                    />
-                                    <label htmlFor="has_variation" className="form-check-label position-relative fw-bold">
-                                      Product has Sub Variation <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer fw-normal" style={{ fontSize: '14px', position: "absolute", top: '0px' }}></i>
-                                    </label>
-                                  </div>
-                                </div>
+                        <div className="col-lg-6">
+                          {
+                            formData.has_sub_variation === 'yes' && (
+                              <div className="catalog__new__input">
+                                <label htmlFor="sub_variation_name">Sub Variation Name</label>
+                                <input
+                                  type="text"
+                                  name="sub_variation_name"
+                                  className="form-control"
+                                  placeholder="Sub-Variation Name"
+                                  value={formData.sub_variation_name}
+                                  onChange={handleInputChange}
+                                />
                               </div>
+                            )
+                          }
+                        </div>
+
+                        {/* Render variations and sub-variations */}
+                        {formData.variations.map((variation, varIndex) => (
+                          <div key={varIndex} className='row'>
+                            <div className="col-12">
+                             <h1 className='fs-3 fw-bold my-3'>
+                              Variation #{varIndex + 1}
+                             </h1>
                             </div>
                             <div className="col-lg-6">
-                            <div className="catalog__new__input">
-                              <label htmlFor="attribute_en">Attribute in English</label>
-                              <input
-                                type="text"
-                                name=""
-                                className="form-control"
-                                placeholder="Enter attribute"
-                                value={formData?.attribute_en}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="catalog__new__input">
-                              <label htmlFor="attribute_ar">Attribute in Arabic</label>
-                              <input
-                                type="text"
-                                name=""
-                                className="form-control"
-                                placeholder="Enter attribute"
-                                value={formData?.attribute_ar}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                          </div>
-                            <h2>
-                              Variation #{index + 1}
-                            </h2>
-
-                            <div className="col-lg-4">
                               <div className="catalog__new__input">
-                                <label htmlFor={`variation_name_en_${index}`}>Variation Name in English</label>
+                                <label htmlFor="value">Variation Value</label>
                                 <input
                                   type="text"
-                                  name={`variation_name_en_${index}`}
+                                  name="value"
                                   className="form-control"
-                                  placeholder="Enter variation name"
-                                  value={formData?.variation_name_en[index]}
-                                  onChange={(e) => handleVariationChange(e, index, 'variation_name_en')}
+                                  placeholder="Variation value"
+                                  value={variation.value}
+                                  onChange={(e) => handleVariationChange(varIndex, e)}
                                 />
                               </div>
                             </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor={`variation_name_ar_${index}`}>Variation Name in Arabic</label>
-                                <input
-                                  type="text"
-                                  name={`variation_name_ar_${index}`}
-                                  className="form-control"
-                                  placeholder="Enter variation name"
-                                  value={formData?.variation_name_ar[index]}
-                                  onChange={(e) => handleVariationChange(e, index, 'variation_name_ar')}
-                                />
-                              </div>
+                            {
+                              formData.has_sub_variation === 'no' && (
+                                // only show when there is no sub variation
+                                <>
+                                  <div className="col-lg-6">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="price">price</label>
+                                      <input
+                                        type="text"
+                                        name="price"
+                                        className="form-control"
+                                        placeholder="price"
+                                        value={variation.price}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-6">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="dimensions_with_package">Dimensions With Package</label>
+                                      <input
+                                        type="text"
+                                        name="dimensions_with_package"
+                                        className="form-control"
+                                        placeholder="Dimensions With Package"
+                                        value={variation.dimensions_with_package}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-6">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="dimensions_without_package">Dimensions Without Package</label>
+                                      <input
+                                        type="text"
+                                        name="dimensions_without_package"
+                                        className="form-control"
+                                        placeholder="Dimensions Without Package"
+                                        value={variation.dimensions_without_package}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-8">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="weight">Weight</label>
+                                      <input
+                                        type="text"
+                                        name="weight"
+                                        className="form-control"
+                                        placeholder="weight"
+                                        value={variation.weight}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-8">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="stock">Stock</label>
+                                      <input
+                                        type="text"
+                                        name="stock"
+                                        className="form-control"
+                                        placeholder="stock"
+                                        value={variation.stock}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-8">
+                                    <div className="catalog__new__input">
+                                      <label htmlFor="sku">Sku</label>
+                                      <input
+                                        type="text"
+                                        name="sku"
+                                        className="form-control"
+                                        placeholder="sku"
+                                        value={variation.sku}
+                                        onChange={(e) => handleVariationChange(varIndex, e)}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="upload__image__btn col-md-8">
+                                    <input
+                                      type="file"
+                                      name="images"
+                                      multiple
+                                      onChange={(e) => handleVariationFileChange(varIndex, e)}
+                                      className="form-control"
+                                    />
+                                  </div>
+                                </>
+                              )
+                            }
+                            {formData.has_sub_variation === 'yes' && variation.sub_variations.map((subVar, subVarIndex) => (
+                              <>
+                              <div className="col-12">
+                             <h1 className='fs-5 my-3'>
+                              Sub Variation #{`${(varIndex + 1)}.${(subVarIndex +1)}`}
+                             </h1>
                             </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor={`stock_${index}`}>Stock</label>
-                                <input
-                                  type="number"
-                                  name={`stock_${index}`}
-                                  className="form-control"
-                                  placeholder="Enter stock quantity"
-                                  value={formData?.stock[index]}
-                                  onChange={(e) => handleVariationChange(e, index, 'stock')}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor="total_stock">SKU/Product ID</label>
-                                <input
-                                  type="text"
-                                  name="total_stock"
-                                  className="form-control"
-                                  placeholder="Enter total stock"
-                                  value={formData?.total_stock}
-                                  onChange={handleInputChange}
-                                  required
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor="total_stock">Weight</label>
-                                <input
-                                  type="text"
-                                  name="total_stock"
-                                  className="form-control"
-                                  placeholder="Enter total stock"
-                                  value={formData?.total_stock}
-                                  onChange={handleInputChange}
-                                  required
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor="total_stock">Dimensions Without Packging</label>
-                                <input
-                                  type="text"
-                                  name="total_stock"
-                                  className="form-control"
-                                  placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
-                                  value={formData?.total_stock}
-                                  onChange={handleInputChange}
-                                  required
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-4">
-                              <div className="catalog__new__input">
-                                <label htmlFor="total_stock">Dimensions With Packging</label>
-                                <input
-                                  type="text"
-                                  name="total_stock"
-                                  className="form-control"
-                                  placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
-                                  value={formData?.total_stock}
-                                  onChange={handleInputChange}
-                                  required
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-8">
-                              <div className="catalog__new__input">
-                                <label htmlFor="price">Price In Local Currency</label>
-                                <div className="custom-input-container">
-                                  <input
-                                    type="text"
-                                    id="price"
-                                    name="price"
-                                    className="form-control custom-input"
-                                    placeholder="Enter your text"
-                                    value={formData?.price}
-                                    onChange={handleInputChange}
-                                  />
-
+                                <div className="col-lg-6">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="value">Sub Variation Value</label>
+                                    <input
+                                      type="text"
+                                      name="value"
+                                      className="form-control"
+                                      placeholder="sub-Variation value"
+                                      value={subVar.value}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div className="upload__image__btn col-lg-8">
-                              <input
-                                type="file"
-                                name="images"
-                                multiple
-                                onChange={handleImageChange}
-                                className="form-control"
-                              />
-                            </div>
+                                <div className="col-lg-6">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="price">price</label>
+                                    <input
+                                      type="text"
+                                      name="price"
+                                      className="form-control"
+                                      placeholder="price"
+                                      value={subVar.price}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-lg-6">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="dimensions_with_package">Dimensions With Package</label>
+                                    <input
+                                      type="text"
+                                      name="dimensions_with_package"
+                                      className="form-control"
+                                      placeholder="Dimensions With Package"
+                                      value={subVar.dimensions_with_package}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-lg-6">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="dimensions_without_package">Dimensions Without Package</label>
+                                    <input
+                                      type="text"
+                                      name="dimensions_without_package"
+                                      className="form-control"
+                                      placeholder="Dimensions Without Package"
+                                      value={subVar.dimensions_without_package}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-lg-8">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="weight">Weight</label>
+                                    <input
+                                      type="text"
+                                      name="weight"
+                                      className="form-control"
+                                      placeholder="weight"
+                                      value={subVar.weight}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-lg-8">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="stock">Stock</label>
+                                    <input
+                                      type="text"
+                                      name="stock"
+                                      className="form-control"
+                                      placeholder="stock"
+                                      value={subVar.stock}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-lg-8">
+                                  <div className="catalog__new__input">
+                                    <label htmlFor="sku">Sku</label>
+                                    <input
+                                      type="text"
+                                      name="sku"
+                                      className="form-control"
+                                      placeholder="sku"
+                                      value={subVar.sku}
+                                      onChange={(e) => handleSubVariationChange(varIndex, subVarIndex, e)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="upload__image__btn col-md-8">
+                                  <input
+                                    type="file"
+                                    name="images"
+                                    multiple
+                                    onChange={(e) => handleSubVariationFileChange(varIndex, subVarIndex, e)}
+                                    className="form-control"
+                                  />
+                                </div>
+                              </>
+
+                            ))}
+                            {
+                              formData.has_sub_variation === 'yes' && (
+                                <div className="row">
+                                  <div className="col-12 d-flex justify-content-end">
+                                    <button type="button" className='btn btn-info text-light mb-3' onClick={() => addSubVariation(varIndex)}>
+                                      + Add Sub-Variation
+                                    </button>
+                                  </div>
+                                </div>
+
+                              )
+                            }
                           </div>
                         ))}
-                        <div className="form__submit__button mt-3 mb-5">
-                          <button type="button" className="btn btn-secondary" onClick={addVariationField}>
-                            Add Another Variation
-                          </button>
-                        </div>
+                        <button type="button" className="btn btn-outline-success mb-5" onClick={addVariation}>Add Variation</button>
                       </>
-                    ) : (
-                      <div className="row mb-5">
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="price">Price</label>
-                            <div className="custom-input-container">
-                              <input
-                                type="text"
-                                id="price"
-                                name="price"
-                                className="form-control custom-input"
-                                placeholder="Enter your text"
-                                value={formData?.price}
-                                onChange={handleInputChange}
-                              />
-                              <label htmlFor="currency" className="currency__label">Currency:</label>
-                              <select
-                                name="currency"
-                                className="form-control custom-select"
-                              >
-                                <option value="USD">USD</option>
-                                <option value="EGP">EGP</option>
-                                <option value="EUR">EUR</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="price">Amount or Percentage%</label>
-
-
-
-                            <div className="custom-input-container">'
-                              <input
-                                type="text"
-                                id="discount_price"
-                                name="discount_price"
-                                className="form-control custom-input"
-                                placeholder="Enter your text"
-                                value={formData?.discount_price}
-                                onChange={handleInputChange}
-                              />'
-                              <label htmlFor="currency" className="currency__label">Discount Type:</label>
-                              <select
-                                name="currency"
-                                className="form-control custom-select"
-                              >
-                                <option value="USD">Fixed Amount</option>
-                                <option value="EGP">Percentage %</option>
-                              </select>
-
-
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="total_stock">Stock</label>
-                            <input
-                              type="number"
-                              name="total_stock"
-                              className="form-control"
-                              placeholder="Enter total stock"
-                              value={formData?.total_stock}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="total_stock">SKU/Product ID</label>
-                            <input
-                              type="text"
-                              name="total_stock"
-                              className="form-control"
-                              placeholder="Enter total stock"
-                              value={formData?.total_stock}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="total_stock">Weight</label>
-                            <input
-                              type="text"
-                              name="total_stock"
-                              className="form-control"
-                              placeholder="Enter total stock"
-                              value={formData?.total_stock}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="total_stock">Dimensions Without Packging</label>
-                            <input
-                              type="text"
-                              name="total_stock"
-                              className="form-control"
-                              placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
-                              value={formData?.total_stock}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-8">
-                          <div className="catalog__new__input">
-                            <label htmlFor="total_stock">Dimensions With Packging</label>
-                            <input
-                              type="text"
-                              name="total_stock"
-                              className="form-control"
-                              placeholder="Length x Width x Height (L x W x H), Example: 30 x 20 x 10"
-                              value={formData?.total_stock}
-                              onChange={handleInputChange}
-                              required
-                            />
-                          </div>
-                        </div>
-                      </div>
                     )}
-
                     <div className="form__submit__button">
                       <button type="submit" className="btn btn-primary">
                         {id ? 'Update Product Item' : 'Add Product Item'}

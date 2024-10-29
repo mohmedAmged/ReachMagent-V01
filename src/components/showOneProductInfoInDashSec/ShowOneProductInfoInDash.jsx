@@ -52,7 +52,6 @@ export default function ShowOneProductInfoInDash(
             setLoading(false);
         }, 500);
     }, [loading]);
-console.log(newData);
 
     return (
         <>

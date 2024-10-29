@@ -55,13 +55,13 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
 
   const getCurrentAllowedCountriesAndCategories = async () => {
     setLoading(true);
-    await axios.get(`${baseURL}/user/allowed-companies?t=${new Date().getTime()}`, {
+    await axios.get(`${baseURL}/allowed-companies?t=${new Date().getTime()}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
-        setCompaniesAllowed(response?.data?.data?.allowed_companies);
+        setCompaniesAllowed(response?.data?.data?.companies);
       })
       .catch(error => {
         toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
@@ -69,13 +69,13 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
         });
       });
 
-    await axios.get(`${baseURL}/user/allowed-categories?t=${new Date().getTime()}`, {
+    await axios.get(`${baseURL}/allowed-categories-products?t=${new Date().getTime()}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
-        setCategoriesAllowed(response?.data?.data?.allowed_categories);
+        setCategoriesAllowed(response?.data?.data?.categories);
       })
       .catch(error => {
         toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
@@ -108,11 +108,12 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
 
   const getCurrentProducts = async () => {
     setLoadingProducts(true);
-    await axios.get(`${baseURL}/user/products`, {
+    await axios.get(`${baseURL}/products`, {
       params: {
         t: new Date().getTime(),
         page: currentPage,
         limit: 12,
+       
       },
       headers: {
         Authorization: `Bearer ${token}`
@@ -120,7 +121,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
     })
       .then(response => {
         if (!search) {
-          setProducts(response?.data?.data?.products?.products);
+          setProducts(response?.data?.data?.products);
           setTotalPages(response?.data?.data?.total_pages || 1);
         }
         setMaxPrice(+response?.data?.data?.max_price);
@@ -143,7 +144,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
   const filterProducts = async () => {
     setLoadingProducts(true);
     if (slugURLObj) {
-      await axios.get(`${baseURL}/user/filter-products`, {
+      await axios.get(`${baseURL}/search-products`, {
         params: {
           t: new Date().getTime(),
           company: filterationObj?.company,
@@ -238,6 +239,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
       scrollToTop(500);
     };
   };
+console.log(products);
 
   return (
     <>
@@ -258,7 +260,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
             />
             <div className='container'>
               <div className="readyToBuy__products">
-                <div className="row">
+                <div className="row my-5">
                   <div className="col-lg-3 col-md-4">
                     <div className="sidebarForItemsFilter__handler">
                       <div className="sidebarItemFilter">
@@ -445,16 +447,19 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
                             return (
                               <div key={el?.id} className="col-lg-4 col-md-6 col-sm-12 my-2 d-flex justify-content-center">
                                 <ProductCard 
-                                fetchCartItems={fetchCartItems} 
-                                wishlistItems={wishlistItems} 
-                                discountPrice={el?.discountPrice} getCurrentProducts={search ? filterProducts : getCurrentProducts} 
+                                // fetchCartItems={fetchCartItems} 
+                                // wishlistItems={wishlistItems} 
+                                discountPrice={el?.price_after_discount} getCurrentProducts={search ? filterProducts : getCurrentProducts} 
                                 product={el} 
                                 itemType={'product'} 
                                 token={token} 
-                                prodSlug={el?.slug} 
-                                productCurrancy={el?.currency_symbol} productImage={el?.productImages[0]?.image } productName={el?.title} 
-                                productPrice={el?.price} 
-                                companyName={el?.company_name} />
+                                // prodSlug={el?.slug} 
+                                productCurrancy={'$'}
+                                
+                                productImage={el?.image } 
+                                productName={el?.title} 
+                                productPrice={el?.price_after_tax} 
+                                companyName={el?.createBy} />
                               </div>
                             )
                           })
