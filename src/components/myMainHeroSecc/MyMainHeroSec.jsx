@@ -100,7 +100,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                     <div className="form__part select__category__part">
                                                         <i className="bi bi-blockquote-right"></i>
                                                         <select defaultValue={currentCompanyChosen} name='company' onChange={handleChangeFilterInputs}>
-                                                            {currentPage === 'shop' && <option disabled value="">Select Company</option>}
+                                                            {currentPage === 'shop' && <option disabled value="">Select Country</option>}
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (

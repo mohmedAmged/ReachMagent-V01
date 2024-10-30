@@ -109,7 +109,7 @@ export default function EmployeeChatSidebar() {
                     <h5>
                         Chat Note
                     </h5>
-                    <textarea rows={6} placeholder='Add your note..'></textarea>
+                    <textarea rows={6} className='form-control' placeholder='Add your note..'></textarea>
                 </div>
             </div>
         </div>

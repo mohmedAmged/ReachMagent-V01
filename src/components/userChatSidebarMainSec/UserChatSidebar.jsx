@@ -75,8 +75,8 @@ export default function UserChatSidebar() {
                             </p>
                         </div>
                     </div>
-                    <div className="yourStatusInfo">
-                        <select name="" id="">
+                    <div className="yourStatusInfo w-50">
+                        <select name="" id="" className='form-select'>
                             <option value="" disabled>change Status</option>
                             <option value="">online</option>
                             <option value="">offline</option>
@@ -84,7 +84,7 @@ export default function UserChatSidebar() {
                     </div>
                 </div>
                 <div className="yourSearchUsers">
-                    <div className="form__part input__search__part">
+                    <div className="form__part input__search__part w-100">
                         <i className="bi bi-search"></i>
                         <input type="text" placeholder='Search...' />
                     </div>

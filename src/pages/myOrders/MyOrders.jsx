@@ -75,7 +75,6 @@ export default function MyOrders({ token }) {
   //       toast.error(error?.response?.data?.message || 'Something Went Wrong!');
   //     })
   // };
-  console.log(allOrders);
 
   return (
     <>

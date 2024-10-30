@@ -60,7 +60,7 @@
     margin-top: 20px;
 }
 .addChatNote textarea{
-    width: 190px;
+    width: 100%;
     height: 190px;
     border-radius: 11px;
     padding: 10px;

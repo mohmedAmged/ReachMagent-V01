@@ -104,7 +104,7 @@ export default function MessageChatScreen() {
                 </div>
                 <div className="chatTextField__actions">
                     <form action="" className='chatFormContents'>
-                        <input type="text" />
+                        <input type="text" className='form-control'/>
                         <div className="send__btn">
                             <img src={send} alt="" />
                         </div>

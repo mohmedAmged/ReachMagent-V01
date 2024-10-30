@@ -64,7 +64,8 @@ import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
 import NewProductForm from './components/newProductItemForm/NewProductForm';
 import Pusher from 'pusher-js';
 import ShowOneECommProductInDash from './components/showOneE-commProductInDashSec/ShowOneECommProductInDash';
-
+import useNotifications from './functions/useNotifications';
+import MyNotfications from './pages/myNotficationsPage/MyNotfications';
 
 
 function App() {
@@ -90,7 +91,7 @@ function App() {
       setScrollToggle(true);
     } else {
       setScrollToggle(false);
-    }
+    };
   });
 
   // Webside dataQueries
@@ -101,6 +102,11 @@ function App() {
         Authorization: `Bearer ${token}`
       }
     }),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const [allowedCountrySearch, setAllowedcountrySearch] = useState([])
   const fetchAllowedCountries = async () => {
@@ -121,20 +127,40 @@ function App() {
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const selectedIndustriesQuery = useQuery({
     queryKey: ['selected-industries'],
     queryFn: () => getDataFromAPI('selected-industries'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const mainCategoriesQuery = useQuery({
     queryKey: ['main-categories'],
     queryFn: () => getDataFromAPI('main-categories'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const mainActivitiesQuery = useQuery({
     queryKey: ['main-activities'],
     queryFn: () => getDataFromAPI('main-activities'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const companiesQuery = useQuery({
     queryKey: ['companies'],
@@ -142,16 +168,30 @@ function App() {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }
-    ),
+    }),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const regionsQuery = useQuery({
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const citizenshipsQuery = useQuery({
     queryKey: ['citizenships'],
     queryFn: () => getDataFromAPI('citizenships'),
+    cacheTime: 300000,
+    staleTime: 600000,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   // const fetchCartItems = async () => {
   //   if (token) {
@@ -190,9 +230,6 @@ function App() {
   //   wishlistItems();
   // }, [loginType, token]);
 
- 
-
-
   if (token) {
     if (
       location.pathname === '/Login'
@@ -211,29 +248,15 @@ function App() {
     };
   };
 
+  const [loginnedUserId, setLoginnedUserId] = useState('');
+
   useEffect(() => {
-    const pusher = new Pusher('9b5d478389d4bbf7919c', {
-      cluster: 'ap2',
-      authEndpoint: '/api/pusher/auth',
-      auth: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    });
-    const channel = pusher.subscribe('user-notification-Employee1');
-
-    channel.bind('user-notification-event', (data) => {
-      toast.success(data);
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
+    if (Cookies.get('currentLoginedData')) {
+      setLoginnedUserId(JSON.parse(Cookies.get('currentLoginedData'))?.id);
     };
-  }, [token]);
+  }, [Cookies.get('currentLoginedData')]);
 
-
+  useNotifications(token, loginType, loginnedUserId);
 
   return (
     <>
@@ -317,7 +340,7 @@ function App() {
 
         <Route path='/profile/contact-form' element={<MyComanyForm token={token} />} />
         <Route path='/profile/products' element={<MyProducts token={token} />} />
-        <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories}  countries={countriesQuery?.data?.countries} token={token} />} />
+        <Route path='/profile/products/addNewItem' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />} />
         {/* <Route path='/profile/products/edit-item/:id' element={<NewProductForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} /> */}
         <Route path='/profile/products/show-one/:itemId' element={<ShowOneECommProductInDash token={token} />} />
 
@@ -344,8 +367,10 @@ function App() {
         <Route path='/profile/quotation-orders' element={<MyOrders token={token} />} />
         <Route path='/profile/quotation-orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
 
-        <Route path='/company-messages' element={<CompanyMessage />} />
-        <Route path='/your-messages' element={<MyMessage />} />
+        <Route path='/company-messages' element={<CompanyMessage token={token} />} />
+        <Route path='/your-messages' element={<MyMessage token={token} />} />
+
+        <Route path='/profile/notifications' element={<MyNotfications token={token} />} />
 
         <Route path='/profile/profile-settings' element={<MyProfileSettings countries={countriesQuery?.data?.countries} loginType={loginType} token={token} />} />
         <Route path='/profile/business-settings' element={<MyBussinessSettings mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />

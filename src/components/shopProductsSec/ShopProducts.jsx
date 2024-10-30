@@ -33,6 +33,9 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
   const [companiesAllowed, setCompaniesAllowed] = useState([]);
   const [categoriesAllowed, setCategoriesAllowed] = useState([]);
   const [subCategoriesAllowed, setSubCategoriesAllowed] = useState([]);
+  const [productBrand, setProductBrand] = useState([])
+  const [MadeInCountries, setMadeInCountries] = useState([])
+  const [allowedFilterCountries, setAllowedFilterCountries] = useState([])
   const [filterationObj, setFilterationObj] = useState({
     company: '',
     title: '',
@@ -41,6 +44,9 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
     sub_category: '',
     price_from: '',
     price_to: '',
+    brand: '',
+    made_in: '',
+    country_id: ''
   });
   const [slugURLObj, setSlugURLObj] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,7 +59,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
     };
   }, []);
 
-  const getCurrentAllowedCountriesAndCategories = async () => {
+  const getCurrentAllowedForFilter = async () => {
     setLoading(true);
     await axios.get(`${baseURL}/allowed-companies?t=${new Date().getTime()}`, {
       headers: {
@@ -82,6 +88,48 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
           duration: 1000,
         });
       });
+
+      await axios.get(`${baseURL}/allowed-brands-products?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          setProductBrand(response?.data?.data?.brands);
+        })
+        .catch(error => {
+          toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+            duration: 1000,
+          });
+        });  
+      
+        await axios.get(`${baseURL}/allowed-countries-products?t=${new Date().getTime()}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            setMadeInCountries(response?.data?.data?.countries);
+          })
+          .catch(error => {
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+              duration: 1000,
+            });
+          }); 
+
+          await axios.get(`${baseURL}/allowed-countries-has-products?t=${new Date().getTime()}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+            .then(response => {
+              setAllowedFilterCountries(response?.data?.data?.countries);
+            })
+            .catch(error => {
+              toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+                duration: 1000,
+              });
+            });   
     setLoading(false);
   };
 
@@ -138,7 +186,7 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
 
   useEffect(() => {
     getCurrentProducts();
-    getCurrentAllowedCountriesAndCategories();
+    getCurrentAllowedForFilter();
   }, []);
 
   const filterProducts = async () => {
@@ -150,9 +198,12 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
           company: filterationObj?.company,
           category: filterationObj?.category,
           sub_category: filterationObj?.sub_category,
-          price_from: filterationObj?.price_from,
-          price_to: filterationObj?.price_to,
+          // price_from: filterationObj?.price_from,
+          // price_to: filterationObj?.price_to,
           title: filterationObj?.title,
+          brand: filterationObj?.brand,
+          made_in: filterationObj?.made_in,
+          country_id: filterationObj?.country_id,
           sorting: filterationObj?.sorting,
           page: currentPage,
           limit: 12,
@@ -184,13 +235,13 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
       setFilterationObj({ ...filterationObj, [e?.target?.name]: e.target.value, sub_category: '' });
       setLoadingProducts(true);
       (async () => {
-        await axios.get(`${baseURL}/user/show-allowed-category/${e?.target?.value}?t=${new Date().getTime()}`, {
+        await axios.get(`${baseURL}/allowed-sub-categories-products/${e?.target?.value}?t=${new Date().getTime()}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
           .then(response => {
-            setSubCategoriesAllowed(response?.data?.data?.allowed_category?.subCategories);
+            setSubCategoriesAllowed(response?.data?.data?.subCategories);
           })
           .catch(error => {
             toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
@@ -208,7 +259,10 @@ export default function ShopProducts({ token, fetchCartItems, wishlistItems }) {
           category: '',
           sub_category: '',
           price_from: '',
-          price_to: ''
+          price_to: '',
+          brand: '',
+          made_in: '',
+          country_id: ''
         });
         navigate('/shop');
         window.location.reload();
@@ -253,8 +307,8 @@ console.log(products);
               headText='Ready To Buy Products'
               paraPartOne='Dive into thousands of products ready to buy today'
               paraPartTwo='in your region, from a needle to whatever you need'
-              categoryArr={companiesAllowed}
-              currentCompanyChosen={filterationObj?.company}
+              categoryArr={allowedFilterCountries}
+              currentCompanyChosen={filterationObj?.country_id}
               currentPage={'shop'}
               handleChangeFilterInputs={handleChangeFilterInputs}
             />
@@ -263,7 +317,7 @@ console.log(products);
                 <div className="row my-5">
                   <div className="col-lg-3 col-md-4">
                     <div className="sidebarForItemsFilter__handler">
-                      <div className="sidebarItemFilter">
+                      {/* <div className="sidebarItemFilter">
                         <div className="catalog__new__input">
                           <label htmlFor="shopFilterationSorting" className='d-flex justify-content-between align-items-center mb-3'>
                             <span>
@@ -286,7 +340,7 @@ console.log(products);
                             }
                           </select>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="sidebarItemFilter">
                         <div className="catalog__new__input">
                           <label htmlFor="shopFilterationtitle">Filter by Name</label>
@@ -298,6 +352,48 @@ console.log(products);
                             placeholder={`Enter your text`}
                             onChange={handleChangeFilterInputs}
                           />
+                        </div>
+                      </div>
+                      <div className="sidebarItemFilter">
+                        <div className="catalog__new__input">
+                          <label htmlFor="shopFilterationBrand">
+                            Filter by Brand
+                          </label>
+                          <select
+                            name="brand"
+                            id="shopFilterationBrand"
+                            className="form-control custom-select"
+                            defaultValue={filterationObj?.brand}
+                            onChange={handleChangeFilterInputs}
+                          >
+                            <option value="" disabled>Select a brand</option>
+                            {
+                              productBrand?.map(brand => (
+                                <option key={brand?.id} value={brand?.id}>{brand?.name}</option>
+                              ))
+                            }
+                          </select>
+                        </div>
+                      </div>
+                      <div className="sidebarItemFilter">
+                        <div className="catalog__new__input">
+                          <label htmlFor="shopFilterationMade">
+                            Filter by Made
+                          </label>
+                          <select
+                            name="made_in"
+                            id="shopFilterationMade"
+                            className="form-control custom-select"
+                            defaultValue={filterationObj?.made_in}
+                            onChange={handleChangeFilterInputs}
+                          >
+                            <option value="" disabled>Select a Made in</option>
+                            {
+                              MadeInCountries?.map(made => (
+                                <option key={made?.id} value={made?.id}>{made?.name}</option>
+                              ))
+                            }
+                          </select>
                         </div>
                       </div>
                       <div className="sidebarItemFilter">
@@ -315,7 +411,7 @@ console.log(products);
                             <option value="" disabled>Select a company</option>
                             {
                               companiesAllowed?.map(company => (
-                                <option key={company?.id} value={company?.id}>{company?.name}</option>
+                                <option key={company?.companyId} value={company?.companyId}>{company?.companyName}</option>
                               ))
                             }
                           </select>
@@ -336,7 +432,7 @@ console.log(products);
                             <option value="" disabled>Select Category</option>
                             {
                               categoriesAllowed?.map(cat => (
-                                <option key={cat?.id} value={cat?.id}>{cat?.name}</option>
+                                <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>{cat?.mainCategoryName}</option>
                               ))
                             }
                           </select>
@@ -357,13 +453,13 @@ console.log(products);
                             <option value="" disabled>Select Sub-Category</option>
                             {
                               subCategoriesAllowed?.map(sub => (
-                                <option key={sub?.id} value={sub?.id}>{sub?.name}</option>
+                                <option key={sub?.subCategoryId} value={sub?.subCategoryId}>{sub?.subCategoryName}</option>
                               ))
                             }
                           </select>
                         </div>
                       </div>
-                      <div className="sidebarItemFilter">
+                      {/* <div className="sidebarItemFilter">
                         <div className="catalog__new__input">
                           <label>
                             Filter by Price
@@ -398,7 +494,7 @@ console.log(products);
                             onMouseUp={handleMouseUpOnRange}
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="sidebarItemFilter">
                         <button className='clearFilterBtn' onClick={() => {
                           setFilterationObj({
