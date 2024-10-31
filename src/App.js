@@ -256,13 +256,15 @@ function App() {
     };
   }, [Cookies.get('currentLoginedData')]);
 
-  useNotifications(token, loginType, loginnedUserId);
+  const [fireNotification, setFireNotification] = useState(false);
+
+  useNotifications(token, loginType, loginnedUserId, setFireNotification);
 
   return (
     <>
 
       {
-        location.pathname.includes('profile') ? <></> : <MyNavBar loginType={loginType} token={token} scrollToggle={scrollToggle} />
+        location.pathname.includes('profile') ? <></> : <MyNavBar fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
       }
 
       <Toaster position="top-right" reverseOrder={false} />
@@ -370,7 +372,7 @@ function App() {
         <Route path='/company-messages' element={<CompanyMessage token={token} />} />
         <Route path='/your-messages' element={<MyMessage token={token} />} />
 
-        <Route path='/profile/notifications' element={<MyNotfications token={token} />} />
+        <Route path='/profile/notifications' element={<MyNotfications fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />} />
 
         <Route path='/profile/profile-settings' element={<MyProfileSettings countries={countriesQuery?.data?.countries} loginType={loginType} token={token} />} />
         <Route path='/profile/business-settings' element={<MyBussinessSettings mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />

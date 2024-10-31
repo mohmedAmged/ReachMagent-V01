@@ -1,13 +1,39 @@
 .notificationIcon__handler{
     position: relative;
 }
+.notificationCount__num{
+    position: absolute;
+    top: -16px;
+    right: -10px;
+    font-size: 12px;
+    /* background: var(--main-turquoise); */
+    background: var(--sale-color);
+    color: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+.iconItemBox{
+    background: rgba(221, 221, 221, 0.719);
+    padding: 20px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 .notificationIcon__handler i{
+    margin: 0 !important;
     cursor: pointer;
-    color: var(--main-blue-color) !important;
-    transition: all .3s ease-in-out;
+    color: #edca56 !important;
 }
 .notificationIcon__handler i:hover{
-    color: rgba(1, 187, 233, 0.906) !important;
+    color: #e7bd32 !important;
+  
 }
 .notficationBody__handler{
     position: absolute;
@@ -28,6 +54,7 @@
     visibility: visible;
     opacity: 1;
     transform: translateY(10px);
+    z-index: 200;
 }
 .notficationBody__handler.hide {
     transform: translateY(0);

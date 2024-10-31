@@ -3,7 +3,7 @@ import { baseURL } from './baseUrl';
 import toast from 'react-hot-toast';
 import Pusher from 'pusher-js';
 
-const useNotifications = (token, loginType, loginnedUserId) => {
+const useNotifications = (token, loginType, loginnedUserId, setFireNotification) => {
     const isEventBound = useRef(false);
 
     // useEffect(() => {
@@ -26,7 +26,7 @@ const useNotifications = (token, loginType, loginnedUserId) => {
 
             if (!isEventBound.current) {
                 channel.bind('user-notification-event', (data) => {
-                    console.log(data)
+                    
                     if (data && data.length > 0) {
                         toast.success(`${data[0]?.title}\n${data[0]?.body}`, {
                             duration: 3000,
@@ -36,6 +36,7 @@ const useNotifications = (token, loginType, loginnedUserId) => {
                             duration: 3000,
                         });
                     }
+                    setFireNotification(true);
                 });
                 isEventBound.current = true;
             }

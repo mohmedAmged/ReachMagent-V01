@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import defaultImage from '../../assets/images.png';
 import NotificationIcon from '../notficationIconSec/NotificationIcon';
 
-export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems }) {
+export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, setFireNotification, fireNotification }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
 
@@ -75,7 +75,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
                         aria-label="Close"
                     >
-                        <NotificationIcon />
+                        <NotificationIcon setFireNotification={setFireNotification} fireNotification={fireNotification} token={token}/>
 
                     </NavLink>
                     </div>
@@ -162,7 +162,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             className='nav-link nav__link__style logoutBtn showNumHandler'
                                             aria-label="Close"
                                         >
-                                            <NotificationIcon />
+                                            <NotificationIcon fireNotification={fireNotification} setFireNotification={setFireNotification} token={token}/>
 
                                         </NavLink>
                                         <NavLink

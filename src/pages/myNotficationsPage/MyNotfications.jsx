@@ -9,7 +9,7 @@ import { Table } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import checkIcon from '../../assets/icons/check-lg.svg'
-export default function MyNotfications({ token }) {
+export default function MyNotfications({ token, fireNotification, setFireNotification }) {
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [unAuth, setUnAuth] = useState(false);
@@ -17,8 +17,12 @@ export default function MyNotfications({ token }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate()
+
     const getAllNotifications = async (params) => {
-        await axios.get(`${baseURL}/${loginType}/all-notifications${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
+        const slug = loginType === 'user' ? `${loginType}/all-notifications`
+        :
+        `${loginType}/company-all-notifications`
+        await axios.get(`${baseURL}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -33,10 +37,14 @@ export default function MyNotfications({ token }) {
                 };
                 toast.error(error?.response?.data?.message || 'Something Went Wrong');
             });
+            setFireNotification(false)
     };
     const handleDeleteThisProduct = async (id) => {
+        const slug = loginType === 'user' ? `${loginType}/delete-notification`
+        :
+        `${loginType}/company-delete-notification`
         try {
-            const response = await axios?.delete(`${baseURL}/${loginType}/delete-notification/${id}`, {
+            const response = await axios?.delete(`${baseURL}/${slug}/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -53,8 +61,11 @@ export default function MyNotfications({ token }) {
         }
     };
     const handleDeleteAllNotification = async () => {
+        const slug = loginType === 'user' ? `${loginType}/delete-all-notifications`
+        :
+        `${loginType}/company-delete-all-notifications`
         try {
-            const response = await axios?.delete(`${baseURL}/${loginType}/delete-all-notifications`, {
+            const response = await axios?.delete(`${baseURL}/${slug}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -71,8 +82,11 @@ export default function MyNotfications({ token }) {
         }
     };
     const handleReadOneNotification = async (NotifId) => {
+        const slug = loginType === 'user' ? `${loginType}/read-one-notification`
+        :
+        `${loginType}/company-read-one-notification`
         try {
-            const response = await axios?.post(`${baseURL}/${loginType}/read-one-notification`, {
+            const response = await axios?.post(`${baseURL}/${slug}`, {
                 id: NotifId
             }, {
                 headers: {
@@ -96,8 +110,11 @@ export default function MyNotfications({ token }) {
     }
 
     const handleMArkAllRead = async () => {
+        const slug = loginType === 'user' ? `${loginType}/mark-all-as-read`
+        :
+        `${loginType}/company-mark-all-as-read`
         try {
-            const response = await axios?.get(`${baseURL}/${loginType}/mark-all-as-read`, {
+            const response = await axios?.get(`${baseURL}/${slug}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -121,7 +138,23 @@ export default function MyNotfications({ token }) {
 
     useEffect(() => {
         getAllNotifications();
-    }, [currentPage]);
+    }, [currentPage, token, fireNotification]);
+
+    const handleNavigation = (target, id) => {
+        if (target === 'booked_appointments') {
+            navigate(`/profile/booked-appointments`);
+        } else if (target === 'one_click_quotation') {
+            navigate(`/profile/companyoneclick-quotations/${id}`);
+        } else if (target === 'quotation') {
+            navigate(`/profile/quotations/${id}`);
+        } else if (target === 'quotation_order') {
+            navigate(`/profile/quotation-orders/${id}`);
+        } else if (target === 'followers') {
+            navigate(`/profile/followers`);
+        } else {
+            console.warn(`Unhandled target: ${target}`);
+        }
+    };
 
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
@@ -145,7 +178,8 @@ export default function MyNotfications({ token }) {
                                     <>
                                         <div className="d-flex justify-content-between flex-wrap">
                                             <button type="button" className="markBtnHandler"
-                                                onClick={() => handleMArkAllRead()}>
+                                                onClick={() => handleMArkAllRead()}
+                                                >
                                                 <span className="button__text">Mark all as read</span>
                                                 <span className="button__icon">
                                                     <i className="bi bi-check-lg"></i>
@@ -172,42 +206,43 @@ export default function MyNotfications({ token }) {
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                {
-                                                    allNotifications?.map((el) => (
-                                                        <tr key={el?.id}>
-                                                            <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                                                <div className='product__breif__detail d-flex '>
-                                                                    <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(el?.id)}></i>
-                                                                    <div className="product__img">
-                                                                        <img src={el?.image} alt="sender-img" />
-                                                                    </div>
-                                                                    <div className="product__info">
-                                                                        <h2>
-                                                                            {el?.name}
-                                                                        </h2>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                                                {el?.target}
-                                                            </td>
-                                                            <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                                                {el?.date}
-                                                            </td>
-                                                            <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                                                {el?.message}
-                                                            </td>
-                                                            <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                                                <i className="bi bi-box-arrow-up-right" onClick={() => {
-                                                                    handleReadOneNotification(el?.id)
-                                                                    navigate(`${el?.target === 'followers' ? '/profile/followers' : '/profile'}`)
-                                                                }}></i>
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                }
-                                            </tbody>
+                <tbody>
+                    {
+                        allNotifications?.map((el) => (
+                            <tr key={el?.id}>
+                                <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
+                                    <div className='product__breif__detail d-flex '>
+                                        <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(el?.id)}></i>
+                                        <div className="product__img">
+                                            <img src={el?.image} alt="sender-img" />
+                                        </div>
+                                        <div className="product__info">
+                                            <h2>
+                                                {el?.name}
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
+                                    {el?.target}
+                                </td>
+                                <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
+                                    {el?.date}
+                                </td>
+                                <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
+                                    {el?.message}
+                                </td>
+                                <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
+                                    <i className="bi bi-box-arrow-up-right" onClick={() => {
+                                        handleReadOneNotification(el?.id)
+                                        // navigate(`${el?.target === 'followers' ? '/profile/followers' : '/profile'}`)
+                                        handleNavigation(el.target, el.id)
+                                    }}></i>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
                                         </Table>
                                         {
                                             totalPages > 1 &&

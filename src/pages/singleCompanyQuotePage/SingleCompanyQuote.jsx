@@ -155,9 +155,11 @@ export default function SingleCompanyQuote({ token, countries }) {
     // add product to selected products
     const handleAddProduct = (product) => {
         const addedProduct = {
-            type: product?.type,
+            type: requestIntries?.type || product?.type,
             item_id: `${product?.id}`
         };
+        console.log(product);
+        
         (async () => {
             const toastId = toast.loading('Loading...');
             await axios.post(`${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
@@ -295,7 +297,8 @@ export default function SingleCompanyQuote({ token, countries }) {
                 });
         })();
     };
-
+    console.log(cart);
+    
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -461,7 +464,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                             }}
                                         >
                                             {currentProd?.map((el) => {
-                                                const isAdded = cart?.some((selectedProduct) => +selectedProduct.item.id === +el?.id);
+                                                const isAdded = cart?.some((selectedProduct) => selectedProduct.item.slug === el?.slug);
                                                 return (
                                                     <SwiperSlide className=' my-3' key={el?.id}>
                                                         <LastMinuteCard

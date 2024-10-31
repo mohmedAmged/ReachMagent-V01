@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './notificationIcon.css'
 import notIcon from '../../assets/icons/bell-fill.svg'
-import { useNavigate } from 'react-router-dom'
-export default function NotificationIcon() {
+import { NavLink, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
+import toast from 'react-hot-toast'
+import { scrollToTop } from '../../functions/scrollToTop'
+export default function NotificationIcon({ token, fireNotification, setFireNotification }) {
     const navigate = useNavigate()
+    const loginType = localStorage.getItem('loginType');
     const [showNotifications, setShowNotifications] = useState(false);
+    const [unAuth, setUnAuth] = useState(false);
+    const [notsItems, setNotsItems] = useState([])
+    const [notsCount, setNotsCount] = useState(0)
     const notificationRef = useRef(null);
     const iconRef = useRef(null);
 
@@ -15,12 +23,12 @@ export default function NotificationIcon() {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
-                notificationRef.current && 
+                notificationRef.current &&
                 !notificationRef.current.contains(event.target) &&
-                iconRef.current && 
+                iconRef.current &&
                 !iconRef.current.contains(event.target)
             ) {
-                setShowNotifications(false); 
+                setShowNotifications(false);
             }
         };
 
@@ -30,32 +38,110 @@ export default function NotificationIcon() {
         };
     }, [notificationRef, iconRef]);
 
+    //     await axios.get(`${baseURL}/${loginType}/all-notifications?t=${new Date().getTime()}`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`
+    //         }
+    //     })
+    //         .then(response => {
+    //             setNotsItems(response?.data?.data?.notifications);
+    //             setNotsCount(response?.data?.data?.count);
+    //         })
+    //         .catch(error => {
+    //             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+    //                 setUnAuth(true);
+    //             };
+    //             toast.error(error?.response?.data?.message || 'Something Went Wrong');
+    //         });
+    // };
+    const getLatestNotifications = async () => {
+        const slug = loginType === 'user' ? `${loginType}/latest-notifications`
+            :
+            `${loginType}/company-latest-notifications`
+        try {
+            const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotsItems(response?.data?.data?.notifications);
+            setNotsCount(response?.data?.data?.count);
+        } catch (error) {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+        }
+        setFireNotification(false);
+    };
 
-    const nostsItems = [
-        {
-            notTitle: 'New Challenge is now open!',
-            img: notIcon,
-            notLink: '/profile/',
-            notBody: 'loremloremloremlorem'
-        },
-        {
-            notTitle: 'New Challenge is now open!',
-            img: notIcon,
-            notLink: '/profile/',
-            notBody: 'loremloremloremlorem'
-        },
-        {
-            notTitle: 'New Challenge is now open!',
-            img: notIcon,
-            notLink: '/profile/',
-            notBody: 'loremloremloremlorem'
-        },
-    ]
+    const markLatestRead = async () => {
+        const slug = loginType === 'user' ? `${loginType}/mark-latest-read`
+            :
+            `${loginType}/company-mark-latest-read`
+        try {
+            await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotsCount(0)
+        } catch (error) {
+            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                setUnAuth(true);
+            };
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+        }
+    };
+
+
+    // const handleNavigation = (target, id) => {
+    //     if (target === 'booked_appointments') {
+    //         navigate(`/profile/booked-appointments`);
+    //     } else if (target === 'one_click_quotation') {
+    //         navigate(`/profile/companyoneclick-quotations/${id}`);
+    //     } else if (target === 'quotation') {
+    //         navigate(`/profile/quotations/${id}`);
+    //     } else if (target === 'quotation_order') {
+    //         navigate(`/profile/quotation-orders/${id}`);
+    //     } else if (target === 'followers') {
+    //         navigate(`/profile/followers`);
+    //     } else {
+    //         console.warn(`Unhandled target: ${target}`);
+    //     }
+    // };
+
+
+    window.onscroll = () => {
+        if (showNotifications === true) {
+            setShowNotifications(false);
+        };
+    };
+    console.log(notsCount);
+
+    useEffect(() => {
+        getLatestNotifications();
+    }, [loginType, token, fireNotification]);
+
 
     return (
         <div className='notificationIcon__handler'>
-            <i ref={iconRef} className="bi bi-bell-fill" onClick={toggleNotifications}></i>
-            <div 
+            {
+                notsCount !== 0 && (
+                    <div className="notificationCount__num">
+                        {notsCount}
+                    </div>
+                )
+            }
+
+            <div className="iconItemBox">
+                <i ref={iconRef} className="bi bi-bell-fill"
+                    onClick={() => {
+                        toggleNotifications();
+                        markLatestRead();
+                    }}></i>
+            </div>
+            <div
                 ref={notificationRef}
                 className={`notficationBody__handler ${showNotifications ? 'show' : 'hide'}`}
             >
@@ -65,24 +151,48 @@ export default function NotificationIcon() {
                     </h3>
                 </div>
                 <div className="NotsItems_Box">
-                    {
-                        nostsItems?.map((el,idx)=>(
-                            <div onClick={()=>(
-                                navigate(`${el?.notLink}`)
-                            )} key={idx} className="notItem d-flex align-items-center gap-2">
-                                <img src={el?.img} alt="" />
-                                <div className="itemInfo">
-                                    <h5>
-                                        {el.notTitle}
-                                    </h5>
-                                    <p>
-                                        {el?.notBody}
-                                    </p>
-                                </div>
-                            </div>
-                        ))
+                    {notsItems?.length !== 0 ?
+                        <>
+                            {
+                                notsItems?.map((el, idx) => (
+                                    <div  
+                                    
+                                        key={idx} 
+                                        className="notItem d-flex align-items-center gap-2"
+                                    >
+                                        <img src={el?.image} alt="" />
+                                        <div className="itemInfo">
+                                            <h5>
+                                                {el.title}
+                                            </h5>
+                                            <p>
+                                                {el?.message}
+                                            </p>
+                                            {/* <button 
+                                            onClick={
+                                                () => handleNavigation(el.target, el.id)
+                                                } 
+                                            >
+                                                view details
+                                            </button> */}
+                                        </div>
+                                        {/* <NavLink to={() => handleNavigation(el.target, el.id)} className={'nav-link'}>
+                                            view details
+                                        </NavLink> */}
+                                    </div>
+                                ))
+                            }
+                        </>
+                        :
+                        <p className='mt-4'>
+                            there no new notifications!
+                        </p>
                     }
-                    <button className='viewMoreNotfiBtn'>view more</button>
+                    <NavLink to={'/profile/notifications'} className={'nav-link'}>
+                        <button className='viewMoreNotfiBtn' >
+                            view more
+                        </button>
+                    </NavLink>
                 </div>
             </div>
         </div>
