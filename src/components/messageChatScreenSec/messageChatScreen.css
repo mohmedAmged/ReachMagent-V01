@@ -97,10 +97,33 @@
     align-items: center;
     background: #02307E;
     cursor: pointer;
+    outline: none;
+    border: none;
 
 }
 .chatFormContents .send__btn img{
 width: 24px;
 height: 24px;
 object-fit: contain;
+}
+.fileHandler {
+    width: 30px; 
+    height: 30px; 
+    position: absolute; 
+    left: 8px;
+    top: 50%; 
+    transform: translateY(-50%);
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #000;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; 
+}
+.fileHandler:hover {
+    background-color: #02307E;
+    color: #ffffff;
 }

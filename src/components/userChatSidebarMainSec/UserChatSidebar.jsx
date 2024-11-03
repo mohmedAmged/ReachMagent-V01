@@ -4,7 +4,8 @@ import avatar1 from '../../assets/messageImages/Avatar1.png'
 import avatar2 from '../../assets/messageImages/Avatar2.png'
 import avatar3 from '../../assets/messageImages/Avatar3.png'
 
-export default function UserChatSidebar() {
+export default function UserChatSidebar({chats,setActiveChat}) {
+    console.log(chats)
     const messgaeChatsItems = [
         {
             chatName: 'Jumia',
@@ -56,7 +57,7 @@ export default function UserChatSidebar() {
             messageTime: '9:12 PM',
             chatStatu: 'online'
         },
-    ]
+    ];
     return (
         <div className='userChatSidebar__content'>
             <div className="container">
@@ -75,20 +76,20 @@ export default function UserChatSidebar() {
                             </p>
                         </div>
                     </div>
-                    <div className="yourStatusInfo w-50">
+                    {/* <div className="yourStatusInfo w-50">
                         <select name="" id="" className='form-select'>
                             <option value="" disabled>change Status</option>
                             <option value="">online</option>
                             <option value="">offline</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
-                <div className="yourSearchUsers">
+                {/* <div className="yourSearchUsers">
                     <div className="form__part input__search__part w-100">
                         <i className="bi bi-search"></i>
                         <input type="text" placeholder='Search...' />
                     </div>
-                </div>
+                </div> */}
                 <div className="yourChatsPart">
                     {
                         messgaeChatsItems?.map((item, index) => {

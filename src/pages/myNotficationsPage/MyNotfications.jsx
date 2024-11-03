@@ -236,7 +236,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                     <i className="bi bi-box-arrow-up-right" onClick={() => {
                                         handleReadOneNotification(el?.id)
                                         // navigate(`${el?.target === 'followers' ? '/profile/followers' : '/profile'}`)
-                                        handleNavigation(el.target, el.id)
+                                        handleNavigation(el.target, el.sender_id)
                                     }}></i>
                                 </td>
                             </tr>

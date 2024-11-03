@@ -369,8 +369,10 @@ function App() {
         <Route path='/profile/quotation-orders' element={<MyOrders token={token} />} />
         <Route path='/profile/quotation-orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
 
-        <Route path='/company-messages' element={<CompanyMessage token={token} />} />
-        <Route path='/your-messages' element={<MyMessage token={token} />} />
+        {/* <Route path='/company-messages' element={<CompanyMessage token={token} />} /> */}
+        
+        <Route path='/your-messages' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
+        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
 
         <Route path='/profile/notifications' element={<MyNotfications fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />} />
 
