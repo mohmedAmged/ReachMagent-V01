@@ -8,7 +8,7 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 
-export default function MessageChatScreen({ loginType, messages, token, activeChat, loadOlderMessages, hasMore, loadingActiveChat, chatSettings }) {
+export default function MessageChatScreen({ loginType, messages, token, activeChat, loadOlderMessages, hasMore, loadingActiveChat, chatSettings, fireMessage, setFireMessage }) {
     const { register, handleSubmit, setValue, formState: { isSubmitting } } = useForm({
         defaultValues: {
             message: '',
@@ -41,13 +41,56 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
         setAttachmentsPreview(files);
     };
 
+    // const sendMessage = async (data) => {
+    //     if (!data.message && (!data.attachments || data.attachments.length === 0)) {
+    //         toast.error('Please provide a message or add an attachment.');
+    //         return;
+    //     }
+    //     const toastId = toast.loading('Sending message...');
+    //     const formData = new FormData();
+    //     if (chatSettings?.code) {
+    //         formData.append('chat_code', chatSettings.code);
+    //     }
+    //     if (data.message) {
+    //         formData.append('message', data.message);
+    //     }
+    //     if (Array.isArray(data.attachments) && data.attachments.length > 0) {
+    //         data.attachments.forEach((file) => {
+    //             formData.append('attachments[]', file);
+    //         });
+    //     }
+
+    //     try {
+    //         const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'multipart/form-data',
+    //                 'Authorization': `Bearer ${token}`,
+    //             }
+    //         })
+    //         console.log(res?.data?.message);
+    //         toast.success(res?.data?.message || 'Message sent successfully', {
+    //             id: toastId,
+    //             duration: 1000
+    //         });
+    //         setAttachmentsPreview([]);
+    //         setValue('message', '');
+    //         setValue('attachments', []);
+    //         setFireMessage(true)
+    //     } catch (error) {
+    //         console.log(error?.response?.data);
+    //         toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+    //             id: toastId,
+    //             duration: 1000
+    //         });
+    //     };
+    // };
+
     const sendMessage = async (data) => {
         if (!data.message && (!data.attachments || data.attachments.length === 0)) {
             toast.error('Please provide a message or add an attachment.');
             return;
         }
-        const toastId = toast.loading('Sending message...');
-        // data.chat_code = chatSettings?.code;
         const formData = new FormData();
         if (chatSettings?.code) {
             formData.append('chat_code', chatSettings.code);
@@ -55,50 +98,59 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
         if (data.message) {
             formData.append('message', data.message);
         }
-        // formData.append('chat_code', data.chat_code); 
-        // formData.append('message', data.message);
-        // Object?.keys(data)?.forEach((key) => {
-        //     if (key !== 'attachments') {
-        //         formData?.append(key, data[key]);
-        //     } else if (Array.isArray(data.attachments)) {
-        //         data.attachments.forEach((file) => {
-        //             formData.append('attachments', file);
-        //         });
-        //     }
-        // });
         if (Array.isArray(data.attachments) && data.attachments.length > 0) {
             data.attachments.forEach((file) => {
                 formData.append('attachments[]', file);
             });
         }
-
-
-        try {
-            const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
+    
+        const maxRetries = 5; // Maximum number of retries
+        let attempt = 0;
+        let delay = 1000; // Initial delay in milliseconds
+    
+        while (attempt < maxRetries) {
+            const toastId = toast.loading('Sending message...');
+    
+            try {
+                const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                toast.success(res?.data?.message || 'Message sent successfully', { id: toastId, duration: 1000 });
+                setAttachmentsPreview([]);
+                setValue('message', '');
+                setValue('attachments', []);
+                setFireMessage(true); 
+                break; 
+    
+            } catch (error) {
+                toast.dismiss(toastId); 
+                if (error.response?.status === 429) { 
+                    attempt++;
+                    toast.error(`Too many attempts. Retrying in ${delay / 1000} seconds...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; 
+    
+                } else {
+                    toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+                    break; 
                 }
-            })
-            console.log(res?.data?.message);
-            toast.success(res?.data?.message || 'Message sent successfully', {
-                id: toastId,
-                duration: 1000
-            });
-            setAttachmentsPreview([]);
-            setValue('message', '');
-            setValue('attachments', []);
-
-        } catch (error) {
-            console.log(error?.response?.data);
-            toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
-                id: toastId,
-                duration: 1000
-            });
-        };
+            }
+        }
+    
+        // If all retries are exhausted
+        if (attempt === maxRetries) {
+            toast.error('Maximum retry limit reached. Please try again later.');
+        }
     };
-
+    useEffect(() => {
+        if (fireMessage) {
+            setFireMessage(false);
+        }
+    }, [fireMessage]);
     return (
         <div className='messageChatScreen__handler'>
             <div className="container">
@@ -187,7 +239,6 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                                                     {message?.type === 'text' && (
                                                         <p>
                                                             {message?.message}
-
                                                         </p>
                                                     )
                                                     }
@@ -195,7 +246,23 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                                                         <img style={{ width: '100px', height: "100px", borderRadius: "8px" }} src={message?.message} alt="" />
                                                     )
                                                     }
-
+                                                    {message?.type === 'audio' && (
+                                                        <audio controls>
+                                                            <source src={message?.message} type="audio/mpeg" />
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                    )}
+                                                    {message?.type === 'video' && (
+                                                        <video style={{ width: '100px', height: "100px", borderRadius: "8px" }} controls>
+                                                            <source src={message?.message} type="video/mp4" />
+                                                            Your browser does not support the video element.
+                                                        </video>
+                                                    )}
+                                                    {message?.type === 'file' && (
+                                                        <a href={message?.message} target="_blank" rel="noopener noreferrer" download>
+                                                            Download File
+                                                        </a>
+                                                    )}
                                                 </div>
                                             </>
                                         }
@@ -232,7 +299,7 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                     }
                 </div>
                 <div className="chatTextField__actions position-relative">
-                    <form onSubmit={handleSubmit(sendMessage)} className='chatFormContents'>
+                    <form onSubmit={handleSubmit(sendMessage) } className='chatFormContents'>
                         <div className="fileHandler">
                             <input
                                 type="file"

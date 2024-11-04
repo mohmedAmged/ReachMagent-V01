@@ -21,6 +21,7 @@ export default function MyMessage({ token, loginnedUserId }) {
     const [hasMore, setHasMore] = useState(true);
     const [loadingActiveChat, setLoadingActiveChat] = useState(false);
     const [loadingAllChats, setLoadingAllChats] = useState(false);
+    const [fireMessage, setFireMessage] = useState(false);
 
     const getAllChats = async () => {
         try {
@@ -42,7 +43,7 @@ export default function MyMessage({ token, loginnedUserId }) {
         if (token && loginType) {
             getAllChats();
         };
-    }, [token, loginType, messages]);
+    }, [token, loginType, messages, fireMessage]);
 
     const showActiveChat = async (page = 1) => {
         setLoadingActiveChat(true);
@@ -69,15 +70,16 @@ export default function MyMessage({ token, loginnedUserId }) {
         } finally {
             setLoadingActiveChat(false);
         };
+        setFireMessage(false)
     };
 
     useEffect(() => {
         if (activeChatId) {
             showActiveChat();
         };
-    }, [activeChatId, activeChat]);
+    }, [activeChatId, activeChat, fireMessage]);
 
-    useMessaging(token, loginType, activeChat, loginnedUserId);
+    useMessaging(token, loginType, activeChat, loginnedUserId, setFireMessage);
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 500);
@@ -106,6 +108,8 @@ console.log(messages);
                                     hasMore={hasMore}
                                     chatSettings={chatSettings}
                                     loadingActiveChat={loadingActiveChat}
+                                    fireMessage={fireMessage}
+                                    setFireMessage={setFireMessage}
                                     />
                                 </div>
                             </div>

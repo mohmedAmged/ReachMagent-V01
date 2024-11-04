@@ -2,7 +2,7 @@ import Pusher from 'pusher-js';
 import { useRef } from 'react';
 import { baseURL } from './baseUrl';
 
-export default function useMessaging( token, loginType, activeChat, loginnedUserId ) {
+export default function useMessaging( token, loginType, activeChat, loginnedUserId, setFireMessage ) {
     const isEventBound = useRef(false);
     if (token && loginType && activeChat && loginnedUserId) {
         const pusher = new Pusher('9b5d478389d4bbf7919c', {
@@ -14,6 +14,7 @@ export default function useMessaging( token, loginType, activeChat, loginnedUser
                     Authorization: `Bearer ${token}`,
                 },
             },
+            
         });
         Pusher.logToConsole = false;
         const channelName = `private-chat-notification-${loginType === 'user' ? 'User' : 'Employee'}${loginnedUserId}`;
@@ -21,6 +22,7 @@ export default function useMessaging( token, loginType, activeChat, loginnedUser
         if (!isEventBound.current) {
             channel.bind('chat-notification-event', (data) => {
                 console.log(data);
+                setFireMessage(true)
             });
             isEventBound.current = false;
         };
