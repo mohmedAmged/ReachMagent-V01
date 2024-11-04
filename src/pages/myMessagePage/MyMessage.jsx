@@ -16,6 +16,9 @@ export default function MyMessage({ token, loginnedUserId }) {
     const [chats, setChats] = useState([]);
     const [activeChat, setActiveChat] = useState(activeChatId);
     const [messages, setMessages] = useState([]);
+    const [chatSettings, setChatSettings] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [loadingActiveChat, setLoadingActiveChat] = useState(false);
     const [loadingAllChats, setLoadingAllChats] = useState(false);
 
@@ -41,7 +44,7 @@ export default function MyMessage({ token, loginnedUserId }) {
         };
     }, [token, loginType, messages]);
 
-    const showActiveChat = async () => {
+    const showActiveChat = async (page = 1) => {
         setLoadingActiveChat(true);
         try {
             const res = await axios.post(`${baseURL}/${loginType}/get-chat?t=${new Date().getTime()}`, {
@@ -50,9 +53,17 @@ export default function MyMessage({ token, loginnedUserId }) {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: {
+                    page,
+                },
             });
-            console.log(res?.data?.data);
-            setMessages(res?.data?.data);
+            // console.log(res?.data?.data);
+            // setMessages(res?.data?.data);
+            const newMessages = res?.data?.data?.messages.messages;
+            setChatSettings(res?.data?.data?.chat)
+            setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages, ]);
+            setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
+            setCurrentPage(page);
         } catch (error) {
             setError(error?.response?.data?.message || 'Failed to load messages');
         } finally {
@@ -71,6 +82,8 @@ export default function MyMessage({ token, loginnedUserId }) {
     useEffect(() => {
         setTimeout(() => setLoading(false), 500);
     }, []);
+    
+console.log(messages);
 
     return (
         <>
@@ -87,7 +100,13 @@ export default function MyMessage({ token, loginnedUserId }) {
                                     </div>
                                 </div>
                                 <div className="col-lg-8 col-md-8 col-sm-12">
-                                    <MessageChatScreen loginType={loginType} token={token} messages={messages} activeChat={activeChat} />
+                                    <MessageChatScreen 
+                                    loginType={loginType} token={token} messages={messages} activeChat={activeChat} 
+                                    loadOlderMessages={() => showActiveChat(currentPage + 1)}
+                                    hasMore={hasMore}
+                                    chatSettings={chatSettings}
+                                    loadingActiveChat={loadingActiveChat}
+                                    />
                                 </div>
                             </div>
                         </div>

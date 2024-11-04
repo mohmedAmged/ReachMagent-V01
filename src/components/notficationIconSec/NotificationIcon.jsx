@@ -117,7 +117,6 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
             setShowNotifications(false);
         };
     };
-    console.log(notsCount);
 
     useEffect(() => {
         getLatestNotifications();

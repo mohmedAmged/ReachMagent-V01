@@ -3,9 +3,10 @@ import './userChatSidebar.css'
 import avatar1 from '../../assets/messageImages/Avatar1.png'
 import avatar2 from '../../assets/messageImages/Avatar2.png'
 import avatar3 from '../../assets/messageImages/Avatar3.png'
+import { useNavigate } from 'react-router-dom'
 
 export default function UserChatSidebar({chats,setActiveChat}) {
-    console.log(chats)
+    const navigate = useNavigate()
     const messgaeChatsItems = [
         {
             chatName: 'Jumia',
@@ -92,29 +93,34 @@ export default function UserChatSidebar({chats,setActiveChat}) {
                 </div> */}
                 <div className="yourChatsPart">
                     {
-                        messgaeChatsItems?.map((item, index) => {
+                        chats?.map((item, index) => {
                             return (
-                                <div key={index} className={`messageChatItem ${item.activeHover}`}>
+                                <div onClick={()=>{navigate(`/your-messages/${item?.id}`)}} key={index} className={`messageChatItem ${item.activeHover}` }>
                                     <div className="messageChatMainInfo">
                                         <div className="messageChatImg">
-                                            <span className={`${item.chatStatu} chatStatuNow`}></span>
-                                            <img src={item.chatImg} alt="avatar-2" />
+                                            {/* <span className={`${item.chatStatu} chatStatuNow`}></span> */}
+                                            <img src={item?.receiverImage} alt="avatar-2" />
                                         </div>
                                         <div className="messageChatInfo">
                                             <div className="messageChatName">
                                                 <h3>
-                                                    {item.chatName}
+                                                    {item?.receiverName}
                                                 </h3>
                                             </div>
                                             <div className="messageChatContent">
-                                                <p>
-                                                    {item.chatMessage}
-                                                </p>
+                                                {
+                                                    item?.type === 'text' &&(
+                                                        <p>
+                                                          {item?.sendBy}: {item?.message?.slice(0,30)}
+                                                        </p>
+                                                    )
+                                                   
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                     <div className="timeOfMessage">
-                                        <span>{item.messageTime}</span>
+                                        <span>{item?.date} {item?.time}</span>
                                     </div>
                                 </div>
                             )

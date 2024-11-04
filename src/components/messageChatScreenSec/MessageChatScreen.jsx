@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './messageChatScreen.css'
 import avatar3 from '../../assets/messageImages/Avatar3.png'
 import avatar1 from '../../assets/messageImages/Ellipse 159.png'
@@ -8,58 +8,94 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 
-export default function MessageChatScreen({ loginType, messagees, token, activeChat }) {
+export default function MessageChatScreen({ loginType, messages, token, activeChat, loadOlderMessages, hasMore, loadingActiveChat, chatSettings }) {
     const { register, handleSubmit, setValue, formState: { isSubmitting } } = useForm({
         defaultValues: {
             message: '',
-            attachments: '',
+            attachments: [],
+            chat_code: ''
         },
     });
-
+    const [attachmentsPreview, setAttachmentsPreview] = useState([]);
+    const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
+
+    const handleScroll = () => {
+        if (chatContainerRef.current.scrollTop === 0 && hasMore) {
+            loadOlderMessages();
+        }
+    };
+    useEffect(() => {
+        const chatContainer = chatContainerRef.current;
+        chatContainer.addEventListener('scroll', handleScroll);
+        return () => chatContainer.removeEventListener('scroll', handleScroll);
+    }, [hasMore]);
+
+
     const handleIconClick = () => {
         fileInputRef.current.click();
     };
     const handleFileChange = (event) => {
-        const files = event.target.files;
-        setValue('attachments', Array.from(files));
+        const files = Array.from(event.target.files);
+        setValue('attachments', files);
+        setAttachmentsPreview(files);
     };
 
     const sendMessage = async (data) => {
-        if (data?.message.length > 0 || data?.attachments.length > 0) {
-            // const toastId = toast.loading('Sending message...');
-            data.chat_code = activeChat;
-            const formData = new FormData();
-            Object.keys(data).forEach((key) => {
-                if (key !== 'attachments') {
-                    formData.append(key, data[key]);
-                } else {
-                    data.attachments.forEach((file) => {
-                        formData.append('attachments', file);
-                    });
-                };
+        if (!data.message && (!data.attachments || data.attachments.length === 0)) {
+            toast.error('Please provide a message or add an attachment.');
+            return;
+        }
+        const toastId = toast.loading('Sending message...');
+        // data.chat_code = chatSettings?.code;
+        const formData = new FormData();
+        if (chatSettings?.code) {
+            formData.append('chat_code', chatSettings.code);
+        }
+        if (data.message) {
+            formData.append('message', data.message);
+        }
+        // formData.append('chat_code', data.chat_code); 
+        // formData.append('message', data.message);
+        // Object?.keys(data)?.forEach((key) => {
+        //     if (key !== 'attachments') {
+        //         formData?.append(key, data[key]);
+        //     } else if (Array.isArray(data.attachments)) {
+        //         data.attachments.forEach((file) => {
+        //             formData.append('attachments', file);
+        //         });
+        //     }
+        // });
+        if (Array.isArray(data.attachments) && data.attachments.length > 0) {
+            data.attachments.forEach((file) => {
+                formData.append('attachments[]', file);
             });
+        }
 
-            // try {
-            //     const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
-            //         headers: {
-            //             'Accept': 'application/json',
-            //             'Content-Type': 'multipart/form-data',
-            //             'Authorization': `Bearer ${token}`,
-            //         }
-            //     })
-            //     console.log(res?.data?.message);
-            //     toast.success(res?.data?.message || 'Message sent successfully', {
-            //         id: toastId,
-            //         duration: 1000
-            //     });
-            // } catch (error) {
-            //     console.log(error?.response?.data);
-            //     toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
-            //         id: toastId,
-            //         duration: 1000
-            //     });
-            // };
+
+        try {
+            const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+            console.log(res?.data?.message);
+            toast.success(res?.data?.message || 'Message sent successfully', {
+                id: toastId,
+                duration: 1000
+            });
+            setAttachmentsPreview([]);
+            setValue('message', '');
+            setValue('attachments', []);
+
+        } catch (error) {
+            console.log(error?.response?.data);
+            toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
+                id: toastId,
+                duration: 1000
+            });
         };
     };
 
@@ -69,95 +105,131 @@ export default function MessageChatScreen({ loginType, messagees, token, activeC
                 <div className="messageChat__mainInfo">
                     <div className="yourAvatarImage">
                         <span className={`online chatStatuNow`}></span>
-                        <img src={avatar3} alt="avatar-1" />
+                        <img src={chatSettings?.receiverImage} alt="avatar-1" />
                     </div>
                     <div className="yourContactInfo">
                         <h1>
-                            jumia
+                            {chatSettings?.receiverName}
                         </h1>
                         <p>
-                            email1234@email.com
+                            {chatSettings?.receiverEmail}
                         </p>
                     </div>
                 </div>
-                <div className="chatApperance__contents">
-                    <div className="mySendig__chat__messages">
-                        <div className="direction__of__message">
-                            <div className="message__item">
-                                <p>
-                                    Lorem ipsum dolor sit amet Lorem ips??
-                                </p>
-                                <div className="message__item__img">
-                                    <img src={avatar1} alt="avatar-1" />
-                                </div>
-                            </div>
-                            <div className="message__item">
-                                <p>
-                                    Lorem ipsum dolor sit am
-                                </p>
-                                <div className="message__item__img">
-                                    <img src={avatar1} alt="avatar-1" />
-                                </div>
-                            </div>
-                            <div className="timeOfMessage">
-                                <p>9:12 PM</p>
-                            </div>
-                        </div>
+                <div ref={chatContainerRef} className="chatApperance__contents d-flex flex-column-reverse">
+                    {
+                        messages?.map((message, idx) => (
+                            <>
+                                <div key={idx} className={`${message?.authType === "sender" ? "mySendig__chat__messages" : 'replaied__user__message'} mb-3`}>
+                                    <div className="direction__of__message">
+                                        {message?.authType === "sender" ?
+                                            <>
+                                                <div className="message__item">
+                                                    {message?.type === 'text' && (
+                                                        <p>
+                                                            {message?.message}
 
-                    </div>
-                    <div className="replaied__user__message">
-                        <div className="direction__of__message">
-                            <div className="message__item">
-                                <div className="message__item__img">
-                                    <img src={avatar3} alt="avatar-1" />
+                                                        </p>
+                                                    )
+                                                    }
+                                                    {message?.type === 'image' && (
+                                                        <img style={{ width: '100px', height: "100px", borderRadius: "8px" }} src={message?.message} alt="" />
+                                                    )
+                                                    }
+                                                    {message?.type === 'audio' && (
+                                                        <audio controls>
+                                                            <source src={message?.message} type="audio/mpeg" />
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                    )}
+                                                    {message?.type === 'video' && (
+                                                        <video style={{ width: '100px', height: "100px", borderRadius: "8px" }} controls>
+                                                            <source src={message?.message} type="video/mp4" />
+                                                            Your browser does not support the video element.
+                                                        </video>
+                                                    )}
+                                                    {message?.type === 'file' && (
+                                                        <a href={message?.message} target="_blank" rel="noopener noreferrer" download>
+                                                            Download File
+                                                        </a>
+                                                    )}
+                                                    <div className="message__item__img">
+                                                        {
+                                                            message?.authType === "sender" && (
+                                                                <img src={message?.authImg} alt="" />
+                                                            )
+                                                        }
+                                                        {
+                                                            message?.authType === "receiver" && (
+                                                                <img src={message?.senderImg} alt="" />
+                                                            )
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </>
+                                            :
+                                            <>
+                                                <div className="message__item">
+                                                    <div className="message__item__img">
+                                                        {
+                                                            message?.authType === "sender" && (
+                                                                <img src={message?.authImg} alt="" />
+                                                            )
+                                                        }
+                                                        {
+                                                            message?.authType === "receiver" && (
+                                                                <img src={message?.senderImg} alt="" />
+                                                            )
+                                                        }
+
+                                                    </div>
+                                                    {message?.type === 'text' && (
+                                                        <p>
+                                                            {message?.message}
+
+                                                        </p>
+                                                    )
+                                                    }
+                                                    {message?.type === 'image' && (
+                                                        <img style={{ width: '100px', height: "100px", borderRadius: "8px" }} src={message?.message} alt="" />
+                                                    )
+                                                    }
+
+                                                </div>
+                                            </>
+                                        }
+
+                                        <div className="timeOfMessage">
+                                            <p>{message?.sent_at}</p>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <p>
-                                    Save  thousands to millions of bucks by using single tool for different. amazing and outstanding cool and great useful
-                                </p>
-                            </div>
-                            <div className="timeOfMessage">
-                                <p>9:18 PM</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mySendig__chat__messages">
-                        <div className="direction__of__message">
-                            <div className="message__item">
-                                <p>
-                                    Lorem ipsum dolor sit amet Lorem ips??
-                                </p>
-                                <div className="message__item__img">
-                                    <img src={avatar1} alt="avatar-1" />
+                            </>
+                        ))
+                    }
+                    {
+                        hasMore && (
+                            <div className="w-100 d-flex justify-content-center spannerContainer">
+                                <div className="loader">
+                                    <div className="bar1"></div>
+                                    <div className="bar2"></div>
+                                    <div className="bar3"></div>
+                                    <div className="bar4"></div>
+                                    <div className="bar5"></div>
+                                    <div className="bar6"></div>
+                                    <div className="bar7"></div>
+                                    <div className="bar8"></div>
+                                    <div className="bar9"></div>
+                                    <div className="bar10"></div>
+                                    <div className="bar11"></div>
+                                    <div className="bar12"></div>
                                 </div>
                             </div>
-                            <div className="message__item">
-                                <p>
-                                    Lorem ipsum dolor sit am
-                                </p>
-                                <div className="message__item__img">
-                                    <img src={avatar1} alt="avatar-1" />
-                                </div>
-                            </div>
-                            <div className="timeOfMessage">
-                                <p>9:18 PM</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="replaied__user__message">
-                        <div className="direction__of__message">
-                            <div className="message__item">
-                                <div className="message__item__img">
-                                    <img src={avatar3} alt="avatar-1" />
-                                </div>
-                                <p>
-                                    Save  thousands to millions of bucks by using single tool for different. amazing and outstanding cool and great useful
-                                </p>
-                            </div>
-                            <div className="timeOfMessage">
-                                <p>9:18 PM</p>
-                            </div>
-                        </div>
-                    </div>
+                        )
+
+                    }
                 </div>
                 <div className="chatTextField__actions position-relative">
                     <form onSubmit={handleSubmit(sendMessage)} className='chatFormContents'>
@@ -186,6 +258,22 @@ export default function MessageChatScreen({ loginType, messagees, token, activeC
                             <img src={send} alt="" />
                         </button>
                     </form>
+
+                    <div className="attachment-previews position-relative mt-3">
+                        {attachmentsPreview.map((file, index) => {
+                            const fileType = file.type.split('/')[0];
+                            return (
+                                <div key={index} className="attachment-preview">
+                                    {fileType === 'image' && <img src={URL.createObjectURL(file)} alt="preview" style={{ width: '50px', height: '50px' }} />}
+                                    {fileType === 'audio' && <audio controls src={URL.createObjectURL(file)} />}
+                                    {fileType === 'video' && <video controls style={{ width: '50px', height: '50px' }} src={URL.createObjectURL(file)} />}
+                                    {fileType !== 'image' && fileType !== 'audio' && fileType !== 'video' && (
+                                        <p>{file.name}</p>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
