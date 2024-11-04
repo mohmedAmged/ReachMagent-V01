@@ -26,6 +26,9 @@ export default function MyMessage({ token, loginnedUserId }) {
     const [fireMessage, setFireMessage] = useState(false);
     const [userNowInfo, setUserNowInfo] = useState([]);
 
+    useMessaging(token, loginType, activeChat, loginnedUserId, setFireMessage);
+
+
 
     // const getAllChats = async () => {
     //     try {
@@ -71,15 +74,16 @@ export default function MyMessage({ token, loginnedUserId }) {
             setError(error?.response?.data?.message || 'Failed to load chats');
         } finally {
             setLoadingAllChats(false);
+            setFireMessage(false);
         }
     };
 console.log(userNowInfo);
 
-    useEffect(() => {
-        if (token && loginType) {
-            getAllChats();
-        };
-    }, [token, loginType, messages, fireMessage]);
+    // useEffect(() => {
+    //     if (token && loginType) {
+    //         getAllChats();
+    //     };
+    // }, [token, loginType, messages, fireMessage]);
 
     // const showActiveChat = async (page = 1) => {
     //     setLoadingActiveChat(true);
@@ -110,7 +114,7 @@ console.log(userNowInfo);
     // };
 
     const showActiveChat = async (page = 1) => {
-        const endpoint = `${baseURL}/${loginType}/get-chat?t=${new Date().getTime()}&page=${page}`;
+        const endpoint = `${baseURL}/${loginType}/get-chat?t=${new Date().getTime()}`;
 
         // Apply rate limiting to control frequency of requests
         if (!rateLimiter('showActiveChat')) {
@@ -120,7 +124,7 @@ console.log(userNowInfo);
 
         setLoadingActiveChat(true);
         try {
-            const res = await axios.post(`${baseURL}/${loginType}/get-chat`, {
+            const res = await axios.post(endpoint, {
                 chat_id: activeChatId,
             }, {
                 headers: {
@@ -129,26 +133,34 @@ console.log(userNowInfo);
                 params: { page },
             });
 
-            const newMessages = res?.data?.data?.messages.messages;
+            const newMessages = res?.data?.data?.messages?.messages;
             setChatSettings(res?.data?.data?.chat);
             setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages]);
             setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
             setCurrentPage(page);
         } catch (error) {
             setError(error?.response?.data?.message || 'Failed to load messages');
+
         } finally {
             setLoadingActiveChat(false);
-            setFireMessage(false); // Reset the fireMessage state
         }
     };
+    console.log(fireMessage);
+    
+    useEffect(() => {
+        if (fireMessage) {
+            showActiveChat();
+            setFireMessage(false); // Reset fireMessage after fetching
+        }
+    }, [fireMessage]);
 
     useEffect(() => {
-        if (activeChatId) {
+        if (token && loginType) {
+            getAllChats();
             showActiveChat();
-        };
-    }, [activeChatId, activeChat, fireMessage]);
-
-    useMessaging(token, loginType, activeChat, loginnedUserId, setFireMessage);
+        }
+    }, [token, loginType, activeChatId]);
+    
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 500);

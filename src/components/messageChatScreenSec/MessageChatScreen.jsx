@@ -25,6 +25,7 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
             loadOlderMessages();
         }
     };
+    
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
         chatContainer.addEventListener('scroll', handleScroll);

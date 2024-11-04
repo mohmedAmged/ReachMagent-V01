@@ -254,13 +254,13 @@ object-fit: contain;
 
   @media screen and (max-width: 600px) {
     .chatFormContents input{
-      width: 500px;
+      width: 100%;
       padding: 0 4px!important;
     }
     .chatFormContents{
       display: flex;
-      /* gap: 10px; */
-      justify-content: space-between;
+      gap: 10px;
+      /* justify-content: space-between; */
       align-items: center;
   }
   .chatFormContents .send__btn{
@@ -275,5 +275,3 @@ object-fit: contain;
     width: 200px;
   }
   }
-
-  
