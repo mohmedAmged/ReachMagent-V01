@@ -255,6 +255,7 @@ object-fit: contain;
   @media screen and (max-width: 600px) {
     .chatFormContents input{
       width: 500px;
+      padding: 0 4px!important;
     }
     .chatFormContents{
       display: flex;
@@ -274,4 +275,5 @@ object-fit: contain;
     width: 200px;
   }
   }
+
   
