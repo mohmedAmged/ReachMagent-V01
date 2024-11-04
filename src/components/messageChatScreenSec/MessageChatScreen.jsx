@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './messageChatScreen.css'
-import avatar3 from '../../assets/messageImages/Avatar3.png'
-import avatar1 from '../../assets/messageImages/Ellipse 159.png'
 import send from '../../assets/messageImages/send.png'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
+import { rateLimiter } from '../../functions/requestUtils'
 
 export default function MessageChatScreen({ loginType, messages, token, activeChat, loadOlderMessages, hasMore, loadingActiveChat, chatSettings, fireMessage, setFireMessage }) {
+
     const { register, handleSubmit, setValue, formState: { isSubmitting } } = useForm({
         defaultValues: {
             message: '',
@@ -87,10 +87,18 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
     // };
 
     const sendMessage = async (data) => {
+        // Apply rate limiting to control message sends
+        if (!rateLimiter('sendMessage')) {
+            toast.error('You are sending messages too quickly. Please wait a moment.');
+            return;
+        }
+
+        // Validation for empty message and attachments
         if (!data.message && (!data.attachments || data.attachments.length === 0)) {
             toast.error('Please provide a message or add an attachment.');
             return;
         }
+
         const formData = new FormData();
         if (chatSettings?.code) {
             formData.append('chat_code', chatSettings.code);
@@ -103,14 +111,14 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                 formData.append('attachments[]', file);
             });
         }
-    
+
         const maxRetries = 5; // Maximum number of retries
         let attempt = 0;
         let delay = 1000; // Initial delay in milliseconds
-    
+
         while (attempt < maxRetries) {
             const toastId = toast.loading('Sending message...');
-    
+
             try {
                 const res = await axios.post(`${baseURL}/${loginType}/send-new-message?t=${new Date().getTime()}`, formData, {
                     headers: {
@@ -125,27 +133,40 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                 setValue('attachments', []);
                 setFireMessage(true); 
                 break; 
-    
+
             } catch (error) {
                 toast.dismiss(toastId); 
+
                 if (error.response?.status === 429) { 
                     attempt++;
                     toast.error(`Too many attempts. Retrying in ${delay / 1000} seconds...`);
+
                     await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2; 
-    
+                    delay *= 2; // Exponential backoff
+
                 } else {
-                    toast.error(error?.response?.data?.message || 'Something Went Wrong!');
-                    break; 
+                    // Check for validation errors from server response
+                    if (error.response?.data?.errors) {
+                        // Extract and display validation errors
+                        const errors = error.response.data.errors;
+                        Object.values(errors).forEach((messages) => {
+                            messages.forEach((msg) => toast.error(msg));
+                        });
+                    } else {
+                        toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+                    }
+                    break;
                 }
             }
         }
-    
+
         // If all retries are exhausted
         if (attempt === maxRetries) {
             toast.error('Maximum retry limit reached. Please try again later.');
         }
     };
+
+    // Reset `fireMessage` flag after handling it
     useEffect(() => {
         if (fireMessage) {
             setFireMessage(false);
@@ -299,7 +320,7 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                     }
                 </div>
                 <div className="chatTextField__actions position-relative">
-                    <form onSubmit={handleSubmit(sendMessage) } className='chatFormContents'>
+                    <form onSubmit={handleSubmit(sendMessage)} className='chatFormContents'>
                         <div className="fileHandler">
                             <input
                                 type="file"
@@ -317,7 +338,7 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                         </div>
                         <input
                             type="text"
-                            className='form-control px-5'
+                            className='form-control'
                             placeholder='Type your message here...'
                             {...register('message')}
                         />

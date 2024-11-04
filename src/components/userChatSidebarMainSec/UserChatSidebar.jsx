@@ -1,64 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './userChatSidebar.css'
 import avatar1 from '../../assets/messageImages/Avatar1.png'
-import avatar2 from '../../assets/messageImages/Avatar2.png'
-import avatar3 from '../../assets/messageImages/Avatar3.png'
 import { useNavigate } from 'react-router-dom'
 
-export default function UserChatSidebar({chats,setActiveChat}) {
+export default function UserChatSidebar({chats,setActiveChat, userNowInfo, activeChatId}) {
     const navigate = useNavigate()
-    const messgaeChatsItems = [
-        {
-            chatName: 'Jumia',
-            chatImg: avatar3,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '9:12 PM',
-            chatStatu: 'online',
-            activeHover: 'activeHover'
-        },
-        {
-            chatName: 'Mohamed Amged',
-            chatImg: avatar2,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '5:12 AM',
-            chatStatu: 'offline'
-        },
-        {
-            chatName: 'Israa Mohamed',
-            chatImg: avatar2,
-            chatMessage: 'Typing..',
-            messageTime: '7:12 PM',
-            chatStatu: 'online'
-        },
-        {
-            chatName: 'Ahmed Adel',
-            chatImg: avatar2,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '9:12 PM',
-            chatStatu: 'online'
-        },
-        {
-            chatName: 'Ahmed Adel',
-            chatImg: avatar2,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '9:12 PM',
-            chatStatu: 'online'
-        },
-        {
-            chatName: 'Ahmed Adel',
-            chatImg: avatar2,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '9:12 PM',
-            chatStatu: 'online'
-        },
-        {
-            chatName: 'Ahmed Adel',
-            chatImg: avatar2,
-            chatMessage: 'Me: massage goes here',
-            messageTime: '9:12 PM',
-            chatStatu: 'online'
-        },
-    ];
+    const [activeClassItemId, setActiveClassItemId] = useState(null);
+    console.log(chats);
+    useEffect(() => {
+        if (activeChatId) {
+            setActiveClassItemId(parseInt(activeChatId)); 
+        }
+    }, [activeChatId]);
     return (
         <div className='userChatSidebar__content'>
             <div className="container">
@@ -66,14 +19,14 @@ export default function UserChatSidebar({chats,setActiveChat}) {
                     <div className="yourMainInfo">
                         <div className="yourAvatarImage">
                             <span className={`online chatStatuNow`}></span>
-                            <img src={avatar1} alt="avatar-1" />
+                            <img src={userNowInfo?.image} alt="avatar-1" />
                         </div>
                         <div className="yourContactInfo">
                             <h1>
-                                Name here
+                                {userNowInfo?.name}
                             </h1>
                             <p>
-                                email1234@email.com
+                                {userNowInfo?.email}
                             </p>
                         </div>
                     </div>
@@ -95,7 +48,10 @@ export default function UserChatSidebar({chats,setActiveChat}) {
                     {
                         chats?.map((item, index) => {
                             return (
-                                <div onClick={()=>{navigate(`/your-messages/${item?.id}`)}} key={index} className={`messageChatItem ${item.activeHover}` }>
+                                <div  onClick={() => {
+                                    navigate(`/your-messages/${item?.id}`);
+                                    setActiveClassItemId(item?.id); 
+                                }} key={index} className={`messageChatItem ${activeClassItemId === item?.id ? 'activeHover' : ''}`}>
                                     <div className="messageChatMainInfo">
                                         <div className="messageChatImg">
                                             {/* <span className={`${item.chatStatu} chatStatuNow`}></span> */}
@@ -112,6 +68,46 @@ export default function UserChatSidebar({chats,setActiveChat}) {
                                                     item?.type === 'text' &&(
                                                         <p>
                                                           {item?.sendBy}: {item?.message?.slice(0,30)}
+                                                        </p>
+                                                    )
+                                                   
+                                                }
+                                                {
+                                                    item?.type === 'image' &&(
+                                                        <p>
+                                                            {item?.sendBy}: 
+                                                            <i className="bi bi-card-image ps-2 pe-1"></i>
+                                                            Image
+                                                        </p>
+                                                    )
+                                                   
+                                                }
+                                                {
+                                                    item?.type === 'audio' &&(
+                                                        <p>
+                                                            {item?.sendBy}: 
+                                                            <i className="bi bi-file-earmark-music ps-2 pe-1"></i>
+                                                            Audio
+                                                        </p>
+                                                    )
+                                                   
+                                                }
+                                                {
+                                                    item?.type === 'video' &&(
+                                                        <p>
+                                                            {item?.sendBy}: 
+                                                            <i className="bi bi-file-earmark-play ps-2 pe-1"></i>
+                                                            Video
+                                                        </p>
+                                                    )
+                                                   
+                                                }
+                                                {
+                                                    item?.type === 'file' &&(
+                                                        <p>
+                                                            {item?.sendBy}: 
+                                                            <i className="bi bi-file-earmark ps-2 pe-1"></i>
+                                                            File
                                                         </p>
                                                     )
                                                    

@@ -9,6 +9,7 @@ import { Table } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import checkIcon from '../../assets/icons/check-lg.svg'
+import { handleApiError, rateLimiter } from '../../functions/requestUtils';
 export default function MyNotfications({ token, fireNotification, setFireNotification }) {
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -18,118 +19,120 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate()
 
+    //     const slug = loginType === 'user' ? `${loginType}/all-notifications`
+    //     :
+    //     `${loginType}/company-all-notifications`
+    //     await axios.get(`${baseURL}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`
+    //         }
+    //     })
+    //         .then(response => {
+    //             setAllNotifications(response?.data?.data?.notifications);
+    //             setTotalPages(response?.data?.data?.meta?.last_page);
+    //         })
+    //         .catch(error => {
+    //             if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+    //                 setUnAuth(true);
+    //             };
+    //             toast.error(error?.response?.data?.message || 'Something Went Wrong');
+    //         });
+    //         setFireNotification(false)
+    // };
     const getAllNotifications = async (params) => {
-        const slug = loginType === 'user' ? `${loginType}/all-notifications`
-        :
-        `${loginType}/company-all-notifications`
-        await axios.get(`${baseURL}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                setAllNotifications(response?.data?.data?.notifications);
-                setTotalPages(response?.data?.data?.meta?.last_page);
-            })
-            .catch(error => {
-                if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                    setUnAuth(true);
-                };
-                toast.error(error?.response?.data?.message || 'Something Went Wrong');
+        // Apply rate limiting
+        if (!rateLimiter('getAllNotifications')) {
+            toast.error('You are requesting notifications too quickly. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/all-notifications` : `${loginType}/company-all-notifications`;
+        try {
+            const response = await axios.get(`${baseURL}/${slug}${params ? `${params}&` : '?'}page=${currentPage}&t=${new Date().getTime()}`, {
+                headers: { Authorization: `Bearer ${token}` }
             });
-            setFireNotification(false)
+            setAllNotifications(response?.data?.data?.notifications);
+            setTotalPages(response?.data?.data?.meta?.last_page);
+            setFireNotification(false);
+        } catch (error) {
+            handleApiError(error);
+        }
     };
+
     const handleDeleteThisProduct = async (id) => {
-        const slug = loginType === 'user' ? `${loginType}/delete-notification`
-        :
-        `${loginType}/company-delete-notification`
+        // Rate limit deletion actions
+        if (!rateLimiter('handleDeleteThisProduct')) {
+            toast.error('Too many delete requests. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/delete-notification` : `${loginType}/company-delete-notification`;
         try {
-            const response = await axios?.delete(`${baseURL}/${slug}/${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            const response = await axios.delete(`${baseURL}/${slug}/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             toast.success(response?.data?.message);
             await getAllNotifications();
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message);
+            handleApiError(error);
         }
     };
+
     const handleDeleteAllNotification = async () => {
-        const slug = loginType === 'user' ? `${loginType}/delete-all-notifications`
-        :
-        `${loginType}/company-delete-all-notifications`
+        if (!rateLimiter('handleDeleteAllNotification')) {
+            toast.error('Too many requests. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/delete-all-notifications` : `${loginType}/company-delete-all-notifications`;
         try {
-            const response = await axios?.delete(`${baseURL}/${slug}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            const response = await axios.delete(`${baseURL}/${slug}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             toast.success(response?.data?.message);
             await getAllNotifications();
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message);
+            handleApiError(error);
         }
     };
+
     const handleReadOneNotification = async (NotifId) => {
-        const slug = loginType === 'user' ? `${loginType}/read-one-notification`
-        :
-        `${loginType}/company-read-one-notification`
+        if (!rateLimiter('handleReadOneNotification')) {
+            toast.error('Too many requests to read notifications. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/read-one-notification` : `${loginType}/company-read-one-notification`;
         try {
-            const response = await axios?.post(`${baseURL}/${slug}`, {
-                id: NotifId
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
+            const response = await axios.post(`${baseURL}/${slug}`, { id: NotifId }, {
+                headers: { Authorization: `Bearer ${token}` }
             });
             if (response.status === 200) {
-                scrollToTop()
                 toast.success(response?.data?.message);
-            } else {
-                toast.error('Failed to add product item!');
-            };
+            }
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message);
+            handleApiError(error);
         }
-    }
+    };
 
-    const handleMArkAllRead = async () => {
-        const slug = loginType === 'user' ? `${loginType}/mark-all-as-read`
-        :
-        `${loginType}/company-mark-all-as-read`
+    const handleMarkAllRead = async () => {
+        if (!rateLimiter('handleMarkAllRead')) {
+            toast.error('Too many requests to mark notifications. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/mark-all-as-read` : `${loginType}/company-mark-all-as-read`;
         try {
-            const response = await axios?.get(`${baseURL}/${slug}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            const response = await axios.get(`${baseURL}/${slug}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             toast.success(response?.data?.message);
             await getAllNotifications();
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message);
+            handleApiError(error);
         }
     };
+    
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
@@ -163,6 +166,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
             setCurrentUserLogin(newShape);
         }
     }, [Cookies.get('currentLoginedData'), currentUserLogin]);
+    
     console.log(allNotifications);
 
     return (
@@ -178,7 +182,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                     <>
                                         <div className="d-flex justify-content-between flex-wrap">
                                             <button type="button" className="markBtnHandler"
-                                                onClick={() => handleMArkAllRead()}
+                                                onClick={() => handleMarkAllRead()}
                                                 >
                                                 <span className="button__text">Mark all as read</span>
                                                 <span className="button__icon">

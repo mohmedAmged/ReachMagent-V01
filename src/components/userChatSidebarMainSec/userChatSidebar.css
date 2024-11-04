@@ -2,8 +2,10 @@
     border: 1px solid #CFD0D5;
     border-radius: 24px;
     padding: 30px 0;
-    min-height: 677px;
+    height: 700px;
+    overflow-y: auto;
     margin-bottom: 30px;
+    background: #f5f8fa;
 
 }
 .userChatSidebar__content .yourMainInfo{
@@ -28,8 +30,9 @@
     background: #4AD15F;
 }
 .yourAvatarImage img{
-    width: 48px;
-    height: 48px;
+    width: 55px;
+    height: 55px;
+    border-radius: 8px;
 }
 .yourContactInfo h1{
     font-size: 16px;
@@ -74,11 +77,11 @@
     /* align-items: center; */
 }
 .userChatSidebar__content .messageChatItem.activeHover{
-    background: #F5F8FA;
+    background: #b4d6edad;
     border-radius: 12px;
 }
 .userChatSidebar__content .messageChatItem:hover{
-    background: #F5F8FA;
+    background: #b4d6edad;
     border-radius: 12px;
 }
 .messageChatMainInfo{
@@ -105,8 +108,9 @@
     background: #D9D9D9;
 }
 .messageChatItem .messageChatImg img{
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
 }
 .messageChatName h3{
     font-size: 12px;

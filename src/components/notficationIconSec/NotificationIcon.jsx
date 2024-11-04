@@ -6,6 +6,7 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import { scrollToTop } from '../../functions/scrollToTop'
+import { handleApiError, rateLimiter } from '../../functions/requestUtils'
 export default function NotificationIcon({ token, fireNotification, setFireNotification }) {
     const navigate = useNavigate()
     const loginType = localStorage.getItem('loginType');
@@ -54,43 +55,62 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
     //             toast.error(error?.response?.data?.message || 'Something Went Wrong');
     //         });
     // };
+    // const getLatestNotifications = async () => {
+    //     const slug = loginType === 'user' ? `${loginType}/latest-notifications`
+    //         :
+    //         `${loginType}/company-latest-notifications`
+    //     try {
+    //         const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+    //         setNotsItems(response?.data?.data?.notifications);
+    //         setNotsCount(response?.data?.data?.count);
+    //     } catch (error) {
+    //         if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+    //             setUnAuth(true);
+    //         };
+    //         toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+    //     }
+    //     setFireNotification(false);
+    // };
+
     const getLatestNotifications = async () => {
-        const slug = loginType === 'user' ? `${loginType}/latest-notifications`
-            :
-            `${loginType}/company-latest-notifications`
+        // Apply rate limiting
+        if (!rateLimiter('getLatestNotifications')) {
+            toast.error('You are requesting notifications too quickly. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/latest-notifications` : `${loginType}/company-latest-notifications`;
         try {
             const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
             setNotsItems(response?.data?.data?.notifications);
             setNotsCount(response?.data?.data?.count);
+            setFireNotification(false);
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+            handleApiError(error, setUnAuth); // Use centralized error handling
         }
-        setFireNotification(false);
     };
 
     const markLatestRead = async () => {
-        const slug = loginType === 'user' ? `${loginType}/mark-latest-read`
-            :
-            `${loginType}/company-mark-latest-read`
+        // Apply rate limiting
+        if (!rateLimiter('markLatestRead')) {
+            toast.error('You are taking actions too quickly. Please wait a moment.');
+            return;
+        }
+
+        const slug = loginType === 'user' ? `${loginType}/mark-latest-read` : `${loginType}/company-mark-latest-read`;
         try {
             await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
-            setNotsCount(0)
+            setNotsCount(0);
         } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+            handleApiError(error, setUnAuth); // Use centralized error handling
         }
     };
 

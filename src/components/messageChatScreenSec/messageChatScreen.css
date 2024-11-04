@@ -58,6 +58,7 @@
 }
 .mySendig__chat__messages .timeOfMessage{
     text-align: right;
+    margin-top: 20px;
 
 }
 .mySendig__chat__messages .timeOfMessage p,
@@ -71,6 +72,25 @@
     height: 700px;
     overflow-y: auto;
 }
+/* WebKit Browsers (Chrome, Safari) */
+.chatApperance__contents::-webkit-scrollbar {
+  width: 10px; 
+}
+
+.chatApperance__contents::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+.chatApperance__contents::-webkit-scrollbar-thumb {
+  background-color: #b4d6ed; 
+  border-radius: 8px; 
+}
+
+/* For Firefox */
+.chatApperance__contents {
+  scrollbar-color: #b4d6ed #f1f1f1; 
+  scrollbar-width: thin; 
+}
 .chatApperance__contents .message__item {
     display: flex;
     align-items: center;
@@ -83,10 +103,11 @@
 .chatFormContents{
     display: flex;
     gap: 10px;
-
+    align-items: center;
 }
 .chatFormContents input{
     width: 628px;
+    padding: 0 20px;
     height: 48px;
     border-radius: 34px;
     background: var(--primary-white);
@@ -112,12 +133,15 @@ height: 24px;
 object-fit: contain;
 }
 .fileHandler {
-    width: 30px; 
-    height: 30px; 
-    position: absolute; 
+    /* width: 30px;  */
+    /* height: 30px;  */
+    /* position: absolute; 
     left: 8px;
     top: 50%; 
-    transform: translateY(-50%);
+    transform: translateY(-50%); */
+    position: relative;
+    height: 40px;
+    width: 40px;
     background-color: transparent;
     display: flex;
     justify-content: center;
@@ -226,5 +250,28 @@ object-fit: contain;
   .loader .bar12 {
     transform: rotate(330deg) translate(0, -130%);
     animation-delay: -0.1s;
+  }
+
+  @media screen and (max-width: 600px) {
+    .chatFormContents input{
+      width: 500px;
+    }
+    .chatFormContents{
+      display: flex;
+      /* gap: 10px; */
+      justify-content: space-between;
+      align-items: center;
+  }
+  .chatFormContents .send__btn{
+    width: 35px;
+    height: 35px;
+  }
+  .chatFormContents .send__btn img{
+    width: 20px;
+    height: 20px;
+  }
+  .message__item audio{
+    width: 200px;
+  }
   }
   
