@@ -8,7 +8,7 @@ const useNotifications = (token, loginType, loginnedUserId, setFireNotification)
 
     // useEffect(() => {
         if (token && loginType && loginnedUserId) {
-            const pusher = new Pusher('9b5d478389d4bbf7919c', {
+            const pusher = new Pusher('605eddf9f315136ec936', {
                 cluster: 'ap2',
                 authEndpoint: `${baseURL}/user/pusher/auth`,
                 auth: {

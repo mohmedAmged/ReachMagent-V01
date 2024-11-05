@@ -5,7 +5,7 @@ import { baseURL } from './baseUrl';
 export default function useMessaging( token, loginType, activeChat, loginnedUserId, setFireMessage ) {
     const isEventBound = useRef(false);
     if (token && loginType && activeChat  && loginnedUserId) {
-        const pusher = new Pusher('9b5d478389d4bbf7919c', {
+        const pusher = new Pusher('605eddf9f315136ec936', {
             cluster: 'ap2',
             authEndpoint: `${baseURL}/user/pusher/auth`,
             auth: {
@@ -24,7 +24,7 @@ export default function useMessaging( token, loginType, activeChat, loginnedUser
                 console.log("New message received:", data);
                 setFireMessage(true);
             });
-            isEventBound.current = false;
+            isEventBound.current = true;
         };
     };
 };

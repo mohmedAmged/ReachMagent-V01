@@ -69,12 +69,11 @@ export default function MyMessage({ token, loginnedUserId }) {
 
             setChats(data?.chats);
             setUserNowInfo(data?.user)
-            
+            setFireMessage(false)
         } catch (error) {
             setError(error?.response?.data?.message || 'Failed to load chats');
         } finally {
             setLoadingAllChats(false);
-            setFireMessage(false);
         }
     };
 console.log(userNowInfo);
@@ -138,6 +137,7 @@ console.log(userNowInfo);
             setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages]);
             setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
             setCurrentPage(page);
+            setFireMessage(true)
         } catch (error) {
             setError(error?.response?.data?.message || 'Failed to load messages');
 
@@ -148,10 +148,9 @@ console.log(userNowInfo);
     console.log(fireMessage);
     
     useEffect(() => {
-        if (fireMessage) {
             showActiveChat();
             setFireMessage(false); // Reset fireMessage after fetching
-        }
+        
     }, [fireMessage]);
 
     useEffect(() => {
@@ -159,7 +158,7 @@ console.log(userNowInfo);
             getAllChats();
             showActiveChat();
         }
-    }, [token, loginType, activeChatId]);
+    }, [token, loginType, activeChatId, fireMessage]);
     
 
     useEffect(() => {
