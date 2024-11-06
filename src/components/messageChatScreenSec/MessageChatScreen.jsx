@@ -178,7 +178,7 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
             <div className="container">
                 <div className="messageChat__mainInfo">
                     <div className="yourAvatarImage">
-                        <span className={`online chatStatuNow`}></span>
+                        {/* <span className={`online chatStatuNow`}></span> */}
                         <img src={chatSettings?.receiverImage} alt="avatar-1" />
                     </div>
                     <div className="yourContactInfo">

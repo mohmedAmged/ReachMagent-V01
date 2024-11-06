@@ -1049,7 +1049,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpBusinessdocuments">
-                                Company's Doucuments <span className="requiredStar"> * </span>
+                                Company's Documents <span className="requiredStar"> * </span>
                                 <span className="optional">(MultiChoice)</span>
                                 <i title="document.pdf" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>

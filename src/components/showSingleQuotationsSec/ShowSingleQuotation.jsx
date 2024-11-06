@@ -411,7 +411,39 @@ export default function ShowSingleQuotation({ token }) {
     console.log(acceptedSingleQuotations);
     console.log('newData:', newData);
     console.log('fullData:', fullData);
+    const startNewChat = async (receiverId, receiverType) => {
+        try {
+            const res = await axios.post(`${baseURL}/${loginType}/start-chat`, {
+                'receiever_type': receiverType,
+                'receiever_id': `${receiverId}`
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    t: new Date().getTime()
+                },
+            });
+            console.log(res?.data?.data);
+            // navigate(`/your-messages/${res?.data?.data?.chat?.id}`)
+            Cookies.set('newChatId', res?.data?.data?.chat?.id)
+            navigate(`/your-messages`)
+
+        } catch (error) {
+            console.log(error?.response?.data?.message || 'Failed to load messages');
+        }
+    };
     
+    const handleNavigation = () => {
+        if (newData?.chatId === null ) {
+            startNewChat(newData?.receiver_id, newData?.receiver_type);
+        }
+         else {
+            Cookies.set('newChatId', newData?.chatId )
+            navigate(`/your-messages`);
+
+        }
+    };
     return (
         <>
             {
@@ -738,10 +770,10 @@ export default function ShowSingleQuotation({ token }) {
                     <h3>
                         Having a problem?
                     </h3>
-                    <button className='updateBtn'>
-                        <i className="bi bi-wechat fs-4"></i>
+                    <button onClick={handleNavigation}  className='updateBtn'>
+                        <i className="bi bi-wechat fs-4 me-2"></i>
                         <span>
-                            Chat with requester
+                            Chat Now!
                         </span>
                     </button>
                 </div>

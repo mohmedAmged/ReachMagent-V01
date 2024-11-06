@@ -3,15 +3,18 @@ import './myNavBar.css';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Cookies from 'js-cookie';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import defaultImage from '../../assets/images.png';
 import NotificationIcon from '../notficationIconSec/NotificationIcon';
+import messageIcon from '../../assets/companyImages/messages-3.svg'
 
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, setFireNotification, fireNotification }) {
+    const navigate = useNavigate();
+
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
 
@@ -69,15 +72,15 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         </NavLink>
                     </Navbar.Brand>
                     <div className="ms-auto me-2">
-                    <NavLink
-                        // to='/my-wishlist' 
-                        title='wishlist'
-                        className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
-                        aria-label="Close"
-                    >
-                        <NotificationIcon setFireNotification={setFireNotification} fireNotification={fireNotification} token={token}/>
+                        <NavLink
+                            // to='/my-wishlist' 
+                            title='wishlist'
+                            className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
+                            aria-label="Close"
+                        >
+                            <NotificationIcon setFireNotification={setFireNotification} fireNotification={fireNotification} token={token} />
 
-                    </NavLink>
+                        </NavLink>
                     </div>
                     <Navbar.Toggle onClick={handleOffcanvasToggle} aria-controls="basic-navbar-nav" />
 
@@ -162,8 +165,21 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             className='nav-link nav__link__style logoutBtn showNumHandler'
                                             aria-label="Close"
                                         >
-                                            <NotificationIcon fireNotification={fireNotification} setFireNotification={setFireNotification} token={token}/>
+                                            <NotificationIcon fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />
 
+                                        </NavLink>
+                                        <NavLink
+                                        to={'/your-messages'}
+                                            title='wishlist'
+                                            className='nav-link nav__link__style logoutBtn showNumHandler'
+                                            aria-label="Close"
+                                        >
+                                            <button style={{width: '50px', height:'50px', background: 'rgba(221, 221, 221, 0.719)' , borderRadius:'50%'}} className='btn__companyActions online__btn' >
+                                                <>
+                                                    <img src={messageIcon} alt="message-icon" />
+                                                    {/* <span className='online__circle'></span> */}
+                                                </>
+                                            </button>
                                         </NavLink>
                                         <NavLink
                                             onClick={() => {
@@ -276,6 +292,22 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             <img src={profileData ? JSON.parse(profileData)?.image : defaultImage}
                                                 alt='img-check'
                                             />
+                                        </NavLink>
+                                        <NavLink  onClick={() => {
+                                            scrollToTop();
+                                            closeOffcanvas();
+                                        }}
+                                        to={'/your-messages'}
+                                            title='wishlist'
+                                            className='nav-link nav__link__style logoutBtn showNumHandler'
+                                            aria-label="Close"
+                                        >
+                                            <button style={{width: '50px', height:'50px', background: 'rgba(221, 221, 221, 0.719)' , borderRadius:'50%'}} className='btn__companyActions online__btn' >
+                                                <>
+                                                    <img src={messageIcon} alt="message-icon" />
+                                                    {/* <span className='online__circle'></span> */}
+                                                </>
+                                            </button>
                                         </NavLink>
                                         {/* {
                                             loginType === 'user' &&

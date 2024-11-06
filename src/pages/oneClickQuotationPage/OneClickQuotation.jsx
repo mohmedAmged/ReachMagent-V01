@@ -408,7 +408,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                             </div>
                                             <div className="col-12">
                                                 <div className="row">
-                                                    <div className="col-lg-6">
+                                                    {/* <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickqoutationSelectTheType">
                                                                 Request Type
@@ -431,7 +431,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                                 }
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickquotationSelectMainCategory">
@@ -453,9 +453,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
+                                                    <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="oneclickqouteSelectSubCategory">
                                                         Sub-category
@@ -476,7 +474,31 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                                                         }
                                                     </select>
                                                 </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            {/* <div className="col-lg-6">
+                                                <div className="singleQuoteInput">
+                                                    <label htmlFor="oneclickqouteSelectSubCategory">
+                                                        Sub-category
+                                                    </label>
+                                                    <select
+                                                        value={requestIntries?.sub_category_id}
+                                                        className='form-select'
+                                                        id="oneclickqouteSelectSubCategory"
+                                                        onChange={(event) => {
+                                                            setRequestIntries({ ...requestIntries, sub_category_id: event?.target?.value })
+                                                        }}
+                                                    >
+                                                        <option value="" disabled>Select Sub-Category</option>
+                                                        {
+                                                            currentSubCategories?.map(subCat => (
+                                                                <option value={subCat?.subCategoryId} key={subCat?.subCategoryId}>{subCat?.subCategoryName}</option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div> */}
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="oneclickQuotationRegionSelect">

@@ -17,7 +17,7 @@ export default function UserChatSidebar({chats,setActiveChat, userNowInfo, activ
                 <div className="yourInfoPart">
                     <div className="yourMainInfo">
                         <div className="yourAvatarImage">
-                            <span className={`online chatStatuNow`}></span>
+                            {/* <span className={`online chatStatuNow`}></span> */}
                             <img src={userNowInfo?.image} alt="avatar-1" />
                         </div>
                         <div className="yourContactInfo">

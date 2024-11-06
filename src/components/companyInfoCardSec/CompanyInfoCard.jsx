@@ -75,14 +75,19 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
     };
     
     const handleNavigation = () => {
-        if (showCompaniesQuery?.chatId === null) {
+        if (showCompaniesQuery?.chatId === null && token) {
             startNewChat(showCompaniesQuery?.receiver_id, showCompaniesQuery?.receiver_type);
-        } else {
+
+        }else if(!token){
+            navigate(`/login`)
+        }
+         else {
             Cookies.set('newChatId', showCompaniesQuery?.chatId )
             navigate(`/your-messages`);
 
         }
     };
+
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -130,7 +135,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                             <NavLink className={'nav-link'} 
                                             >
                                                 <img src={messageIcon} alt="message-icon" />
-                                                <span className='online__circle'></span>
+                                                {/* <span className='online__circle'></span> */}
                                             </NavLink>
                                         </button>
                                     </div>
@@ -237,7 +242,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                             {
                                 (token) ?
                                     <button onClick={handleShow} className='btnColoredBlue terquase mt-3'>
-                                        Book AppointMent
+                                        Book Appointment
                                     </button>
                                     :
                                     <NavLink onClick={() => {
@@ -246,7 +251,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                     }}
                                         className='nav-link' to={`/login`}>
                                         <button className='btnColoredBlue terquase mt-3'>
-                                            Book AppointMent
+                                            Book Appointment
                                         </button>
                                     </NavLink>
                             }
