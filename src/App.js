@@ -66,6 +66,7 @@ import Pusher from 'pusher-js';
 import ShowOneECommProductInDash from './components/showOneE-commProductInDashSec/ShowOneECommProductInDash';
 import useNotifications from './functions/useNotifications';
 import MyNotfications from './pages/myNotficationsPage/MyNotfications';
+import useMessaging from './functions/useMessaging';
 
 
 function App() {
@@ -111,7 +112,7 @@ function App() {
   const [allowedCountrySearch, setAllowedcountrySearch] = useState([])
   const fetchAllowedCountries = async () => {
     try {
-      const response = await axios.get(`${baseURL}/company-countries?t=${new Date().getTime()}`, {
+      const response = await axios.get(`${baseURL}/company-countries`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -260,6 +261,9 @@ function App() {
 
   useNotifications(token, loginType, loginnedUserId, setFireNotification);
 
+  const [fireMessage, setFireMessage] = useState(false);
+
+  useMessaging(token, loginType, loginnedUserId, setFireMessage);
   return (
     <>
 
@@ -372,7 +376,7 @@ function App() {
         {/* <Route path='/company-messages' element={<CompanyMessage token={token} />} /> */}
         
         <Route path='/your-messages' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
-        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
+        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} setFireMessage={setFireMessage} fireMessage={fireMessage} token={token} />} />
 
         <Route path='/profile/notifications' element={<MyNotfications fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />} />
 

@@ -22,7 +22,6 @@ import MyLoader from '../../components/myLoaderSec/MyLoader'
 import CompanyMediaCard from '../../components/companyMediaCardSec/CompanyMediaCard'
 import BookAppointMentFrom from '../../components/bookAppointMentFrom/BookAppointMentFrom'
 
-
 export default function SingleCompany({ token, fetchCartItems, wishlistItems }) {
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();

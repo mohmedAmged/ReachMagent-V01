@@ -8,11 +8,19 @@
     background: #f5f8fa;
 
 }
+.yourInfoPart{
+    margin-bottom: 30px;
+    border-bottom: 1px solid #CFD0D5;
+    
+}
 .userChatSidebar__content .yourMainInfo{
     display: flex;
     gap: 10px;
     align-items: center;
-    margin-bottom: 20px;
+    background: var(--main-blue-color);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
 }
 .yourAvatarImage{
     position: relative;
@@ -37,13 +45,13 @@
 .yourContactInfo h1{
     font-size: 16px;
     font-weight: 500;
-    color: #434343;
+    color: #fff;
     text-transform: capitalize;
 }
 .yourContactInfo p{
     font-size: 10px;
     font-weight: 500;
-    color: #959595;
+    color: #fff;
 }
 .yourStatusInfo{
     /* margin-left: 5px; */

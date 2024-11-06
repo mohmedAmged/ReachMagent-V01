@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { AddEmployeeSchema } from '../../validation/AddEmployee';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
+import CustomDropdown from '../customeDropdownSelectSec/CustomeDropdownSelect';
 
 export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp, fcmToken }) {
   const [unAuth, setUnAuth] = useState(false);
@@ -27,6 +28,8 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     handleSubmit,
     setError,
     watch,
+    setValue,
+    clearErrors,
     reset,
     formState: { errors, isSubmitting }
   } = useForm({
@@ -204,6 +207,16 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     setSelectedIndustries(selectedIndustries?.filter(indust => +indust?.id !== +currIndust?.id));
   };
 
+  useEffect(()=>{
+    if(watch('password') !== watch('password_confirmation')){
+      setError('password_confirmation', { message: 'Passwords do not match' });
+    } else if(watch('password_confirmation') === watch('password')) {
+      clearErrors("password_confirmation");
+    };
+  },[watch('password_confirmation')]);
+
+console.log(countries);
+
   return (
     <>
       {
@@ -295,7 +308,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           </label>
                           <div className="row">
                             <div className="col-3">
-                              <select
+
+                            <CustomDropdown
+                              countries={countries}                              
+                              setValue={setValue}
+                               errors={errors}
+                            />
+                              
+                              {/* <select
                                 id=""
                                 defaultValue={''}
                                 {...register('phone_code')}
@@ -305,16 +325,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                 {
                                   countries?.map(country => (
                                     <option id={country?.phoneCode} value={country?.phoneCode}>
+                                      {country?.flag}
                                       {country?.phoneCode}
                                     </option>
                                   ))
                                 }
-                              </select>
-                              {
+                              </select> */}
+                              {/* {
                                 errors.phone_code
                                 &&
                                 (<span className='errorMessage'>{errors.phone_code.message}</span>)
-                              }
+                              } */}
                             </div>
                             <div className="col-9">
                               <input

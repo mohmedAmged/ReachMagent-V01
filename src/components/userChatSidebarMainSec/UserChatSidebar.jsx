@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 export default function UserChatSidebar({chats,setActiveChat, userNowInfo, activeChatId}) {
     const navigate = useNavigate()
     const [activeClassItemId, setActiveClassItemId] = useState(null);
-    console.log(chats);
     useEffect(() => {
         if (activeChatId) {
             setActiveClassItemId(parseInt(activeChatId)); 
@@ -49,8 +48,9 @@ export default function UserChatSidebar({chats,setActiveChat, userNowInfo, activ
                         chats?.map((item, index) => {
                             return (
                                 <div  onClick={() => {
-                                    navigate(`/your-messages/${item?.id}`);
+                                    setActiveChat(item?.id)
                                     setActiveClassItemId(item?.id); 
+                                    navigate(`/your-messages/${item?.id}`);
                                 }} key={index} className={`messageChatItem ${activeClassItemId === item?.id ? 'activeHover' : ''}`}>
                                     <div className="messageChatMainInfo">
                                         <div className="messageChatImg">

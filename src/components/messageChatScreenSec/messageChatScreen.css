@@ -3,8 +3,6 @@
     border-radius: 24px;
     padding: 30px 0;
     background: #f5f8fa;
-
-
 }
 
 .messageChat__mainInfo {
@@ -13,9 +11,9 @@
     align-items: center;
     margin-bottom: 20px;
     border: 1px solid #cfd0d5;
-    border-radius: 24px;
+    border-radius: 10px;
     padding: 10px;
-    background: var(--primary-white);
+    background: var(--main-blue-color);
 }
 .message__item__img {
     border-radius: 50%;

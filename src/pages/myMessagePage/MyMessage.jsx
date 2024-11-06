@@ -6,11 +6,11 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import useMessaging from '../../functions/useMessaging';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchWithCache, rateLimiter } from '../../functions/requestUtils';
 import toast from 'react-hot-toast';
 
-export default function MyMessage({ token, loginnedUserId }) {
+export default function MyMessage({ token, loginnedUserId, fireMessage, setFireMessage }) {
     const loginType = localStorage.getItem('loginType');
     const { activeChatId } = useParams();
     const [error, setError] = useState(null);
@@ -23,149 +23,84 @@ export default function MyMessage({ token, loginnedUserId }) {
     const [hasMore, setHasMore] = useState(true);
     const [loadingActiveChat, setLoadingActiveChat] = useState(false);
     const [loadingAllChats, setLoadingAllChats] = useState(false);
-    const [fireMessage, setFireMessage] = useState(false);
     const [userNowInfo, setUserNowInfo] = useState([]);
-
-    useMessaging(token, loginType, activeChat, loginnedUserId, setFireMessage);
-
-
-
-    // const getAllChats = async () => {
-    //     try {
-    //         setLoadingAllChats(true);
-    //         const slug = loginType === 'user' ? 'my-chats' : 'company-chats';
-    //         const res = await axios.get(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //         setChats(res?.data?.data?.chats);
-    //     } catch (error) {
-    //         setError(error?.response?.data?.message || 'Failed to load chats');
-    //     };
-    //     setLoadingAllChats(false);
-    // };
-
+    const [firstRender,setFirstRender] = useState(true);
     const getAllChats = async () => {
-        const slug = loginType === 'user' ? 'my-chats' : 'company-chats';
-        const endpoint = `${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`;
-
-        // Use rateLimiter to prevent too many requests
-        if (!rateLimiter('getAllChats')) {
-            setError('Too many requests. Please try again later.');
-            return;
-        }
-
         try {
             setLoadingAllChats(true);
-
-            // Use fetchWithCache to retrieve data, with caching enabled for 1 minute
-            const data = await fetchWithCache(endpoint, async () => {
-                const res = await axios.get(endpoint, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                return res?.data?.data;
-            });
-
-            setChats(data?.chats);
-            setUserNowInfo(data?.user)
-            setFireMessage(false)
-        } catch (error) {
-            setError(error?.response?.data?.message || 'Failed to load chats');
-        } finally {
-            setLoadingAllChats(false);
-        }
-    };
-console.log(userNowInfo);
-
-    // useEffect(() => {
-    //     if (token && loginType) {
-    //         getAllChats();
-    //     };
-    // }, [token, loginType, messages, fireMessage]);
-
-    // const showActiveChat = async (page = 1) => {
-    //     setLoadingActiveChat(true);
-    //     try {
-    //         const res = await axios.post(`${baseURL}/${loginType}/get-chat?t=${new Date().getTime()}`, {
-    //             chat_id: activeChatId,
-    //         }, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //             params: {
-    //                 page,
-    //             },
-    //         });
-    //         // console.log(res?.data?.data);
-    //         // setMessages(res?.data?.data);
-    //         const newMessages = res?.data?.data?.messages.messages;
-    //         setChatSettings(res?.data?.data?.chat)
-    //         setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages, ]);
-    //         setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
-    //         setCurrentPage(page);
-    //     } catch (error) {
-    //         setError(error?.response?.data?.message || 'Failed to load messages');
-    //     } finally {
-    //         setLoadingActiveChat(false);
-    //     };
-    //     setFireMessage(false)
-    // };
-
-    const showActiveChat = async (page = 1) => {
-        const endpoint = `${baseURL}/${loginType}/get-chat?t=${new Date().getTime()}`;
-
-        // Apply rate limiting to control frequency of requests
-        if (!rateLimiter('showActiveChat')) {
-            toast.error('You are taking actions too quickly. Please wait a moment.');
-            return;
-        }
-
-        setLoadingActiveChat(true);
-        try {
-            const res = await axios.post(endpoint, {
-                chat_id: activeChatId,
-            }, {
+            const slug = loginType === 'user' ? 'my-chats' : 'company-chats';
+            const res = await axios.get(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-                params: { page },
             });
+            setChats(res?.data?.data?.chats); 
+            setUserNowInfo(res?.data?.data?.user);
+            setFireMessage(false);
 
-            const newMessages = res?.data?.data?.messages?.messages;
-            setChatSettings(res?.data?.data?.chat);
-            setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages]);
+        } catch (error) {
+            setError(error?.response?.data?.message || 'Failed to load chats');
+        };
+        setLoadingAllChats(false);
+    };
+
+
+    const showActiveChat = async (page = 1) => {
+        setLoadingActiveChat(true);
+        try {
+            const res = await axios.get(`${baseURL}/${loginType}/get-chat/${activeChatId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    page,
+                    t: new Date().getTime()
+                },
+            });
+            const newMessages = res?.data?.data?.messages.messages;
+            setChatSettings(res?.data?.data?.chat)
+            setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages ]);
             setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
             setCurrentPage(page);
-            setFireMessage(true)
+            setFireMessage(false);
         } catch (error) {
             setError(error?.response?.data?.message || 'Failed to load messages');
-
         } finally {
             setLoadingActiveChat(false);
-        }
+        };
     };
-    console.log(fireMessage);
     
+    // useEffect(() => {
+    //         showActiveChat();
+    // }, [fireMessage, activeChatId]);
+
     useEffect(() => {
+        // Only fetch messages if activeChatId has changed or fireMessage is set to true
+        if (activeChatId && token) {
             showActiveChat();
-            setFireMessage(false); // Reset fireMessage after fetching
-        
-    }, [fireMessage]);
+        }
+    }, [fireMessage, activeChatId, token]);
+
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(firstRender){
+            navigate('/your-messages');
+            setFirstRender(false);
+        };
+    },[]);
+
 
     useEffect(() => {
         if (token && loginType) {
             getAllChats();
-            showActiveChat();
         }
-    }, [token, loginType, activeChatId, fireMessage]);
+    }, [token, loginType, fireMessage]);
     
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 500);
     }, []);
 
-    console.log(messages);
 
     return (
         <>
@@ -198,7 +133,6 @@ console.log(userNowInfo);
                                         </div>
                                     )
                                 }
-
                             </div>
                         </div>
                     </div>
