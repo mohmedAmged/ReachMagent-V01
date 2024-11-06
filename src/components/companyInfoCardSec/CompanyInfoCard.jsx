@@ -11,6 +11,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
 
 export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token }) {
+    const [error, setError] = useState(null);
     const loginType = localStorage.getItem('loginType')
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
@@ -49,6 +50,39 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
             });
     };
 
+
+    const startNewChat = async (receiverId, receiverType) => {
+        try {
+            const res = await axios.post(`${baseURL}/${loginType}/start-chat`, {
+                'receiever_type': receiverType,
+                'receiever_id': `${receiverId}`
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    t: new Date().getTime()
+                },
+            });
+            console.log(res?.data?.data);
+            // navigate(`/your-messages/${res?.data?.data?.chat?.id}`)
+            Cookies.set('newChatId', res?.data?.data?.chat?.id)
+            navigate(`/your-messages`)
+
+        } catch (error) {
+            setError(error?.response?.data?.message || 'Failed to load messages');
+        }
+    };
+    
+    const handleNavigation = () => {
+        if (showCompaniesQuery?.chatId === null) {
+            startNewChat(showCompaniesQuery?.receiver_id, showCompaniesQuery?.receiver_type);
+        } else {
+            Cookies.set('newChatId', showCompaniesQuery?.chatId )
+            navigate(`/your-messages`);
+
+        }
+    };
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -88,10 +122,13 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                     </div>
                                     <div className="company__actions">
                                         <button className='btn__companyActions'>
-                                            <img src={callIcon} alt="call-icon" />
+                                            <NavLink to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
+                                                <img src={callIcon} alt="call-icon" />
+                                            </NavLink>
                                         </button>
-                                        <button className='btn__companyActions online__btn'>
-                                            <NavLink className={'nav-link'} to={'/your-messages'}>
+                                        <button onClick={handleNavigation} className='btn__companyActions online__btn'>
+                                            <NavLink className={'nav-link'} 
+                                            >
                                                 <img src={messageIcon} alt="message-icon" />
                                                 <span className='online__circle'></span>
                                             </NavLink>
@@ -198,10 +235,20 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                 </NavLink>
                             }
                             {
-                                token &&
-                                <button onClick={handleShow} className='btnColoredBlue terquase mt-3'>
-                                    Book AppointMent
-                                </button>
+                                (token) ?
+                                    <button onClick={handleShow} className='btnColoredBlue terquase mt-3'>
+                                        Book AppointMent
+                                    </button>
+                                    :
+                                    <NavLink onClick={() => {
+                                        toast.error('You Should Login First!');
+                                        scrollToTop();
+                                    }}
+                                        className='nav-link' to={`/login`}>
+                                        <button className='btnColoredBlue terquase mt-3'>
+                                            Book AppointMent
+                                        </button>
+                                    </NavLink>
                             }
 
                         </div>

@@ -13,6 +13,7 @@ import 'leaflet/dist/leaflet.css';
 import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
+import CustomDropdown from '../customeDropdownSelectSec/CustomeDropdownSelect';
 
 let allTypes = [
   {
@@ -95,7 +96,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
     setError,
     setValue,
     watch,
-    reset,
+    clearErrors,
     formState: { errors, isSubmitting }
   } = useForm({
     defaultValues: {
@@ -291,11 +292,11 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
   // Getting DocumentsArray
   const [documents, setDocuments] = useState([]);
   const handleGettingFile = (event) => {
-    setDocuments([...documents, event?.target?.files]);
+    setDocuments([...documents, ...event?.target?.files]);
     setValue('documents', ...documents);
   };
   const handleDeleteFile = (doc) => {
-    setDocuments(documents.filter(document => document[0].name !== doc[0].name));
+    setDocuments(documents.filter(document => document.name !== doc.name));
     setValue('documents', ...documents);
   };
 
@@ -491,7 +492,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
             });
           } else if (key === 'documents') {
             data[key].forEach((file, index) => {
-              formData.append(`documents[${index}]`, file[0]);
+              formData.append(`documents[${index}]`, file);
             });
           };
         });
@@ -649,6 +650,21 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
     }
   };
 
+  useEffect(() => {
+    if (watch('password') !== watch('password_confirmation')) {
+      setError('password_confirmation', { message: 'Passwords do not match' });
+    } else if (watch('password_confirmation') === watch('password')) {
+      clearErrors("password_confirmation");
+    };
+  }, [watch('password_confirmation')]);
+  useEffect(() => {
+    if (watch('employee_password') !== watch('employee_password_confirmation')) {
+      setError('employee_password_confirmation', { message: 'Passwords do not match' });
+    } else if (watch('employee_password_confirmation') === watch('employee_password')) {
+      clearErrors("employee_password_confirmation");
+    };
+  }, [watch('employee_password_confirmation')]);
+
   return (
     <>
       {
@@ -683,7 +699,8 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                           <>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_name">
-                                Company Name <span className="requiredStar">*</span>
+                                Company Name <span className="requiredStar">*</span> 
+                                <i title="ReachMagnet" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -701,6 +718,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_email">
                                 E-mail Address <span className="requiredStar">*</span>
+                                <i title="user@gmail.com" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -719,28 +737,16 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpPhone_numberOne">
                                 First Phone Number
                                 <span className="requiredStar"> *</span>
+                                <i title="01099558877" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
                                 <div className="col-3">
-                                  <select
-                                    className={`form-select signUpInput ${errors.phone_one_code ? 'inputError' : ''}`}
-                                    defaultValue={''}
-                                    {...register('phone_one_code')}
-                                  >
-                                    <option value='' disabled>000</option>
-                                    {
-                                      countries?.map(country => (
-                                        <option key={country?.phoneCode} value={country?.phoneCode}>
-                                          {country?.phoneCode}
-                                        </option>
-                                      ))
-                                    }
-                                  </select>
-                                  {
-                                    errors.phone_one_code
-                                    &&
-                                    (<span className='errorMessage'>{errors.phone_one_code.message}</span>)
-                                  }
+                                  <CustomDropdown
+                                    countries={countries}
+                                    setValue={setValue}
+                                    errors={errors}
+                                    inputName={'phone_one_code'}
+                                  />
                                 </div>
                                 <div className="col-9">
                                   <input
@@ -762,28 +768,16 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpPhone_numberTwo">
                                 Second Phone Number
                                 <span className="optional">(Optional)</span>
+                                <i title="01088998899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
                                 <div className="col-3">
-                                  <select
-                                    className={`form-select signUpInput ${errors.phone_two_code ? 'inputError' : ''}`}
-                                    defaultValue={''}
-                                    {...register('phone_two_code')}
-                                  >
-                                    <option value='' disabled>000</option>
-                                    {
-                                      countries?.map(country => (
-                                        <option key={country?.phoneCode} value={country?.phoneCode}>
-                                          {country?.phoneCode}
-                                        </option>
-                                      ))
-                                    }
-                                  </select>
-                                  {
-                                    errors.phone_two_code
-                                    &&
-                                    (<span className='errorMessage'>{errors.phone_two_code.message}</span>)
-                                  }
+                                  <CustomDropdown
+                                    countries={countries}
+                                    setValue={setValue}
+                                    errors={errors}
+                                    inputName={'phone_two_code'}
+                                  />
                                 </div>
                                 <div className="col-9">
                                   <input
@@ -805,6 +799,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpregisteration_number">
                                 Registration Number
                                 <span className="requiredStar"> *</span>
+                                <i title="123456" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='number'
@@ -823,6 +818,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpreferral_code">
                                 Referral Code
                                 <span className="optional"> (Optional)</span>
+                                <i title="abc123" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -840,6 +836,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpindustry_id">
                                 Industry <span className="requiredStar">*</span>
+                                <i title="industry" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpindustry_id"
@@ -864,6 +861,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                 Business Types
                                 <span className="requiredStar"> * </span>
                                 <span className="optional">(MultiChoice)</span>
+                                <i title="Company Offers Customization" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 onChange={handleChangeBusinessType}
@@ -901,6 +899,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpcategory_id">
                                 Business Main Category
                                 <span className="requiredStar"> *</span>
+                                <i title="business category" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcategory_id"
@@ -926,6 +925,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               <label htmlFor="signUpsub_category_id">
                                 Business Sub-Category
                                 <span className="requiredStar"> *</span>
+                                <i title="business subcategory" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1030,8 +1030,9 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             </div> */}
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpwebsite_link">
-                                WebSite Link
+                                Website Link
                                 <span className="requiredStar"> *</span>
+                                <i title="https://uiverse.io" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1047,9 +1048,10 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               }
                             </div>
                             <div className="col-lg-6 mb-4">
-                              <label htmlFor="signUpBusinessdocuments" className=''>
+                              <label htmlFor="signUpBusinessdocuments">
                                 Company's Doucuments <span className="requiredStar"> * </span>
                                 <span className="optional">(MultiChoice)</span>
+                                <i title="document.pdf" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 onChange={handleGettingFile}
@@ -1059,9 +1061,10 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                 className={`form-control newUploadBtn ${errors.documents ? 'inputError' : ''}`}
                               />
                               <div>
+
                                 {documents?.map((doc, idx) => (
-                                  <span className='chosen__choice' key={doc[0]?.lastModified} title={doc[0]?.name}>
-                                    {(doc[0]?.name)?.slice(0, 20)}
+                                  <span className='chosen__choice' key={doc?.lastModified} title={doc?.name}>
+                                    {(doc?.name)?.slice(0, 20)}
                                     <i
                                       onClick={() => {
                                         handleDeleteFile(doc);
@@ -1080,6 +1083,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-12 mb-4 position-relative">
                               <label htmlFor="compnayLogo" className=''>
                                 Company's Logo<span className="requiredStar"> * </span>
+                                <i title="logo.png" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='file'
@@ -1106,11 +1110,6 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                 Next Step <i className="bi bi-arrow-right-circle"></i>
                               </button>
                             </div>
-                            {/* <div className="col-12 text-center mt-4">
-                                <NavLink to='/business-signUp/complete-registeration' className='compleetRegisteration__btn'>
-                                  Complete Your Registeration
-                                </NavLink>
-                              </div> */}
                           </>
                         }
 
@@ -1126,6 +1125,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_country_id">
                                 Country / Region <span className="requiredStar">*</span>
+                                <i title="Egypt" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1152,6 +1152,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_city_id">
                                 City <span className="requiredStar">*</span>
+                                <i title="Cairo" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcompany_city_id"
@@ -1174,6 +1175,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_area_id">
                                 Area <span className="requiredStar">*</span>
+                                <i title="Al Maadi" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcompany_area_id"
@@ -1196,6 +1198,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_full_address">
                                 Company Full Address  <span className="requiredStar">*</span>
+                                <i title="1th cornesh almaadi street" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1272,6 +1275,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_name">
                                 Owner's Name <span className="requiredStar">*</span>
+                                <i title="Mohamed Fahim" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1289,6 +1293,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_email">
                                 E-mail <span className="requiredStar">*</span>
+                                <i title="mohamed@gmail.com" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1306,28 +1311,16 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_phone">
                                 Mobile Number <span className="requiredStar"> * </span>
+                                <i title="01055588899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
                                 <div className="col-3">
-                                  <select
-                                    className={`form-select signUpInput ${errors.employee_phone_code ? 'inputError' : ''}`}
-                                    defaultValue={''}
-                                    {...register('employee_phone_code')}
-                                  >
-                                    <option value='' disabled>000</option>
-                                    {
-                                      countries?.map(country => (
-                                        <option key={country?.phoneCode} value={country?.phoneCode}>
-                                          {country?.phoneCode}
-                                        </option>
-                                      ))
-                                    }
-                                  </select>
-                                  {
-                                    errors.employee_phone_code
-                                    &&
-                                    (<span className='errorMessage'>{errors.employee_phone_code.message}</span>)
-                                  }
+                                <CustomDropdown
+                                countries={countries}
+                                setValue={setValue}
+                                errors={errors}
+                                inputName={'employee_phone_code'}
+                              />
                                 </div>
                                 <div className="col-9">
                                   <input
@@ -1348,6 +1341,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_title">
                                 Title <span className="requiredStar"> *</span>
+                                <i title="SEO" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1365,6 +1359,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_country_id">
                                 <span className='fs-6'>(Country / Region)</span> <span className="requiredStar">*</span>
+                                <i title="saudia Arabia" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1380,7 +1375,6 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                     </option>
                                   ))}
                                 </select>
-
                               </div>
                               {
                                 errors.employee_country_id
@@ -1391,6 +1385,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_city_id">
                                 City <span className="requiredStar">*</span>
+                                <i title="Al Madina" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpemployee_city_id"
@@ -1413,6 +1408,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_full_address">
                                 Full Address  <span className="requiredStar">*</span>
+                                <i title="1th almadina abd street" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1430,6 +1426,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_citizenship_id">
                                 Citizenship <span className="requiredStar"> *</span>
+                                <i title="egyptian" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id='signUpemployee_citizenship_id'
@@ -1455,6 +1452,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password">
                                 Password <span className="requiredStar"> *</span>
+                                <i title="Mohamed@123" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <input
@@ -1482,6 +1480,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password_confirmation">
                                 Confirm Password <span className="requiredStar"> *</span>
+                                <i title="Same as Password" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <input
@@ -1509,6 +1508,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                             <div className='col-lg-6'>
                               <label htmlFor="signUpofficial_id_or_passport">
                                 Owner's <span className="optional">(Official-Id / Passport)</span><span className="requiredStar"> *</span>
+                                <i title="" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='file'
@@ -1523,7 +1523,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                               }
 
                             </div>
-                            <div className="col-lg-8 mb-4">
+                            <div className="col-lg-8 my-4">
                               <label
                                 htmlFor="singUpcomfirm_policies"
                                 className='row justify-content-start align-items-start'>

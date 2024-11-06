@@ -9,7 +9,7 @@ import useMessaging from '../../functions/useMessaging';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchWithCache, rateLimiter } from '../../functions/requestUtils';
 import toast from 'react-hot-toast';
-
+import Cookies from 'js-cookie';
 export default function MyMessage({ token, loginnedUserId, fireMessage, setFireMessage }) {
     const loginType = localStorage.getItem('loginType');
     const { activeChatId } = useParams();
@@ -24,7 +24,9 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
     const [loadingActiveChat, setLoadingActiveChat] = useState(false);
     const [loadingAllChats, setLoadingAllChats] = useState(false);
     const [userNowInfo, setUserNowInfo] = useState([]);
+    const navigate = useNavigate();
     const [firstRender,setFirstRender] = useState(true);
+    
     const getAllChats = async () => {
         try {
             setLoadingAllChats(true);
@@ -70,24 +72,29 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
         };
     };
     
-    // useEffect(() => {
-    //         showActiveChat();
-    // }, [fireMessage, activeChatId]);
+    const newChatId = Cookies.get('newChatId');
 
-    useEffect(() => {
-        // Only fetch messages if activeChatId has changed or fireMessage is set to true
-        if (activeChatId && token) {
-            showActiveChat();
-        }
-    }, [fireMessage, activeChatId, token]);
 
-    const navigate = useNavigate();
     useEffect(()=>{
         if(firstRender){
             navigate('/your-messages');
             setFirstRender(false);
         };
     },[]);
+
+    useEffect(() => {
+        if (newChatId) {
+            navigate(`/your-messages/${newChatId}`);
+            Cookies.remove('newChatId');
+        }
+    }, [newChatId]);
+
+    useEffect(() => {
+        if (activeChatId && token) {
+            showActiveChat();
+        }
+    }, [fireMessage, activeChatId, token]);
+
 
 
     useEffect(() => {

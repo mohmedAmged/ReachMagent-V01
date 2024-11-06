@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import './customeDropdownSelect.css'
-const CustomDropdown = ({ countries, errors, setValue }) => {
+const CustomDropdown = ({ countries, errors, setValue, inputName}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
     const dropdownRef = useRef(null);
@@ -8,7 +8,7 @@ const CustomDropdown = ({ countries, errors, setValue }) => {
     const handleSelect = (country) => {
         setSelectedOption(country);
         setIsOpen(false);
-        setValue('phone_code', country?.phoneCode);
+        setValue(inputName, country?.phoneCode);
     };
 
     const handleClickOutside = (event) => {
@@ -43,7 +43,7 @@ const CustomDropdown = ({ countries, errors, setValue }) => {
                 ) : (
                     "code"
                 )}
-                <i class="bi bi-chevron-down"></i>
+                <i className="bi bi-chevron-down"></i>
             </div>
 
             {/* Dropdown Options */}
