@@ -6,7 +6,8 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import { rateLimiter } from '../../functions/requestUtils'
-
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 export default function MessageChatScreen({ loginType, messages, token, activeChat, loadOlderMessages, hasMore, loadingActiveChat, chatSettings, fireMessage, setFireMessage }) {
     const { register, handleSubmit, setValue, formState: { isSubmitting } } = useForm({
         defaultValues: {
@@ -119,6 +120,21 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
         }
     }, [fireMessage]);
 
+
+    const [show, setShow] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleShow = (image) => {
+        setSelectedImage(image);
+        setShow(true);
+    };
+
+    const handleClose = () => {
+        setShow(false);
+        setSelectedImage(null);
+    };
+
+
     return (
         <div className='messageChatScreen__handler'>
             <div className="messageChat__mainInfo">
@@ -149,7 +165,50 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                                                 )
                                                 }
                                                 {message?.type === 'image' && (
-                                                    <img style={{ width: '100px', height: "100px", borderRadius: "8px" }} src={message?.message} alt="" />
+                                <>
+                                    <img
+                                        onClick={() => handleShow(message?.message)}
+                                        style={{ width: '100px', height: "100px", borderRadius: "8px", cursor: 'pointer' }}
+                                        src={message?.message}
+                                        alt={`Preview ${idx}`}
+                                    />
+
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>
+                                                Image Preview
+                                            </Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body 
+                                            style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            height: 'calc(100vh - 250px)', 
+                                            overflow: 'hidden', 
+                                            }}
+                                        >
+                                            {selectedImage && (
+                                                <img
+                                                    loading="lazy"
+                                                    style={{  
+                                                        maxWidth: '100%',
+                                                        maxHeight: '100%',
+                                                        objectFit: 'contain', 
+                                                    }}
+                                                    src={selectedImage}
+                                                    alt="Preview"
+                                                />
+                                            )}
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleClose}>
+                                                Close
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </>
+
                                                 )
                                                 }
                                                 {message?.type === 'audio' && (
@@ -207,7 +266,49 @@ export default function MessageChatScreen({ loginType, messages, token, activeCh
                                                 )
                                                 }
                                                 {message?.type === 'image' && (
-                                                    <img style={{ width: '100px', height: "100px", borderRadius: "8px" }} src={message?.message} alt="" />
+                                <>
+                                    <img
+                                        onClick={() => handleShow(message?.message)}
+                                        style={{ width: '100px', height: "100px", borderRadius: "8px", cursor: 'pointer' }}
+                                        src={message?.message}
+                                        alt={`Preview ${idx}`}
+                                    />
+
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>
+                                                Image Preview
+                                            </Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body 
+                                            style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            height: 'calc(100vh - 250px)', 
+                                            overflow: 'hidden', 
+                                            }}
+                                        >
+                                            {selectedImage && (
+                                                <img
+                                                    loading="lazy"
+                                                    style={{  
+                                                        maxWidth: '100%',
+                                                        maxHeight: '100%',
+                                                        objectFit: 'contain', 
+                                                    }}
+                                                    src={selectedImage}
+                                                    alt="Preview"
+                                                />
+                                            )}
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={handleClose}>
+                                                Close
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </>
                                                 )
                                                 }
                                                 {message?.type === 'audio' && (
