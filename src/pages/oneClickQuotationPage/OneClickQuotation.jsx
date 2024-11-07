@@ -85,7 +85,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                 city_id: ''
             });
             const toastId = toast.loading('Loading...');
-            const res = await fetch(`${baseURL}/user/reset-one-click-quotation-cart?t=${new Date().getTime()}`
+            const res = await fetch(`${baseURL}/user/reset-one-click-quotation-cart`
                 , {
                     method: 'POST',
                     headers: {
@@ -118,7 +118,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
             setCurrentSubCategories([]);
             const toastId = toast.loading('Loading Sub-Categories');
             (async () => {
-                await axios.get(`${baseURL}/main-categories/${currentCategoryChosed?.mainCategorySlug}?t=${new Date().getTime()}`, {
+                await axios.get(`${baseURL}/main-categories/${currentCategoryChosed?.mainCategorySlug}`, {
                     headers: {
                         Accept: 'application/json'
                     }
@@ -135,7 +135,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                             id: toastId,
                             duration: 1000
                         });
-                    })
+                    });
             })();
         };
     };
@@ -196,7 +196,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
     };
 
     useEffect(() => {
-        if (token && loginType && requestIntries?.type && requestIntries?.category_id && requestIntries?.sub_category_id) {
+        if (token && loginType && requestIntries?.category_id && requestIntries?.sub_category_id) {
             setloadingCart(true);
             (async () => {
                 const toastId = toast.loading('Loading...');

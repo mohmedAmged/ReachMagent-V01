@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './notificationIcon.css'
-import notIcon from '../../assets/icons/bell-fill.svg'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
-import { scrollToTop } from '../../functions/scrollToTop'
 import { handleApiError, rateLimiter } from '../../functions/requestUtils'
 export default function NotificationIcon({ token, fireNotification, setFireNotification }) {
-    const navigate = useNavigate()
+
     const loginType = localStorage.getItem('loginType');
     const [showNotifications, setShowNotifications] = useState(false);
     const [unAuth, setUnAuth] = useState(false);
@@ -56,24 +54,26 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
     //         });
     // };
     const getLatestNotifications = async () => {
-        const slug = loginType === 'user' ? `${loginType}/latest-notifications`
-            :
-            `${loginType}/company-latest-notifications`
-        try {
-            const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setNotsItems(response?.data?.data?.notifications);
-            setNotsCount(response?.data?.data?.count);
-        } catch (error) {
-            if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
-                setUnAuth(true);
-            };
-            toast.error(error?.response?.data?.message || 'Something Went Wrong!');
-        }
-        setFireNotification(false);
+        if (token) {
+            const slug = loginType === 'user' ? `${loginType}/latest-notifications`
+                :
+                `${loginType}/company-latest-notifications`
+            try {
+                const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setNotsItems(response?.data?.data?.notifications);
+                setNotsCount(response?.data?.data?.count);
+            } catch (error) {
+                if (error?.response?.data?.message === 'Server Error' || error?.response?.data?.message === 'Unauthorized') {
+                    setUnAuth(true);
+                };
+                toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+            }
+            setFireNotification(false);
+        };
     };
 
     // const getLatestNotifications = async () => {
@@ -174,9 +174,9 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
                         <>
                             {
                                 notsItems?.map((el, idx) => (
-                                    <div  
-                                    
-                                        key={idx} 
+                                    <div
+
+                                        key={idx}
                                         className="notItem d-flex align-items-center gap-2"
                                     >
                                         <img src={el?.image} alt="" />

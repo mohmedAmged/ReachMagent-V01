@@ -1,26 +1,21 @@
 .userChatSidebar__content{
     border: 1px solid #CFD0D5;
     border-radius: 24px;
-    padding: 30px 0;
-    height: 700px;
+    padding: 0 0 30px 0;
+    height: 600px;
     overflow-y: auto;
-    margin-bottom: 30px;
     background: #f5f8fa;
-
 }
 .yourInfoPart{
     margin-bottom: 30px;
     border-bottom: 1px solid #CFD0D5;
-    
 }
 .userChatSidebar__content .yourMainInfo{
     display: flex;
     gap: 10px;
     align-items: center;
-    background: var(--main-blue-color);
-    border-radius: 10px;
+    background: linear-gradient(var(--main-blue-color),var(--main-turquoise));
     padding: 10px;
-    margin-bottom: 30px;
 }
 .yourAvatarImage{
     position: relative;

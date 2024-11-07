@@ -49,7 +49,7 @@ const CustomDropdown = ({ countries, errors, setValue, inputName}) => {
             {/* Dropdown Options */}
             {isOpen && (
                 <ul className="dropdown-menu w-100 show">
-                    {countries.map((country) => (
+                    {countries?.map((country) => (
                         <li
                             key={country?.phoneCode}
                             className="dropdown-item d-flex align-items-center"

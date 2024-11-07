@@ -13,7 +13,6 @@ import NotificationIcon from '../notficationIconSec/NotificationIcon';
 import messageIcon from '../../assets/companyImages/messages-3.svg'
 
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, setFireNotification, fireNotification }) {
-    const navigate = useNavigate();
 
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
@@ -71,23 +70,35 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             </>
                         </NavLink>
                     </Navbar.Brand>
-                    <div className="ms-auto me-2">
-                        <NavLink
-                            // to='/my-wishlist' 
-                            title='wishlist'
-                            className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
-                            aria-label="Close"
-                        >
-                            <NotificationIcon setFireNotification={setFireNotification} fireNotification={fireNotification} token={token} />
-
-                        </NavLink>
-                    </div>
+                    {
+                        token &&
+                        <div className="ms-auto d-flex gap-2 align-items-center me-2">
+                            <NavLink
+                                title='Notifications'
+                                className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
+                                aria-label="Close"
+                            >
+                                <NotificationIcon setFireNotification={setFireNotification} fireNotification={fireNotification} token={token} />
+                            </NavLink>
+                            <NavLink onClick={() => {
+                                scrollToTop();
+                            }}
+                                to={'/your-messages'}
+                                title='wishlist'
+                                className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
+                                aria-label="Close"
+                            >
+                                <button className='btn__companyActions messageMainBtn online__btn' >
+                                    <>
+                                        <img src={messageIcon} alt="message-icon" />
+                                    </>
+                                </button>
+                            </NavLink>
+                        </div>
+                    }
                     <Navbar.Toggle onClick={handleOffcanvasToggle} aria-controls="basic-navbar-nav" />
-
-                    {/* start navbar min-width 992px */}
                     <Navbar.Collapse id="navbar-nav" className='Navbar__Collapse__none__on__med'>
                         <Nav className="mx-auto" >
-
                             <NavLink
                                 onClick={() => {
                                     scrollToTop();
@@ -107,7 +118,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             >
                                 About us
                             </NavLink>
-                            <NavLink
+                            {/* <NavLink
                                 onClick={() => {
                                     scrollToTop();
                                 }}
@@ -116,16 +127,6 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 to={`/shop`}
                             >
                                 Shop
-                            </NavLink>
-                            {/* <NavLink
-                                onClick={() => {
-                                    scrollToTop();
-                                }}
-                                aria-label="Close"
-                                className={`nav-link nav__link__style`}
-                                to={`/Discover`}
-                            >
-                                Discover
                             </NavLink> */}
                             <NavLink
                                 onClick={() => {
@@ -160,8 +161,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             <i className="bi bi-box-arrow-left"></i>
                                         </NavLink>
                                         <NavLink
-                                            // to='/my-wishlist' 
-                                            title='wishlist'
+                                            title='Notfications'
                                             className='nav-link nav__link__style logoutBtn showNumHandler'
                                             aria-label="Close"
                                         >
@@ -169,15 +169,14 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
 
                                         </NavLink>
                                         <NavLink
-                                        to={'/your-messages'}
-                                            title='wishlist'
+                                            to={'/your-messages'}
+                                            title='Your Messages'
                                             className='nav-link nav__link__style logoutBtn showNumHandler'
                                             aria-label="Close"
                                         >
-                                            <button style={{width: '50px', height:'50px', background: 'rgba(221, 221, 221, 0.719)' , borderRadius:'50%'}} className='btn__companyActions online__btn' >
+                                            <button style={{ width: '50px', height: '50px', background: 'rgba(221, 221, 221, 0.719)', borderRadius: '50%' }} className='btn__companyActions online__btn' >
                                                 <>
                                                     <img src={messageIcon} alt="message-icon" />
-                                                    {/* <span className='online__circle'></span> */}
                                                 </>
                                             </button>
                                         </NavLink>
@@ -257,8 +256,6 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             }
                         </Nav>
                     </Navbar.Collapse>
-                    {/* end navbar min-width 992px */}
-                    {/* start navbar min-width 320px */}
                     <Navbar.Offcanvas
                         id="offcanvasNavbar" className='Navbar__offCanvas__none__on__lg' aria-labelledby="offcanvasNavbarLabel"
                         show={showOffcanvas}
@@ -293,47 +290,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 alt='img-check'
                                             />
                                         </NavLink>
-                                        <NavLink  onClick={() => {
-                                            scrollToTop();
-                                            closeOffcanvas();
-                                        }}
-                                        to={'/your-messages'}
-                                            title='wishlist'
-                                            className='nav-link nav__link__style logoutBtn showNumHandler'
-                                            aria-label="Close"
-                                        >
-                                            <button style={{width: '50px', height:'50px', background: 'rgba(221, 221, 221, 0.719)' , borderRadius:'50%'}} className='btn__companyActions online__btn' >
-                                                <>
-                                                    <img src={messageIcon} alt="message-icon" />
-                                                    {/* <span className='online__circle'></span> */}
-                                                </>
-                                            </button>
-                                        </NavLink>
-                                        {/* {
-                                            loginType === 'user' &&
-                                            <NavLink onClick={() => {
-                                                scrollToTop();
-                                                closeOffcanvas();
-                                            }} to='/my-wishlist' title='wishlist' className='nav-link nav__link__style logoutBtn showNumHandler'>
-                                                <i className="bi bi-heart"></i>
-                                                {
-                                                    totalWishlistItems !== 0 &&
-                                                    <span className='wishlistItemNum'>{totalWishlistItems}</span>
-                                                }
-                                            </NavLink>
-                                        }
-                                        {
-                                            <NavLink onClick={() => {
-                                                scrollToTop();
-                                                closeOffcanvas();
-                                            }} to='/my-cart' title='cart' className='nav-link nav__link__style logoutBtn showNumHandler'>
-                                                <i className="bi bi-cart4"></i>
-                                                {
-                                                    totalCartItemsInCart !== 0 &&
-                                                    <span>{totalCartItemsInCart}</span>
-                                                }
-                                            </NavLink>
-                                        } */}
+
                                     </>
                                 }
                                 <NavLink
@@ -357,7 +314,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     to={`/About-ReachMagnet`}>
                                     About us
                                 </NavLink>
-                                <NavLink
+                                {/* <NavLink
                                     onClick={() => {
                                         scrollToTop();
                                         closeOffcanvas();
@@ -366,17 +323,6 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     className={`nav-link nav__link__style`}
                                     to={`/shop`}>
                                     Shop
-                                </NavLink>
-
-                                {/* <NavLink
-                                    onClick={() => {
-                                        scrollToTop();
-                                        closeOffcanvas();
-                                    }}
-                                    aria-label="Close"
-                                    className={`nav-link nav__link__style`}
-                                    to={`/discover`}>
-                                    discover
                                 </NavLink> */}
                                 <NavLink
                                     onClick={() => {

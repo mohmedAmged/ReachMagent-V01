@@ -254,3 +254,18 @@
         
     }
 }
+.messageMainBtn{
+     width: 40px !important;
+      height: 40px !important;
+      background: rgba(221, 221, 221, 0.719) !important;
+      border-radius: 50% !important;
+}
+@media screen and (max-width: 600px){
+    .logo__text{
+        font-size: 16px !important;
+    }
+    .messageMainBtn{
+        width: 40px !important;
+        height: 40px !important;
+   }
+}

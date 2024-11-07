@@ -5,10 +5,7 @@ import MessageChatScreen from '../../components/messageChatScreenSec/MessageChat
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
-import useMessaging from '../../functions/useMessaging';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchWithCache, rateLimiter } from '../../functions/requestUtils';
-import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 export default function MyMessage({ token, loginnedUserId, fireMessage, setFireMessage }) {
     const loginType = localStorage.getItem('loginType');
@@ -114,8 +111,8 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
             {loading ? (
                 <MyLoader />
             ) : (
-                <div className='myMessage__handler'>
-                    <div className="container">
+                <div className='myMessage__handler px-5'>
+                    <div className="container-fluid">
                         <div className="myMessage__mainContent">
                             <div className="row">
                                 <div className="col-lg-4 col-md-4 col-sm-12">

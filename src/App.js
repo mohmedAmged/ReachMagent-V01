@@ -62,75 +62,73 @@ import NewAppointementFrom from './components/newAppointementFromSec/NewAppointe
 import MyBookedAppointements from './pages/myBookedAppointementsPage/MyBookedAppointements';
 import MyComanyForm from './pages/myCompanyFormPage/MyComanyForm';
 import NewProductForm from './components/newProductItemForm/NewProductForm';
-import Pusher from 'pusher-js';
 import ShowOneECommProductInDash from './components/showOneE-commProductInDashSec/ShowOneECommProductInDash';
 import useNotifications from './functions/useNotifications';
 import MyNotfications from './pages/myNotficationsPage/MyNotfications';
 import useMessaging from './functions/useMessaging';
+import NotFound from './pages/notFound/NotFound';
+
 
 
 function App() {
-  useEffect(() => {
-    if (!(localStorage.getItem('loginType') === 'employee')) {
-      localStorage.setItem('loginType', 'user');
-      setLoginType(localStorage.getItem('loginType'));
-    };
-  }, []);
-
   const token = Cookies.get('authToken');
   const [loginType, setLoginType] = useState(localStorage.getItem('loginType'));
   const [totalCartItemsInCart, setTotalCartItemsInCart] = useState(0);
   const [totalWishlistItems, setTotalWishlistItems] = useState(0);
 
-
   const location = useLocation();
   const navigate = useNavigate();
   const [scrollToggle, setScrollToggle] = useState(false);
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 200) {
-      setScrollToggle(true);
-    } else {
-      setScrollToggle(false);
-    };
-  });
+  // useEffect(() => {
+  //   const updateLoginType = () => {
+  //     if (localStorage.getItem('loginType') !== 'employee') {
+  //       localStorage.setItem('loginType', 'user');
+  //       setLoginType('user');
+  //     }
+  //   };
+  //   updateLoginType();
+  // }, []);
 
-  // Webside dataQueries
-  const countriesQuery = useQuery({
-    queryKey: ['countries'],
-    queryFn: () => getDataFromAPI('countries', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }),
-    cacheTime: 300000,
-    staleTime: 600000,
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+  // const handleScroll = debounce(() => {
+  //   setScrollToggle(window.scrollY > 200);
+  // }, 300);
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+
+  const countriesQuery = useQuery(
+    'countries',
+    () => getDataFromAPI('countries', { headers: { Authorization: `Bearer ${token}` } }),
+    {
+      cacheTime: 1000 * 60 * 15 ,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const [allowedCountrySearch, setAllowedcountrySearch] = useState([])
   const fetchAllowedCountries = async () => {
     try {
       const response = await axios.get(`${baseURL}/company-countries`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setAllowedcountrySearch(response?.data?.data?.countries);
     } catch (error) {
       toast.error(error?.response?.data.message || 'Something Went Wrong!');
-    }
+    };
   };
+
   useEffect(() => {
     fetchAllowedCountries();
   }, []);
   const industriesQuery = useQuery({
     queryKey: ['industries'],
     queryFn: () => getDataFromAPI('industries'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -138,9 +136,8 @@ function App() {
   const selectedIndustriesQuery = useQuery({
     queryKey: ['selected-industries'],
     queryFn: () => getDataFromAPI('selected-industries'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -148,52 +145,52 @@ function App() {
   const mainCategoriesQuery = useQuery({
     queryKey: ['main-categories'],
     queryFn: () => getDataFromAPI('main-categories'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   const mainActivitiesQuery = useQuery({
     queryKey: ['main-activities'],
     queryFn: () => getDataFromAPI('main-activities'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   const companiesQuery = useQuery({
     queryKey: ['companies'],
     queryFn: () => getDataFromAPI(`companies`, {
       headers: {
         Authorization: `Bearer ${token}`
-      }
+      },
     }),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   const regionsQuery = useQuery({
     queryKey: ['regions'],
     queryFn: () => getDataFromAPI('regions'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   const citizenshipsQuery = useQuery({
     queryKey: ['citizenships'],
     queryFn: () => getDataFromAPI('citizenships'),
-    cacheTime: 300000,
-    staleTime: 600000,
     retry: false,
+    cacheTime: 1000 * 60 * 15 ,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   // const fetchCartItems = async () => {
   //   if (token) {
   //     try {
@@ -208,7 +205,6 @@ function App() {
   //     };
   //   };
   // };
-
   // const wishlistItems = async () => {
   //   if (token) {
   //     if (loginType === 'user') {
@@ -231,31 +227,25 @@ function App() {
   //   wishlistItems();
   // }, [loginType, token]);
 
-  if (token) {
-    if (
-      location.pathname === '/Login'
-      || location.pathname === '/business-signUp'
-      || location.pathname === '/personalsignUp'
-      || location.pathname === '/forget-password'
-      || location.pathname === '/reset-password'
-    ) {
-      navigate('/');
-    };
-  } else if (!token) {
-    if (
-      location.pathname.includes('profile')
-    ) {
+  useEffect(() => {
+    if (token) {
+      const restrictedPaths = ['/Login', '/business-signUp', '/personalsignUp', '/forget-password', '/reset-password'];
+      if (restrictedPaths.includes(location.pathname)) {
+        navigate('/');
+      }
+    } else if (location.pathname.includes('profile')) {
       navigate('/login');
-    };
-  };
+    }
+  }, [token, location.pathname]);
 
   const [loginnedUserId, setLoginnedUserId] = useState('');
 
   useEffect(() => {
-    if (Cookies.get('currentLoginedData')) {
-      setLoginnedUserId(JSON.parse(Cookies.get('currentLoginedData'))?.id);
+    const currentUserData = Cookies.get('currentLoginedData');
+    if (currentUserData) {
+      setLoginnedUserId(JSON.parse(currentUserData)?.id);
     };
-  }, [Cookies.get('currentLoginedData')]);
+  }, []);
 
   const [fireNotification, setFireNotification] = useState(false);
 
@@ -264,11 +254,12 @@ function App() {
   const [fireMessage, setFireMessage] = useState(false);
 
   useMessaging(token, loginType, loginnedUserId, setFireMessage);
+
   return (
     <>
 
       {
-        location.pathname.includes('profile') ? <></> : <MyNavBar fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
+        (location.pathname.includes('profile')) ? <></> : <MyNavBar fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
       }
 
       <Toaster position="top-right" reverseOrder={false} />
@@ -276,6 +267,7 @@ function App() {
       <Routes>
 
         {/* HomePage Route */}
+        <Route path='/*' element={<NotFound />}/>
         <Route path='/' element={<Home selectedIndustries={selectedIndustriesQuery?.data?.industries} companies={companiesQuery?.data?.companies} countries={allowedCountrySearch} token={token} />} />
 
         {/* Search Page */}
@@ -283,16 +275,16 @@ function App() {
 
         {/* Shop Routes */}
         {/* <Route path='/discover' element={<Discover />} /> */}
-        <Route path='/shop'
+        {/* <Route path='/shop'
           element={<Shop
             //  fetchCartItems={fetchCartItems}
             // wishlistItems={wishlistItems} 
-            token={token} />} />
-        <Route path='/shop/:singleProduct'
+            token={token} />} /> */}
+        {/* <Route path='/shop/:singleProduct'
           element={<ProductDetails
             // fetchCartItems={fetchCartItems}
             //  wishlistItems={wishlistItems} 
-            token={token} />} />
+            token={token} />} /> */}
 
         {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
@@ -374,9 +366,9 @@ function App() {
         <Route path='/profile/quotation-orders/:orderId' element={<ShowOneOrderInfo token={token} />} />
 
         {/* <Route path='/company-messages' element={<CompanyMessage token={token} />} /> */}
-        
+
         <Route path='/your-messages' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
-        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} setFireMessage={setFireMessage} fireMessage={fireMessage} token={token} />} />
+        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} setFireMessage={setFireMessage} fireMessage={fireMessage} token={token} />} />
 
         <Route path='/profile/notifications' element={<MyNotfications fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />} />
 
@@ -387,7 +379,7 @@ function App() {
       </Routes>
 
       {
-        !location.pathname.includes('profile') && <MyFooter />
+        !(location.pathname.includes('profile') || location.pathname.includes('your-messages')) && <MyFooter />
       }
 
     </>

@@ -297,7 +297,6 @@ export default function SingleCompanyQuote({ token, countries }) {
                 });
         })();
     };
-    console.log(cart);
     
     useEffect(() => {
         setTimeout(() => {

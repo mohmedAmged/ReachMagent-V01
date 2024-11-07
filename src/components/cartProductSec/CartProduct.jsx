@@ -16,7 +16,6 @@ export default function CartProduct({
     setCart,
     token
 }) {
-    const loginType = localStorage.getItem('loginType');
     const [counter,setCounter] = useState(quantity);
     const [note,setNote]= useState('');
     const [currNotes,setCurrNotes]= useState(notes === 'N/A' ? '' : notes);
@@ -25,7 +24,7 @@ export default function CartProduct({
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
                 const toastId = toast.loading('Loading...');
-                await axios.post(`${baseURL}/user/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/delete-item-from-quotation-cart/${companyIdWantedToHaveQuoteWith}`,
                 {
                     quotation_cart_id: `${id}`,
                 }
@@ -79,7 +78,7 @@ export default function CartProduct({
                     });
                 })
             })();
-        }
+        };
     };
 
     const handleDecreaseOrIncrease = (id,type) => {
@@ -90,7 +89,7 @@ export default function CartProduct({
         };
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
-                await axios.post(`${baseURL}/user/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                await axios.post(`${baseURL}/user/control-quantity-for-quotation-cart/${companyIdWantedToHaveQuoteWith}`,
                 {
                     quotation_cart_id: `${id}`,
                     quantity_type: `${type}`,
