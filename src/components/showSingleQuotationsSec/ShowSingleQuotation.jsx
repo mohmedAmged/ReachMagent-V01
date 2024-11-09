@@ -13,10 +13,6 @@ import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
-
-
 export default function ShowSingleQuotation({ token }) {
     const loginType = localStorage.getItem('loginType');
     const { quotationsId } = useParams();
@@ -452,40 +448,7 @@ export default function ShowSingleQuotation({ token }) {
         }
     };
 
-    const handleDownloadZip = async (medias, title = 'medias') => {
-        const zip = new JSZip();
-    
-        try {
-            // Loop through the media array
-            for (const media of medias) {
-                try {
-                    // Fetch the actual file content
-                    const response = await fetch(media.media);
-                    if (!response.ok) {
-                        console.error(`Failed to fetch file: ${media.media}`);
-                        continue; // Skip files that cannot be fetched
-                    }
-                    const blob = await response.blob();
-    
-                    // Extract the file name from the media URL
-                    const fileName = media.media.split('/').pop();
-    
-                    // Add the actual file content to the zip
-                    zip.file(fileName, blob);
-                } catch (error) {
-                    console.error(`Error processing file: ${media.media}`, error);
-                }
-            }
-    
-            // Generate the zip file
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-    
-            // Trigger the download
-            saveAs(zipBlob, `${title}.zip`);
-        } catch (error) {
-            console.error('Error creating zip file:', error);
-        }
-    };
+
     return (
         <>
             {
