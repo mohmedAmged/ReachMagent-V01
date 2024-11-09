@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
+import { array } from 'zod';
 
 export default function SingleCompanyQuote({ token, countries }) {
     const [loading, setLoading] = useState(true);
@@ -35,7 +36,7 @@ export default function SingleCompanyQuote({ token, countries }) {
         title: '',
         quantity: '',
         description: '',
-        image: ''
+        file: []
     });
     const companyIdWantedToHaveQuoteWith = Cookies.get('currentCompanyRequestedQuote');
     const [distinationData, setDistinationData] = useState({
@@ -253,17 +254,17 @@ export default function SingleCompanyQuote({ token, countries }) {
 
     const handleAddCustomProduct = () => {
         const formData = new FormData();
+        customProduct.file = [...customProduct.file]
         Object.keys(customProduct).forEach((key) => {
             if (key !== 'file') {
                 formData.append(key, customProduct[key]);
-            } else if (key === 'file' && !Array.isArray(customProduct[key])) {
-                formData.append('logo', customProduct.file[0]);
             } else if (Array.isArray(customProduct[key]) && key === 'file') {
                 customProduct[key].forEach((file, index) => {
-                    formData.append(`file[${index}]`, file[0]);
+                    formData.append(`file[${index}]`, file);
                 });
             }
         });
+        
         (async () => {
             const toastId = toast.loading('Loading...');
             await axios.post(`${baseURL}/user/add-cutomized-item-for-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
@@ -282,8 +283,9 @@ export default function SingleCompanyQuote({ token, countries }) {
                         title: '',
                         quantity: '',
                         description: '',
-                        image: ''
+                        file: []
                     });
+                    
                     toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
                         id: toastId,
                         duration: 1000
@@ -297,7 +299,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                 });
         })();
     };
-    
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -498,7 +500,7 @@ export default function SingleCompanyQuote({ token, countries }) {
                                                     title={el?.item?.title}
                                                     description={el?.item?.description}
                                                     notes={el?.note}
-                                                    imageSrc={el?.item?.image ? el?.item?.image : el?.item?.medias[0]?.media}
+                                                    imageSrc={el?.item?.image ? el?.item?.image : el?.item?.medias?.find((media) => media.type === 'image')?.media}
                                                     showImage={el?.item?.image ? !!el?.item?.image : !!el?.item?.medias[0]?.media}
                                                     quantity={el?.quantity}
                                                     cartId={el?.quotation_cart_id}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './showSinglequotation.css';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
@@ -13,6 +13,8 @@ import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 
 export default function ShowSingleQuotation({ token }) {
@@ -402,6 +404,11 @@ export default function ShowSingleQuotation({ token }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [showFiles, setShowFiles] = useState(false);
+
+    const handleCloseFiles = () => setShow(false);
+    const handleShowFiles = () => setShow(true);
+
     const [editExtrasNote, setEditExtrasNote] = useState(false);
     const [extrasNoteInput, setExtrasNoteInput] = useState(newData?.extras_note === 'N/A' ? '' : newData?.extras_note);
 
@@ -442,6 +449,41 @@ export default function ShowSingleQuotation({ token }) {
             Cookies.set('newChatId', newData?.chatId )
             navigate(`/your-messages`);
 
+        }
+    };
+
+    const handleDownloadZip = async (medias, title = 'medias') => {
+        const zip = new JSZip();
+    
+        try {
+            // Loop through the media array
+            for (const media of medias) {
+                try {
+                    // Fetch the actual file content
+                    const response = await fetch(media.media);
+                    if (!response.ok) {
+                        console.error(`Failed to fetch file: ${media.media}`);
+                        continue; // Skip files that cannot be fetched
+                    }
+                    const blob = await response.blob();
+    
+                    // Extract the file name from the media URL
+                    const fileName = media.media.split('/').pop();
+    
+                    // Add the actual file content to the zip
+                    zip.file(fileName, blob);
+                } catch (error) {
+                    console.error(`Error processing file: ${media.media}`, error);
+                }
+            }
+    
+            // Generate the zip file
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+    
+            // Trigger the download
+            saveAs(zipBlob, `${title}.zip`);
+        } catch (error) {
+            console.error('Error creating zip file:', error);
         }
     };
     return (
@@ -605,27 +647,68 @@ export default function ShowSingleQuotation({ token }) {
                             <td className='text-center'>
                                 {
                                 row?.note !== 'N/A' ?
-                                    <i onClick={handleShow} className="bi bi-eye cursorPointer"></i>
+                                    <i onClick={() => setShow(true)} className="bi bi-eye cursorPointer"></i>
                                     : 
                                     'No Notes'
                                 }
                             </td>
-                            <td className='text-center'>
-                                <i className="bi bi-cloud-download cursorPointer"></i>
-                                
-                            </td>
-                            <Modal show={show} onHide={handleClose}>
+                            <Modal show={show} onHide={() => setShow(false)}>
                                 <Modal.Header closeButton>
                                 <Modal.Title>Notes</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>{row?.note}</Modal.Body>
                                 <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
+                                <Button variant="secondary" onClick={() => setShow(false)}>
                                     Close
                                 </Button>
                                 </Modal.Footer>
                             </Modal>
-                        
+                            <td className='text-center'>
+                               {
+                               row?.type === "customized" ? 
+                                <i onClick={() => setShowFiles(true)}
+                                    className="bi bi-box-arrow-up-right cursorPointer"
+                                >
+                                </i>
+                                :
+                                'No Files'
+                                }
+
+                            </td>
+                            <Modal show={showFiles} onHide={() => setShowFiles(false)}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Files</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <div className="mediasModal__handler">
+                                        {
+                                            row?.medias &&(
+                                                row?.medias.map((media, i) => (
+                                                    <div key={i} className="media__handler">
+                                                        <NavLink to={media?.media} target="_blank">
+                                                            {
+                                                                media?.type === 'image' ? 
+                                                                <img src={media?.media} alt="media" 
+                                                                className='mb-3'
+                                                                style={{width: '200px', height: '200px', borderRaduis:"8px"}} />
+                                                                :
+                                                                'view file'
+                                                            }
+                                                            
+                                                        </NavLink>
+                                                    </div>
+                                                ))
+                                            )
+                                        }
+                                    </div>
+                                    
+                                </Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowFiles(false)}>
+                                    Close
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
                                 {(!isOneClickQuotation ? (loginType === 'employee' && newData?.quotation_type === 'sell') : (fullData?.quotation_type === 'sell')) &&
                                 <td className='text-center text-capitalize p-0'>
                                     <div className="actions w-100 position-relative">
