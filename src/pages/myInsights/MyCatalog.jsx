@@ -78,6 +78,7 @@ export default function MyCatalog({ token }) {
   useEffect(() => {
     filterCatalogs();
   }, [filterCatalog]);
+  
   useEffect(() => {
     const cookiesData = Cookies.get('currentLoginedData');
     if (!currentUserLogin) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './myNavBar.css';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -12,10 +12,10 @@ import defaultImage from '../../assets/images.png';
 import NotificationIcon from '../notficationIconSec/NotificationIcon';
 import messageIcon from '../../assets/companyImages/messages-3.svg'
 
-export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, setFireNotification, fireNotification }) {
-
+export default function MyNavBar({ scrollToggle, token, loginType, allRead,totalCartItemsInCart, totalWishlistItems, setFireNotification, fireNotification }) {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
+    const [newMessages, setNewMessages] = useState(Cookies.get('allMessagesViewd') || '');
 
     function handleOffcanvasToggle() {
         setShowOffcanvas((prevShowOffcanvas) => !prevShowOffcanvas);
@@ -45,6 +45,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                 Cookies.remove('CurrentFollowedCompanies');
                 Cookies.remove('currentUpdatedCompanyData');
                 Cookies.remove('currentUpdatingActivities');
+                Cookies.remove('allMessagesViewd');
                 localStorage.removeItem('updatingData');
                 localStorage.removeItem('updatingCompany');
                 localStorage.removeItem('updatingProfile');
@@ -84,14 +85,16 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 scrollToTop();
                             }}
                                 to={'/your-messages'}
-                                title='wishlist'
-                                className='nav-link nav__link__style logoutBtn showNumHandler addResponsive'
+                                title='your messages'
+                                className='nav-link nav__link__style logoutBtn showNumHandler addResponsive position-relative'
                                 aria-label="Close"
                             >
-                                <button className='btn__companyActions messageMainBtn online__btn' >
-                                    <>
-                                        <img src={messageIcon} alt="message-icon" />
-                                    </>
+                                <button className={`btn__companyActions messageMainBtn online__btn`} >
+                                    <img src={messageIcon} alt="message-icon" />
+                                    {
+                                        allRead === false &&
+                                        <span className="red__dot"></span>
+                                    }
                                 </button>
                             </NavLink>
                         </div>
@@ -171,13 +174,17 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                         <NavLink
                                             to={'/your-messages'}
                                             title='Your Messages'
-                                            className='nav-link nav__link__style logoutBtn showNumHandler'
+                                            className={`nav-link nav__link__style logoutBtn showNumHandler position-relative`}
                                             aria-label="Close"
                                         >
-                                            <button style={{ width: '50px', height: '50px', background: 'rgba(221, 221, 221, 0.719)', borderRadius: '50%' }} className='btn__companyActions online__btn' >
-                                                <>
-                                                    <img src={messageIcon} alt="message-icon" />
-                                                </>
+                                            <button
+                                                style={{ width: '50px', height: '50px', background: 'rgba(221, 221, 221, 0.719)', borderRadius: '50%' }}
+                                                className={`btn__companyActions online__btn`} >
+                                                <img src={messageIcon} alt="message-icon" />
+                                                {
+                                                    allRead === false &&
+                                                    <span className="red__dot"></span>
+                                                }
                                             </button>
                                         </NavLink>
                                         <NavLink

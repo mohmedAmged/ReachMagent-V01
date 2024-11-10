@@ -10,7 +10,6 @@ export default function UserChatSidebar({ chats, setActiveChat, userNowInfo, act
             setActiveClassItemId(parseInt(activeChatId));
         }
     }, [activeChatId]);
-    console.log(userNowInfo)
     return (
         <div className='userChatSidebar__content'>
             <div className="yourInfoPart">
@@ -34,21 +33,21 @@ export default function UserChatSidebar({ chats, setActiveChat, userNowInfo, act
                                 setActiveChat(item?.id)
                                 setActiveClassItemId(item?.id);
                                 navigate(`/your-messages/${item?.id}`);
-                            }} key={index} className={`messageChatItem ${activeClassItemId === item?.id ? 'activeHover' : ''}`}>
+                            }} key={index} className={`messageChatItem ${item?.read === false && 'activeHover'} ${activeClassItemId === item?.id ? 'activeHover' : ''}`}>
                                 <div className="messageChatMainInfo">
                                     <div className="messageChatImg">
                                         <img src={item?.receiverImage} alt="avatar-2" />
                                     </div>
                                     <div className="messageChatInfo">
                                         <div className="messageChatName">
-                                            <h3>
+                                            <h3 className={`${item?.read === false && 'fw-bold'}`}>
                                                 {item?.receiverName}
                                             </h3>
                                         </div>
-                                        <div className="messageChatContent">
+                                        <div className={`messageChatContent`}>
                                             {
                                                 item?.type === 'text' && (
-                                                    <p>
+                                                    <p className={`${item?.read === false && 'fw-bold'}`}>
                                                         {item?.sendBy}: {item?.message?.slice(0, 30)}
                                                     </p>
                                                 )
@@ -93,7 +92,7 @@ export default function UserChatSidebar({ chats, setActiveChat, userNowInfo, act
                                     </div>
                                 </div>
                                 <div className="timeOfMessage">
-                                    <span>{item?.date} {item?.time}</span>
+                                    <span className={`${item?.read === false && 'fw-bold'}`}>{item?.date} {item?.time}</span>
                                 </div>
                             </div>
                         )

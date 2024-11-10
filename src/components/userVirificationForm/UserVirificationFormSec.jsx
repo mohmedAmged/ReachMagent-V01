@@ -1,82 +1,95 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserVirificationSchema } from '../../validation/UserVirification';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
-export default function UserVirificationFormSec({token}) {
-  const [timer,setTimer] = useState(true);
+export default function UserVirificationFormSec({ token }) {
   const navigate = useNavigate();
-
-  if(timer === false){
-    setTimeout(()=>{
-      setTimer(true);
-    },1000 * 60);
-  };
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [timer, setTimer] = useState(0); // State to store timer value
 
   const {
     register,
     handleSubmit,
-    setError,
-    reset,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      otp: ''
+      otp: '',
     },
     resolver: zodResolver(UserVirificationSchema),
   });
 
   const onSubmit = async (data) => {
     const toastId = toast.loading('Loading...');
-    await axios.post(`${baseURL}/user/verify-account`,data,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": 'application/json',
-        Accept: 'application/json'
-      }
-    })
-    .then(res => {
-      toast.success(res?.data?.message || 'Verified Successfully!',{
-        id: toastId,
-        duration: 1000
-      });
-      navigate(`/profile/profile-settings`);
-    })
-    .catch(err => {
-      toast.error(err?.response?.data?.message || 'Something Went Wrong!',{
-        id: toastId,
-        duration: 1000
+    await axios
+      .post(`${baseURL}/user/verify-account`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
       })
-    });
+      .then((res) => {
+        toast.success(res?.data?.message || 'Verified Successfully!', {
+          id: toastId,
+          duration: 1000,
+        });
+        navigate(`/profile/profile-settings`);
+        toast.success('your account will be verified by our admin team ... within 7 days',{
+          duration: 7000,
+        })
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || 'Something Went Wrong!', {
+          id: toastId,
+          duration: 1000,
+        });
+      });
   };
 
-  const handleResendCode = async ()=>{
+  const handleResendCode = async () => {
     const toastId = toast.loading('Loading...');
-    await axios.post(`${baseURL}/user/resend-verify-code`,{},{
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": 'application/json',
-        Accept: 'application/json'
-      }
-    })
-    .then(res => {
-      toast.success(res?.data?.message || 'Verified Successfully!',{
-        id: toastId,
-        duration: 1000
+    setIsButtonDisabled(true);
+    await axios
+      .post(
+        `${baseURL}/user/resend-verify-code`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        toast.success(res?.data?.message || 'Code sent successfully!', {
+          id: toastId,
+          duration: 1000,
+        });
       })
-    })
-    .catch(err => {
-      toast.error(err?.response?.data?.message || 'Something Went Wrong!',{
-        id: toastId,
-        duration: 1000
-      })
-    })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || 'Something Went Wrong!', {
+          id: toastId,
+          duration: 1000,
+        });
+      });
+    setTimer(30);
   };
+
+  useEffect(() => {
+    let countdown;
+    if (timer > 0) {
+      countdown = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    } else {
+      setIsButtonDisabled(false);
+    };
+    return () => clearInterval(countdown);
+  }, [timer]);
 
   return (
     <div className='signUpForm__mainSec py-5 mb-5'>
@@ -100,11 +113,9 @@ export default function UserVirificationFormSec({token}) {
                       {...register('otp')}
                       className={`form-control signUpInput ${errors.otp ? 'inputError' : ''}`}
                     />
-                    {
-                      errors.otp
-                      &&
-                      (<span className='errorMessage'>{errors.otp.message}</span>)
-                    }
+                    {errors.otp && (
+                      <span className='errorMessage'>{errors.otp.message}</span>
+                    )}
                   </div>
                   <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                     <input
@@ -113,8 +124,13 @@ export default function UserVirificationFormSec({token}) {
                       value={'Verify'}
                     />
                     <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
-                      <button onClick={handleResendCode} disabled={!timer} type="button" className={`prevStep__btn ${timer ? '':'opacityDisabled'}`}>
-                        Resend Code
+                      <button
+                        onClick={handleResendCode}
+                        type="button"
+                        className={`prevStep__btn ${isButtonDisabled && 'disabledBtn'}`}
+                        disabled={isButtonDisabled}
+                      >
+                        {isButtonDisabled ? `Resend Code (${timer}s)` : 'Resend Code'}
                       </button>
                     </div>
                   </div>
@@ -125,5 +141,5 @@ export default function UserVirificationFormSec({token}) {
         </div>
       </div>
     </div>
-  )
+  );
 }

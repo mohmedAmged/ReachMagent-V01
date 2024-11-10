@@ -82,9 +82,11 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };
+
     useEffect(() => {
         fetchUnitsOfMeasure();
     }, [loginType, token]);
+
     useEffect(() => {
         if (id && loginType === 'employee') {
             (async () => {
@@ -136,19 +138,22 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
     }, [formData.category_id, mainCategories]);
 
     useEffect(() => {
-        if (+currCatalog?.id === +id) {
-            formData.price = currCatalog?.price;
-            formData.unit_of_measure_id = +currCatalog?.unit_of_measure_id;
-            formData.tax = currCatalog?.tax;
-            formData.code = currCatalog?.code;
-            formData.title_en = currCatalog?.title_en;
-            formData.title_ar = currCatalog?.title_ar;
-            formData.description_en = currCatalog?.description_en;
-            formData.description_ar = currCatalog?.description_ar;
-            formData.type = currCatalog?.catalogTypes?.map(el => el?.type);
-            formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currCatalog?.category)?.mainCategoryId;
-            formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currCatalog.subCategory)?.subCategoryId;
-            formData.image = currCatalog?.media?.map(el => el?.image);
+        if (currCatalog?.id && +currCatalog?.id === +id) {
+            setFormData({
+                title_ar: currCatalog?.title_ar || '',
+                title_en: currCatalog?.title_en || '',
+                description_ar: currCatalog?.description_ar || '',
+                description_en: currCatalog?.description_en || '',
+                price: currCatalog?.price || '',
+                category_id: mainCategories?.find(el => el?.mainCategoryName === currCatalog?.category)?.mainCategoryId || '',
+                sub_category_id: currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currCatalog?.subCategory)?.subCategoryId || '',
+                status: currCatalog?.status,
+                code: currCatalog?.code || '',
+                unit_of_measure_id: +currCatalog?.unit_of_measure_id || '',
+                tax: currCatalog?.tax || '',
+                type: currCatalog?.catalogTypes?.map(el => el?.type) || [],
+                image: currCatalog?.media?.map(el => el?.image) || [],
+            })
         };
     }, [currCatalog]);
     
@@ -194,8 +199,9 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData);
+        
         const submissionData = new FormData();
-
         Object.keys(formData).forEach((key) => {
             if (key !== 'image' && !Array.isArray(formData[key])) {
                 submissionData.append(key, formData[key]);
@@ -229,6 +235,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
             };
             toast.error(error?.response?.data?.message || 'Something Went Wrong!');
         };
+        console.log(submissionData);
     };
 
     useEffect(() => {
@@ -439,12 +446,16 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                                 </div>
                                             </div>
                                             <div className="upload__image__btn">
+                                                <label htmlFor="tax">
+                                                    Add Multible Images 
+                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
                                                 <input
                                                     type="file"
                                                     name="images"
                                                     multiple
                                                     onChange={handleImageChange}
-                                                    className="form-control"
+                                                    className="form-control mt-2"
                                                 />
                                             </div>
                                             <div className="catalog__check__points">

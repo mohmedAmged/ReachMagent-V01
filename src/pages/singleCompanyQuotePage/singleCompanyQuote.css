@@ -187,3 +187,10 @@
     margin-inline-end: 10px;
     margin-top: 5px;
 }
+.customizationQuote__actions .hintForAddedFiles {
+    background-color:  rgb(15, 130, 238);
+    color: #fff;
+    font-size: 13px !important;
+    border-radius: 4px;
+    padding: 3px 5px;
+}

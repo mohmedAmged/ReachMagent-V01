@@ -13,7 +13,7 @@ import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
 import CustomDropdown from '../customeDropdownSelectSec/CustomeDropdownSelect';
 
-export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp, fcmToken }) {
+export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp }) {
   const [unAuth, setUnAuth] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -52,12 +52,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       full_address: '',
       title: '',
       official_id_or_passport: '',
-      role_id: ''
+      role_id: '',
+      accept_terms: '',
     },
     resolver: zodResolver(isSignUp ? RegisterSchema : AddEmployeeSchema),
   });
 
   const [currentCitiesInsideCountry, setCurrentCitiesInsideCountry] = useState([]);
+
   useEffect(() => {
     setCurrentCitiesInsideCountry([]);
     let currentCountryId = watch('country_id');
@@ -83,6 +85,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       }
     };
   }, [watch('country_id')]);
+
+  useEffect(()=>{
+    if (watch('accept_terms') === true) {
+      setValue('accept_terms', 'yes');
+    } else if (watch('accept_terms') === false) {
+      setValue('accept_terms', 'no');
+    };
+  },[watch('accept_terms')]);
 
   useEffect(() => {
     if (!isSignUp && loginType === 'employee') {
@@ -130,7 +140,6 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     const currentHeaders = isSignUp ? {
       'Accept': 'application/json',
       'Content-Type': 'multipart/form-data',
-      // 'fcm_token': fcmToken
     } : {
       Authorization: `Bearer ${token}`,
       'Accept': 'application/json',
@@ -142,7 +151,6 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       const token = response?.data?.data?.token;
       if (token) {
         Cookies.set('authToken', token, { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
-
         Cookies.set('currentLoginedData', JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
         toast.success(`${response?.data?.message}` || 'Created Successfully!', {
           id: toastId,
@@ -156,7 +164,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
         isSignUp &&
           (response?.data?.data?.user?.verified) &&
           (setTimeout(() => {
-            navigate('/');
+            navigate('/profile/profile-settings');
           }, 1000));
         scrollToTop();
         reset();
@@ -176,7 +184,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
         });
       });
   };
-  // image preview
+
   const [imagePreview, setImagePreview] = useState(null);
   const [passportPreview, setPassPortPreview] = useState(null);
 
@@ -214,7 +222,6 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       clearErrors("password_confirmation");
     };
   }, [watch('password_confirmation')]);
-
 
   return (
     <>
@@ -639,6 +646,28 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                           )}
                         </div>
+                        {
+                          isSignUp &&
+                          <div className="col-lg-8 my-4">
+                            <label
+                              htmlFor="singUpaccept_terms"
+                              className='row justify-content-start align-items-start'>
+                              <p className="signUpCostom-checkBox col-md-1 col-sm-2 mt-1">
+                                <input
+                                  type="checkbox"
+                                  id="singUpaccept_terms"
+                                  {...register('accept_terms')}
+                                  className='signUpCheckBox'
+                                />
+                                <span className="checkmark"></span>
+                              </p>
+                              <p className="col-md-11 p-0 col-sm-10 checkBox-text">
+                                Accept Terms and Conditions
+                              </p>
+                            </label>
+                            {errors.accept_terms && <p className='errorMessage'>{errors.accept_terms.message}</p>}
+                          </div>
+                        }
                         <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                           <input disabled={isSubmitting} type="submit" value={isSignUp ? 'Sign Up' : 'Add Employee'} />
                         </div>

@@ -54,13 +54,15 @@ export default function NewPostForm({ token }) {
     },[id]);
 
     useEffect(()=>{
-        if(+currPost?.postId === +id){
-            formData.status = currPost?.postStatus.toLowerCase();
-            formData.type = currPost?.postType.toLowerCase();
-            formData.title_ar = currPost?.postTitle;
-            formData.title_en = currPost?.postTitle;
-            formData.description_ar = currPost?.postDescription;
-            formData.description_en = currPost?.postDescription;
+        if(currPost?.postId && +currPost?.postId === +id){
+            setFormData({
+                title_ar: currPost?.postTitle_ar || '',
+                title_en: currPost?.postTitle_en || '',
+                description_ar: currPost?.postDescription_ar || '',
+                description_en: currPost?.postDescription_en || '',
+                status: currPost?.postStatus.toLowerCase() || '',
+                type: currPost?.postType.toLowerCase() || ''
+            })
         };
     },[currPost]);
 

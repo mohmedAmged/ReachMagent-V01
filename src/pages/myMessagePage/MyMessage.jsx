@@ -7,41 +7,20 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-export default function MyMessage({ token, loginnedUserId, fireMessage, setFireMessage }) {
+
+export default function MyMessage({getAllChats, setError,chats,userNowInfo, token, fireMessage, setFireMessage }) {
     const loginType = localStorage.getItem('loginType');
-    const { activeChatId } = useParams();
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [chats, setChats] = useState([]);
+    const { activeChatId } = useParams();
     const [activeChat, setActiveChat] = useState(activeChatId);
     const [messages, setMessages] = useState([]);
     const [chatSettings, setChatSettings] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loadingActiveChat, setLoadingActiveChat] = useState(false);
-    const [loadingAllChats, setLoadingAllChats] = useState(false);
-    const [userNowInfo, setUserNowInfo] = useState([]);
     const navigate = useNavigate();
-    const [firstRender,setFirstRender] = useState(true);
-    
-    const getAllChats = async () => {
-        try {
-            setLoadingAllChats(true);
-            const slug = loginType === 'user' ? 'my-chats' : 'company-chats';
-            const res = await axios.get(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setChats(res?.data?.data?.chats); 
-            setUserNowInfo(res?.data?.data?.user);
-            setFireMessage(false);
+    const [firstRender, setFirstRender] = useState(true);
 
-        } catch (error) {
-            setError(error?.response?.data?.message || 'Failed to load chats');
-        };
-        setLoadingAllChats(false);
-    };
 
 
     const showActiveChat = async (page = 1) => {
@@ -58,8 +37,9 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
             });
             const newMessages = res?.data?.data?.messages.messages;
             setChatSettings(res?.data?.data?.chat)
-            setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages ]);
+            setMessages((prevMessages) => page === 1 ? newMessages : [...prevMessages, ...newMessages]);
             setHasMore(res?.data?.data?.messages?.meta?.current_page < res?.data?.data?.messages?.meta?.last_page);
+            getAllChats();
             setCurrentPage(page);
             setFireMessage(false);
         } catch (error) {
@@ -68,16 +48,14 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
             setLoadingActiveChat(false);
         };
     };
-    
+
     const newChatId = Cookies.get('newChatId');
-
-
-    useEffect(()=>{
-        if(firstRender){
+    useEffect(() => {
+        if (firstRender) {
             navigate('/your-messages');
             setFirstRender(false);
-        };
-    },[]);
+        };
+    }, []);
 
     useEffect(() => {
         if (newChatId) {
@@ -89,22 +67,25 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
     useEffect(() => {
         if (activeChatId && token) {
             showActiveChat();
-        }
+        };
     }, [fireMessage, activeChatId, token]);
-
-
 
     useEffect(() => {
         if (token && loginType) {
             getAllChats();
-        }
+        };
     }, [token, loginType, fireMessage]);
-    
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 500);
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            getAllChats();
+        }, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <>
@@ -118,7 +99,7 @@ export default function MyMessage({ token, loginnedUserId, fireMessage, setFireM
                                 <div className="col-lg-4 col-md-4 col-sm-12">
                                     <div className="userChat__sidebar">
                                         <UserChatSidebar chats={chats} setActiveChat={setActiveChat} userNowInfo={userNowInfo}
-                                        activeChatId={activeChatId}
+                                            activeChatId={activeChatId}
                                         />
                                     </div>
                                 </div>

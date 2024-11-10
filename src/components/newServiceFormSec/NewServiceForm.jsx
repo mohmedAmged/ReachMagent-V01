@@ -91,16 +91,20 @@ export default function NewServiceForm({ mainCategories, token }) {
     }, [formData.category_id, mainCategories]);
 
     useEffect(() => {
-        if (+currSevice?.id === +id) {
-            formData.title_en = currSevice?.title;
-            formData.title_ar = currSevice?.title;
-            formData.code = currSevice?.code;
-            formData.description_en = currSevice?.description;
-            formData.description_ar = currSevice?.description;
-            formData.category_id = mainCategories?.find(el => el?.mainCategoryName === currSevice?.category)?.mainCategoryId;
-            formData.sub_category_id = currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currSevice.subCategory)?.subCategoryId;
+        if (currSevice?.id && +currSevice?.id === +id) {
+            setFormData({
+                title_ar: currSevice?.title_ar || '',
+                title_en: currSevice?.title_en || '',
+                description_ar: currSevice?.description_ar || '',
+                description_en: currSevice?.description_en || '',
+                category_id: mainCategories?.find(el => el?.mainCategoryName === currSevice?.category)?.mainCategoryId || '',
+                sub_category_id: currentSubCategoriesInsideMainCategory?.find(el => el?.subCategoryName === currSevice.subCategory)?.subCategoryId || '',
+                status: 'active',
+                code: currSevice?.code || '',
+                image: currSevice?.image || '',
+            })
         };
-    }, [currSevice]);
+    }, [currSevice, id]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

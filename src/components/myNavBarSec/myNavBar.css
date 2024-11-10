@@ -269,3 +269,12 @@
         height: 40px !important;
    }
 }
+.red__dot {
+    position: absolute;
+    top: 0px !important;
+    right: 0px !important;
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50% !important;
+    background: rgb(225 8 19) !important;
+}

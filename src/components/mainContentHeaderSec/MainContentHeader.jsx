@@ -1,11 +1,12 @@
-import React from 'react'
-import './mainContentHeader.css'
-import MySearchSec from '../mySearchSec/MySearchSec'
-import messageIcon from '../../assets/companyImages/messages-3.svg'
+import React from 'react';
+import './mainContentHeader.css';
+import MySearchSec from '../mySearchSec/MySearchSec';
+import messageIcon from '../../assets/companyImages/messages-3.svg';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AllReadMessages } from '../../App';
 
-import { NavLink, useNavigate } from 'react-router-dom'
 export default function MainContentHeader({ isSidebarExpanded, search, placeholder, currentUserLogin, filteration, setFilteration, name, inputType }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     return (
         <div className={`mainContentHeader__handler  ${isSidebarExpanded ? 'expanded' : ''}`}>
             <div className="content__header d-flex justify-content-between  align-items-center flex-wrap">
@@ -22,7 +23,10 @@ export default function MainContentHeader({ isSidebarExpanded, search, placehold
                         <NavLink className={'nav-link'}
                         >
                             <img src={messageIcon} alt="message-icon" />
-                            {/* <span className='online__circle'></span> */}
+                            {
+                                AllReadMessages === false &&
+                                <span className="red__dot"></span>
+                            }
                         </NavLink>
                     </button>
                     <NavLink className='btn btn-outline-success p-2 ms-2' to='/'>

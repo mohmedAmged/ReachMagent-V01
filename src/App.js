@@ -67,7 +67,11 @@ import useNotifications from './functions/useNotifications';
 import MyNotfications from './pages/myNotficationsPage/MyNotfications';
 import useMessaging from './functions/useMessaging';
 import NotFound from './pages/notFound/NotFound';
-
+import MyNetwork from './pages/myNetwork/MyNetwork';
+import NewNetworkForm from './components/newNetworkFormSec/NewNetworkForm';
+import MyCatalogDetails from './pages/myCatalogDetailsPage/MyCatalogDetails';
+import MyServiceDetails from './pages/myServiceDetailsPage/MyServiceDetails';
+export let AllReadMessages = true;
 
 
 function App() {
@@ -79,6 +83,31 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [scrollToggle, setScrollToggle] = useState(false);
+  const [allRead, setAllRead] = useState(true);
+  const [loadingAllChats, setLoadingAllChats] = useState(false);
+  const [chats, setChats] = useState([]);
+  const [error, setError] = useState(null);
+  const [userNowInfo, setUserNowInfo] = useState([]);
+
+  const getAllChats = async () => {
+    try {
+      setLoadingAllChats(true);
+      const slug = loginType === 'user' ? 'my-chats' : 'company-chats';
+      const res = await axios.get(`${baseURL}/${loginType}/${slug}?t=${new Date().getTime()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllRead(res?.data?.data?.all_read);
+      AllReadMessages = res?.data?.data?.all_read
+      setChats(res?.data?.data?.chats);
+      setUserNowInfo(res?.data?.data?.user);
+      setFireMessage(false);
+    } catch (error) {
+      setError(error?.response?.data?.message || 'Failed to load chats');
+    };
+    setLoadingAllChats(false);
+  };
 
   // useEffect(() => {
   //   const updateLoginType = () => {
@@ -254,12 +283,16 @@ function App() {
   const [fireMessage, setFireMessage] = useState(false);
 
   useMessaging(token, loginType, loginnedUserId, setFireMessage);
-
+  useEffect(() => {
+    if (token && loginType) {
+      getAllChats();
+    }
+  }, [fireMessage])
   return (
     <>
 
       {
-        (location.pathname.includes('profile')) ? <></> : <MyNavBar fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
+        (location.pathname.includes('profile')) ? <></> : <MyNavBar allRead={allRead} fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
       }
 
       <Toaster position="top-right" reverseOrder={false} />
@@ -291,6 +324,8 @@ function App() {
         <Route path='/contact-us' element={<MyContactUs />} />
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
         <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
+        <Route path='/show-company/:companyId/catalog-details/:catalogId' element={<MyCatalogDetails token={token} />} />
+        <Route path='/show-company/:companyId/service-details/:servId' element={<MyServiceDetails token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote countries={countriesQuery?.data?.countries} token={token} />} />
 
         <Route path='/one-click-quotation' element={<OneClickQuotation regions={regionsQuery?.data?.regions} mainCategories={mainCategoriesQuery?.data?.mainCategories} countries={countriesQuery?.data?.countries} token={token} />} />
@@ -321,6 +356,10 @@ function App() {
         <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
         <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash token={token} show_slug={'show-catalog'} />} />
+
+        <Route path='/profile/network' element={<MyNetwork token={token} />} />
+        <Route path='/profile/network/addNewItem' element={<NewNetworkForm token={token} />} />
+        <Route path='/profile/network/edit-item/:id' element={<NewNetworkForm token={token} />} />
 
         <Route path='/profile/service' element={<MyService token={token} />} />
         <Route path='/profile/service/addNewItem' element={<NewServiceForm mainCategories={mainCategoriesQuery?.data?.mainCategories} token={token} />} />
@@ -367,8 +406,8 @@ function App() {
 
         {/* <Route path='/company-messages' element={<CompanyMessage token={token} />} /> */}
 
-        <Route path='/your-messages' element={<MyMessage loginnedUserId={loginnedUserId} token={token} />} />
-        <Route path='/your-messages/:activeChatId' element={<MyMessage loginnedUserId={loginnedUserId} setFireMessage={setFireMessage} fireMessage={fireMessage} token={token} />} />
+        <Route path='/your-messages' element={<MyMessage getAllChats={getAllChats} setError={setError} chats={chats} userNowInfo={userNowInfo} token={token} setFireMessage={setFireMessage} fireMessage={fireMessage} />} />
+        <Route path='/your-messages/:activeChatId' element={<MyMessage getAllChats={getAllChats} setError={setError} chats={chats} userNowInfo={userNowInfo} setFireMessage={setFireMessage} fireMessage={fireMessage} token={token} />} />
 
         <Route path='/profile/notifications' element={<MyNotfications fireNotification={fireNotification} setFireNotification={setFireNotification} token={token} />} />
 
