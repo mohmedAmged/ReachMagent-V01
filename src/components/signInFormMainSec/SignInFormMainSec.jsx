@@ -136,7 +136,7 @@ export default function SignInFormMainSec({loginType,setLoginType,fcmToken}) {
                                             <input 
                                                 type={`${showPassword ? 'text' : 'password'}`}
                                                 id='signInPassword'
-                                                placeholder='Enter 8-digit password'
+                                                placeholder='Enter your password'
                                                 {...register('password')}
                                                 className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
                                             />

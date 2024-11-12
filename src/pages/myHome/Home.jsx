@@ -66,10 +66,10 @@ export default function Home({ companies, token, countries, selectedIndustries, 
             <GrowBuisnessSec />
             {/* <LastMinuteDeals setLoading={setLoading} token={token}/> */}
             <div className='mt-3'>
-              <HeaderOfSec
+              {/* <HeaderOfSec
                 secHead='Companies Insights'
                 secText='Stay informed with the latest updates, announcements, and specials from top companies'
-              />
+              /> */}
               <SingleCompanyNewsSec setLoading={setLoading} token={token} />
             </div>
             <DownloadApp />

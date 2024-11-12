@@ -447,7 +447,7 @@ export default function NewCatalogItemForm({ mainCategories, token }) {
                                             </div>
                                             <div className="upload__image__btn">
                                                 <label htmlFor="tax">
-                                                    Add Multible Images 
+                                                    Add Multiple Images 
                                                 <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
