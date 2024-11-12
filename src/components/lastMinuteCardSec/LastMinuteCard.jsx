@@ -7,9 +7,9 @@ export default function LastMinuteCard({
     productImage,
     productName,
     dealTimeDay,
-    dealTotPrice,
+    // dealTotPrice,
     productLink,
-    dealQuantity,
+    // dealQuantity,
     showCustomContent,
     buttonLabel = 'Know more',
     onKnowMoreClick,
@@ -24,7 +24,7 @@ export default function LastMinuteCard({
         };
     };
 
-    // Conditional styles
+
     const cardStyles = {
         background: 'var(--primary-white)',
         padding: '10px',
@@ -32,6 +32,7 @@ export default function LastMinuteCard({
         border: `2px solid ${borderColor}`
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
+
     return (
         <>
             <div className='lastMinuteCard__handler' style={cardStyles} >
@@ -41,8 +42,8 @@ export default function LastMinuteCard({
                 <div className="product__info">
                     <div className="main__info">
                         <NavLink className={'nav-link'} to={productLink ? productLink : ''} onClick={() => {
-                                    scrollToTop();
-                                }}>
+                            scrollToTop();
+                        }}>
                             <h3>{productName}</h3>
 
                         </NavLink>
@@ -55,17 +56,13 @@ export default function LastMinuteCard({
                                     <p>Limit Date</p>
                                     <p>{dealTimeDay}</p>
                                 </div>
-                                {/* <div className="deal__time__hour">
-                                    <p>{dealtimeHours}</p>
-                                    <p>hours</p>
-                                </div> */}
                             </div>
                         )}
                     </div>
                     <div className="sub__info">
-                        <p>{dealQuantity}</p>
-                        {/* <p>{dealTotPrice}</p> */}
-                        <span className={`pageMainBtnStyle ${buttonClass}`} onClick={handleButtonClick}>
+                        {/* <p>{dealQuantity}</p> */}
+                        <NavLink to={productLink ? productLink : ''} className="pageMainBtnStyle terquase mb-2">More Info</NavLink>
+                        <span className={`pageMainBtnStyle d-flex justify-content-center ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
                         </span>
                     </div>
