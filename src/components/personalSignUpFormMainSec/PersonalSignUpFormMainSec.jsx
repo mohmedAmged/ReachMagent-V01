@@ -186,6 +186,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
 
   const [imagePreview, setImagePreview] = useState(null);
   const [passportPreview, setPassPortPreview] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -196,8 +197,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
   const handlePassportChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPassPortPreview(URL.createObjectURL(file));
-    };
+      if (file.type.startsWith('image/')) {
+        setPassPortPreview(URL.createObjectURL(file));
+        setFileName(''); 
+      } else {
+        setPassPortPreview(null); 
+        setFileName(file.name); 
+      }
+    } else {
+      setPassPortPreview(null);
+      setFileName('');
+    }
   };
 
   const handleSelectIndust = (el) => {
@@ -639,10 +649,20 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             &&
                             (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
                           }
-                          {passportPreview && (
-                            <div className='image-preview'>
-                              <img src={passportPreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
-                            </div>
+                          {passportPreview ? (
+                              <div className='image-preview'>
+                                <img 
+                                  src={passportPreview} 
+                                  alt="Selected profile" 
+                                  style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} 
+                                />
+                              </div>
+                            ) : (
+                              fileName && (
+                                <p className='file-name' style={{ marginTop: '10px', color: '#555' }}>
+                                  {fileName}
+                                </p>
+                              )
                           )}
                         </div>
                         {
