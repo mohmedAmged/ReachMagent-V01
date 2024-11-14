@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useNavigate , NavLink } from 'react-router-dom';
 
-export default function SignInFormMainSec({loginType,setLoginType,fcmToken}) {
+export default function SignInFormMainSec({loginType,setLoginType}) {
     const navigate = useNavigate();
     const [showPassword,setShowPassword] = useState(false);
     const {

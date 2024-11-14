@@ -12,6 +12,7 @@
     "bootstrap-icons": "^1.11.3",
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
     "pusher-js": "^8.4.0-rc2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
@@ -24,7 +25,8 @@
     "react-scripts": "5.0.1",
     "swiper": "^11.1.4",
     "web-vitals": "^2.1.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

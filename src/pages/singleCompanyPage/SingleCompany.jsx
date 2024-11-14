@@ -22,14 +22,12 @@ import MyLoader from '../../components/myLoaderSec/MyLoader'
 import CompanyMediaCard from '../../components/companyMediaCardSec/CompanyMediaCard'
 import BookAppointMentFrom from '../../components/bookAppointMentFrom/BookAppointMentFrom'
 
-export default function SingleCompany({ token, fetchCartItems, wishlistItems }) {
+export default function SingleCompany({ token }) {
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     const companyData = {
         aboutMark: aboutMarkImage,
         briefDescription: 'Homzmart is a one stop shop where you purchase everything from furniture to household items and more!',
@@ -62,7 +60,11 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
                 Authorization: `Bearer ${token}`
             }
         }),
+        cacheTime: 1000 * 60 * 15,
+        retry: false,
+        refetchOnWindowFocus: false,
     });
+
     const companyNetworks = useQuery({
         queryKey: ['company-networks'],
         queryFn: () => getDataFromAPI(`company-networks/${companyId}?t=${new Date().getTime()}`, {
@@ -70,6 +72,9 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
                 Authorization: `Bearer ${token}`
             }
         }),
+        cacheTime: 1000 * 60 * 15,
+        retry: false,
+        refetchOnWindowFocus: false,
     });
 
     const [activeItem, setActiveItem] = useState('Overview');
@@ -78,7 +83,6 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
         { name: 'Overview', active: activeItem === 'Overview' },
         { name: 'Services', active: activeItem === 'Services' },
         { name: 'Product Catalog', active: activeItem === 'Product Catalog' },
-        // { name: 'Products', active: activeItem === 'Products' },
         { name: 'Media', active: activeItem === 'Media' },
         { name: 'Networks', active: activeItem === 'Networks' },
     ];
@@ -92,10 +96,6 @@ export default function SingleCompany({ token, fetchCartItems, wishlistItems }) 
             setLoading(false);
         }, 500);
     }, [loading]);
-
-    console.log(showCompaniesQuery?.data?.company);
-console.log(companyNetworks?.data);
-
 
     return (
         <>
@@ -322,8 +322,8 @@ console.log(companyNetworks?.data);
                                                     {showCompaniesQuery?.data?.company?.companyPortfolio?.map((el) => {
                                                         return (
                                                             <SwiperSlide className=' my-3' key={el?.id}>
-                                                                <CompanyMediaCard type={el?.type} mediaSrc={el?.link} 
-                                                                 
+                                                                <CompanyMediaCard type={el?.type} mediaSrc={el?.link}
+
                                                                 />
                                                             </SwiperSlide>
                                                         )
@@ -337,7 +337,7 @@ console.log(companyNetworks?.data);
 
                                     </>
                                 }
-                                 {
+                                {
                                     activeItem === 'Networks' &&
                                     <>
                                         {
@@ -375,14 +375,14 @@ console.log(companyNetworks?.data);
                                                 >
                                                     {companyNetworks?.data?.networks?.networks?.map((el) => {
                                                         return (
-                                                        <SwiperSlide className=' my-3' key={el?.id}>
-                                                            <CompanyMediaCard type={'image'} mediaSrc={el?.logo} 
-                                                            mainInfo={true}
-                                                            mainInfoName={el?.name}
-                                                            mainInfoType={el?.label}
-                                                            mainInfoLink={''}
-                                                            />
-                                                        </SwiperSlide>
+                                                            <SwiperSlide className=' my-3' key={el?.id}>
+                                                                <CompanyMediaCard type={'image'} mediaSrc={el?.logo}
+                                                                    mainInfo={true}
+                                                                    mainInfoName={el?.name}
+                                                                    mainInfoType={el?.label}
+                                                                    mainInfoLink={''}
+                                                                />
+                                                            </SwiperSlide>
                                                         )
                                                     })}
                                                 </Swiper>

@@ -7,7 +7,10 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
-export default function OneClickQuotation({ token, mainCategories, regions, countries }) {
+import { GetAllCountriesStore } from '../../store/AllCountries';
+import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
+import { GetAllRegionsStore } from '../../store/AllResions';
+export default function OneClickQuotation({ token }) {
     const [loading, setLoading] = useState(true);
     const [requestIntries, setRequestIntries] = useState({
         type: '',
@@ -47,6 +50,9 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         sub_category_id: requestIntries?.sub_category_id ? requestIntries?.sub_category_id : '',
         user_notes: '',
     });
+    const countries = GetAllCountriesStore((state) => state.countries);
+    const mainCategories = GetAllMainCategoriesStore((state) => state.mainCategories);
+    const regions = GetAllRegionsStore((state) => state.regions);
 
     useEffect(() => {
         if (token && (loginType === 'user')) {
@@ -71,7 +77,7 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
                 setloadingCart(false);
             })();
         };
-    }, []);
+    }, [loginType, token]);
 
     const handleResetCurrentQuotation = () => {
         (async () => {
@@ -110,7 +116,6 @@ export default function OneClickQuotation({ token, mainCategories, regions, coun
         })();
     };
 
-    // getSubCategories Using MainCategoryId Chosen
     const handleGettingCurrentSubCategories = (event) => {
         const currentCategoryChosed = mainCategories?.find(cat => +cat?.mainCategoryId === +event?.target?.value);
         if (currentCategoryChosed) {
