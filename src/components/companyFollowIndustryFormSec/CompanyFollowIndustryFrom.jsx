@@ -57,77 +57,237 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
     };
 
     // Remove industry from selection
-    const handleRemoveIndustry = async (industryId) => {
+    // const handleRemoveIndustry = async (industryId) => {
+    //     if (loginType === 'user') {
+    //         // Ensure the industry exists in the current industries
+    //         const isCurrentIndustry = currIndustries.some((ind) => ind.id === industryId);
+    //         if (!isCurrentIndustry) {
+    //             toast.error('Cannot delete an industry that is not associated with the user.');
+    //             return;
+    //         }
+    
+    //         try {
+    //             await axios.post(
+    //                 `${baseURL}/user/unfollow-industry?t=${new Date().getTime()}`,
+    //                 { industry_id:  String(industryId) },
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`,
+    //                     },
+    //                 }
+    //             );
+    //             toast.success('Industry removed successfully');
+    //             fetchCurrentIndustries(); // Refresh the current industries
+    //         } catch (error) {
+    //             const errorMessage = error?.response?.data?.errors?.industry_id?.[0] || 'Failed to remove industry';
+    //             toast.error(errorMessage);
+    //         }
+    //     } else {
+    //         setSelectedIndustries(selectedIndustries.filter((ind) => ind.id !== industryId));
+    //     }
+    // };
+
+    // Confirm changes
+    console.log(selectedIndustries);
+    
+// const handleConfirmChanges = async () => {
+//     if (loginType === 'user') {
+//         try {
+//             const industryIds = selectedIndustries.map((ind) => ind.id);
+//             await axios.post(
+//                 `${baseURL}/user/follow-industries`,
+//                 { industry_id: industryIds },
+//                 {
+//                     headers: {
+//                         Authorization: `Bearer ${token}`,
+//                     },
+//                 }
+//             );
+//             toast.success('Industries updated successfully');
+//             fetchCurrentIndustries(); // Fetch updated industries to ensure consistency
+//             setIsEditing(false); // Exit edit mode
+//         } catch (error) {
+//             const errorMessage = error?.response?.data?.errors?.industry_id?.[0] || 'Failed to update industries';
+//             toast.error(errorMessage);
+//         }
+//     } else {
+//         const industryIds = selectedIndustries.map((ind) => ind.id);
+//         try {
+//             const response = await axios.post(
+//                 `${baseURL}/employee/update-company-industires`,
+//                 {
+//                     industry_id: industryIds,
+//                 },
+//                 {
+//                     headers: {
+//                         Authorization: `Bearer ${token}`,
+//                     },
+//                 }
+//             );
+//             toast.success('Industries updated successfully');
+//             fetchCurrentIndustries(); // Refresh the current industries list
+//             setIsEditing(false); // Exit edit mode
+//         } catch (error) {
+//             toast.error(error?.response?.data.message || 'Failed to update industries');
+//         }
+//     }
+// };
+
+
+    // console.log(currIndustries);
+    
+    // const handleConfirmChanges = async () => {
+    //     if (loginType === 'user') {
+    //         // Determine additions and removals
+    //         const industriesToFollow = selectedIndustries.map((ind) => ind.id); // Send all selected industries
+    //         const industriesToUnfollow = currIndustries.filter(
+    //             (currInd) => !selectedIndustries.some((ind) => ind.id === currInd.id)
+    //         );
+    
+    //         try {
+    //             // Follow all selected industries
+    //             if (industriesToFollow.length > 0) {
+    //                 await axios.post(
+    //                     `${baseURL}/user/follow-industries?t=${new Date().getTime()}`,
+    //                     { industry_id: industriesToFollow },
+    //                     {
+    //                         headers: {
+    //                             Authorization: `Bearer ${token}`,
+    //                         },
+    //                     }
+    //                 );
+    //                 toast.success('Industries updated successfully');
+    //             }
+    
+    //             // Unfollow removed industries
+    //             if (industriesToUnfollow.length > 0) {
+    //                 for (const industry of industriesToUnfollow) {
+    //                     await axios.post(
+    //                         `${baseURL}/user/unfollow-industry?t=${new Date().getTime()}`,
+    //                         { industry_id: String(industry.id) }, // Ensure industry_id is sent as string
+    //                         {
+    //                             headers: {
+    //                                 Authorization: `Bearer ${token}`,
+    //                             },
+    //                         }
+    //                     );
+    //                 }
+    //                 toast.success('Industries removed successfully');
+    //             }
+    
+    //             // Refresh industries and exit edit mode
+    //             fetchCurrentIndustries();
+    //             setIsEditing(false);
+    //         } catch (error) {
+    //             const errorMessage =
+    //             error?.response?.data?.errors?.industry_id?.[0] ||
+    //             error?.response?.data?.message ||
+    //             'Failed to update industries';
+    //         toast.error(errorMessage);
+    //         }
+    //     } else {
+    //         // Handle employee logic
+    //         const industryIds = selectedIndustries.map((ind) => ind.id);
+    //         try {
+    //             await axios.post(
+    //                 `${baseURL}/employee/update-company-industires`,
+    //                 { industry_id: industryIds },
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`,
+    //                     },
+    //                 }
+    //             );
+    //             toast.success('Industries updated successfully');
+    //             fetchCurrentIndustries(); // Refresh the current industries list
+    //             setIsEditing(false); // Exit edit mode
+    //         } catch (error) {
+    //             toast.error(error?.response?.data.message || 'Failed to update industries');
+    //         }
+    //     }
+    // };
+
+    const handleConfirmChanges = async () => {
         if (loginType === 'user') {
+            // Get industries to follow and unfollow
+            const industriesToFollow = selectedIndustries.filter(
+                (ind) => !currIndustries.some((currInd) => currInd.id === ind.id)
+            );
+            const industriesToUnfollow = currIndustries.filter(
+                (currInd) => !selectedIndustries.some((ind) => ind.id === currInd.id)
+            );
+    
+            try {
+                // Follow new industries
+                if (industriesToFollow.length > 0) {
+                    const industryIdsToFollow = industriesToFollow.map((ind) => ind.id);
+                    const allIndustryIds = [
+                        ...currIndustries.map((ind) => ind.id),
+                        ...industryIdsToFollow,
+                    ];
+                    await axios.post(
+                        `${baseURL}/user/follow-industries`,
+                        { industry_id: allIndustryIds },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    toast.success('Industries added successfully');
+                }
+    
+                // Unfollow removed industries
+                if (industriesToUnfollow.length > 0) {
+                    for (const industry of industriesToUnfollow) {
+                        await axios.post(
+                            `${baseURL}/user/unfollow-industry`,
+                            { industry_id: String(industry.id) }, // Ensure industry_id is a string
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            }
+                        );
+                    }
+                    toast.success('Industries removed successfully');
+                }
+    
+                // Fetch updated industries from backend
+                await fetchCurrentIndustries(); // Ensure state is updated before proceeding
+                setIsEditing(false);
+            } catch (error) {
+                const errorMessage =
+                    error?.response?.data?.errors?.industry_id?.[0] ||
+                    error?.response?.data?.message ||
+                    'Failed to update industries';
+                toast.error(errorMessage);
+            }
+        } else {
+            // Handle employee logic
+            const industryIds = selectedIndustries.map((ind) => ind.id);
             try {
                 await axios.post(
-                    `${baseURL}/user/unfollow-industry`,
-                    { industry_id: `${industryId}` },
+                    `${baseURL}/employee/update-company-industires`,
+                    { industry_id: industryIds },
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                     }
                 );
-                toast.success('Industry removed successfully');
-                fetchCurrentIndustries();
-                setSelectedIndustries([...selectedIndustries]) // Refresh the current industries
+                toast.success('Industries updated successfully');
+                fetchCurrentIndustries(); // Refresh the current industries list
+                setIsEditing(false); // Exit edit mode
             } catch (error) {
-                toast.error(error?.response?.data.message || 'Failed to remove industry');
+                toast.error(error?.response?.data.message || 'Failed to update industries');
             }
-        } else {
-            setSelectedIndustries(selectedIndustries.filter((ind) => ind.id !== industryId));
         }
     };
-
-    // Confirm changes
+    
+    
     console.log(selectedIndustries);
     
-const handleConfirmChanges = async () => {
-    if (loginType === 'user') {
-        try {
-            const industryIds = selectedIndustries.map((ind) => ind.id);
-            await axios.post(
-                `${baseURL}/user/follow-industries`,
-                { industry_id: industryIds },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            toast.success('Industries updated successfully');
-            fetchCurrentIndustries(); // Refresh the current industries list
-            setIsEditing(false); // Exit edit mode
-        } catch (error) {
-            toast.error(error?.response?.data.message || 'Failed to update industries');
-        }
-    } else {
-        const industryIds = selectedIndustries.map((ind) => ind.id);
-        try {
-            const response = await axios.post(
-                `${baseURL}/employee/update-company-industires`,
-                {
-                    industry_id: industryIds,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            toast.success('Industries updated successfully');
-            fetchCurrentIndustries(); // Refresh the current industries list
-            setIsEditing(false); // Exit edit mode
-        } catch (error) {
-            toast.error(error?.response?.data.message || 'Failed to update industries');
-        }
-    }
-};
-
-
-    // console.log(currIndustries);
-
 
 
 
@@ -141,8 +301,8 @@ const handleConfirmChanges = async () => {
                     <>
                         <div>
                             {currIndustries.map((el) => (
-                                <span className='chosen__choice' key={loginType==='user' ? el?.industryId : el?.id}>
-                                    {loginType==='user' ? el?.industryName : el?.name}
+                                <span className='chosen__choice' key={el?.id}>
+                                    {el?.name}
                                 </span>
                             ))}
                         </div>
@@ -180,10 +340,14 @@ const handleConfirmChanges = async () => {
                         {/* Selected Industries with delete option */}
                         <div className="mt-3">
                             {selectedIndustries.map((el) => (
-                                <span className='chosen__choice' key={loginType==='user' ? el?.industryId : el?.id}>
-                                    {el?.industryName || el?.name}
+                                <span className='chosen__choice' key={el?.id}>
+                                    {el?.name}
                                     <i
-                                        onClick={() => handleRemoveIndustry(el.id || el?.industryId)}
+                                        onClick={() =>
+                                            setSelectedIndustries((prev) =>
+                                                prev.filter((ind) => ind.id !== el.id)
+                                            )
+                                        }
                                         className="bi bi-trash chosen__choice-delete"
                                     ></i>
                                 </span>
