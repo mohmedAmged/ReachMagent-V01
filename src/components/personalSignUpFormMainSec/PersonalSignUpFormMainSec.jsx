@@ -656,17 +656,17 @@ const onSubmit = async (data) => {
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
-                            type='file'
-                            id='signUpProfileImage'
-                            {...register('image')}
-                            className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
-                            onChange={handleImageChange}
-                          />
-                          {
-                            errors.image
-                            &&
-                            (<p className='errorMessage'>{errors.image.message}</p>)
-                          }
+  type="file"
+  id="signUpProfileImage"
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setValue('image', e.target.files); // Update the 'image' field value in react-hook-form
+    if (file) setImagePreview(URL.createObjectURL(file)); // Preview the image
+  }}
+  className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
+/>
+{errors.image && <p className="errorMessage">{errors.image.message}</p>}
                           {imagePreview && (
                             <div className='image-preview'>
                               <img src={imagePreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
@@ -679,17 +679,24 @@ const onSubmit = async (data) => {
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
-                            type='file'
-                            id='signUpProfileofficial_id_or_passport'
-                            {...register('official_id_or_passport')}
-                            className={`newUploadBtn form-control ${errors.official_id_or_passport ? 'inputError' : ''}`}
-                            onChange={handlePassportChange}
-                          />
-                          {
-                            errors.official_id_or_passport
-                            &&
-                            (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
-                          }
+  type="file"
+  id="signUpProfileofficial_id_or_passport"
+  accept="image/*,application/pdf"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setValue('official_id_or_passport', e.target.files); // Update the 'official_id_or_passport' field
+    if (file && file.type.startsWith('image/')) {
+      setPassPortPreview(URL.createObjectURL(file));
+      setFileName('');
+    } else if (file) {
+      setPassPortPreview(null);
+      setFileName(file.name);
+    }
+  }}
+  className={`newUploadBtn form-control ${errors.official_id_or_passport ? 'inputError' : ''}`}
+/>
+{errors.official_id_or_passport && <p className="errorMessage">{errors.official_id_or_passport.message}</p>}
+
                           {passportPreview ? (
                               <div className='image-preview'>
                                 <img 
