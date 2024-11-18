@@ -84,13 +84,13 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     };
   }, [watch('country_id')]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (watch('accept_terms') === true) {
       setValue('accept_terms', 'yes');
     } else if (watch('accept_terms') === false) {
       setValue('accept_terms', 'no');
     };
-  },[watch('accept_terms')]);
+  }, [watch('accept_terms')]);
 
   useEffect(() => {
     if (!isSignUp && loginType === 'employee') {
@@ -114,48 +114,48 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       })();
     };
   }, []);
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//         if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
-//             toast.error('File size should not exceed 5MB');
-//             return;
-//         }
-//         if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
-//             toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
-//             return;
-//         }
-//         setImagePreview(URL.createObjectURL(file));
-//     }
-// };
 
-// const handlePassportChange = (e) => {
-//   const file = e.target.files[0];
-//   if (file) {
-//       if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
-//           toast.error('File size should not exceed 5MB');
-//           return;
-//       }
-//       if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
-//           toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
-//           return;
-//       }
-//       if (file.type.startsWith('image/')) {
-//           setPassPortPreview(URL.createObjectURL(file));
-//           setFileName('');
-//       } else {
-//           setPassPortPreview(null);
-//           setFileName(file.name);
-//       }
-//   } else {
-//       setPassPortPreview(null);
-//       setFileName('');
-//   }
-// };
-  
-const onSubmit = async (data) => {
+  //   const handleImageChange = (e) => {
+  //     const file = e.target.files[0];
+  //     if (file) {
+  //         if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
+  //             toast.error('File size should not exceed 5MB');
+  //             return;
+  //         }
+  //         if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+  //             toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
+  //             return;
+  //         }
+  //         setImagePreview(URL.createObjectURL(file));
+  //     }
+  // };
+
+  // const handlePassportChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //       if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
+  //           toast.error('File size should not exceed 5MB');
+  //           return;
+  //       }
+  //       if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+  //           toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
+  //           return;
+  //       }
+  //       if (file.type.startsWith('image/')) {
+  //           setPassPortPreview(URL.createObjectURL(file));
+  //           setFileName('');
+  //       } else {
+  //           setPassPortPreview(null);
+  //           setFileName(file.name);
+  //       }
+  //   } else {
+  //       setPassPortPreview(null);
+  //       setFileName('');
+  //   }
+  // };
+
+  const onSubmit = async (data) => {
     data.industry_id = selectedIndustries?.map(indust => indust?.id);
-    console.log(data);
     const toastId = toast.loading('Please Wait...');
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
@@ -167,11 +167,11 @@ const onSubmit = async (data) => {
         formData.append(key, data[key]);
       };
     });
-    if (data.image && data.image[0]) {
-      formData.append('image', data.image[0]);
+    if (data.image) {
+      formData.append('image', data.image);
     }
-    if (data.official_id_or_passport && data.official_id_or_passport[0]) {
-      formData.append('official_id_or_passport', data.official_id_or_passport[0]);
+    if (data.official_id_or_passport) {
+      formData.append('official_id_or_passport', data.official_id_or_passport);
     }
     const currentSlug = isSignUp ? 'user/register' : 'employee/add-employee';
     const currentHeaders = isSignUp ? {
@@ -229,27 +229,27 @@ const onSubmit = async (data) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setValue('image', file);
       setImagePreview(URL.createObjectURL(file));
-    }
+    };
   };
 
   const handlePassportChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setValue('official_id_or_passport', file);
       if (file.type.startsWith('image/')) {
         setPassPortPreview(URL.createObjectURL(file));
-        setFileName(''); 
+        setFileName('');
       } else {
-        setPassPortPreview(null); 
-        setFileName(file.name); 
+        setPassPortPreview(null);
+        setFileName(file.name);
       }
     } else {
       setPassPortPreview(null);
       setFileName('');
-    }
+    };
   };
-
-
 
   const handleSelectIndust = (el) => {
     const currIndust = industries?.find(indust => +indust?.id === +el);
@@ -272,6 +272,10 @@ const onSubmit = async (data) => {
       clearErrors("password_confirmation");
     };
   }, [watch('password_confirmation')]);
+
+
+  console.log(watch('image'));
+  console.log(watch('official_id_or_passport'));
 
   return (
     <>
@@ -634,7 +638,7 @@ const onSubmit = async (data) => {
                         {
                           !isSignUp &&
                           <div className='col-lg-12 mb-4'>
-                            <label htmlFor="addEmployeeofficial_id_or_passport" >
+                            <label className='text-capitalize' htmlFor="addEmployeeofficial_id_or_passport" >
                               Official ID Or Passport<span className="requiredStar"> *</span>
                             </label>
                             <input
@@ -656,17 +660,16 @@ const onSubmit = async (data) => {
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
-  type="file"
-  id="signUpProfileImage"
-  accept="image/*"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    setValue('image', e.target.files); // Update the 'image' field value in react-hook-form
-    if (file) setImagePreview(URL.createObjectURL(file)); // Preview the image
-  }}
-  className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
-/>
-{errors.image && <p className="errorMessage">{errors.image.message}</p>}
+                            type='file'
+                            id='signUpProfileImage'
+                            className={`newUploadBtn form-control ${errors.image ? 'inputError' : ''}`}
+                            onChange={handleImageChange}
+                          />
+                          {
+                            errors.image
+                            &&
+                            (<p className='errorMessage'>{errors.image.message}</p>)
+                          }
                           {imagePreview && (
                             <div className='image-preview'>
                               <img src={imagePreview} alt="Selected profile" style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} />
@@ -679,38 +682,30 @@ const onSubmit = async (data) => {
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
-  type="file"
-  id="signUpProfileofficial_id_or_passport"
-  accept="image/*,application/pdf"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    setValue('official_id_or_passport', e.target.files); // Update the 'official_id_or_passport' field
-    if (file && file.type.startsWith('image/')) {
-      setPassPortPreview(URL.createObjectURL(file));
-      setFileName('');
-    } else if (file) {
-      setPassPortPreview(null);
-      setFileName(file.name);
-    }
-  }}
-  className={`newUploadBtn form-control ${errors.official_id_or_passport ? 'inputError' : ''}`}
-/>
-{errors.official_id_or_passport && <p className="errorMessage">{errors.official_id_or_passport.message}</p>}
-
+                            type='file'
+                            id='signUpProfileofficial_id_or_passport'
+                            className={`newUploadBtn form-control ${errors.official_id_or_passport ? 'inputError' : ''}`}
+                            onChange={handlePassportChange}
+                          />
+                          {
+                            errors.official_id_or_passport
+                            &&
+                            (<p className='errorMessage'>{errors.official_id_or_passport.message}</p>)
+                          }
                           {passportPreview ? (
-                              <div className='image-preview'>
-                                <img 
-                                  src={passportPreview} 
-                                  alt="Selected profile" 
-                                  style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }} 
-                                />
-                              </div>
-                            ) : (
-                              fileName && (
-                                <p className='file-name' style={{ marginTop: '10px', color: '#555' }}>
-                                  {fileName}
-                                </p>
-                              )
+                            <div className='image-preview'>
+                              <img
+                                src={passportPreview}
+                                alt="Selected profile"
+                                style={{ maxWidth: '100px', height: '100px', marginTop: '10px', borderRadius: '12px' }}
+                              />
+                            </div>
+                          ) : (
+                            fileName && (
+                              <p className='file-name' style={{ marginTop: '10px', color: '#555' }}>
+                                {fileName}
+                              </p>
+                            )
                           )}
                         </div>
                         {

@@ -497,7 +497,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
           };
         });
         if (data.logo) {
-          formData.append('logo', data.logo[0]);
+          formData.append('logo', data.logo);
         }
         await axios.post(`${baseURL}/company-registeration-step-one`, formData, {
           headers: {
@@ -643,6 +643,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
   const handleImageChange = (e) => {
     const { id, files } = e.target;
     if (files && files[0]) {
+      setValue('logo',files[0]);
       setImagePreviews((prevState) => ({
         ...prevState,
         [id]: URL.createObjectURL(files[0])
@@ -1089,7 +1090,6 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
                                 type='file'
                                 id='compnayLogo'
                                 className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
-                                {...register('logo')}
                                 onChange={handleImageChange}
                                 required
                               />
