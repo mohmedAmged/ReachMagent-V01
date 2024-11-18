@@ -114,8 +114,46 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       })();
     };
   }, []);
+//   const handleImageChange = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//         if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
+//             toast.error('File size should not exceed 5MB');
+//             return;
+//         }
+//         if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+//             toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
+//             return;
+//         }
+//         setImagePreview(URL.createObjectURL(file));
+//     }
+// };
 
-  const onSubmit = async (data) => {
+// const handlePassportChange = (e) => {
+//   const file = e.target.files[0];
+//   if (file) {
+//       if (file.size > 5 * 1024 * 1024) { // Limit size to 5MB
+//           toast.error('File size should not exceed 5MB');
+//           return;
+//       }
+//       if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+//           toast.error('Unsupported file format. Please upload JPEG, PNG, or PDF.');
+//           return;
+//       }
+//       if (file.type.startsWith('image/')) {
+//           setPassPortPreview(URL.createObjectURL(file));
+//           setFileName('');
+//       } else {
+//           setPassPortPreview(null);
+//           setFileName(file.name);
+//       }
+//   } else {
+//       setPassPortPreview(null);
+//       setFileName('');
+//   }
+// };
+  
+const onSubmit = async (data) => {
     data.industry_id = selectedIndustries?.map(indust => indust?.id);
     console.log(data);
     const toastId = toast.loading('Please Wait...');
@@ -194,6 +232,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       setImagePreview(URL.createObjectURL(file));
     }
   };
+
   const handlePassportChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -209,6 +248,8 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       setFileName('');
     }
   };
+
+
 
   const handleSelectIndust = (el) => {
     const currIndust = industries?.find(indust => +indust?.id === +el);
