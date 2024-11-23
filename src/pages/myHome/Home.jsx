@@ -66,6 +66,7 @@ export default function Home({ token }) {
             {
               <div className='oneClickQuotation__handler'>
                 <FranchiseSec
+                  token={token}
                   pageName='discover'
                   headText='One-click Quotation'
                   paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'

@@ -186,20 +186,24 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
       headers: currentHeaders,
     }).then(response => {
       const token = response?.data?.data?.token;
+      const userData = response?.data?.data?.user;
       if (token) {
         Cookies.set('authToken', token, { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 });
         Cookies.set('currentLoginedData', JSON.stringify(response?.data?.data?.user), { expires: 999999999999999 * 999999999999999 * 999999999999999 * 999999999999999 })
+        if (isSignUp) {
+          Cookies.set('verified', userData?.verified, { expires: 365 });
+      }
         toast.success(`${response?.data?.message}` || 'Created Successfully!', {
           id: toastId,
           duration: 2000
         });
         isSignUp &&
-          (!response?.data?.data?.user?.verified) &&
+          (!userData?.verified) &&
           (setTimeout(() => {
             navigate('/user-verification');
           }, 1000));
         isSignUp &&
-          (response?.data?.data?.user?.verified) &&
+          (userData?.verified) &&
           (setTimeout(() => {
             navigate('/profile/profile-settings');
           }, 1000));

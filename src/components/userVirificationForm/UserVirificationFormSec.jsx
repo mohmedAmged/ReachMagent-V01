@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function UserVirificationFormSec({ token }) {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function UserVirificationFormSec({ token }) {
         },
       })
       .then((res) => {
+        Cookies.set('verified', 'true', { expires: 365 });
         toast.success(res?.data?.message || 'Verified Successfully!', {
           id: toastId,
           duration: 1000,

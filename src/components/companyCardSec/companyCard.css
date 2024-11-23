@@ -1,6 +1,7 @@
 .companyCard__item{
     background: var(--primary-white);
     border-radius: 9px;
+    width: 100%;
 }
 .companyCard__item .card__content{
     display: flex;

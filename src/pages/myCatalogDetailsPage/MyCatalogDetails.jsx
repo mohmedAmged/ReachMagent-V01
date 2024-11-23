@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,11 +9,15 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { useCatalogStore } from '../../store/SingleCatalog';
+import toast from 'react-hot-toast';
+import { baseURL } from '../../functions/baseUrl';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function MyCatalogDetails({ token }) {
     const { catalogId } = useParams();
     const loginType = localStorage.getItem('loginType');
-
+    const navigate = useNavigate()
     const { currentCatalog, loading, fetchCatalog } = useCatalogStore();
     const [currImages, setCurrentImages] = useState([]);
     const [currImg, setCurrImg] = useState('');
@@ -30,6 +34,40 @@ export default function MyCatalogDetails({ token }) {
         }
     }, [currentCatalog?.media]);
 
+
+    const handleAddProduct = (product) => {
+        const addedProduct = {
+            type:  product?.type,
+            item_id: `${product?.id}`
+        };
+        (async () => {
+            const toastId = toast.loading('Loading...');
+            await axios.post(`${baseURL}/user/add-to-quotation-cart/${currentCatalog?.company_id}?t=${new Date().getTime()}`,
+                addedProduct
+                , {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                    fetchCatalog(catalogId, token);
+                })
+                .catch(error => {
+                    toast.error(`${error?.response?.data?.message || 'Error!'}`, {
+                        id: toastId,
+                        duration: 1000
+                    });
+                })
+        })();
+    };
+    console.log(currentCatalog?.in_cart);
+    
     return (
         <>
             {loading ? (
@@ -59,7 +97,9 @@ export default function MyCatalogDetails({ token }) {
                                         </div>
                                     </Col>
                                     <Col lg={12} className='sliderOfProductDetails'>
+                                    {currImages?.length > 0 &&  thumbsSwiper?.destroyed !== true && (
                                         <Swiper
+                                        key={thumbsSwiper ? thumbsSwiper.activeIndex : 'initial'}
                                             style={{
                                                 '--swiper-navigation-color': '#969696',
                                                 '--swiper-pagination-color': '#969696',
@@ -76,8 +116,15 @@ export default function MyCatalogDetails({ token }) {
                                                 </SwiperSlide>
                                             ))}
                                         </Swiper>
+                                    )}
+                                    {currImages?.length > 0 && (
                                         <Swiper
-                                            onSwiper={setThumbsSwiper}
+                                            // onSwiper={setThumbsSwiper}
+                                            onSwiper={(swiper) => {
+                                                if (!swiper.destroyed) {
+                                                    setThumbsSwiper(swiper);
+                                                }
+                                            }}
                                             spaceBetween={5}
                                             slidesPerView={1}
                                             freeMode={true}
@@ -98,10 +145,11 @@ export default function MyCatalogDetails({ token }) {
                                         >
                                             {currImages?.map((img, index) => (
                                                 <SwiperSlide key={index}>
-                                                    <img className='swiperSlideSecondaryImg' src={img?.image} alt='product details' />
+                                                    <img className='swiperSlideSecondaryImg' src={img?.image} alt='product detailss' />
                                                 </SwiperSlide>
                                             ))}
                                         </Swiper>
+                                    )}
                                     </Col>
                                 </Row>
                             </Col>
@@ -112,6 +160,52 @@ export default function MyCatalogDetails({ token }) {
                                     <p className="productDetails__price">
                                         {currentCatalog?.price_after_tax} {currentCatalog?.currency}
                                     </p>
+                                    
+                                    <div className="companyQutation__btn my-4">
+                                    {
+                                    token ? (
+                                        <>
+                                            {localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
+                                                // Unverified user
+                                                <button
+                                                    onClick={() => {
+                                                        toast.error('You need to verify your account first!');
+                                                        setTimeout(() => {
+                                                            navigate('/user-verification');
+                                                        }, 1000);
+                                                    }}
+                                                    className='btnColoredBlue'
+                                                >
+                                                    Add to Quotation
+                                                </button>
+                                            ) : currentCatalog?.in_cart === false ? (
+                                                // Verified user or other login types
+                                                <button
+                                                    onClick={() => handleAddProduct(currentCatalog)}
+                                                    className='btnColoredBlue'
+                                                >
+                                                    Add to Quotation
+                                                </button>
+                                            ) : (
+                                                <NavLink
+                                                    to={`/${currentCatalog?.company_name}/request-quote`}
+                                                    className={'nav-link'}
+                                                >
+                                                    <p className='text-capitalize' style={{ color: 'rgb(63, 215, 86)' }}>
+                                                        view in Quotation cart <i className="bi bi-box-arrow-up-right"></i>
+                                                    </p>
+                                                </NavLink>
+                                            )}
+                                        </>
+                                    ) : (
+                                        // Unauthenticated user
+                                        <NavLink to={'/login'} className={'nav-link'}>
+                                            <button className='btnColoredBlue'>Add to Quotation</button>
+                                        </NavLink>
+                                    )
+                                    }
+                                    </div>
+                                    
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                         <span>Sold by <strong>{currentCatalog?.company_name}</strong></span>
                                     </p>

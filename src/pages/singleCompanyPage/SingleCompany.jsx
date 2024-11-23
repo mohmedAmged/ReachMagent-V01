@@ -91,7 +91,7 @@ export default function SingleCompany({ token }) {
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
-    console.log(companyNetworks?.data?.networks);
+    console.log(showCompaniesQuery?.data?.company?.companyName);
 
     useEffect(() => {
         setTimeout(() => {
