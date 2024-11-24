@@ -7,19 +7,26 @@ import './companyWorkHourFormTable.css'
 export default function CompanyWorkHourFormTable({ token, workingHours, editMode }) {
     const loginType = localStorage.getItem('loginType')
     const navigate = useNavigate()
-    const [formData, setFormData] = useState(
-        workingHours?.length !== 0
-            ? {
-                day_of_week: workingHours.map((el) => el.day_of_week),
-                opening_time: workingHours.map((el) => el.opening_time),
-                closing_time: workingHours.map((el) => el.closing_time),
-            }
-            : {
-                day_of_week: [""],
-                opening_time: [""],
-                closing_time: [""],
-            }
-    );
+    // const [formData, setFormData] = useState(
+    //     workingHours?.length !== 0
+    //         ? {
+    //             day_of_week: workingHours.map((el) => el.day_of_week),
+    //             opening_time: workingHours.map((el) => el.opening_time),
+    //             closing_time: workingHours.map((el) => el.closing_time),
+    //         }
+    //         : {
+    //             day_of_week: [""],
+    //             opening_time: [""],
+    //             closing_time: [""],
+    //         }
+    // );
+    const [formData, setFormData] = useState(() => {
+        return {
+          day_of_week: workingHours?.map((el) => el.day_of_week) || [""],
+          opening_time: workingHours?.map((el) => el.opening_time) || [""],
+          closing_time: workingHours?.map((el) => el.closing_time) || [""],
+        };
+      });
 
     const handleInputChange = (index, name, value) => {
         setFormData((prevState) => {
@@ -79,6 +86,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours, editMode
         }
     };
     console.log(formData);
+    console.log(workingHours);
     
     
     
@@ -92,7 +100,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours, editMode
                         <select
                             className="form-control custom-select signUpInput mt-2"
                             name="day_of_week"
-                            value={formData.day_of_week[index]}
+                            value={formData.day_of_week[index] || ""}
                             onChange={(e) =>
                                 handleInputChange(index, 'day_of_week', e.target.value)
                             }
@@ -111,7 +119,8 @@ export default function CompanyWorkHourFormTable({ token, workingHours, editMode
                         <input
                             className="form-control signUpInput mt-2"
                             name="opening_time"
-                            value={!editMode ?  formData.opening_time[index] : formData.opening_time[0]}
+                            // value={!editMode ?  formData.opening_time[index] : formData.opening_time[0]}
+                            value={formData.opening_time[index] || ""}
                             type="time"
                             onChange={(e) =>
                                 handleInputChange(index, 'opening_time', e.target.value)
@@ -123,7 +132,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours, editMode
                         <input
                             className="form-control signUpInput mt-2"
                             name="closing_time"
-                            value={formData.closing_time[index]}
+                            value={formData.closing_time[index] || ""}
                             type="time" 
                             onChange={(e) =>
                                 handleInputChange(index, 'closing_time', e.target.value)

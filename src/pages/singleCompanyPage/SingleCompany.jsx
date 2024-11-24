@@ -79,25 +79,56 @@ export default function SingleCompany({ token }) {
 
     const [activeItem, setActiveItem] = useState('Overview');
 
+    // const items = [
+    //     { name: 'Overview', active: activeItem === 'Overview' },
+    //     { name: 'Services', active: activeItem === 'Services' },
+    //     { name: 'Product Catalog', active: activeItem === 'Product Catalog'},
+    //     { name: 'Media', active: activeItem === 'Media' },
+    //     { name: 'Clients', active: activeItem === 'Clients' },
+    //     { name: 'Partners', active: activeItem === 'Partners' },
+    // ];
     const items = [
-        { name: 'Overview', active: activeItem === 'Overview' },
-        { name: 'Services', active: activeItem === 'Services' },
-        { name: 'Product Catalog', active: activeItem === 'Product Catalog' },
-        { name: 'Media', active: activeItem === 'Media' },
-        { name: 'Clients', active: activeItem === 'Clients' },
-        { name: 'Partners', active: activeItem === 'Partners' },
-    ];
+        { 
+            name: 'Overview', 
+            active: activeItem === 'Overview' 
+        },
+        { 
+            name: 'Services', 
+            active: activeItem === 'Services', 
+            render: showCompaniesQuery?.data?.company?.companyServices?.length > 0
+        },
+        { 
+            name: 'Product Catalog', 
+            active: activeItem === 'Product Catalog', 
+            render: showCompaniesQuery?.data?.company?.companyCatalogs?.length > 0 
+        },
+        { 
+            name: 'Media', 
+            active: activeItem === 'Media', 
+            render: showCompaniesQuery?.data?.company?.companyPortfolio?.length > 0 
+        },
+        { 
+            name: 'Clients', 
+            active: activeItem === 'Clients', 
+            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === 'Client') 
+        },
+        { 
+            name: 'Partners', 
+            active: activeItem === 'Partners', 
+            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === 'Partener') 
+        },
+    ].filter(item => item.render !== false);
 
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
-    console.log(showCompaniesQuery?.data?.company?.companyName);
 
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
         }, 500);
     }, [loading]);
+console.log(showCompaniesQuery?.data?.company);
 
     return (
         <>
@@ -180,7 +211,6 @@ export default function SingleCompany({ token }) {
                                     activeItem === 'Product Catalog' &&
                                     <>
                                         {
-                                            showCompaniesQuery?.data?.company?.companyCatalogs?.length !== 0 ?
                                                 <Swiper
                                                     className='mySwiper'
                                                     modules={[Autoplay]}
@@ -227,10 +257,6 @@ export default function SingleCompany({ token }) {
                                                         )
                                                     })}
                                                 </Swiper>
-                                                :
-                                                <h5 className='text-center text-danger text-capitalize mb-4'>
-                                                    No Product Catalog for this company
-                                                </h5>
                                         }
 
                                     </>
@@ -289,7 +315,6 @@ export default function SingleCompany({ token }) {
                                     activeItem === 'Media' &&
                                     <>
                                         {
-                                            showCompaniesQuery?.data?.company?.companyPortfolio?.length !== 0 ?
                                                 <Swiper
                                                     className='mySwiper'
                                                     modules={[Autoplay]}
@@ -331,10 +356,6 @@ export default function SingleCompany({ token }) {
                                                         )
                                                     })}
                                                 </Swiper>
-                                                :
-                                                <h5 className='text-center text-danger text-capitalize mb-4'>
-                                                    No added media for this company
-                                                </h5>
                                         }
 
                                     </>

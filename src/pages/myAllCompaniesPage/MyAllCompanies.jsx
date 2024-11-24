@@ -133,6 +133,7 @@ export default function MyAllCompanies() {
             scrollToTop(500);
         }
     };
+console.log(companies);
 
     return (
         <>
@@ -301,7 +302,7 @@ export default function MyAllCompanies() {
                                                             <div className="companySubInfo mb-2">
                                                                 <div className="subInfoItem">
                                                                     <img src={userIcon} alt="user-icon" />
-                                                                    <span>{el?.companySubCategory}</span>
+                                                                    <span>{el?.companyIndustries[0]?.industryName}</span>
                                                                 </div>
                                                                 <div className="subInfoItem">
                                                                     <img src={locationIcon} alt="location-icon" />

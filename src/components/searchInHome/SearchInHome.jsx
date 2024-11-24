@@ -94,6 +94,7 @@ export default function SearchInHome() {
             setLoading(false);
         }, 500);
     }, [loading]);
+console.log(currentData);
 
     return (
         <>
@@ -187,69 +188,69 @@ export default function SearchInHome() {
                                             :
                                             (
                                                 <div className="row gap-3">
-                                                    {
-                                                        currentData?.map((el) => {
-                                                            return (
-                                                                <div key={el?.companyId} className="col-12">
-                                                                    <div className="CompanyContentItem">
-                                                                        <div className="compImage">
-                                                                            <img
-                                                                                src={el?.companyLogo}
-                                                                                alt={el?.companyName}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="compMainInfo">
-                                                                            <h5 className="mb-2">{el?.companyName}</h5>
-                                                                            <div className="companySubInfo mb-2">
-                                                                                <div className="subInfoItem">
-                                                                                    <img src={userIcon} alt="locateion-icon" />
-                                                                                    <span>E-Commerce</span>
-                                                                                </div>
-                                                                                <div className="subInfoItem">
-                                                                                    <img
-                                                                                        src={locationIcon}
-                                                                                        alt="locateion-icon"
-                                                                                    />
-                                                                                    <span>
-                                                                                        {el?.companyBranches[0]?.branchCity}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div className="subInfoItem">
-                                                                                    <img src={emailIcon} alt="locateion-icon" />
+                {
+                    currentData?.map((el) => {
+                        return (
+                            <div key={el?.companyId} className="col-12">
+                                <div className="CompanyContentItem">
+                                    <div className="compImage">
+                                        <img
+                                            src={el?.companyLogo}
+                                            alt={el?.companyName}
+                                        />
+                                    </div>
+                                    <div className="compMainInfo">
+                                        <h5 className="mb-2">{el?.companyName}</h5>
+                                        <div className="companySubInfo mb-2">
+                                            <div className="subInfoItem">
+                                                <img src={userIcon} alt="locateion-icon" />
+                                                <span>{el?.companyIndustries[0]?.industryName}</span>
+                                            </div>
+                                            <div className="subInfoItem">
+                                                <img
+                                                    src={locationIcon}
+                                                    alt="locateion-icon"
+                                                />
+                                                <span>
+                                                {el?.companyBranches[0]?.branchCity}
+                                                </span>
+                                            </div>
+                                            {/* <div className="subInfoItem">
+                                                <img src={emailIcon} alt="locateion-icon" />
 
-                                                                                    <NavLink to={el?.companyWebsiteLink}>
-                                                                                        <span>Website</span>
-                                                                                    </NavLink>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="companyDescrip mb-2">
-                                                                                <p>{el?.companyAboutUs}</p>
-                                                                            </div>
-                                                                            <div className="companyMainCountry">
-                                                                                {/* <img src={flag} alt="flag" /> */}
-                                                                                <i className="bi bi-crosshair2"></i>
-                                                                                <span>
-                                                                                    {el?.companyBranches[0]?.branchCountry}
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="companyActions">
-                                                                            <NavLink
-                                                                                onClick={() => {
-                                                                                    scrollToTop();
-                                                                                }}
-                                                                                className={"nav-link"}
-                                                                                to={`/show-company/${el?.companyId}`}
-                                                                            >
-                                                                                <button className="pageMainBtnStyle">
-                                                                                    more info
-                                                                                </button>
-                                                                            </NavLink>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                <NavLink to={el?.companyWebsiteLink}>
+                                                    <span>Website</span>
+                                                </NavLink>
+                                            </div> */}
+                                        </div>
+                                        <div className="companyDescrip mb-2">
+                                            <p>{el?.companyAboutUs}</p>
+                                        </div>
+                                        <div className="companyMainCountry">
+                                            {/* <img src={flag} alt="flag" /> */}
+                                            <i className="bi bi-crosshair2"></i>
+                                            <span>
+                                                {el?.companyBranches[0]?.branchCountry}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="companyActions">
+                                        <NavLink
+                                            onClick={() => {
+                                                scrollToTop();
+                                            }}
+                                            className={"nav-link"}
+                                            to={`/show-company/${el?.companyId}`}
+                                        >
+                                            <button className="pageMainBtnStyle">
+                                                more info
+                                            </button>
+                                        </NavLink>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                                                 </div>
                                             )}
                                     </div>
