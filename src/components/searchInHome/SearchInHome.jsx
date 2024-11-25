@@ -224,7 +224,11 @@ console.log(currentData);
                                             </div> */}
                                         </div>
                                         <div className="companyDescrip mb-2">
-                                            <p>{el?.companyAboutUs}</p>
+                                            <p className="cursorPointer" title={el?.companyAboutUs}>
+                                                {el?.companyAboutUs?.length > 200
+                                                ? `${el?.companyAboutUs?.slice(0, 200)}...`
+                                                : el?.companyAboutUs}
+                                            </p>
                                         </div>
                                         <div className="companyMainCountry">
                                             {/* <img src={flag} alt="flag" /> */}

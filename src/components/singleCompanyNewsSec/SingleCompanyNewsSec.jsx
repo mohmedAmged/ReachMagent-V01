@@ -13,11 +13,11 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec';
 
-export default function SingleCompanyNewsSec({ token }) {
+export default function SingleCompanyNewsSec({ token, companyId }) {
   const [newData, setNewdata] = useState([])
-  const fetchHomePosts = async () => {
+  const fetchCompanyPosts = async () => {
     try {
-      const response = await axios.get(`${baseURL}/home-posts?t=${new Date().getTime()}`, {
+      const response = await axios.get(`${baseURL}/company-posts/${companyId}?t=${new Date().getTime()}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -30,7 +30,7 @@ export default function SingleCompanyNewsSec({ token }) {
 
   useEffect(() => {
 
-    fetchHomePosts();
+    fetchCompanyPosts();
 
   }, [token]);
 
@@ -81,7 +81,7 @@ export default function SingleCompanyNewsSec({ token }) {
                     {
                       newData?.map(el => {
                         return (
-                          <SwiperSlide key={el?.id} className=''>
+                          <SwiperSlide key={el?.postId} className=''>
                             <div className="news__card p-3">
                               <div className="headOfNews__card d-flex justify-content-between align-items-start">
                                 <div className="headOfNews__card-leftPart">
@@ -90,19 +90,19 @@ export default function SingleCompanyNewsSec({ token }) {
                                       onClick={() => {
                                         scrollToTop();
                                       }}
-                                      className={'nav-link'} to={`/show-company/${el?.company_id}`}>
-                                      <img src={el?.company_logo} alt="newImg" />
+                                      className={'nav-link'} to={`/show-company/${el?.companyId}`}>
+                                      <img src={el?.companyLogo} alt="newImg" />
                                     </NavLink>
                                   </div>
-                                  <h4>{el?.title}</h4>
-                                  <p>Type: {el?.type}</p>
-                                  <p>{el?.created_at}</p>
+                                  <h4>{el?.postTitle}</h4>
+                                  <p>Type: {el?.postType}</p>
+                                  <p>{el?.postDate}</p>
                                 </div>
                               </div>
                               <div className="news__card-body">
                                 <p>
                                   {
-                                    el?.description
+                                    el?.postDescription
                                   }
                                 </p>
                               </div>

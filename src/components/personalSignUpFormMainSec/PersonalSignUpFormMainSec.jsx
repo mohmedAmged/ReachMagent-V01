@@ -364,8 +364,38 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                 (<span className='errorMessage'>{errors.title.message}</span>)
                               }
                             </div>
+                            <div className="col-lg-6 mb-4">
+                          <label htmlFor="signUpMobileNumber">
+                            Mobile Number <span className="requiredStar">*</span>
+                          </label>
+                          <div className="row">
+                            <div className="col-4">
+                              <CustomDropdown
+                                countries={countries}
+                                setValue={setValue}
+                                errors={errors}
+                                inputName={'phone_code'}
+                              />
+                            </div>
+                            <div className="col-8">
+                              <input
+                                type='text'
+                                id='signUpMobileNumber'
+                                placeholder='Enter your phone number'
+                                {...register('phone')}
+                                className={`form-control signUpInput ${errors.phone ? 'inputError' : ''}`}
+                              />
+                              {
+                                errors.phone
+                                &&
+                                (<span className='errorMessage'>{errors.phone.message}</span>)
+                              }
+                            </div>
+                          </div>
+                        </div>
                           </>
                         }
+                       { isSignUp &&
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpMobileNumber">
                             Mobile Number <span className="requiredStar">*</span>
@@ -395,6 +425,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                           </div>
                         </div>
+                        }
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpCountry">
                             Country / Region <span className="requiredStar">*</span>
@@ -680,9 +711,11 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                           )}
                         </div>
-                        <div className='col-lg-6'>
+                        {
+                          isSignUp && 
+                          <div className='col-lg-6'>
                           <label htmlFor="signUpProfileofficial_id_or_passport">
-                            Upload Official Id Or Passport
+                            Upload Official ID Or Passport
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
@@ -711,7 +744,9 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               </p>
                             )
                           )}
-                        </div>
+                          </div>
+                        }
+                        
                         {
                           isSignUp &&
                           <div className="col-lg-8 my-4">

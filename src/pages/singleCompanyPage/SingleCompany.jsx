@@ -514,7 +514,7 @@ console.log(showCompaniesQuery?.data?.company);
                         {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
 
 
-                        <SingleCompanyNewsSec token={token} />
+                        <SingleCompanyNewsSec companyId={companyId} token={token} />
                         {/* <SingleCompanyAffiliate /> */}
                         {
                             token &&

@@ -170,7 +170,9 @@ export default function NewNetworkForm({token}) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="upload__image__btn">
+                            <div className="upload__image__btn catalog__new__input">
+                                <label htmlFor="label">Upload partner logo<span className="requiredStar"> *</span>
+                                </label>
                                 <input
                                     type="file"
                                     name="logo"
