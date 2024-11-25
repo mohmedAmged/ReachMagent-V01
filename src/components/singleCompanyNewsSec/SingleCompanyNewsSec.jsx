@@ -17,22 +17,23 @@ export default function SingleCompanyNewsSec({ token, companyId }) {
   const [newData, setNewdata] = useState([])
   const fetchCompanyPosts = async () => {
     try {
-      const response = await axios.get(`${baseURL}/company-posts/${companyId}?t=${new Date().getTime()}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setNewdata(response?.data?.data?.posts);
+      if (companyId) {
+          const response = await axios.get(`${baseURL}/company-posts/${companyId}?t=${new Date().getTime()}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setNewdata(response?.data?.data?.posts);
+      }
+      
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      // toast.error(error?.response?.data?.message);
     };
   };
 
   useEffect(() => {
-
     fetchCompanyPosts();
-
-  }, [token]);
+  }, []);
 
   return (
     <>

@@ -128,8 +128,6 @@ export default function SingleCompany({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
-console.log(showCompaniesQuery?.data?.company);
-
     return (
         <>
             {
