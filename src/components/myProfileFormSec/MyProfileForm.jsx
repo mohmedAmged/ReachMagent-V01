@@ -11,25 +11,12 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,setCurrentImageUpdateError,setCurrentImage,currentUserLogin,setProfileUpdateStatus,profileUpdateStatus,countries}) {
-    const currentChosenCountry = countries?.find(el => el?.name === currentUserLogin?.country );
     const navigate = useNavigate();
     const [currentCities,setCurrentCities] = useState([]);
     const [defaultChosenCity,setDefaultChosenCity] = useState(null);
     const loginType =localStorage.getItem('loginType');
     const loginTypeEmployeeCondition =  loginType=== 'employee';
-
-    const citiesInsideCurrentCountry = async (chosenCountry) => {
-        try {
-            const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}`);
-            const cities = response?.data?.data?.cities || [];
-            setCurrentCities(cities);
-            const defaultCity = currentCities.find(city => city?.cityName === currentUserLogin?.city);
-            setDefaultChosenCity(defaultCity?.cityId || null);
-        } catch(error){
-            toast.error(`${error?.response?.data?.message || error?.message}`);
-        };
-    };
-
+    const currentChosenCountry = countries?.find(el => el?.name === currentUserLogin?.country );
     const {
         register,
         handleSubmit,
@@ -46,13 +33,52 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
             official_id_or_passport: '',
             image: currnetImageUpdateFile,
             country_id: currentChosenCountry?.id,
-            city_id: '',
+            city_id: defaultChosenCity || '',
             full_address: currentUserLogin?.fullAddress,
             address_one: '',
             address_two: '',
         },
         resolver: zodResolver(UpdateEmployeeProfileSchema),
     });
+
+
+
+    const citiesInsideCurrentCountry = async (chosenCountry) => {
+        try {
+            const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}`);
+            const cities = response?.data?.data?.cities || [];
+            setCurrentCities(cities);
+
+            const defaultCity = cities.find(city => city?.cityName === currentUserLogin?.city);
+            setDefaultChosenCity(defaultCity?.cityId || null);
+        } catch(error){
+            toast.error(`${error?.response?.data?.message || error?.message}`);
+        };
+    };
+    useEffect(()=>{
+        const subscription = watch((value, { name }) => {
+            if (name === 'country_id') {
+                const currentCountry = countries?.find(country => country?.id === +value?.country_id);
+                if (currentCountry) {
+                    citiesInsideCurrentCountry(currentCountry); // Fetch cities
+                    setValue('city_id', '');
+                }
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, [watch, countries, setValue])
+
+    useEffect(() => {
+        if (defaultChosenCity) {
+            setValue('city_id', defaultChosenCity);
+        }
+    }, [defaultChosenCity]);
+    useEffect(()=>{
+        if (currentChosenCountry) {
+            citiesInsideCurrentCountry(currentChosenCountry)
+        }
+    },[currentChosenCountry])
+ 
 
     useEffect(()=>{
         setValue('image',currnetImageUpdateFile);
@@ -93,22 +119,22 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
         };
     }, []);
 
-    useEffect(() => {
-        if (currentChosenCountry) {
-            citiesInsideCurrentCountry(currentChosenCountry);
-        };
-        if (defaultChosenCity) {
-            setValue('city_id', defaultChosenCity);
-        };
-    }, [currentChosenCountry,defaultChosenCity]);
+    // useEffect(() => {
+    //     if (currentChosenCountry) {
+    //         citiesInsideCurrentCountry(currentChosenCountry);
+    //     };
+    //     if (defaultChosenCity) {
+    //         setValue('city_id', defaultChosenCity);
+    //     };
+    // }, [currentChosenCountry, defaultChosenCity]);
 
-    useEffect(()=>{
-        const currentChangedCountry = countries?.find(el => el?.id === +watch('country_id'));
-        if(currentChangedCountry){
-            citiesInsideCurrentCountry(currentChangedCountry);
-            setValue('city_id','');
-        };
-    },[watch('country_id')]);
+    // useEffect(()=>{
+    //     const currentChangedCountry = countries?.find(el => el?.id === +watch('country_id'));
+    //     if(currentChangedCountry){
+    //         citiesInsideCurrentCountry(currentChangedCountry);
+    //         setValue('city_id','');
+    //     };
+    // },[watch('country_id')]);
 
     const onSubmit = async (data) => {
         const toastId = toast.loading('Please Wait...');
@@ -218,7 +244,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     <>
                     <select
                         className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''}`}
-                        defaultValue={currentChosenCountry?.id}
+                        defaultValue={currentChosenCountry?.id || ''}
                         {...register('country_id')}
                         id="dashboardEmployeeCountry"
                     >
@@ -252,6 +278,7 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     <>
                     <select
                         className={`form-select signUpInput mt-2 ${errors?.city_id ? 'inputError' : ''}`}
+                        // defaultValue={currentUserLogin?.city}
                         {...register('city_id')}
                         id="dashboardEmployeeCity"
                     >
@@ -270,7 +297,6 @@ export default function MyProfileForm({token,imgChanged,currnetImageUpdateFile,s
                     </>
             }
         </div>
-        {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut, deserunt nam explicabo iusto nisi fuga laudantium et libero. Ipsam laboriosam sint ex eaque minus id nulla quasi ipsa optio error. */}
         {
             (localStorage.getItem('loginType') === 'user') ? 
             <>

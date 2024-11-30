@@ -194,13 +194,19 @@ console.log(currentData);
                             <div key={el?.companyId} className="col-12">
                                 <div className="CompanyContentItem">
                                     <div className="compImage">
-                                        <img
-                                            src={el?.companyLogo}
-                                            alt={el?.companyName}
-                                        />
+                                        <NavLink  to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
+                                            <img
+                                                src={el?.companyLogo}
+                                                alt={el?.companyName}
+                                            />
+                                        </NavLink>
                                     </div>
                                     <div className="compMainInfo">
-                                        <h5 className="mb-2">{el?.companyName}</h5>
+                                        <h5 className="mb-2">
+                                            <NavLink to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
+                                                {el?.companyName}
+                                            </NavLink>
+                                        </h5>
                                         <div className="companySubInfo mb-2">
                                             <div className="subInfoItem">
                                                 <img src={userIcon} alt="locateion-icon" />

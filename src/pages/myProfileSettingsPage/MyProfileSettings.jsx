@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './myProfileSettings.css'
 import MyNewSidebarDash from '../../components/myNewSidebarDash/MyNewSidebarDash'
 import MainContentHeader from '../../components/mainContentHeaderSec/MainContentHeader'
-import cover from '../../assets/signUpImages/cover.png'
+import cover from '../../assets/heroSec/singleCompanyQuote.png'
 import camerIcon from '../../assets/signUpImages/camera-icon.png'
 import ProfileFilterBar from '../../components/profileFilterBarSec/ProfileFilterBar'
 import MyProfileForm from '../../components/myProfileFormSec/MyProfileForm'
@@ -86,8 +86,8 @@ export default function MyProfileSettings({ token }) {
                         <MyNewSidebarDash loginType={loginType} />
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
-                            <div className="profileCoverImg">
-                                <img src={cover} alt="" />
+                            <div className="profileCoverImgUserAndOwner">
+                                {/* <img src={cover} alt="" /> */}
                             </div>
                             <div className='content__view__handler'>
                                 <div className="profile__settings__content row justify-content-center">
@@ -119,11 +119,11 @@ export default function MyProfileSettings({ token }) {
                                                 </p>
                                             }
                                         </div>
-                                        <div className="view__profile__btn">
+                                        {/* <div className="view__profile__btn">
                                             <button>
                                                 View public profile
                                             </button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="right__settings__content col-lg-7">
                                         <div className="profile__filter__bar">

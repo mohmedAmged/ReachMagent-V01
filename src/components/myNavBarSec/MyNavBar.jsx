@@ -279,7 +279,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
     title='Profile'
 >
     <img
-        src={profileData ? JSON.parse(profileData)?.image : defaultImage}
+        src={profileData ? JSON.parse(profileData)?.companyLogo ? JSON.parse(profileData)?.companyLogo : JSON.parse(profileData)?.image: defaultImage}
         alt='img-check'
     />
 </NavLink>
@@ -392,7 +392,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
     title='Profile'
 >
     <img
-        src={profileData ? JSON.parse(profileData)?.image : defaultImage}
+        src={profileData ? JSON.parse(profileData)?.companyLogo ? JSON.parse(profileData)?.companyLogo : JSON.parse(profileData)?.image: defaultImage}
         alt='img-check'
     />
 </NavLink>

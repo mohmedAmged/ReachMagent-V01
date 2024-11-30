@@ -107,6 +107,19 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
             navigate(`/your-messages`);
         }
     };
+
+    const [expandedText, setExpandedText] = useState({
+        address: false,
+        type: false,
+      });
+    
+      const toggleText = (field) => {
+        setExpandedText((prevState) => ({
+          ...prevState,
+          [field]: !prevState[field],
+        }));
+      };
+    console.log(showCompaniesQuery);
     
     return (
         <div className='container'>
@@ -129,13 +142,33 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                         <div className="row">
                             <div className="col-lg-4 col-md-4 padding__on__md__screen">
                                 <div className="companyBoxItem">
-                                    <div className="company__boxInfo">
+                                    {/* <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
-                                            Headquarters:
+                                            Address:
                                         </p>
                                         <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyFullAddress}>
                                             {showCompaniesQuery?.companyFullAddress?.length >= 25 ? showCompaniesQuery?.companyFullAddress?.slice(0, 25) + '...' : showCompaniesQuery?.companyFullAddress}
                                         </p>
+                                    </div> */}
+                                    <div className={`company__boxInfo ${expandedText.address === true ? 'isExpendedMarginB' : ''}`}>
+                                        <p className='companyinfo__Tit'>Address:</p>
+                                        <p className={`companyinfo__subTit cursorPointer `} title={`${showCompaniesQuery?.companyBranches[0]?.branchCountry},
+                                        ${showCompaniesQuery?.companyBranches[0]?.branchCity}
+                                        `}
+                                        >
+                                            {`${showCompaniesQuery?.companyBranches[0]?.branchCountry},
+                                            ${showCompaniesQuery?.companyBranches[0]?.branchCity}
+                                            `}
+                                            {/* {expandedText.address || showCompaniesQuery?.companyFullAddress?.length <= 20
+                                            ? showCompaniesQuery?.companyFullAddress
+                                            : showCompaniesQuery?.companyFullAddress?.slice(0, 20) + '...'}
+                                             {showCompaniesQuery?.companyFullAddress?.length > 20 && (
+                                            <span className="read-more-btn" onClick={() => toggleText('address')}>
+                                            {expandedText.address ? 'Read Less' : 'Read More'}
+                                            </span>
+                                            )} */}
+                                        </p>
+                                       
                                     </div>
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
@@ -183,12 +216,19 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                             </div>
                             <div className="col-lg-4 col-md-4 padding__on__md__screen">
                                 <div className="companyBoxItem">
-                                    <div className="company__boxInfo">
+                                    <div className={`company__boxInfo ${expandedText.type === true ? 'isExpendedMarginB' : ''}`}>
                                         <p className='companyinfo__Tit'>
                                             type:
                                         </p>
-                                        <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyTypes[0]?.type}>
-                                            {showCompaniesQuery?.companyTypes[0]?.type?.length >= 15 ? showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...' : showCompaniesQuery?.companyTypes[0]?.type}
+                                        <p className='companyinfo__subTit cursorPointer' title={ showCompaniesQuery?.companyTypes[0]?.type}>
+                                            {expandedText.type || showCompaniesQuery?.companyTypes[0]?.type?.length <= 15
+                                            ? showCompaniesQuery?.companyTypes[0]?.type
+                                            : showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...'}
+                                            {showCompaniesQuery?.companyTypes[0]?.type?.length > 15 && (
+                                            <span className="read-more-btn" onClick={() => toggleText('type')}>
+                                            {expandedText.type ? 'Read Less' : 'Read More'}
+                                            </span>
+                                            )}
                                         </p>
                                     </div>
                                     {/* <div className="company__boxInfo mt-2">

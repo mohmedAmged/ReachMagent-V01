@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './companyCard.css'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop';
@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrentFollowedCompanies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId }) {
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
-
+    const [expandedDesc, setExpandedDesc] = useState(false);
     const handleToggleFollowCompany = async (id) => {
         const currentCompanyWantedToFollow = {
             company_id: `${id}`
@@ -42,6 +42,9 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
             });
     };
 
+    const toggleDescription = () => {
+        setExpandedDesc(!expandedDesc);
+      };
     return (
         <div className='companyCard__item'>
             <div className="card__cover">
@@ -153,10 +156,18 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                 }
                 
             </div>
-            <div className="card__description">
+             <div className="card__description">
                 <p title={cardDesc}>
-                {cardDesc.length > 200 ? `${cardDesc.slice(0, 200)}...` : cardDesc}
+                {expandedDesc || cardDesc.length <= 200
+                    ? cardDesc
+                    : `${cardDesc.slice(0, 200)}...`}
+                    {cardDesc.length > 200 && (
+                        <span className="read-more-btn" onClick={toggleDescription}>
+                            {expandedDesc ? 'Read Less' : 'Read More'}
+                        </span>
+                    )}
                 </p>
+                
             </div>
         </div>
     )

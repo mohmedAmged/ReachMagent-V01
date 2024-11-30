@@ -135,7 +135,7 @@ export default function SingleCompany({ token }) {
                     <MyLoader />
                     :
                     <div className='singleCompany__handler'>
-                        <HeroOnlyCover />
+                        <HeroOnlyCover companyCover={showCompaniesQuery?.data?.company?.companyCover}/>
                         <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
                         <div className='my-5'>
                             <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />

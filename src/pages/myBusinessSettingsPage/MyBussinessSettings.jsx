@@ -16,6 +16,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
 import CompanyFollowIndustryFrom from '../../components/companyFollowIndustryFormSec/CompanyFollowIndustryFrom';
+import { NavLink } from 'react-router-dom';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
@@ -145,6 +146,8 @@ export default function MyBussinessSettings({ token }) {
         }, 500);
     }, [loading]);
 
+    console.log(company);
+    
     return (
         <>
             {
@@ -203,9 +206,11 @@ export default function MyBussinessSettings({ token }) {
                                                     </h3>
                                                 </div>
                                                 <div className="view__profile__btn">
+                                                    <NavLink to={`/show-company/${company?.id}`} target='_blank' className={'nav-link'}>
                                                     <button>
                                                         View company's public profile
                                                     </button>
+                                                    </NavLink>
                                                 </div>
                                             </div>
                                             <div className="right__settings__content col-lg-7">
