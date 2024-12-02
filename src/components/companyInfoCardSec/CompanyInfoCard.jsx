@@ -119,7 +119,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
           [field]: !prevState[field],
         }));
       };
-    console.log(showCompaniesQuery);
+    console.log(showCompaniesQuery?.companyBranches[0]?.branchCity);
     
     return (
         <div className='container'>
@@ -152,12 +152,14 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                     </div> */}
                                     <div className={`company__boxInfo ${expandedText.address === true ? 'isExpendedMarginB' : ''}`}>
                                         <p className='companyinfo__Tit'>Address:</p>
-                                        <p className={`companyinfo__subTit cursorPointer `} title={`${showCompaniesQuery?.companyBranches[0]?.branchCountry},
-                                        ${showCompaniesQuery?.companyBranches[0]?.branchCity}
+                                        <p className={`companyinfo__subTit cursorPointer `} title={`
+                                        ${showCompaniesQuery?.companyBranches[0]?.branchCity},
+                                        ${showCompaniesQuery?.companyBranches[0]?.branchCountry}
                                         `}
                                         >
-                                            {`${showCompaniesQuery?.companyBranches[0]?.branchCountry},
-                                            ${showCompaniesQuery?.companyBranches[0]?.branchCity}
+                                            {`
+                                            ${showCompaniesQuery?.companyBranches[0]?.branchCity},
+                                            ${showCompaniesQuery?.companyBranches[0]?.branchCountry}
                                             `}
                                             {/* {expandedText.address || showCompaniesQuery?.companyFullAddress?.length <= 20
                                             ? showCompaniesQuery?.companyFullAddress

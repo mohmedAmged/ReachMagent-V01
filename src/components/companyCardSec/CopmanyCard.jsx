@@ -65,11 +65,11 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                             </NavLink>
                         </h2>
                     </div>
-                    <div className="company__user">
+                    {/* <div className="company__user">
                         <h5>
                             {companyUser}
                         </h5>
-                    </div>
+                    </div> */}
                     <div className="company__data">
                         <div className="company__products compDataStyle">
                             <h3>
@@ -87,14 +87,14 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                 services
                             </p>
                         </div>
-                        <div className="company__owner compDataStyle">
+                        {/* <div className="company__owner compDataStyle">
                             <h3>
                                 {ownerCount}
                             </h3>
                             <p>
                                 orders
                             </p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {
@@ -161,11 +161,11 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                 {expandedDesc || cardDesc.length <= 200
                     ? cardDesc
                     : `${cardDesc.slice(0, 200)}...`}
-                    {cardDesc.length > 200 && (
+                    {/* {cardDesc.length > 200 && (
                         <span className="read-more-btn" onClick={toggleDescription}>
                             {expandedDesc ? 'Read Less' : 'Read More'}
                         </span>
-                    )}
+                    )} */}
                 </p>
                 
             </div>

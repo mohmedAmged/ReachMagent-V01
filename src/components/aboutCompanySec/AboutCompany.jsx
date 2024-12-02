@@ -22,12 +22,12 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
     const [position, setPosition] = useState(initialPosition);
     const map = useMap();
 
-    useMapEvents({
-        click(e) {
-            setPosition(e?.latlng);
-            setLocation(e?.latlng);
-        },
-    });
+    // useMapEvents({
+    //     click(e) {
+    //         setPosition(e?.latlng);
+    //         setLocation(e?.latlng);
+    //     },
+    // });
 
     useEffect(() => {
         if (initialPosition) {

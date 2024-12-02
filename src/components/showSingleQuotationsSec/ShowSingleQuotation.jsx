@@ -327,10 +327,20 @@ export default function ShowSingleQuotation({ token }) {
                     })
                 })
                 .catch(err => {
-                    toast.error(err?.response?.data?.message || 'Something Went Wrong!', {
-                        id: toastId,
-                        duration: 1000
-                    });
+                    if (err?.response?.status === 422 && err?.response?.data?.errors) {
+                        const validationErrors = Object.values(err.response.data.errors)
+                            .flat()
+                            .join(', ');
+                        toast.error(validationErrors, {
+                            id: toastId,
+                            duration: 3000
+                        });
+                    } else {
+                        toast.error(err?.response?.data?.message || 'Something Went Wrong!', {
+                            id: toastId,
+                            duration: 1000
+                        });
+                    }
                 });
                 fetchShowQuotations()
         } else {
@@ -361,6 +371,9 @@ export default function ShowSingleQuotation({ token }) {
                 });
         }
     };
+
+
+    
 
     const handleUpdateBuyQuotationCompanyStatus = async (type) => {
         const toastId = toast.loading('Loading...');
@@ -521,12 +534,14 @@ export default function ShowSingleQuotation({ token }) {
                         <tr key={`${row?.id}${row?.title}`}>
                             <td className='text-capitalize'>
                                 <span className='me-2 indexOfTheTable'>{idx + 1}</span>
-                                <span title={`${row?.title}`} className=' cursorPointer'>{
+                                <span title={`${row?.title}`} className=' cursorPointer'>
+                                    {
                                     `${row?.code ?
                                         `(${row?.code})` :
                                         ''
-                                    } ${row?.title.slice(0,5)}${row?.title.length > 5 ? '...' : ''} `
-                                }
+                                    } ${row?.title} `
+                                    }
+                                
                                 </span>
                             </td>
                             <td className='text-center text-capitalize'>
