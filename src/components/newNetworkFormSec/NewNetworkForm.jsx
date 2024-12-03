@@ -78,7 +78,7 @@ export default function NewNetworkForm({token}) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const submissionData = new FormData();
-
+        const toastId = toast.loading('Loading...');
         Object.keys(formData).forEach((key) => {
             submissionData.append(key, formData[key]);
         });
@@ -97,18 +97,30 @@ export default function NewNetworkForm({token}) {
 
                 navigate('/profile/network')
                 scrollToTop()
-                toast.success(response?.data?.message || (id ? 'network updated successfully' : 'network added successfully'));
+                toast.success(response?.data?.message || (id ? 'network updated successfully' : 'network added successfully'),{
+                    id: toastId,
+                    duration: 1000
+                });
             } else {
-                toast.error(id ? 'Failed to update the network' : 'Failed to add network');
+                toast.error(id ? 'Failed to update the network' : 'Failed to add network',{
+                        id: toastId,
+                        duration: 2000
+                });
             };
         }  catch (error) {
             if (error?.response?.data?.errors) {
                 const validationErrors = Object.values(error.response.data.errors)
                     .flat()
                     .join('\n'); // Join with newline for separate lines
-                toast.error(<div style={{ whiteSpace: 'pre-wrap' }}>{validationErrors}</div>); // Preserve line breaks
+                toast.error(<div style={{ whiteSpace: 'pre-wrap' }}>{validationErrors}</div>,{
+                        id: toastId,
+                        duration: 2000
+                }); // Preserve line breaks
             } else {
-                toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+                toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
+                        id: toastId,
+                        duration: 2000
+                });
             }
         }
     };
