@@ -17,6 +17,7 @@ export default function NewCatalogItemForm({ token }) {
     const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
+    const [previewImages, setPreviewImages] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
     const [currCatalog, setCurrCatalog] = useState([]);
@@ -110,6 +111,7 @@ export default function NewCatalogItemForm({ token }) {
     }, [id]);
 
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
+console.log(currCatalog);
 
     useEffect(() => {
         const fetchSubCategories = async () => {
@@ -193,18 +195,92 @@ export default function NewCatalogItemForm({ token }) {
         });
     };
 
+    // const handleImageChange = (e) => {
+    //     const files = Array.from(e.target.files);
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         image: files,
+    //     }));
+    // };
+
+    // const handleImageChange = (e) => {
+    //     const files = Array.from(e.target.files);
+    
+    //     // Generate preview URLs for selected images
+    //     const previewImages = files.map(file => ({
+    //         file,
+    //         preview: URL.createObjectURL(file),
+    //     }));
+    
+    //     // Update form data with the selected files and their previews
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         image: previewImages.map(item => item.file), // Keep the files in the form data
+    //         previews: previewImages.map(item => item.preview), // Store previews for rendering
+    //     }));
+    // };
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
+    
+        // Update previews
+        const newPreviews = files.map((file, index) => ({
+            id: `${file.name}-${index}-${Date.now()}`,
+            preview: URL.createObjectURL(file),
+        }));
+    
+        // Update formData with raw file objects
         setFormData((prevState) => ({
             ...prevState,
-            image: files,
+            image: [...prevState.image, ...files],
+        }));
+    
+        // Update previewImages state
+        setPreviewImages((prev) => [...prev, ...newPreviews]);
+    };
+
+    const handleImageDelete = (id) => {
+        const imageToRemove = previewImages.find((img) => img.id === id);
+        if (imageToRemove) {
+            URL.revokeObjectURL(imageToRemove.preview); // Revoke URL
+        }
+        setPreviewImages((prev) => prev.filter((img) => img.id !== id));
+        setFormData((prevState) => ({
+            ...prevState,
+            image: prevState.image.filter((_, index) =>
+                previewImages.findIndex((img) => img.id === id) !== index
+            ),
         }));
     };
+
+    const handleBookmarkClick = (id) => {
+        // Find the index of the clicked image
+        const clickedIndex = previewImages.findIndex((img) => img.id === id);
+    
+        if (clickedIndex === 0) return; // If it's already the first image, do nothing
+    
+        // Rearrange the previewImages array
+        const updatedPreviews = [
+            previewImages[clickedIndex], // Move clicked image to the front
+            ...previewImages.filter((_, index) => index !== clickedIndex), // Keep others
+        ];
+    
+        // Rearrange the formData.image array
+        const updatedImages = [
+            formData.image[clickedIndex], // Move clicked image to the front
+            ...formData.image.filter((_, index) => index !== clickedIndex), // Keep others
+        ];
+    
+        setPreviewImages(updatedPreviews);
+        setFormData((prevState) => ({
+            ...prevState,
+            image: updatedImages,
+        }));
+    };
+    
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-
         const submissionData = new FormData();
         Object.keys(formData).forEach((key) => {
             if (key !== 'image' && !Array.isArray(formData[key])) {
@@ -243,8 +319,15 @@ export default function NewCatalogItemForm({ token }) {
                 toast.error(error?.response?.data?.message || 'Something Went Wrong!');
             }
         }
-        console.log(submissionData);
+        // console.log(submissionData);
     };
+
+    // useEffect(() => {
+    //     return () => {
+    //         previewImages.forEach((img) => URL.revokeObjectURL(img.preview));
+    //     };
+    // }, [previewImages]);
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -465,6 +548,35 @@ export default function NewCatalogItemForm({ token }) {
                                                     onChange={handleImageChange}
                                                     className="form-control mt-2"
                                                 />
+                                               <div className="image-preview mt-4">
+    {previewImages.map((image, index) => (
+        <div key={image.id} className="position-relative d-inline-block me-4">
+            <img
+                src={image.preview}
+                alt="Selected"
+                className="img-thumbnail"
+                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+            />
+            <i
+                className={`bi bi-bookmark-star-fill ${
+                    index === 0 ? "text-warning" : "text-secondary"
+                } position-absolute bottom-0 start-0 cursor-pointer`}
+                style={{ fontSize: "1.5rem", transform: "translate(-50%, 50%)" }}
+                onClick={() => handleBookmarkClick(image.id)}
+                title="Set as Main Image"
+            ></i>
+            <i
+                className="bi bi-x-circle text-danger position-absolute top-0 end-0 cursor-pointer"
+                style={{ fontSize: "1.5rem", transform: "translate(50%, -50%)" }}
+                onClick={() => handleImageDelete(image.id)}
+                title="Remove Image"
+            ></i>
+        </div>
+    ))}
+</div>
+
+
+
                                             </div>
                                             <div className="catalog__check__points">
                                                 {allTypes?.map((type) => (

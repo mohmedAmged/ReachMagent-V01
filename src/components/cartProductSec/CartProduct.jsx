@@ -334,22 +334,23 @@ export default function CartProduct({
                     ) }
                     {
                         (currNotes) ?
-                        <div className='showNotes mt-2 d-flex justify-content-between'>
-                            {currNotes}
-                            <i onClick={() => handleDeleteNoteFromQuotation(cartId)} className="bi bi-trash-fill"></i>
+                        <div className='d-flex align-items-center gap-2'>
+                            <textarea className=' mt-2 form-control bg-transparent p-2 w-75' rows={3} value={currNotes} disabled></textarea>
+                            <i onClick={() => handleDeleteNoteFromQuotation(cartId)} className="bi bi-trash-fill cursorPointer "></i>
                         </div>
                         :
                         <>
                             <div className='addNotes mt-2'>
-                                <input
+                                <textarea
                                     placeholder='Add Note...'
+                                    name=""
                                     value={note}
-                                    type='text'
                                     id='companyQuotationNote'
-                                    className='form-control showNotesInput'
-                                    maxLength={20}
+                                    className='form-control w-75 mb-3'
                                     onChange={(e)=> setNote(e.target.value)}
-                                />
+                                    rows={3}
+                                >
+                                </textarea>
                             </div>
                             <span onClick={()=> handleAddNoteToQuotation(cartId)} className='pageMainBtnStyle'>Add Note</span>
                         </>
