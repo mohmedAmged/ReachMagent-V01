@@ -293,6 +293,7 @@ console.log(currCatalog);
         formData.image.forEach((image, index) => {
             submissionData.append(`image[${index}]`, image);
         })
+        const toastId = toast.loading('Loading...');
         try {
             const slugCompletion = id ? `update-catalog/${id}` : 'add-catalog';
             const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
@@ -305,18 +306,30 @@ console.log(currCatalog);
             if (response.status === 200) {
                 navigate('/profile/catalog');
                 scrollToTop()
-                toast.success(response?.data?.message || (id ? 'Catalog item updated successfully' : 'Catalog item added successfully'));
+                toast.success(response?.data?.message || (id ? 'Catalog item updated successfully' : 'Catalog item added successfully'),{
+                        id: toastId,
+                        duration: 1000
+                });
             } else {
-                toast.error(id ? 'Failed to update catalog item' : 'Failed to add catalog item');
+                toast.error(id ? 'Failed to update catalog item' : 'Failed to add catalog item',{
+                        id: toastId,
+                        duration: 1000
+                });
             }
         } catch (error) {
             if (error?.response?.data?.errors) {
                 const validationErrors = Object.values(error.response.data.errors)
                     .flat()
                     .join('\n'); // Join with newline for separate lines
-                toast.error(<div style={{ whiteSpace: 'pre-wrap' }}>{validationErrors}</div>); // Preserve line breaks
+                toast.error(<div style={{ whiteSpace: 'pre-wrap' }}>{validationErrors}</div>,{
+                        id: toastId,
+                        duration: 2000
+                }); // Preserve line breaks
             } else {
-                toast.error(error?.response?.data?.message || 'Something Went Wrong!');
+                toast.error(error?.response?.data?.message || 'Something Went Wrong!',{
+                    id: toastId,
+                    duration: 2000
+                });
             }
         }
         // console.log(submissionData);
@@ -451,7 +464,7 @@ console.log(currCatalog);
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="catalog__new__input">
-                                                        <label htmlFor="code">product code <span className="requiredStar"> *</span>
+                                                        <label htmlFor="code">product code <span className='optional'>(optional)</span>
                                                             <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input
