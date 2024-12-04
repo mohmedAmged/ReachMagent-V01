@@ -62,7 +62,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (
-                                                                        <option key={el.id} value={el.id}>{el.name}</option>
+                                                                        <option key={el.id} value={el.value}>{el.name}</option>
                                                                     )
                                                                 })
                                                             }

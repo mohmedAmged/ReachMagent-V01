@@ -17,8 +17,24 @@ export default function Home({ token }) {
   const [loading, setLoading] = useState(true);
   const arrOfCateg = [
     {
+      value: 'all',
+      name: 'All',
+      id: 1,
+    },
+    {
+      value: 'company',
       name: 'Companies',
-      id: 1
+      id: 2
+    },
+    {
+      value: 'catalog',
+      name: 'Products Catalogs',
+      id: 3
+    },
+    {
+      value: 'service',
+      name: 'Services',
+      id: 4
     },
   ];
 
