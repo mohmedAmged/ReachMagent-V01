@@ -28,7 +28,7 @@ export default function Home({ token }) {
     },
     {
       value: 'catalog',
-      name: 'Products Catalogs',
+      name: 'Products',
       id: 3
     },
     {

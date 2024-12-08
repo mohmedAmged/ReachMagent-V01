@@ -40,7 +40,7 @@ export default function SearchInHome() {
         setFilteration(filters);
         getCurrentSearchedData(search); // Load data with query params
     }, [search, getCurrentSearchedData]);
-    
+
     // useEffect(() => {
     //     getCurrentSearchedData(search);
     // }, [search, getCurrentSearchedData]);
@@ -84,12 +84,12 @@ export default function SearchInHome() {
 
     // const loadMoreData = (type) => {
     //     const nextPage = pagination[type]?.current_page + 1;
-    
+
     //     if (nextPage <= pagination[type]?.last_page) {
     //         getCurrentSearchedData(`${search}&page=${nextPage}`).then((newData) => {
     //             // Safely merge the existing data with new data
     //             const updatedData = { ...currentData };
-    
+
     //             if (type === 'company') {
     //                 updatedData.companies = [
     //                     ...(currentData.companies || []),
@@ -106,7 +106,7 @@ export default function SearchInHome() {
     //                     ...(newData.services || []),
     //                 ];
     //             }
-    
+
     //             // Update the store or local state with the merged data
     //             SearchStore.setState({ currentData: updatedData });
     //         });
@@ -115,9 +115,9 @@ export default function SearchInHome() {
     const loadMoreData = (type) => {
         const nextPage = pagination[type]?.current_page + 1;
         if (nextPage <= pagination[type]?.last_page) {
-          appendData(`${search}&page=${nextPage}`, type);
+            appendData(`${search}&page=${nextPage}`, type);
         }
-      };
+    };
     return (
         <>
             {
@@ -146,7 +146,7 @@ export default function SearchInHome() {
                                                 >
                                                     <option value="">All</option>
                                                     <option value="company">Companies</option>
-                                                    <option value="catalog">Catalogs</option>
+                                                    <option value="catalog">Products</option>
                                                     <option value="service">Services</option>
                                                 </select>
                                             </div>
@@ -196,187 +196,165 @@ export default function SearchInHome() {
                                     </div>
                                 </div>
                                 <div className="col-lg-9 col-md-8">
-                                    <div className="mainContentAllCompanies__handler">
-                                        {currentData?.companies?.length === 0 ?
+                                    {
+                                        currentData?.companies?.length === 0 && currentData?.catalogs?.length === 0 && currentData?.services?.length === 0 ?
                                             (
-                                                <div className="row">
-                                                    <div className="col-12">
-                                                        <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
-                                                            no company with this filter
-                                                        </h1>
-                                                    </div>
-                                                </div>
+                                                <h3 className='text-danger text-capitalize text-center'>sorry, no data with this filter</h3>
                                             )
                                             :
-                                            (
-                                                <div className="row gap-3">
-                                                    <h2>
-                                                        Companies
-                                                    </h2>
-                                                    {
-                                                        currentData?.companies?.map((el) => {
-                                                            return (
-                                                                <div key={el?.companyId} className="col-12">
-                                                                    <div className="CompanyContentItem">
-                                                                        <div className="compImage">
-                                                                            <NavLink to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
-                                                                                <img
-                                                                                    src={el?.companyLogo}
-                                                                                    alt={el?.companyName}
-                                                                                />
-                                                                            </NavLink>
-                                                                        </div>
-                                                                        <div className="compMainInfo">
-                                                                            <h5 className="mb-2">
-                                                                                <NavLink to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
-                                                                                    {el?.companyName}
-                                                                                </NavLink>
-                                                                            </h5>
-                                                                            <div className="companySubInfo mb-2">
-                                                                                <div className="subInfoItem">
-                                                                                    <img src={userIcon} alt="locateion-icon" />
-                                                                                    <span>{el?.companyIndustries[0]?.industryName || 'N/A'}</span>
-                                                                                </div>
-                                                                                <div className="subInfoItem">
-                                                                                    <img
-                                                                                        src={locationIcon}
-                                                                                        alt="locateion-icon"
-                                                                                    />
-                                                                                    <span>
-                                                                                        {el?.companyBranches[0]?.branchCity || 'N/A'}
-                                                                                    </span>
-                                                                                </div>
-                                                                                {/* <div className="subInfoItem">
-                                                                            <img src={emailIcon} alt="locateion-icon" />
+        <div className="mainContentAllCompanies__handler">
+            {currentData?.companies?.length !== 0 &&
+                (
+                    <div className="row gap-3">
+                        <h2>
+                            Companies
+                        </h2>
+                        {
+                            currentData?.companies?.map((el) => {
+                                return (
+                                    <div key={el?.companyId} className="col-12">
+                                        <div className="CompanyContentItem">
+                                            <div className="compImage">
+                                                <NavLink to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
+                                                    <img
+                                                        src={el?.companyLogo}
+                                                        alt={el?.companyName}
+                                                    />
+                                                </NavLink>
+                                            </div>
+                                            <div className="compMainInfo">
+                                                <h5 className="mb-2">
+                                                    <NavLink to={`/show-company/${el?.companyId}`} target="_blank" className={'nav-link'}>
+                                                        {el?.companyName}
+                                                    </NavLink>
+                                                </h5>
+                                                <div className="companySubInfo mb-2">
+                                                    <div className="subInfoItem">
+                                                        <img src={userIcon} alt="locateion-icon" />
+                                                        <span>{el?.companyIndustries[0]?.industryName || 'N/A'}</span>
+                                                    </div>
+                                                    <div className="subInfoItem">
+                                                        <img
+                                                            src={locationIcon}
+                                                            alt="locateion-icon"
+                                                        />
+                                                        <span>
+                                                            {el?.companyBranches[0]?.branchCity || 'N/A'}
+                                                        </span>
+                                                    </div>
+                                                    {/* <div className="subInfoItem">
+                                        <img src={emailIcon} alt="locateion-icon" />
 
-                                                                            <NavLink to={el?.companyWebsiteLink}>
-                                                                                <span>Website</span>
-                                                                            </NavLink>
-                                                                        </div> */}
-                                                                            </div>
-                                                                            <div className="companyDescrip mb-2">
-                                                                                <p className="cursorPointer" title={el?.companyAboutUs}>
-                                                                                    {el?.companyAboutUs?.length > 200
-                                                                                        ? `${el?.companyAboutUs?.slice(0, 200)}...`
-                                                                                        : el?.companyAboutUs}
-                                                                                </p>
-                                                                            </div>
-                                                                            <div className="companyMainCountry">
-                                                                                {/* <img src={flag} alt="flag" /> */}
-                                                                                <i className="bi bi-crosshair2"></i>
-                                                                                <span>
-                                                                                    {el?.companyBranches[0]?.branchCountry || 'N/A'}
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="companyActions">
-                                                                            <NavLink
-                                                                                onClick={() => {
-                                                                                    scrollToTop();
-                                                                                }}
-                                                                                className={"nav-link"}
-                                                                                to={`/show-company/${el?.companyId}`}
-                                                                            >
-                                                                                <button className="pageMainBtnStyle">
-                                                                                    more info
-                                                                                </button>
-                                                                            </NavLink>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    {pagination.companies?.current_page <
-                                                        pagination.companies?.last_page && (
-                                                            <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('companies')}>
-                                                                Load More Companies
-                                                            </button>
-                                                        )}
+                                        <NavLink to={el?.companyWebsiteLink}>
+                                            <span>Website</span>
+                                        </NavLink>
+                                    </div> */}
                                                 </div>
-                                        )}
-                                        {
-                                            currentData?.catalogs?.length === 0 ?
-                                            (
-                                                <div className="row">
-                                                    <div className="col-12">
-                                                        <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
-                                                            no catalog with this filter
-                                                        </h1>
-                                                    </div>
+                                                <div className="companyDescrip mb-2">
+                                                    <p className="cursorPointer" title={el?.companyAboutUs}>
+                                                        {el?.companyAboutUs?.length > 200
+                                                            ? `${el?.companyAboutUs?.slice(0, 200)}...`
+                                                            : el?.companyAboutUs}
+                                                    </p>
                                                 </div>
-                                            )
-                                            :
-                                            (
-                                                <div className="row justify-content-center my-5">
-                                                                <h2>
-                                                                    Catalogs
-                                                                </h2>
-                                                    {
-                                                        currentData?.catalogs?.map((cata)=>(
-                                                            <div className="col-lg-6 col-md-6 generalSearchCatalogCard my-4 d-flex justify-content-center">
-                                                                
-                                                                <LastMinuteCard
-                                                                    productImage={cata?.media[0].image || 'N/A'}
-                                                                    productName={cata?.title}
-                                                                    productLink={`/show-company/${cata?.company_id}/catalog-details/${cata?.id}`}
-                                                                    showCustomContent={true}
-                                                                    borderColor={'rgba(0, 0, 0, 0.5)'}
-                                                                    onAddClick={''}
-                                                                />
-                                                            </div>
-                                                        ))
-                                                    }
-                                                    {pagination.catalogs?.current_page <
-                                                        pagination.catalogs?.last_page && (
-                                                            <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('catalogs')}>
-                                                                Load More Catalogs
-                                                            </button>
-                                                        )}
+                                                <div className="companyMainCountry">
+                                                    {/* <img src={flag} alt="flag" /> */}
+                                                    <i className="bi bi-crosshair2"></i>
+                                                    <span>
+                                                        {el?.companyBranches[0]?.branchCountry || 'N/A'}
+                                                    </span>
                                                 </div>
-                                            )
-                                        }
-                                        {
-                                            currentData?.services?.length === 0 ? 
-                                            (
-                                                <div className="row">
-                                                    <div className="col-12">
-                                                        <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
-                                                            no services with this filter
-                                                        </h1>
-                                                    </div>
-                                                </div>
-                                            )
-                                            :
-                                            (
-                                                <div className="row  my-5">
-                                                    <h2>
-                                                        Services
-                                                    </h2>
-                                                    {
-                                                        currentData?.services?.map((serv)=>(
-                                                            <div className="col-lg-6 col-md-6 generalSearchCatalogCard my-4 ">
-                                                                <LastMinuteCard
-                                                                    productImage={serv?.image || 'N/A'}
-                                                                    productName={serv?.title}
-                                                                    productLink={`/show-company/${serv?.company_id}/catalog-details/${serv?.id}`}
-                                                                    showCustomContent={true}
-                                                                    borderColor={'rgba(0, 0, 0, 0.5)'}
-                                                                    onAddClick={''}
-                                                                />
-                                                            </div>
-                                                        ))
-                                                    }
-                                                    {pagination.services?.current_page <
-                                                        pagination.services?.last_page && (
-                                                            <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('services')}>
-                                                                Load More services
-                                                            </button>
-                                                    )}
-                                                    
-                                                </div>
-                                            )
-                                        }
+                                            </div>
+                                            <div className="companyActions">
+                                                <NavLink
+                                                    onClick={() => {
+                                                        scrollToTop();
+                                                    }}
+                                                    className={"nav-link"}
+                                                    to={`/show-company/${el?.companyId}`}
+                                                >
+                                                    <button className="pageMainBtnStyle">
+                                                        more info
+                                                    </button>
+                                                </NavLink>
+                                            </div>
+                                        </div>
                                     </div>
+                                );
+                            })}
+                        {pagination.companies?.current_page <
+                            pagination.companies?.last_page && (
+                                <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('companies')}>
+                                    Load More Companies
+                                </button>
+                            )}
+                    </div>
+                )}
+            {
+                currentData?.catalogs?.length !== 0 &&
+                (
+                    <div className="row my-5">
+                        <h2>
+                            Catalogs
+                        </h2>
+                        {
+                            currentData?.catalogs?.map((cata) => (
+                                <div className="col-lg-6 col-md-6 generalSearchCatalogCard my-4">
+
+                                    <LastMinuteCard
+                                        productImage={cata?.media[0].image || 'N/A'}
+                                        productName={cata?.title}
+                                        productLink={`/show-company/${cata?.company_id}/catalog-details/${cata?.id}`}
+                                        showCustomContent={true}
+                                        borderColor={'rgba(0, 0, 0, 0.5)'}
+                                        onAddClick={''}
+                                    />
+                                </div>
+                            ))
+                        }
+                        {pagination.catalogs?.current_page <
+                            pagination.catalogs?.last_page && (
+                                <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('catalogs')}>
+                                    Load More Catalogs
+                                </button>
+                            )}
+                    </div>
+                )
+            }
+            {
+                currentData?.services?.length !== 0 &&
+                (
+                    <div className="row  my-5">
+                        <h2>
+                            Services
+                        </h2>
+                        {
+                            currentData?.services?.map((serv) => (
+                                <div className="col-lg-6 col-md-6 generalSearchCatalogCard my-4 ">
+                                    <LastMinuteCard
+                                        productImage={serv?.image || 'N/A'}
+                                        productName={serv?.title}
+                                        productLink={`/show-company/${serv?.company_id}/catalog-details/${serv?.id}`}
+                                        showCustomContent={true}
+                                        borderColor={'rgba(0, 0, 0, 0.5)'}
+                                        onAddClick={''}
+                                    />
+                                </div>
+                            ))
+                        }
+                        {pagination.services?.current_page <
+                            pagination.services?.last_page && (
+                                <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('services')}>
+                                    Load More services
+                                </button>
+                            )}
+
+                    </div>
+                )
+            }
+        </div>
+                                    }
+
                                 </div>
                             </div>
                         </div>

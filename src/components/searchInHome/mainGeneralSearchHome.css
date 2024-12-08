@@ -1,7 +1,7 @@
 .generalSearchCatalogCard .product__image img{
     width: 100%;
-    height: 200px;
-    object-fit: contain;
+    height: 250px;
+    /* object-fit: contain; */
     border-radius: 8px;
 }
 .generalSearchCatalogCard .addButtonStyle{
@@ -10,7 +10,12 @@
 .generalSearchCatalogCard .main__info p{
     display: none !important;
 }
-
+.generalSearchCatalogCard .sub__info{
+    text-align: end;
+}
+.generalSearchCatalogCard .product__info{
+    display: block;
+}
 @media screen and (max-width: 992px) {
     .generalSearchCatalogCard .product__image img{
         width: 100%;
@@ -18,6 +23,7 @@
     }
     .generalSearchCatalogCard .main__info h3{
         font-size: 13px;
+        margin-bottom: 6px;
     }
     .generalSearchCatalogCard .pageMainBtnStyle{
         font-size: 10px;

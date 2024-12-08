@@ -32,6 +32,7 @@ export default function MyMainHeroSec({ countries, handleChangeFilterInputs, her
             navigate(`reach-magnet?${slug}`);
         }
     };
+console.log(countries);
 
     return (
         <div className={`myMainHero__handler `}>
