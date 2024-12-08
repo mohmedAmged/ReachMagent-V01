@@ -41,8 +41,6 @@ export default function CompanyFollowers({ loginType, token }) {
     const filteredFollowers = loginType === "user"
         ? followers.filter((el, index, self) => index === self.findIndex((t) => t.companyId === el.companyId))
         : followers.filter((el, index, self) => index === self.findIndex((t) => t.userId === el.userId));
-console.log(followers);
-console.log(followed);
 
     return (
         <>
