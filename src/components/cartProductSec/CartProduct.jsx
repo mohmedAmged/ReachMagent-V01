@@ -17,7 +17,8 @@ export default function CartProduct({
     quantity,
     companyIdWantedToHaveQuoteWith,
     setCart,
-    token
+    token,
+    options
 }) {
     const [counter,setCounter] = useState(quantity);
     const [note,setNote]= useState('');
@@ -268,7 +269,41 @@ export default function CartProduct({
             })();
         }
     };
+    const handleAddOptionToCart = (cartId, attributeId, optionId) => {
+        const requestBody = {
+            quotation_cart_id: `${cartId}`,
+            prefrence_attribute_id: `${attributeId}`,
+            prefrence_option_id: `${optionId}`,
+            type: 'add'
+    };
+    
+        // Send the API request
+        (async () => {
+            const toastId = toast.loading('Adding option...');
+            try {
+                const response = await axios.post(`${baseURL}/user/control-preference-in-quotation-cart/${companyIdWantedToHaveQuoteWith}`, requestBody, {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setCart(response?.data?.data?.cart); // Update the cart state
+                toast.success('Option added successfully!', {
+                    id: toastId,
+                    duration: 1000
+                });
+            } catch (error) {
+                toast.error(error?.response?.data?.message || 'Error adding option!', {
+                    id: toastId,
+                    duration: 1000
+                });
+            }
+        })();
+    };
+    
 
+console.log(options);
 
     return (
         <div className="selected__product__item" >
@@ -353,6 +388,42 @@ export default function CartProduct({
                                 </textarea>
                             </div>
                             <span onClick={()=> handleAddNoteToQuotation(cartId)} className='pageMainBtnStyle'>Add Note</span>
+                        </>
+                    }
+                    {
+                        options?.length !== 0 &&
+                        <>
+                        <strong className='d-block mt-3 mb-2 text-capitalize'>
+                            options:
+                        </strong>
+                        {
+                            options?.map((option, index) => (
+                                <div key={index} className='mb-3'>
+                                    <p className=' text-capitalize'>
+                                        choose a {option?.attribute}
+                                    </p>
+                                    <div className='d-flex align-items-center gap-2'>
+                                        {
+                                        option?.values?.map((value, index) => (
+                                            <div style={{
+                                                backgroundColor:'rgba(211, 212, 219, 0.5)', padding:'4px', borderRadius:'5px',
+                                            }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
+                                                <input 
+                                                className='form-check cursorPointer'
+                                                type="radio" 
+                                                id={`option-${value.id}`} 
+                                                name={`option-${option.attribute_id}`} 
+                                                value={value.id}
+                                                onChange={() => handleAddOptionToCart(cartId, option?.attribute_id, value.id)} 
+                                                />
+                                               <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
+                                            </div>
+                                        ))
+                                    }
+                                    </div>
+                                </div>
+                            ))
+                        }
                         </>
                     }
                 </div>

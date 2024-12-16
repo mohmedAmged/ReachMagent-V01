@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
 
 export default function MyCatalogDetails({ token }) {
     const { catalogId } = useParams();
@@ -66,7 +67,19 @@ export default function MyCatalogDetails({ token }) {
                 })
         })();
     };
-    console.log(currentCatalog?.in_cart);
+
+        const [activeItem, setActiveItem] = useState('About');
+
+         const items = [
+        { name: 'About', active: activeItem === 'About' },
+        { name: 'Options', active: activeItem === 'Options' },
+        ];
+
+        const handleItemClick = (itemName) => {
+            setActiveItem(itemName);
+        };
+    
+    console.log(currentCatalog);
     
     return (
         <>
@@ -157,10 +170,22 @@ export default function MyCatalogDetails({ token }) {
                                 <div className='productDetails__description mt-md-4'>
                                     <h2 className='productDetails__head text-capitalize'>{currentCatalog?.title}</h2>
                                     <p className='mt-3 mb-4 fs-5 text-capitalize'>{currentCatalog?.description}</p>
-                                    <p className="productDetails__price">
+                                    {
+                                    currentCatalog?.price_after_tax !== 'N/A' &&
+                                        <p className="productDetails__price">
+                                        <span style={{color:'gray', fontWeight:'normal', fontSize:'18px', textTransform:'capitalize'}}>starting from</span> <br/>
                                         {currentCatalog?.price_after_tax} {currentCatalog?.currency}
-                                    </p>
-                                    
+                                        </p>
+                                    }
+                                    <div className="row prodDetailsChangeColorSpan my-3">
+                                        {currentCatalog?.catalogTypes?.map((prod, index) => (
+                                            <div className="col-lg-12" key={index}>
+                                                <p className='fw-bold fs-5 text-capitalize mb-2 d-flex align-items-center'>
+                                                <i className="bi bi-check-circle"></i>                                             <span className='fw-medium ms-2 fs-6'>{prod?.type}</span>
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
                                     <div className="companyQutation__btn my-4">
                                     {
                                     token ? (
@@ -214,7 +239,13 @@ export default function MyCatalogDetails({ token }) {
                         </Row>
                         <Row>
                             <Col lg={12}>
-                                <div className='productDetails__content mb-5 mt-4'>
+                                <div className='my-5'>
+                                <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
+                                </div>
+                                {
+                                    activeItem === 'About' &&
+                                    <>
+                                    <div className='productDetails__content mb-5 mt-4'>
                                     <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>Description</h4>
                                     <p className='mt-3 mb-4 fs-5'>{currentCatalog?.description}</p>
                                     <div className="row prodDetailsChangeColorSpan">
@@ -254,7 +285,7 @@ export default function MyCatalogDetails({ token }) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="row prodDetailsChangeColorSpan">
+                                    {/* <div className="row prodDetailsChangeColorSpan">
                                         <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>catalog type:</h4>
                                         {currentCatalog?.catalogTypes?.map((prod, index) => (
                                             <div className="col-lg-12" key={index}>
@@ -263,8 +294,40 @@ export default function MyCatalogDetails({ token }) {
                                                 </p>
                                             </div>
                                         ))}
+                                    </div> */}
                                     </div>
-                                </div>
+                                    </>
+                                }
+                                {
+                                     activeItem === 'Options' && 
+                                     <>
+                                     <div className='productDetails__content mb-5 mt-4'>
+                                     {
+                                        currentCatalog?.options?.map((option)=>(
+                                            <div className='fw-medium text-capitalize fs-4'>
+                                                <h4 className='productDetails__contentHead my-4 fs-3 fw-bold text-capitalize'>{option?.attribute}</h4>
+                                                {
+                                                    option?.values.map((value)=>(
+                                                        <>
+                                                        <span style={{
+                                                            backgroundColor:'rgb(211, 212, 219)', padding:'8px', borderRadius:'5px', 
+                                                        }} className='ms-3 text-capitalize'>{value?.name}
+                                                        </span>
+                                                        <span className='ms-2'>
+                                                            {value?.price}  {currentCatalog?.currency}
+                                                        </span>
+                                                        </>
+                                                    ))
+                                                }
+                                            </div>
+                                        ))
+                                     }
+                                     {/* <p className='mt-3 mb-4 fs-5'>     {currentCatalog?.options}
+                                     </p> */}
+                                     </div>
+                                     </>
+                                }
+                                
                             </Col>
                         </Row>
                     </Container>

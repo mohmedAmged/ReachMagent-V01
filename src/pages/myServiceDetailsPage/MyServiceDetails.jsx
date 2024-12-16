@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
 
 export default function MyServiceDetails({ token }) {
     const { servId } = useParams();
@@ -50,6 +51,20 @@ export default function MyServiceDetails({ token }) {
                 })
         })();
     };
+
+     const [activeItem, setActiveItem] = useState('About');
+    
+             const items = [
+            { name: 'About', active: activeItem === 'About' },
+            { name: 'Options', active: activeItem === 'Options' },
+            ];
+    
+            const handleItemClick = (itemName) => {
+                setActiveItem(itemName);
+            };
+
+    console.log(currentService);
+    
     return (
         <>
             {loading ? (
@@ -80,9 +95,13 @@ export default function MyServiceDetails({ token }) {
                                     <p className='mt-3 mb-4 fs-5 text-capitalize'>
                                         {currentService?.description}
                                     </p>
-                                    <p className="productDetails__price">
-                                        {currentService?.price_after_tax || ''} {currentService?.currency}
-                                    </p>
+                                    {/* {
+                                        currentService?.price_after_tax !== 'N/A' &&
+                                        <p className="productDetails__price">
+                                            <span style={{color:'gray', fontWeight:'normal', fontSize:'18px', textTransform:'capitalize'}}>starting from</span> <br/>
+                                            {currentService?.price_after_tax || ''} {currentService?.currency}
+                                        </p>
+                                    } */}
                                     <div className="companyQutation__btn my-4">
                                     {
                                     token ? (
@@ -137,7 +156,13 @@ export default function MyServiceDetails({ token }) {
                         </Row>
                         <Row>
                             <Col lg={12}>
-                                <div className='productDetails__content mb-5 mt-4'>
+                                <div className='my-5'>
+                                    <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
+                                </div>
+                                {
+                                    activeItem === 'About' &&
+                                    <>
+                                    <div className='productDetails__content mb-5 mt-4'>
                                     <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>
                                         Description
                                     </h4>
@@ -162,7 +187,38 @@ export default function MyServiceDetails({ token }) {
                                             </p>
                                         </div>
                                     </div>
-                                </div>
+                                    </div>
+                                    </>
+                                }
+                                {
+                                    activeItem === 'Options' && 
+                                    <>
+                                    <div className='productDetails__content mb-5 mt-4'>
+                                     {
+                                        currentService?.options?.map((option)=>(
+                                            <div className='fw-medium text-capitalize fs-4'>
+                                                <h4 className='productDetails__contentHead my-4 fs-3 fw-bold text-capitalize'>{option?.attribute}</h4>
+                                                {
+                                                    option?.values.map((value)=>(
+                                                        <>
+                                                        <span style={{
+                                                            backgroundColor:'rgb(211, 212, 219)', padding:'8px', borderRadius:'5px', 
+                                                        }} className='ms-3 text-capitalize'>{value?.name}
+                                                        </span>
+                                                        <span className='ms-2'>
+                                                            {value?.price} $
+                                                        </span>
+                                                        </>
+                                                    ))
+                                                }
+                                            </div>
+                                        ))
+                                     }
+                                     {/* <p className='mt-3 mb-4 fs-5'>     {currentCatalog?.options}
+                                     </p> */}
+                                     </div>
+                                    </>
+                                }
                             </Col>
                         </Row>
                     </Container>
