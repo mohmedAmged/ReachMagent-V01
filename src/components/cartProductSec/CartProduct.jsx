@@ -24,6 +24,17 @@ export default function CartProduct({
     const [note,setNote]= useState('');
     const [currNotes,setCurrNotes]= useState(notes === 'N/A' ? '' : notes);
 
+    const [selectedOptions, setSelectedOptions] = useState(() => {
+        const initialOptions = {};
+        options?.forEach((option) => {
+            const chosenValue = option.values.find((value) => value.chosen);
+            if (chosenValue) {
+                initialOptions[option.attribute_id] = chosenValue.id;
+            }
+        });
+        return initialOptions;
+    });
+
     const handleRemoveProduct = (id) => {
         if(companyIdWantedToHaveQuoteWith){
             (async () => {
@@ -414,7 +425,14 @@ console.log(options);
                                                 id={`option-${value.id}`} 
                                                 name={`option-${option.attribute_id}`} 
                                                 value={value.id}
-                                                onChange={() => handleAddOptionToCart(cartId, option?.attribute_id, value.id)} 
+                                                checked={selectedOptions[option.attribute_id] === value.id}
+                                                 onChange={() => {
+                                                setSelectedOptions((prev) => ({
+                                                    ...prev,
+                                                    [option.attribute_id]: value.id, 
+                                                }));
+                                                handleAddOptionToCart(cartId, option.attribute_id, value.id);
+                                            }}
                                                 />
                                                <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
                                             </div>

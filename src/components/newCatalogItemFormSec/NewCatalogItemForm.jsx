@@ -72,18 +72,7 @@ export default function NewCatalogItemForm({ token }) {
         image: [],
         options: []
     });
-    // const handleOptionChange = (index, field, value) => {
-    //     const updatedOptions = [...formData.options];
-    //     if (!updatedOptions[index]) updatedOptions[index] = {};
-
-    //     updatedOptions[index][field] = value;
-
-    //     setFormData(prevState => ({
-    //         ...prevState,
-    //         options: updatedOptions
-    //     }));
-    // };
-
+    
     const handleAddOption = () => {
         setFormData(prevState => ({
             ...prevState,
@@ -149,6 +138,7 @@ export default function NewCatalogItemForm({ token }) {
     }, [id]);
 
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
+    
     console.log(currCatalog);
 
     useEffect(() => {
@@ -197,6 +187,7 @@ export default function NewCatalogItemForm({ token }) {
                 tax: currCatalog?.tax || '',
                 type: currCatalog?.catalogTypes?.map(el => el?.type) || [],
                 image: currCatalog?.media?.map(el => el?.image) || [],
+                options: currCatalog?.options?.map(el => el) || []
             })
         };
     }, [currCatalog]);
@@ -290,65 +281,6 @@ export default function NewCatalogItemForm({ token }) {
             image: updatedImages,
         }));
     };
-
-
-    // const handleFormSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log(formData);
-    //     const submissionData = new FormData();
-    //     Object.keys(formData).forEach((key) => {
-    //         if (key !== 'image' && !Array.isArray(formData[key])) {
-    //             submissionData.append(key, formData[key]);
-    //         }
-    //     });
-    //     formData.type.forEach((type, index) => {
-    //         submissionData.append(`type[${index}]`, type);
-    //     })
-    //     formData.image.forEach((image, index) => {
-    //         submissionData.append(`image[${index}]`, image);
-    //     })
-    //     const toastId = toast.loading('Loading...');
-    //     try {
-    //         const slugCompletion = id ? `update-catalog/${id}` : 'add-catalog';
-    //         const response = await axios.post(`${baseURL}/${loginType}/${slugCompletion}`, submissionData, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //         if (response.status === 200) {
-    //             navigate('/profile/catalog');
-    //             scrollToTop()
-    //             toast.success(response?.data?.message || (id ? 'Catalog item updated successfully' : 'Catalog item added successfully'), {
-    //                 id: toastId,
-    //                 duration: 1000
-    //             });
-    //         } else {
-    //             toast.error(id ? 'Failed to update catalog item' : 'Failed to add catalog item', {
-    //                 id: toastId,
-    //                 duration: 1000
-    //             });
-    //         }
-    //     } catch (error) {
-    //         if (error?.response?.data?.errors) {
-    //             const validationErrors = Object.values(error.response.data.errors)
-    //                 .flat()
-    //                 .join('\n'); // Join with newline for separate lines
-    //             toast.error(<div style={{ whiteSpace: 'pre-wrap' }}>{validationErrors}</div>, {
-    //                 id: toastId,
-    //                 duration: 2000
-    //             }); // Preserve line breaks
-    //         } else {
-    //             toast.error(error?.response?.data?.message || 'Something Went Wrong!', {
-    //                 id: toastId,
-    //                 duration: 2000
-    //             });
-    //         }
-    //     }
-    //     console.log(submissionData);
-    // };
-
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();

@@ -23,6 +23,7 @@ export default function MyCatalogDetails({ token }) {
     const [currImages, setCurrentImages] = useState([]);
     const [currImg, setCurrImg] = useState('');
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [addedPreferences, setAddedPreferences] = useState([]);
 
     useEffect(() => {
         fetchCatalog(catalogId, token);
@@ -35,15 +36,20 @@ export default function MyCatalogDetails({ token }) {
         }
     }, [currentCatalog?.media]);
 
+console.log(addedPreferences);
+
 
     const handleAddProduct = (product) => {
+        const preferences = Object.values(addedPreferences);
         const addedProduct = {
             type:  product?.type,
-            item_id: `${product?.id}`
+            item_id: `${product?.id}`,
+            // preferences: addedPreferences
+            preferences
         };
         (async () => {
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/user/add-to-quotation-cart/${currentCatalog?.company_id}?t=${new Date().getTime()}`,
+            await axios.post(`${baseURL}/user/add-item-to-quotation-cart?t=${new Date().getTime()}`,
                 addedProduct
                 , {
                     headers: {
@@ -57,20 +63,38 @@ export default function MyCatalogDetails({ token }) {
                         id: toastId,
                         duration: 1000
                     });
+                    console.log(addedProduct);
+                    
                     fetchCatalog(catalogId, token);
                 })
-                .catch(error => {
-                    toast.error(`${error?.response?.data?.message || 'Error!'}`, {
+                .catch((error) => {
+                    // Handle error response
+                    const errorMessage =
+                        error?.response?.data?.message || 'Something went wrong!';
+                    const errorDetails =
+                        error?.response?.data?.errors || {}; // Object containing validation errors
+                    
+                    // Show the primary error message
+                    toast.error(errorMessage, {
                         id: toastId,
-                        duration: 1000
+                        duration: 3000,
                     });
-                })
+        
+                    // Display specific validation errors (e.g., from preferences)
+                    if (errorDetails.preferences && Array.isArray(errorDetails.preferences)) {
+                        errorDetails.preferences.forEach((err) => {
+                            toast.error(err, {
+                                duration: 3000,
+                            });
+                        });
+                    }
+                });
         })();
     };
 
         const [activeItem, setActiveItem] = useState('About');
 
-         const items = [
+        const items = [
         { name: 'About', active: activeItem === 'About' },
         { name: 'Options', active: activeItem === 'Options' },
         ];
@@ -307,16 +331,31 @@ export default function MyCatalogDetails({ token }) {
                                             <div className='fw-medium text-capitalize fs-4'>
                                                 <h4 className='productDetails__contentHead my-4 fs-3 fw-bold text-capitalize'>{option?.attribute}</h4>
                                                 {
-                                                    option?.values.map((value)=>(
-                                                        <>
-                                                        <span style={{
-                                                            backgroundColor:'rgb(211, 212, 219)', padding:'8px', borderRadius:'5px', 
-                                                        }} className='ms-3 text-capitalize'>{value?.name}
-                                                        </span>
+                                                    option?.values.map((value,index)=>(
+                                                        <div style={{
+                                                            backgroundColor:'rgba(211, 212, 219, 0.5)', padding:'4px', borderRadius:'5px',
+                                                        }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
+                                                        <input 
+                                                        className='form-check cursorPointer'
+                                                        type="radio" 
+                                                        id={`option-${value.id}
+                                                        `}
+                                                        name={`option-${option.attribute_id}`} 
+                                                        value={value.id}
+                                                        checked={addedPreferences[option.attribute_id] === String(value.id)} // Check based on attribute_id
+                                                        onChange={() => {
+                                                            // Update the state with the selected value for this attribute_id
+                                                            setAddedPreferences((prev) => ({
+                                                                ...prev,
+                                                                [option.attribute_id]: String(value.id), // Update or add the selected value for the group
+                                                            }));
+                                                        }}
+                                                        />
+                                                        <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
                                                         <span className='ms-2'>
-                                                            {value?.price}  {currentCatalog?.currency}
+                                                        {value?.price}  {currentCatalog?.currency}
                                                         </span>
-                                                        </>
+                                                        </div>
                                                     ))
                                                 }
                                             </div>
