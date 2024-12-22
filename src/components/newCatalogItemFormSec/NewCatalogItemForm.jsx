@@ -630,7 +630,7 @@ export default function NewCatalogItemForm({ token }) {
                                         className="form-control"
                                     />
                                 </div>
-                                <div className="col-lg-6">
+                                {/* <div className="col-lg-6">
                                     <input
                                         type="text"
                                         placeholder="Price"
@@ -645,7 +645,7 @@ export default function NewCatalogItemForm({ token }) {
                                         }
                                         className="form-control"
                                     />
-                                </div>
+                                </div> */}
                             </div>
                         ))}
                         <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">Add Value</button>

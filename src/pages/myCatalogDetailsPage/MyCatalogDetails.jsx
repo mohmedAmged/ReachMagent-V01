@@ -352,9 +352,9 @@ console.log(addedPreferences);
                                                         }}
                                                         />
                                                         <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
-                                                        <span className='ms-2'>
+                                                        {/* <span className='ms-2'>
                                                         {value?.price}  {currentCatalog?.currency}
-                                                        </span>
+                                                        </span> */}
                                                         </div>
                                                     ))
                                                 }
