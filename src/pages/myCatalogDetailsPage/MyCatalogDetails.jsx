@@ -325,15 +325,17 @@ console.log(addedPreferences);
                                 {
                                      activeItem === 'Options' && 
                                      <>
-                                     <div className='productDetails__content mb-5 mt-4'>
+                                     <div className='productDetails__content mb-5 mt-4 ms-5'>
                                      {
                                         currentCatalog?.options?.map((option)=>(
-                                            <div className='fw-medium text-capitalize fs-4'>
-                                                <h4 className='productDetails__contentHead my-4 fs-3 fw-bold text-capitalize'>{option?.attribute}</h4>
+                                            <div className='fw-medium text-capitalize fs-4 mt-4'>
+                                                <h4 className='productDetails__contentHead my-2 fs-4 fw-semibold text-capitalize'>{option?.attribute}</h4>
+                                                <div className='d-flex gap-5'>
                                                 {
                                                     option?.values.map((value,index)=>(
                                                         <div style={{
-                                                            backgroundColor:'rgba(211, 212, 219, 0.5)', padding:'4px', borderRadius:'5px',
+                                                            // backgroundColor:'rgba(211, 212, 219, 0.5)', 
+                                                            padding:'4px', borderRadius:'5px',
                                                         }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
                                                         <input 
                                                         className='form-check cursorPointer'
@@ -352,12 +354,17 @@ console.log(addedPreferences);
                                                         }}
                                                         />
                                                         <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
-                                                        {/* <span className='ms-2'>
+                                                        <p style={{
+                                                            color: 'gray',
+                                                            fontSize:'18px'
+                                                        }} className='ms-2 d-block'>
+                                                            <span>price impact: </span>
                                                         {value?.price}  {currentCatalog?.currency}
-                                                        </span> */}
+                                                        </p>
                                                         </div>
                                                     ))
                                                 }
+                                                </div>
                                             </div>
                                         ))
                                      }

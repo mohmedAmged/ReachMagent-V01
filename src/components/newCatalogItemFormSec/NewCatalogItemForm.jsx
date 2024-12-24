@@ -323,7 +323,17 @@ export default function NewCatalogItemForm({ token }) {
             scrollToTop();
         } catch (error) {
             toast.error('Failed to save catalog.', { id: toastId });
-        }
+        
+            if (error.response && error.response.data) {
+              const errors = error.response.data.errors;
+        
+              if (errors) {
+                // Display all errors in a single toast message
+                const allErrors = Object.values(errors).flat().join(', '); 
+                toast.error(`Validation Errors: ${allErrors}`, { id: toastId }); 
+              }
+            }
+          }
     };
 
 
@@ -596,19 +606,26 @@ export default function NewCatalogItemForm({ token }) {
                                             </div>
     <div className="row">
         <div className="col-lg-12">
-            <div className="catalog__new__input">
-                <label>Options</label>
+            <div style={{
+                marginTop: '30px',
+                borderTop: "1px solid #aaa"
+            }} className="catalog__new__input">
+                <label className="fw-bold my-3">Options and variations</label>
                 <button type="button" className="btn btn-link" onClick={handleAddOption}>Add Option</button>
                 {formData?.options?.map((option, index) => (
-                    <div key={index} className="option-group">
+                    <div key={index} className="option-group my-3">
                         <div className="row">
                             <div className="col-lg-6">
                                 <input
+                                style={{
+                                    background: 'rgb(142 149 235 / 40%)'
+                                }}
                                     type="text"
                                     placeholder="Attribute (e.g., Storage)"
                                     value={option?.attribute}
                                     onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
                                     className="form-control"
+
                                 />
                             </div>
                         </div>
@@ -630,10 +647,10 @@ export default function NewCatalogItemForm({ token }) {
                                         className="form-control"
                                     />
                                 </div>
-                                {/* <div className="col-lg-6">
+                                <div className="col-lg-6">
                                     <input
                                         type="text"
-                                        placeholder="Price"
+                                        placeholder="Price Impact"
                                         value={value?.price}
                                         onChange={(e) =>
                                             handleValueChange(
@@ -645,7 +662,7 @@ export default function NewCatalogItemForm({ token }) {
                                         }
                                         className="form-control"
                                     />
-                                </div> */}
+                                </div>
                             </div>
                         ))}
                         <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">Add Value</button>

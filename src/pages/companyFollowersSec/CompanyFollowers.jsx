@@ -78,7 +78,7 @@ export default function CompanyFollowers({ loginType, token }) {
                                         )}
                                         {loginType !== "user" && activeRole === "Followed Companies" && (
                                             followed.map((el) => (
-                                                <div key={el?.id} className="followerInfo__Item col-12">
+                                                <div key={el?.id} className="followerInfo__Item col-md-6">
                                                     <div className="followerImage">
                                                         <NavLink target="_blank" className={'nav-link'} to={`/show-company/${el?.companyId}`}>
                                                         <img src={el?.companyLogo} alt={`${el?.companyName} avatar`} />
@@ -89,7 +89,7 @@ export default function CompanyFollowers({ loginType, token }) {
                                                         <h1>{el?.companyName}</h1>
                                                         </NavLink>
                                                         <div className="follower__status">
-                                                            <p className="isUsersfollowed">following</p>
+                                                            <p className="isUsersfollowed text-light">following</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -97,7 +97,7 @@ export default function CompanyFollowers({ loginType, token }) {
                                         )}
                                         {loginType !== "user" && activeRole === "Followers" && (
                                             followers?.map((el) => (
-                                                <div key={el?.id} className="followerInfo__Item col-12">
+                                                <div key={el?.id} className="followerInfo__Item col-md-6">
                                                     <div className="followerImage">
                                                         <img src={el?.followableImage} alt={`${el?.followableName} avatar`} />
                                                     </div>
@@ -113,7 +113,7 @@ export default function CompanyFollowers({ loginType, token }) {
                                                         
                                                         <div className="follower__status">
                                                             <p>{el?.followableEmail || ""}</p>
-                                                            <p className="isUsersfollowed">follows you</p>
+                                                            <p className="isUsersfollowed text-light">follows you</p>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -147,7 +147,7 @@ export default function NewNetworkForm({token}) {
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
-                                        <label htmlFor="name">Partner Name<span className="requiredStar"> *</span>
+                                        <label htmlFor="name">Add Company Name<span className="requiredStar"> *</span>
                                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <input
@@ -165,7 +165,7 @@ export default function NewNetworkForm({token}) {
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
-                                        <label htmlFor="label">partner Label <span className="requiredStar"> *</span>
+                                        <label htmlFor="label">Type of Connection<span className="requiredStar"> *</span>
                                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <select
@@ -174,7 +174,7 @@ export default function NewNetworkForm({token}) {
                                             value={formData?.label}
                                             onChange={handleInputChange}
                                         >
-                                            <option value="" disabled>Select partner label</option>
+                                            <option value="" disabled>Select Type of Connection</option>
                                             <option value="client">Client</option>
                                             <option value="partener">Partner</option>
                                             {/* <option value="agent">Agent</option> */}
@@ -183,7 +183,7 @@ export default function NewNetworkForm({token}) {
                                 </div>
                             </div>
                             <div className="upload__image__btn ">
-                                <label htmlFor="label" className='mb-2'>Upload partner logo<span className="requiredStar"> *</span>
+                                <label htmlFor="label" className='mb-2'>Add Company logo<span className="requiredStar"> *</span>
                                 </label>
                                 <input
                                     type="file"

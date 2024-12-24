@@ -106,7 +106,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
     
     return (
         <>
-            <Navbar expand="lg" className={`nav__Bg ${scrollToggle ? "nav__fixed py-3 navTransformationDown" : "nav__relative pb-3"} align-items-center`}>
+            <Navbar expand="lg" className={`nav__Bg ${scrollToggle ? "nav__fixed navTransformationDown" : "nav__relative pb-3"} align-items-center`}>
                 <Container>
                     <Navbar.Brand className='d-flex align-items-center'>
                         <NavLink className='logo__text' to={`/`}>
