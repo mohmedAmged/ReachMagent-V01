@@ -71,6 +71,7 @@ import MyNetwork from './pages/myNetwork/MyNetwork';
 import NewNetworkForm from './components/newNetworkFormSec/NewNetworkForm';
 import MyCatalogDetails from './pages/myCatalogDetailsPage/MyCatalogDetails';
 import MyServiceDetails from './pages/myServiceDetailsPage/MyServiceDetails';
+import CatalogOptionForm from './components/catalogOptionFormSec/CatalogOptionForm';
 
 
 function App() {
@@ -226,6 +227,9 @@ function App() {
           token={token}
         />} />
         <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm
+          token={token}
+        />} />
+        <Route path='/profile/catalog/edit-item/:id/edit-option' element={<CatalogOptionForm
           token={token}
         />} />
         <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash

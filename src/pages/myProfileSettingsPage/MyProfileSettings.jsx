@@ -154,15 +154,15 @@ export default function MyProfileSettings({ token }) {
                                                     countries={countries}
                                                     token={token}
                                                 />}
-                                                {activeItem === 'User Industries' && <CompanyFollowIndustryFrom
+                                            {activeItem === 'User Industries' && <CompanyFollowIndustryFrom
                                                 token={token}
                                             />}
-                                             {activeItem === 'User Timezone' &&     <CompanyTimezoneForm
+                                            {activeItem === 'User Timezone' && <CompanyTimezoneForm
                                                 setUnAuth={setUnAuth}
                                                 token={token}
                                             />
                                             }
-                                            {activeItem === 'Employee Timezone' &&     <EmployeeTimezoneForm
+                                            {activeItem === 'Employee Timezone' && <EmployeeTimezoneForm
                                                 setUnAuth={setUnAuth}
                                                 token={token}
                                             />

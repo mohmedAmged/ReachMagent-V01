@@ -181,9 +181,16 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                         </p>
                                     </div>
                                     <div className="company__actions">
-                                        <button className='btn__companyActions'>
+                                        <button className='btn__companyActions Showbtn__companyActions'>
                                             <NavLink to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
                                                 <img src={callIcon} alt="call-icon" />
+                                            </NavLink>
+                                        </button>
+                                        <button className='btn__companyActions hidebtn__companyActions'>
+                                            <NavLink to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
+                                            <p className='companyinfo__subTit'>
+                                            {showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}
+                                        </p>
                                             </NavLink>
                                         </button>
                                         <button onClick={handleNavigation} className='btn__companyActions online__btn'>

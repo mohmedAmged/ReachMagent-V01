@@ -148,8 +148,6 @@ export default function MyBussinessSettings({ token }) {
         }, 500);
     }, [loading]);
 
-    console.log(company);
-    
     return (
         <>
             {
