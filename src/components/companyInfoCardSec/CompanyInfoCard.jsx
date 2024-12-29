@@ -356,7 +356,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                         <NavLink
                                             onClick={() => {
                                                 scrollToTop();
-                                                Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companyId);
+                                                Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companySlug);
                                             }}
                                             className='nav-link'
                                             to={`/${showCompaniesQuery?.companyName}/request-quote`}

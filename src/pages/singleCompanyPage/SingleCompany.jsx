@@ -189,7 +189,7 @@ export default function SingleCompany({ token }) {
                                                                     productImage={el?.serviceImage}
                                                                     productName={el?.serviceTitle}
                                                                     showCustomContent={true}
-                                                                    productLink={`/show-company/${companyId}/service-details/${el?.serviceId}`}
+                                                                    productLink={`/show-company/${companyId}/service-details/${el?.serviceSlug}`}
                                                                     borderColor={'rgba(0, 0, 0, 0.5)'}
                                                                     onAddClick={''}
                                                                 />
@@ -246,7 +246,7 @@ export default function SingleCompany({ token }) {
                                                                 <LastMinuteCard
                                                                     productImage={el?.catalogImages[0].media}
                                                                     productName={el?.catalogTitle}
-                                                                    productLink={`/show-company/${companyId}/catalog-details/${el?.catalogId}`}
+                                                                    productLink={`/show-company/${companyId}/catalog-details/${el?.catalogSlug}`}
                                                                     showCustomContent={true}
                                                                     borderColor={'rgba(0, 0, 0, 0.5)'}
                                                                     onAddClick={''}

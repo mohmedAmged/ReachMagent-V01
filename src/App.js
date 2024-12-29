@@ -229,9 +229,11 @@ function App() {
         <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm
           token={token}
         />} />
-        <Route path='/profile/catalog/edit-item/:id/edit-option' element={<CatalogOptionForm
+         <Route path='/profile/catalog/edit-item/:id/edit-option' element={<CatalogOptionForm
+          currPage={'catalog'}
           token={token}
         />} />
+
         <Route path='/profile/catalogs/show-one/:itemId' element={<ShowOneProductInfoInDash
           token={token}
           show_slug={'show-catalog'}
@@ -252,6 +254,11 @@ function App() {
           token={token}
           show_slug={'show-service'}
         />} />
+         <Route path='/profile/service/edit-item/:id/edit-option' element={<CatalogOptionForm
+          currPage={'service'}
+          token={token}
+        />} />
+
 
         <Route path='/profile/media' element={<MyMedia token={token} />} />
         <Route path='/profile/media/addNewItem' element={<NewMediaForm token={token} />} />
