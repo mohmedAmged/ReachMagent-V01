@@ -64,7 +64,6 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                     t: new Date().getTime()
                 },
             });
-            console.log(res?.data?.data);
             // navigate(`/your-messages/${res?.data?.data?.chat?.id}`)
             Cookies.set('newChatId', res?.data?.data?.chat?.id)
             navigate(`/your-messages`)
@@ -73,7 +72,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
             setError(error?.response?.data?.message || 'Failed to load messages');
         }
     };
-    
+
     // const handleNavigation = () => {
     //     if (showCompaniesQuery?.chatId === null && token) {
     //         startNewChat(showCompaniesQuery?.receiver_id, showCompaniesQuery?.receiver_type);
@@ -91,7 +90,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
     const handleNavigation = () => {
         const loginType = localStorage.getItem('loginType');
         const isVerified = Cookies.get('verified') === 'true';
-    
+
         if (!token) {
             toast.error('You should log in first!');
             navigate(`/login`);
@@ -111,16 +110,15 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
     const [expandedText, setExpandedText] = useState({
         address: false,
         type: false,
-      });
-    
-      const toggleText = (field) => {
+    });
+
+    const toggleText = (field) => {
         setExpandedText((prevState) => ({
-          ...prevState,
-          [field]: !prevState[field],
+            ...prevState,
+            [field]: !prevState[field],
         }));
-      };
-    console.log(showCompaniesQuery?.companyBranches[0]?.branchCity);
-    
+    };
+
     return (
         <div className='container'>
             <div className="companyInfoCard__handler">
@@ -170,7 +168,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                             </span>
                                             )} */}
                                         </p>
-                                       
+
                                     </div>
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
@@ -188,13 +186,13 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                         </button>
                                         <button className='btn__companyActions hidebtn__companyActions'>
                                             <NavLink to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
-                                            <p className='companyinfo__subTit'>
-                                            {showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}
-                                        </p>
+                                                <p className='companyinfo__subTit'>
+                                                    {showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}
+                                                </p>
                                             </NavLink>
                                         </button>
                                         <button onClick={handleNavigation} className='btn__companyActions online__btn'>
-                                            <NavLink className={'nav-link'} 
+                                            <NavLink className={'nav-link'}
                                             >
                                                 <img src={messageIcon} alt="message-icon" />
                                             </NavLink>
@@ -229,14 +227,14 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                         <p className='companyinfo__Tit'>
                                             type:
                                         </p>
-                                        <p className='companyinfo__subTit cursorPointer' title={ showCompaniesQuery?.companyTypes[0]?.type}>
+                                        <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyTypes[0]?.type}>
                                             {expandedText.type || showCompaniesQuery?.companyTypes[0]?.type?.length <= 15
-                                            ? showCompaniesQuery?.companyTypes[0]?.type
-                                            : showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...'}
+                                                ? showCompaniesQuery?.companyTypes[0]?.type
+                                                : showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...'}
                                             {showCompaniesQuery?.companyTypes[0]?.type?.length > 15 && (
-                                            <span className="read-more-btn" onClick={() => toggleText('type')}>
-                                            {expandedText.type ? 'Read Less' : 'Read More'}
-                                            </span>
+                                                <span className="read-more-btn" onClick={() => toggleText('type')}>
+                                                    {expandedText.type ? 'Read Less' : 'Read More'}
+                                                </span>
                                             )}
                                         </p>
                                     </div>

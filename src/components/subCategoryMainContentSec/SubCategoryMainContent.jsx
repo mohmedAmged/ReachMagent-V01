@@ -24,7 +24,7 @@ console.log(contentData);
                                 <div key={el?.id} className="mb-5">
                                     <div className="CompanyContentItem">
                                         <div className="compImage">
-                                        <NavLink  to={`/show-company/${el?.companySlug}`} target="_blank" className={'nav-link'}>
+                                        <NavLink  to={`/${el?.companySlug}`} target="_blank" className={'nav-link'}>
                                             <img
                                                 src={el?.companyLogo}
                                                 alt={el?.companyName}
@@ -33,7 +33,7 @@ console.log(contentData);
                                         </div>
                                         <div className="compMainInfo">
                                             <h5 className="mb-2">
-                                                <NavLink to={`/show-company/${el?.companySlug}`} target="_blank" className={'nav-link'}>
+                                                <NavLink to={`/${el?.companySlug}`} target="_blank" className={'nav-link'}>
                                                 {el?.companyName}
                                                 </NavLink>
                                             </h5>
@@ -76,7 +76,7 @@ console.log(contentData);
                                                     scrollToTop();
                                                 }}
                                                 className={"nav-link"}
-                                                to={`/show-company/${el?.companySlug}`}
+                                                to={`/${el?.companySlug}`}
                                             >
                                                 <button className="pageMainBtnStyle">
                                                     more info

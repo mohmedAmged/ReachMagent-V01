@@ -11,6 +11,8 @@ import ProductDetailsFilterationBar from '../../components/productDetailsFiltera
 
 export default function MyServiceDetails({ token }) {
     const { servId } = useParams();
+    console.log(servId);
+    
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [addedPreferences, setAddedPreferences] = useState([]);

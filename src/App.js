@@ -72,6 +72,8 @@ import NewNetworkForm from './components/newNetworkFormSec/NewNetworkForm';
 import MyCatalogDetails from './pages/myCatalogDetailsPage/MyCatalogDetails';
 import MyServiceDetails from './pages/myServiceDetailsPage/MyServiceDetails';
 import CatalogOptionForm from './components/catalogOptionFormSec/CatalogOptionForm';
+import PrevWork from './pages/prevWork/PrevWork';
+import AddNewPrevWork from './pages/addNewPrevWork/AddNewPrevWork';
 
 
 function App() {
@@ -184,9 +186,9 @@ function App() {
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
         <Route path='/contact-us' element={<MyContactUs token={token} />} />
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
-        <Route path='/show-company/:companyId' element={<SingleCompany token={token} />} />
-        <Route path='/show-company/:companyId/catalog-details/:catalogId' element={<MyCatalogDetails token={token} />} />
-        <Route path='/show-company/:companyId/service-details/:servId' element={<MyServiceDetails token={token} />} />
+        <Route path='/:companyId' element={<SingleCompany token={token} />} />
+        <Route path='/:companyId/catalog-details/:catalogId' element={<MyCatalogDetails token={token} />} />
+        <Route path='/:companyId/service-details/:servId' element={<MyServiceDetails token={token} />} />
         <Route path='/:companyName/request-quote' element={<SingleCompanyQuote
           token={token}
         />} />
@@ -224,12 +226,12 @@ function App() {
 
         <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
         <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm
-          token={token}
-        />} />
+          token={token} />}
+        />
         <Route path='/profile/catalog/edit-item/:id' element={<NewCatalogItemForm
           token={token}
         />} />
-         <Route path='/profile/catalog/edit-item/:id/edit-option' element={<CatalogOptionForm
+        <Route path='/profile/catalog/edit-item/:id/edit-option' element={<CatalogOptionForm
           currPage={'catalog'}
           token={token}
         />} />
@@ -243,6 +245,10 @@ function App() {
         <Route path='/profile/network/addNewItem' element={<NewNetworkForm token={token} />} />
         <Route path='/profile/network/edit-item/:id' element={<NewNetworkForm token={token} />} />
 
+        <Route path='/profile/previous-work' element={<PrevWork token={token} />} />
+        <Route path='/profile/previous-work/addNewItem' element={<AddNewPrevWork token={token} />} />
+        <Route path='/profile/previous-work/edit-item/:id' element={<AddNewPrevWork token={token} />} />
+
         <Route path='/profile/service' element={<MyService token={token} />} />
         <Route path='/profile/service/addNewItem' element={<NewServiceForm
           token={token}
@@ -254,11 +260,10 @@ function App() {
           token={token}
           show_slug={'show-service'}
         />} />
-         <Route path='/profile/service/edit-item/:id/edit-option' element={<CatalogOptionForm
+        <Route path='/profile/service/edit-item/:id/edit-option' element={<CatalogOptionForm
           currPage={'service'}
           token={token}
         />} />
-
 
         <Route path='/profile/media' element={<MyMedia token={token} />} />
         <Route path='/profile/media/addNewItem' element={<NewMediaForm token={token} />} />

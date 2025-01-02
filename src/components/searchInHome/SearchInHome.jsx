@@ -215,7 +215,7 @@ export default function SearchInHome() {
                                     <div key={el?.companyId} className="col-12">
                                         <div className="CompanyContentItem">
                                             <div className="compImage">
-                                                <NavLink to={`/show-company/${el?.companySlug}`} target="_blank" className={'nav-link'}>
+                                                <NavLink to={`/${el?.companySlug}`} target="_blank" className={'nav-link'}>
                                                     <img
                                                         src={el?.companyLogo}
                                                         alt={el?.companyName}
@@ -224,7 +224,7 @@ export default function SearchInHome() {
                                             </div>
                                             <div className="compMainInfo">
                                                 <h5 className="mb-2">
-                                                    <NavLink to={`/show-company/${el?.companySlug}`} target="_blank" className={'nav-link'}>
+                                                    <NavLink to={`/${el?.companySlug}`} target="_blank" className={'nav-link'}>
                                                         {el?.companyName}
                                                     </NavLink>
                                                 </h5>
@@ -271,7 +271,7 @@ export default function SearchInHome() {
                                                         scrollToTop();
                                                     }}
                                                     className={"nav-link"}
-                                                    to={`/show-company/${el?.companySlug}`}
+                                                    to={`/${el?.companySlug}`}
                                                 >
                                                     <button className="pageMainBtnStyle">
                                                         more info

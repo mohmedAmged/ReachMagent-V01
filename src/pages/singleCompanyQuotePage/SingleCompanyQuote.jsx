@@ -55,7 +55,9 @@ export default function SingleCompanyQuote({ token }) {
         po_box: '',
         postal_code: '',
         user_notes: '',
-        request_by_notes: ''
+        request_by_notes: '',
+        longitude: '',
+        latitude: ''
     });
     const countries = GetAllCountriesStore((state) => state.countries);
 
@@ -212,6 +214,8 @@ export default function SingleCompanyQuote({ token }) {
                         area_id: '',
                         type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
                         address: '',
+                        longitude: '',
+                        latitude: ''
                     });
                     setCart([]);
                     toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
