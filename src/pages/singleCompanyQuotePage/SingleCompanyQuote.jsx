@@ -29,6 +29,8 @@ export default function SingleCompanyQuote({ token }) {
     const [cart, setCart] = useState([]);
     const [loadingCart, setloadingCart] = useState(true);
     const [loadingSubmit, setloadingSubmit] = useState(false);
+    const [currCurrency, setCurrCurrency] = useState('');
+    const [companyCurrency, setCompanyCurrency] = useState('')
     const fileInputRef = useRef(null);
     const typesOfQuotations = [
         { id: 1, name: 'catalog' }, { id: 2, name: 'service' }
@@ -57,8 +59,20 @@ export default function SingleCompanyQuote({ token }) {
         user_notes: '',
         request_by_notes: '',
         longitude: '',
-        latitude: ''
+        latitude: '', 
+        currency: '', 
+
     });
+
+    const handleCurrencyChange = (event) => {
+        const selectedCurrency = event.target.value;
+        setCurrCurrency(selectedCurrency); // Update state
+        setDistinationData((prevData) => ({
+            ...prevData,
+            currency: selectedCurrency, // Update currency in the data object
+        }));
+    };
+
     const countries = GetAllCountriesStore((state) => state.countries);
 
     useEffect(() => {
@@ -109,6 +123,8 @@ export default function SingleCompanyQuote({ token }) {
                     setCart(res?.data?.data?.cart);
                     setCurrentProd(res?.data?.data?.data);
                     setCustomizationCondition(res?.data?.data?.company_customization);
+                    setCompanyCurrency(res?.data?.data?.local_currency);
+                    
                 }).catch(err => {
                     toast.error(err.message);
                 })
@@ -215,19 +231,25 @@ export default function SingleCompanyQuote({ token }) {
                         type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
                         address: '',
                         longitude: '',
-                        latitude: ''
+                        latitude: '',
+                        currency: '', 
                     });
                     setCart([]);
                     toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
                         id: toastId,
                         duration: 1000
                     });
+                console.log(distinationData);
+
                 })
+                
                 .catch(error => {
                     toast.error(`${error?.response?.data?.message || 'Error!'}`, {
                         id: toastId,
                         duration: 1000
                     });
+                console.log(distinationData);
+
                 });
             setloadingSubmit(false);
         })();
@@ -726,6 +748,25 @@ console.log(cart);
 
                                         </h3>
                                         <div className="customization__form row">
+                                            <div className="col-lg-12">
+                                                <div className="singleQuoteInput">
+                                                    <label htmlFor="currency" className='position-relative'>
+                                                        Choose Currency
+                                                        <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    </label>
+                                                    <select
+                            defaultValue={''}
+                            className='form-select w-100'
+                            id="currency"
+                            name={ 'currency'}
+                            onChange={handleCurrencyChange}
+                        >
+                            <option value='' disabled>Choose your currency</option>
+                            <option value="default">USD</option>
+                            <option value="local">{companyCurrency}</option>
+                        </select>
+                                                </div>
+                                            </div>
                                             <div className="col-lg-12">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="quotationNote" className='position-relative'>

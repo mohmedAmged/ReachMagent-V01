@@ -18,6 +18,7 @@ import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
 import CompanyFollowIndustryFrom from '../../components/companyFollowIndustryFormSec/CompanyFollowIndustryFrom';
 import { NavLink } from 'react-router-dom';
 import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/CompanyTimezoneForm';
+import CompanySlugForm from '../../components/companySlugFormSec/CompanySlugForm';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
@@ -105,6 +106,7 @@ export default function MyBussinessSettings({ token }) {
         { name: 'Company Industries', active: activeItem === 'Company Industries' },
         { name: 'Company Timezone', active: activeItem === 'Company Timezone' },
         { name: 'Company Work Hours', active: activeItem === 'Company Work Hours' },
+        { name: 'Company Slug', active: activeItem === 'Company Slug' },
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
@@ -219,7 +221,6 @@ export default function MyBussinessSettings({ token }) {
                                                 </div>
                                                 <div className="profile__form__inputs mt-3">
                                                     {activeItem === 'Company Settings'
-
                                                         &&
                                                         <CompanySettingsForm
                                                             setUnAuth={setUnAuth}
@@ -261,6 +262,13 @@ export default function MyBussinessSettings({ token }) {
                                                     {activeItem === 'Company Industries'
                                                         &&
                                                         <CompanyFollowIndustryFrom
+                                                            setUnAuth={setUnAuth}
+                                                            token={token}
+                                                        />
+                                                    }
+                                                    {activeItem === 'Company Slug'
+                                                        &&
+                                                        <CompanySlugForm
                                                             setUnAuth={setUnAuth}
                                                             token={token}
                                                         />

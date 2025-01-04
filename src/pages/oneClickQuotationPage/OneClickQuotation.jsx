@@ -413,7 +413,7 @@ export default function OneClickQuotation({ token }) {
                                             </div>
                                             <div className="col-12">
                                                 <div className="row">
-                                                    {/* <div className="col-lg-6">
+                                                    <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickqoutationSelectTheType">
                                                                 Request Type
@@ -436,7 +436,7 @@ export default function OneClickQuotation({ token }) {
                                                                 }
                                                             </select>
                                                         </div>
-                                                    </div> */}
+                                                    </div>
                                                     <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickquotationSelectMainCategory">
