@@ -246,14 +246,18 @@ export default function DestinationForm({ distinationData, setDistinationData, c
                     </div>
                 </div>
                 <div className="col-lg-12">
-                    <div className="map-container" style={{ height: '400px', margin: '20px 0' }}>
-                        <button
+                    <div className="map-container singleQuoteInput" style={{ height: '400px', margin: '20px 0' }}>
+                        {/* <button
                             type="button"
                             className="btn btn-primary mb-2"
                             onClick={getCurrentLocation}
                         >
                             Use My Current Location
-                        </button>
+                        </button> */}
+                        <label htmlFor="distinationData" className='position-relative text-capitalize mb-3'>
+                            pick up your location
+                            <i title='write exact address that you located for order' className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
+                        </label>
                         <MapContainer
                             center={userLocation}
                             zoom={zoom}

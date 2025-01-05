@@ -78,17 +78,20 @@ export default function SingleCompany({ token }) {
         retry: false,
         refetchOnWindowFocus: false,
     });
-
+    const companyPrevWorks = useQuery({
+        queryKey: ['company-prevWork'],
+        queryFn: () => getDataFromAPI(`company-pervious-works/${companyId}?t=${new Date().getTime()}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }),
+        cacheTime: 1000 * 60 * 15,
+        retry: false,
+        refetchOnWindowFocus: false,
+    });
+    const prevWorksArr = companyPrevWorks?.data?.pervious_works?.pervious_works
+    
     const [activeItem, setActiveItem] = useState('Overview');
-    const {
-        prevWork,
-        currentPage,
-        fetchPrevWork
-    } = usePrevWorkStore();
-
-    useEffect(() => {
-        fetchPrevWork(token, loginType, currentPage);
-    }, [token, loginType, currentPage, fetchPrevWork]);
 
     // const items = [
     //     { name: 'Overview', active: activeItem === 'Overview' },
@@ -132,7 +135,7 @@ export default function SingleCompany({ token }) {
         {
             name: 'Previous Work',
             active: activeItem === 'Previous Work',
-            render: prevWork?.length > 0
+            render: companyPrevWorks?.data?.pervious_works?.pervious_works?.length > 0
         },
     ].filter(item => item.render !== false);
 
@@ -549,7 +552,7 @@ export default function SingleCompany({ token }) {
                                                 }}
                                             >
                                                 {
-                                                    prevWork?.map((row) => (
+                                                    prevWorksArr?.map((row) => (
                                                         <SwiperSlide className="my-3" key={row?.id}>
                                                             <PrevWorkCard page={'singleCompany'} id={row?.id} title={row?.title} description={row?.description} img={row?.image} type={row?.type} />
                                                         </SwiperSlide>

@@ -748,10 +748,10 @@ console.log(cart);
 
                                         </h3>
                                         <div className="customization__form row">
-                                            <div className="col-lg-12">
+                                            <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="currency" className='position-relative'>
-                                                        Choose Currency
+                                                        Prefered Currency
                                                         <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                     </label>
                                                     <select
