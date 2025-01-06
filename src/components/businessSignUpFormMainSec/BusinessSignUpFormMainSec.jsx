@@ -633,7 +633,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
         :
         setCurrentStep('Two');
     } else if (currentStep === 'Four') {
-      setCurrentStep('Three');
+      setCurrentStep('Four');
     };
   };
 

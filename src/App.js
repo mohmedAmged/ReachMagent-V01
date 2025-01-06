@@ -74,6 +74,7 @@ import MyServiceDetails from './pages/myServiceDetailsPage/MyServiceDetails';
 import CatalogOptionForm from './components/catalogOptionFormSec/CatalogOptionForm';
 import PrevWork from './pages/prevWork/PrevWork';
 import AddNewPrevWork from './pages/addNewPrevWork/AddNewPrevWork';
+import BusinessSignUpPackages from './components/businessSignUpPackages/BusinessSignUpPackages';
 
 
 function App() {
@@ -184,6 +185,9 @@ function App() {
 
         {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
+        <Route path='/packages' element={<BusinessSignUpPackages />} />
+
+
         <Route path='/contact-us' element={<MyContactUs token={token} />} />
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
         <Route path='/:companyId' element={<SingleCompany token={token} />} />

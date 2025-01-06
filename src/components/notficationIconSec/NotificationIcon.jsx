@@ -17,11 +17,14 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
     const handleNavigation = (target, id) => {
         if (target === 'booked_appointments') {
             navigate(`/profile/booked-appointments`);
-        } else if (target === 'one_click_quotation') {
+        } else if (target === 'one_click_quotation' && loginType ==='user') {
+            navigate(`/profile/oneclick-quotations/${id}`);
+        }else if (target === 'one_click_quotation' && loginType ==='employee') {
             navigate(`/profile/companyoneclick-quotations/${id}`);
-        } else if (target === 'quotation') {
+        }
+         else if (target === 'quotation') {
             navigate(`/profile/quotations/${id}`);
-        } else if (target === 'quotation_order') {
+        } else if (target === 'quotation_order' ) {
             navigate(`/profile/quotation-orders/${id}`);
         } else if (target === 'followers') {
             console.log('Navigating to /profile/followers');
@@ -113,6 +116,7 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
         getLatestNotifications();
     }, [loginType, token, fireNotification]);
 
+console.log(notsItems);
 
     return (
         <div className='notificationIcon__handler'>
