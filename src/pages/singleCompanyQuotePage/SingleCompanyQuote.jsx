@@ -349,7 +349,7 @@ export default function SingleCompanyQuote({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
-console.log(cart);
+console.log(currentProd);
 
     return (
         <>
@@ -525,8 +525,8 @@ console.log(cart);
                                                 : el.media[0]
                                     }
                                     productName={el?.title}
-                                    productLink={`/show-company/${companyIdWantedToHaveQuoteWith}/${el?.type === "catalog" ? "catalog-details" : "service-details"
-                                        }/${el?.id}`}
+                                    productLink={`/${companyIdWantedToHaveQuoteWith}/${el?.type === "catalog" ? "catalog-details" : "service-details"
+                                        }/${el?.slug}`}
                                     dealQuantity={el?.dealQuantity}
                                     showCustomContent={true}
                                     buttonLabel={isAdded ? "Added" : "Add"}
@@ -674,19 +674,22 @@ console.log(cart);
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="customizationQuote__actions singleQuoteInput">
-                                                        <label className=' position-relative'>UpLoad A Reference <span className='optional'>
+                                                        <label className=' position-relative'>Upload A Reference <span className='optional'>
                                                             (max 3 files)
                                                         </span>
                                                             <i title='upload images or files descripe what you want' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
-                                                        <p className='fw-light mb-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
+                                                        <p style={{
+                                                            fontSize:'14px'
+                                                        }} className='fw-light mb-2 ps-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
                                                         <input
+                                                            
                                                             type='file'
                                                             id='customProductImageBtn'
                                                             multiple
                                                             ref={fileInputRef}
                                                             onChange={handleCustomProductChangeImage}
-                                                            className={`form-control`}
+                                                            className={`form-control ps-2`}
                                                         />
                                                         {
                                                             customProduct.file.length > 0 &&
@@ -763,7 +766,7 @@ console.log(cart);
                         >
                             <option value='' disabled>Choose your currency</option>
                             <option value="default">USD</option>
-                            <option value="local">{companyCurrency}</option>
+                            <option value="local">{companyCurrency} (Seller's local currency)</option>
                         </select>
                                                 </div>
                                             </div>
