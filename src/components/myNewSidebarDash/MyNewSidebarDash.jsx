@@ -10,6 +10,8 @@ import icon5 from '../../assets/sidebar-icons/status-up.svg';
 import icon3 from '../../assets/sidebar-icons/user-square 1.svg';
 import icon4 from '../../assets/sidebar-icons/wallet-money 2.svg';
 import SideBar from '../sideBar/SideBar';
+import { useActivePackageStore } from '../../store/ActivePackageStore';
+import Cookies from 'js-cookie';
 
 export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
@@ -19,6 +21,8 @@ export default function MyNewSidebarDash({ token }) {
     const [showSettingsSubmenu, setShowSettingsSubmenu] = useState(false);
     const activePath = location.pathname;
     const navigate = useNavigate();
+    const cookiesData = Cookies.get("currentLoginedData");
+    const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
 
     const handleNavigationToSingleProfilePage = (pageName) => {
         navigate(`${pageName}`)
@@ -45,7 +49,18 @@ export default function MyNewSidebarDash({ token }) {
 
     }
     const loginType = localStorage.getItem('loginType')
-
+    const {
+        loading,
+        features,
+        message,
+        fetchActivePackage,
+        unAuth,
+    } = useActivePackageStore();
+    useEffect(() => {
+        fetchActivePackage(token, loginType);
+    }, [token, loginType, fetchActivePackage]);
+    console.log(features);
+    
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },
         { title: "Followers", link: "/profile/followers", icon: icon11 },
@@ -66,7 +81,6 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Appointments", link: "/profile/appointments", icon: icon3 },
         { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
         { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
-        // { title: "Insights", link: "/profile/insights", icon: icon5 },
         { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
         {

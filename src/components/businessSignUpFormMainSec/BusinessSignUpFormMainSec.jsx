@@ -139,6 +139,8 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       employee_password_confirmation: '',
       comfirm_policies: false,
       is_benifical_owner: false,
+
+      prefered_package_id: ''
     },
     resolver: zodResolver(BusinessRegisterSchema),
   });
@@ -615,9 +617,11 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
               id: toastId,
               duration: 1000
             });
-            Cookies.remove('currentStep');
+            // Cookies.remove('currentStep');
             scrollToTop();
-            navigate('/');
+            // navigate('/');
+            setCurrentStep('Four');
+
           }).catch(error => {
             setCurrentStep('Three');
             Object.keys(error?.response?.data?.errors).forEach((key) => {
@@ -633,7 +637,45 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
         :
         setCurrentStep('Two');
     } else if (currentStep === 'Four') {
-      setCurrentStep('Four');
+      type === 'nextStep' ?
+        (async () => {
+          const toastId = toast.loading('Please Wait...');
+          const data = {
+            company_id: Cookies.get('companyRegId'),
+            prefered_package_id: watch('prefered_package_id')?.toString() || '',
+          };
+          // const formData = new FormData();
+          
+          await axios.post(`${baseURL}/company-registeration-step-four`, data, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }).then(response => {
+            toast.success(`${response?.data?.message}`, {
+              id: toastId,
+              duration: 1000
+            });
+            Cookies.remove('currentStep');
+
+            scrollToTop();
+            navigate('/');
+
+            // setCurrentStep('Completed');
+          }).catch(error => {
+            setCurrentStep('Four');
+            Object.keys(error?.response?.data?.errors).forEach((key) => {
+              setError(key, { message: error?.response?.data?.errors[key][0] });
+            });
+            window.scrollTo({ top: 400 });
+            toast.error(error?.response?.data?.message, {
+              id: toastId,
+              duration: 1000
+            });
+          })
+        })()
+        :
+        setCurrentStep('Three');
     };
   };
 
@@ -1562,6 +1604,14 @@ console.log(citizenships);
                               </label>
                               {errors.is_benifical_owner && <p className='errorMessage'>{errors.is_benifical_owner.message}</p>}
                             </div>
+                            <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
+                              <button type="button" className='prevStep__btn' onClick={() => handleChangeStep('prevStep')}>
+                                <i className="bi bi-arrow-left-circle"></i> Prev Step
+                              </button>
+                              <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
+                                Next Step <i className="bi bi-arrow-right-circle"></i>
+                              </button>
+                            </div>
                             {/* <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='prevStep__btn' onClick={() => handleChangeStep('prevStep')}>
                                 <i className="bi bi-arrow-left-circle"></i> Prev Step
@@ -1574,12 +1624,12 @@ console.log(citizenships);
                         {
                           currentStep === 'Four' &&
                           <div className="col-lg-12">
-                            <BusinessSignUpPackages />
+                            <BusinessSignUpPackages setValue={setValue} watch={watch}/>
                           </div>
                         }
 
                         {
-                          currentStep === 'Three' &&
+                          currentStep === 'Four' &&
                           <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
                             <input disabled={isSubmitting} type="button" value={'Submit For Review'} onClick={() => handleChangeStep('nextStep')} />
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">

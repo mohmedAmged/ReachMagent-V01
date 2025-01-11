@@ -201,10 +201,10 @@ import axios from 'axios';
 import './businessRegisterPackages.css';
 import { baseURL } from '../../functions/baseUrl';
 
-export default function BusinessSignUpPackages() {
+export default function BusinessSignUpPackages({ setValue, watch }) {
   const [packs, setPacks] = useState([]);
   const [preferedTimePackage, setPreferedTimePackage] = useState('Monthly');
-  const [preferedSelectedPackage, setPreferedSelectedPackage] = useState(null);
+  const [preferedSelectedPackage, setPreferedSelectedPackage] = useState( watch('prefered_package_id') || null);
 
   const arrOfTimePackages = [
     {
@@ -234,14 +234,17 @@ export default function BusinessSignUpPackages() {
           selected: false,
         }));
         setPacks(apiPackages);
-        setPreferedSelectedPackage(apiPackages[0]?.name || null); // Set default selected package
+        const defaultPackage = apiPackages[0]?.id || null;
+        // setPreferedSelectedPackage(apiPackages[0]?.name || null);
+        setPreferedSelectedPackage(defaultPackage);
+        setValue('prefered_package_id', defaultPackage);
       } catch (error) {
         console.error('Error fetching packages:', error);
       }
     };
 
     fetchPackages();
-  }, []);
+  }, [setValue]);
 
   const updateAllValues = (newValue) => {
     const updatedPacks = packs.map((pack) => ({ ...pack, selected: newValue }));
@@ -280,7 +283,7 @@ export default function BusinessSignUpPackages() {
           >
             <div
               className={`packageCard ${
-                preferedSelectedPackage === pack.name
+                preferedSelectedPackage === pack.id
                   ? 'selectedPackage'
                   : 'notSelectedPackage'
               }`}
@@ -308,15 +311,16 @@ export default function BusinessSignUpPackages() {
                 onClick={() => {
                   updateAllValues(false);
                   updateCurrPackValue(pack.id, true);
-                  setPreferedSelectedPackage(pack.name);
+                  setPreferedSelectedPackage(pack.id);
+                  setValue('prefered_package_id', pack.id.toString());
                 }}
                 className={`packageBtn ${
-                  preferedSelectedPackage === pack.name
+                  preferedSelectedPackage === pack.id
                     ? 'selectedPackageBtn'
                     : 'notSelectedPackageBtn'
                 }`}
               >
-                {preferedSelectedPackage === pack.name ? 'Selected' : 'Select'}
+                {preferedSelectedPackage === pack.id ? 'Selected' : 'Select'}
               </div>
             </div>
           </div>
