@@ -12,6 +12,8 @@ import icon4 from '../../assets/sidebar-icons/wallet-money 2.svg';
 import SideBar from '../sideBar/SideBar';
 import { useActivePackageStore } from '../../store/ActivePackageStore';
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import { baseURL } from '../../functions/baseUrl';
 
 export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
@@ -57,31 +59,39 @@ export default function MyNewSidebarDash({ token }) {
         unAuth,
     } = useActivePackageStore();
     useEffect(() => {
-        fetchActivePackage(token, loginType);
-    }, [token, loginType, fetchActivePackage]);
-    console.log(features);
+        fetchActivePackage( loginType);
+    }, [loginType, fetchActivePackage]);
     
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },
         { title: "Followers", link: "/profile/followers", icon: icon11 },
         { title: "Product Catalog", link: "/profile/catalog", icon: icon2 },
         { title: "Services", link: "/profile/service", icon: icon2 },
+        features?.portfolios === 'yes' && 
         { title: "Media", link: "/profile/media", icon: icon2 },
         { title: "E-commerce Products", link: "/profile/products", icon: icon4 },
+        features?.networks === 'yes' && 
         { title: "Network", link: "/profile/network", icon: icon4 },
+        features?.pervious_work === 'yes' && 
         { title: "Previous Work", link: "/profile/previous-work", icon: icon4 },
         { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
         { title: "Collections", link: "/profile/product-order", icon: icon4 },
         { title: "FAQS", link: "/profile/faqs", icon: icon5 },
+        features?.insights === 'yes' && 
         { title: "Posts", link: "/profile/posts", icon: icon5 },
         // { title: "Shipping Costs", link: "/profile/shipping-costs", icon: currencyIcon },
+        features?.quotations === 'yes' && 
         { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+        features?.one_click_quotations === 'yes' && 
         { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
+        (features?.one_click_quotations === 'yes' ||  features?.quotations) &&
         { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
+        features?.appointments === 'yes' && 
         { title: "Appointments", link: "/profile/appointments", icon: icon3 },
+
         { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
         { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
-        { title: "Messages", link: "/your-messages", icon: icon6 },
+        features?.messaging === 'yes' && { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
         {
             title: "Settings",
@@ -93,7 +103,7 @@ export default function MyNewSidebarDash({ token }) {
             //     { title: "Employees Management", link: "/profile/users-management" }
             // ]
         }
-    ];
+    ].filter(Boolean);
     if (loginType === 'user') {
         sidebarItems = [
             // { title: "Profile", link: "/profile", icon: icon1 },
@@ -133,9 +143,9 @@ export default function MyNewSidebarDash({ token }) {
     ] : [
         { title: "Profile Settings", link: "/profile/profile-settings" },
         { title: "Business Settings", link: "/profile/business-settings" },
-        { title: "Employees Management", link: "/profile/users-management" }
+        features?.employees === 'yes' && { title: "Employees Management", link: "/profile/users-management" }
     ];
-    const settingsIndex = sidebarItems.findIndex(item => item.title === "Settings");
+    const settingsIndex = sidebarItems.findIndex(item => item?.title === "Settings");
     if (settingsIndex !== -1) {
         sidebarItems[settingsIndex].submenu = userSubmenu;
     };

@@ -118,6 +118,7 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
             [field]: !prevState[field],
         }));
     };
+console.log(showCompaniesQuery);
 
     return (
         <div className='container'>
@@ -191,12 +192,14 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                                                 </p>
                                             </NavLink>
                                         </button>
-                                        <button onClick={handleNavigation} className='btn__companyActions online__btn'>
+                                        { showCompaniesQuery?.can_chat &&
+                                            <button onClick={handleNavigation} className='btn__companyActions online__btn'>
                                             <NavLink className={'nav-link'}
                                             >
                                                 <img src={messageIcon} alt="message-icon" />
                                             </NavLink>
-                                        </button>
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -335,87 +338,95 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token 
                     </div>
                     <div className="col-lg-3 col-md-12">
                         <div className="companyQutation__btn">
-                            {
-                                token ? (
-                                    localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
-                                        <button
-                                            className='btnColoredBlue'
-                                            onClick={() => {
-                                                toast.error('You need to verify your account first!');
-                                                setTimeout(() => {
-                                                    navigate('/user-verification');
+                            { showCompaniesQuery?.can_make_quotation &&
+                                <>
+                                    {
+                                        token ? (
+                                            localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
+                                                <button
+                                                    className='btnColoredBlue'
+                                                    onClick={() => {
+                                                        toast.error('You need to verify your account first!');
+                                                        setTimeout(() => {
+                                                            navigate('/user-verification');
+                                                            scrollToTop();
+                                                        }, 1000);
+                                                    }}
+                                                >
+                                                    Request Quotation
+                                                </button>
+                                            ) : (
+                                                <NavLink
+                                                    onClick={() => {
+                                                        scrollToTop();
+                                                        Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companySlug);
+                                                    }}
+                                                    className='nav-link'
+                                                    to={`/${showCompaniesQuery?.companyName}/request-quote`}
+                                                >
+                                                    <button className='btnColoredBlue'>
+                                                        Request Quotation
+                                                    </button>
+                                                </NavLink>
+                                            )
+                                        ) : (
+                                            <NavLink
+                                                onClick={() => {
+                                                    toast.error('You Should Login First!');
                                                     scrollToTop();
-                                                }, 1000);
-                                            }}
-                                        >
-                                            Request Quotation
-                                        </button>
-                                    ) : (
-                                        <NavLink
-                                            onClick={() => {
-                                                scrollToTop();
-                                                Cookies.set('currentCompanyRequestedQuote', showCompaniesQuery?.companySlug);
-                                            }}
-                                            className='nav-link'
-                                            to={`/${showCompaniesQuery?.companyName}/request-quote`}
-                                        >
-                                            <button className='btnColoredBlue'>
-                                                Request Quotation
-                                            </button>
-                                        </NavLink>
-                                    )
-                                ) : (
-                                    <NavLink
-                                        onClick={() => {
-                                            toast.error('You Should Login First!');
-                                            scrollToTop();
-                                        }}
-                                        className='nav-link'
-                                        to={`/login`}
-                                    >
-                                        <button className='btnColoredBlue'>
-                                            Request Quotation
-                                        </button>
-                                    </NavLink>
-                                )
+                                                }}
+                                                className='nav-link'
+                                                to={`/login`}
+                                            >
+                                                <button className='btnColoredBlue'>
+                                                    Request Quotation
+                                                </button>
+                                            </NavLink>
+                                        )
+                                    }
+                                </>
                             }
-                            {
-                                token ? (
-                                    localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
-                                        <button
-                                            className='btnColoredBlue terquase mt-3'
-                                            onClick={() => {
-                                                toast.error('You need to verify your account first!');
-                                                setTimeout(() => {
-                                                    navigate('/user-verification');
+                            { showCompaniesQuery?.can_book_with_company &&
+                                <>
+                                    {
+                                        token ? (
+                                            localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
+                                                <button
+                                                    className='btnColoredBlue terquase mt-3'
+                                                    onClick={() => {
+                                                        toast.error('You need to verify your account first!');
+                                                        setTimeout(() => {
+                                                            navigate('/user-verification');
+                                                            scrollToTop();
+                                                        }, 1000);
+                                                    }}
+                                                >
+                                                    Book Appointment
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={handleShow}
+                                                    className='btnColoredBlue terquase mt-3'
+                                                >
+                                                    Book Appointment
+                                                </button>
+                                            )
+                                        ) : (
+                                            <NavLink
+                                                onClick={() => {
+                                                    toast.error('You Should Login First!');
                                                     scrollToTop();
-                                                }, 1000);
-                                            }}
-                                        >
-                                            Book Appointment
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={handleShow}
-                                            className='btnColoredBlue terquase mt-3'
-                                        >
-                                            Book Appointment
-                                        </button>
-                                    )
-                                ) : (
-                                    <NavLink
-                                        onClick={() => {
-                                            toast.error('You Should Login First!');
-                                            scrollToTop();
-                                        }}
-                                        className='nav-link'
-                                        to={`/login`}
-                                    >
-                                        <button className='btnColoredBlue terquase mt-3'>
-                                            Book Appointment
-                                        </button>
-                                    </NavLink>
-                                )
+                                                }}
+                                                className='nav-link'
+                                                to={`/login`}
+                                            >
+                                                <button className='btnColoredBlue terquase mt-3'>
+                                                    Book Appointment
+                                                </button>
+                                            </NavLink>
+                                        )
+                                    }
+                                </>
                             }
 
                         </div>

@@ -203,7 +203,8 @@ export default function MyCatalogDetails({ token }) {
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="companyQutation__btn my-4">
+                                    { currentCatalog?.can_make_quotation &&
+                                        <div className="companyQutation__btn my-4">
                                         {
                                             token ? (
                                                 <>
@@ -244,6 +245,7 @@ export default function MyCatalogDetails({ token }) {
                                             )
                                         }
                                     </div>
+                                    }
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                         <span>Sold by <strong>{currentCatalog?.company_name}</strong></span>
                                     </p>

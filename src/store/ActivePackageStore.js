@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Token } from '../functions/Token';
 
 export const useActivePackageStore = create((set, get) => ({
     loading: true,
@@ -9,13 +10,11 @@ export const useActivePackageStore = create((set, get) => ({
     message: '',
     unAuth: false,
 
-    fetchActivePackage: async (token, loginType) => {
+    fetchActivePackage: async ( loginType) => {
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/active-company-package`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+               headers: Token ? { Authorization: `Bearer ${Token}` } : {}
             });
 
             set({
@@ -26,9 +25,9 @@ export const useActivePackageStore = create((set, get) => ({
         } catch (error) {
             if (error?.response?.status === 401) {
                 set({ unAuth: true });
-                toast.error('Unauthorized access. Please log in again.');
             } else {
-                toast.error(error?.response?.data?.message || 'Something went wrong!');
+                console.log(error?.response?.data?.message);
+                
             }
             set({ loading: false });
         }

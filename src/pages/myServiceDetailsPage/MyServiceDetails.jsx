@@ -18,6 +18,7 @@ export default function MyServiceDetails({ token }) {
     const [addedPreferences, setAddedPreferences] = useState([]);
 
     const { currentService, loading, fetchService } = useServiceStore();
+console.log(currentService);
 
     useEffect(() => {
         fetchService(servId, token);
@@ -124,7 +125,8 @@ export default function MyServiceDetails({ token }) {
                                             {currentService?.price_after_tax || ''} {currentService?.currency}
                                         </p>
                                     } */}
-                                    <div className="companyQutation__btn my-4">
+                                    { currentService?.can_make_quotation &&
+                                        <div className="companyQutation__btn my-4">
                                     {
                                     token ? (
                                         <>
@@ -167,7 +169,8 @@ export default function MyServiceDetails({ token }) {
                                         </NavLink>
                                     )
                                     }
-                                    </div>
+                                        </div>
+                                    }
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                         <span>
                                             Sold by <strong>{currentService?.company_name}</strong>
