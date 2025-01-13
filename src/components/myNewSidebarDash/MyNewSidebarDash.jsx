@@ -93,6 +93,7 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
         features?.messaging === 'yes' && { title: "Messages", link: "/your-messages", icon: icon6 },
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+        { title: "Package Settings", link: "/profile/packages-settings", icon: icon6 },
         {
             title: "Settings",
             link: "/profile/profile-settings",

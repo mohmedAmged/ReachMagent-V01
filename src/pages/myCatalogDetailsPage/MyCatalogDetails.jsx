@@ -185,8 +185,8 @@ export default function MyCatalogDetails({ token }) {
                             </Col>
                             <Col lg={4}>
                                 <div className='productDetails__description mt-md-4'>
-                                    <h2 className='productDetails__head text-capitalize'>{currentCatalog?.title}</h2>
-                                    <p className='mt-3 mb-4 fs-5 text-capitalize'>{currentCatalog?.description}</p>
+                                    <h2 className='productDetails__head text-capitalize fs-2'>{currentCatalog?.title}</h2>
+                                    {/* <p className='mt-3 mb-4 fs-5 text-capitalize'>{currentCatalog?.description}</p> */}
                                     {
                                         currentCatalog?.price_after_tax !== 'N/A' &&
                                         <p className="productDetails__price">
@@ -247,7 +247,9 @@ export default function MyCatalogDetails({ token }) {
                                     </div>
                                     }
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
-                                        <span>Sold by <strong>{currentCatalog?.company_name}</strong></span>
+                                       <NavLink target='_blanck' to={`/${currentCatalog?.company_slug}`}>
+                                        <span style={{textDecoration:'underline', color:'rgba(6, 127, 173, 1)'}}>View Company Profile</span>
+                                       </NavLink>
                                     </p>
                                 </div>
                             </Col>
@@ -260,42 +262,44 @@ export default function MyCatalogDetails({ token }) {
                                 {
                                     activeItem === 'About' &&
                                     <>
-                                        <div className='productDetails__content mb-5 mt-4'>
+                                        <div className='productDetails__content mb-5 ms-5 mt-4'>
                                             <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>Description</h4>
                                             <p className='mt-3 mb-4 fs-5'>{currentCatalog?.description}</p>
-                                            <div className="row prodDetailsChangeColorSpan">
+                                            <div style={{borderTop: '1px solid gray'}} className="row prodDetailsChangeColorSpan">
+                                                <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize mb-4'>product information</h4>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         price before tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.tax} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         price after tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price_after_tax} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         item code: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.code}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         category: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.category}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         sub category: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.subCategory}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-12 mb-3">
-                                                    <p className='fw-medium text-capitalize fs-4'>
+                                                    <p className='fw-medium text-capitalize fs-5'>
                                                         unit of measure: <span className='fw-medium limitedP ms-2 fs-5'>{currentCatalog?.unit_of_measure}</span>
                                                     </p>
                                                 </div>
@@ -309,51 +313,51 @@ export default function MyCatalogDetails({ token }) {
                                         <div className='productDetails__content mb-5 mt-4 ms-5'>
                                             {
                                                 currentCatalog?.options?.map((option) => (
-                                                    <div className='fw-medium text-capitalize fs-4 mt-4'>
-                                                        <h4 className='productDetails__contentHead my-2 fs-4 fw-semibold text-capitalize'>{option?.attribute}</h4>
-                                                        <div className='d-flex gap-5'>
-                                                            {
-                                                                option?.values.map((value, index) => (
-                                                                    <div style={{
-                                                                        // backgroundColor:'rgba(211, 212, 219, 0.5)', 
-                                                                        padding: '4px', borderRadius: '5px',
-                                                                    }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
-                                                                        <input
-                                                                            className='form-check cursorPointer'
-                                                                            type="radio"
-                                                                            id={`option-${value.id}
-                                                        `}
-                                                                            name={`option-${option.attribute_id}`}
-                                                                            value={value.id}
-                                                                            checked={addedPreferences[option.attribute_id] === String(value.id)} // Check based on attribute_id
-                                                                            onChange={() => {
-                                                                                setAddedPreferences((prev) => ({
-                                                                                    ...prev,
-                                                                                    [option.attribute_id]: String(value.id), // Update or add the selected value for the group
-                                                                                }));
-                                                                            }}
-                                                                        />
-                                                                        <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
-                                                                        <p style={{
-                                                                            color: 'gray',
-                                                                            fontSize: '18px'
-                                                                        }} className='ms-2 d-block'>
-                                                                            <span>price impact: </span>
-                                                                            {value?.price}  {currentCatalog?.currency}
-                                                                        </p>
-                                                                    </div>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                    </div>
+            <div className='fw-medium text-capitalize fs-4 mt-4'>
+                <h4 className='productDetails__contentHead my-2 fs-4 fw-semibold text-capitalize'>{option?.attribute}</h4>
+                <div className='d-flex gap-5'>
+                    {
+                        option?.values.map((value, index) => (
+                            <div style={{
+                                // backgroundColor:'rgba(211, 212, 219, 0.5)', 
+                                padding: '4px', borderRadius: '5px',
+                            }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
+                                <input
+                                    className='form-check cursorPointer'
+                                    type="radio"
+                                    id={`option-${value.id}
+                `}
+                                    name={`option-${option.attribute_id}`}
+                                    value={value.id}
+                                    checked={addedPreferences[option.attribute_id] === String(value.id)} // Check based on attribute_id
+                                    onChange={() => {
+                                        setAddedPreferences((prev) => ({
+                                            ...prev,
+                                            [option.attribute_id]: String(value.id), // Update or add the selected value for the group
+                                        }));
+                                    }}
+                                />
+                                <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
+                                <p style={{
+                                    color: 'gray',
+                                    fontSize: '18px'
+                                }} className='ms-2 d-block'>
+                                    <span>additional price: </span>
+                                    {value?.price}  {currentCatalog?.currency}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
                                                 ))
                                             }
                                         </div>
                                     </>
                                 }
                                 {
-                                    activeItem === 'Details' &&
-                                    <div className='productDetails__content' style={{ maxWidth: '500px' }}>
+                                    activeItem === 'Details' && currentCatalog?.details?.length !== 0 &&
+                                    <div className='productDetails__content ms-5' style={{ maxWidth: '500px' }}>
                                         <h3 className='fw-semibold'>More product details</h3>
                                         <table className="table table-bordered mt-3">
                                             <tbody>
@@ -368,6 +372,7 @@ export default function MyCatalogDetails({ token }) {
                                             </tbody>
                                         </table>
                                     </div>
+                                   
                                 }
                                 
                             </Col>

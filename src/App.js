@@ -75,6 +75,7 @@ import CatalogOptionForm from './components/catalogOptionFormSec/CatalogOptionFo
 import PrevWork from './pages/prevWork/PrevWork';
 import AddNewPrevWork from './pages/addNewPrevWork/AddNewPrevWork';
 import BusinessSignUpPackages from './components/businessSignUpPackages/BusinessSignUpPackages';
+import MyPackagesSettings from './components/myPackagesSettingsSec/MyPackagesSettings';
 
 
 function App() {
@@ -227,6 +228,8 @@ function App() {
 
         {/* Profile Routes */}
         <Route path='/profile/followers' element={<CompanyFollowers loginType={loginType} token={token} />} />
+
+        <Route path='/profile/packages-settings' element={<MyPackagesSettings token={token} />} />
 
         <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
         <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm
