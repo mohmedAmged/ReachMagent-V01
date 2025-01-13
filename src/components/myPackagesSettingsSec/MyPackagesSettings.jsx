@@ -9,6 +9,8 @@ import MyLoader from '../myLoaderSec/MyLoader';
 import { useLatestPackageStore } from '../../store/LatestCompanyPackageStore';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import { scrollToTop } from '../../functions/scrollToTop';
 
 export default function MyPackagesSettings({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -28,14 +30,19 @@ export default function MyPackagesSettings({ token }) {
     const [actionType, setActionType] = useState('upgrade');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeRole, setActiveRole] = useState('package details')
+
     useEffect(() => {
         fetchLatestCompanyPackage(loginType);
     }, [loginType, fetchLatestCompanyPackage]);
-    console.log(packages);
-    
+    console.log(companyPackageStatus);
+
+    const handleSelectPackage = (id) => {
+            setSelectedPackageId(id); // Update the selected package ID
+    };
+
     const handleSubmit = async () => {
         if (!selectedPackageId && actionType !== 'renew') {
-            alert('Please select a package before proceeding.');
+             toast.error('Please select a package before proceeding.');
             return;
         }
 
@@ -45,7 +52,7 @@ export default function MyPackagesSettings({ token }) {
                 `${baseURL}/${loginType}/control-packages`,
                 {
                     type: actionType,
-                    package: actionType === 'renew' ? null : selectedPackageId,
+                    package: actionType === 'renew' ? null : selectedPackageId?.toString(),
                     payment_type: 'offline',
                 },
                 {
@@ -54,13 +61,15 @@ export default function MyPackagesSettings({ token }) {
             );
 
             if (response.status === 200) {
-                alert('Changes submitted successfully!');
+                toast.success('Changes submitted successfully!');
+                fetchLatestCompanyPackage(loginType);
+                scrollToTop();
             } else {
                 throw new Error(response.data?.message || 'Submission failed');
             }
         } catch (error) {
             console.error('Error submitting changes:', error);
-            alert(error.response?.data?.message || 'An error occurred');
+            toast.error(error.response?.data?.message || 'An error occurred');
         } finally {
             setIsSubmitting(false);
         }
@@ -81,55 +90,112 @@ export default function MyPackagesSettings({ token }) {
                         ) : (
                             <div className="content__view__handler">
                                 <ContentViewHeader title="Packages Settings" />
-                                <div className="col-12 mb-4">
-                                                <div className="my__roles__actions mt-4">
-                                                    <button
-                                                        className={`def__btn ${activeRole === "package details" ? "rolesActiveBtn" : ""}`}
-                                                        onClick={() => setActiveRole("package details")}
-                                                    >
-                                                        package details
-                                                    </button>
-                                                    <button
-                                                        className={`cust__btn ${activeRole === "transactions" ? "rolesActiveBtn" : ""}`}
-                                                        onClick={() => setActiveRole("transactions")}
-                                                    >
-                                                        transactions
-                                                    </button>
-                                                    <button
-                                                        className={`cust__btn ${activeRole === "payment methods" ? "rolesActiveBtn" : ""}`}
-                                                        onClick={() => setActiveRole("payment methods")}
-                                                    >
-                                                        payment methods
-                                                    </button>
-                                                </div>
-                                </div>
-                                { activeRole === 'package details' &&
-                                    <div className="content__card__list ms-4">
-                                       <h1 className='mb-3 fs-4'>
-                                       current package: premuim
-                                       </h1>
-                                    {packages.map((pkg) => (
-                                        <div key={pkg.id} className="package-card">
-                                            <h5>{pkg.name}</h5>
-                                            <p>Price: {pkg.price}</p>
-                                            <p>Discount Price: {pkg.discount_price}</p>
-                                            <ul>
-                                                {Object.entries(pkg.data).map(([key, value]) => (
-                                                    <li key={key}>
-                                                        {key.replace(/_/g, ' ')}: {value}
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                <div className="row">
+                                    <div className="col-12 ">
+                                        <div className="my__roles__actions mt-4">
                                             <button
-                                                className="btn btn-primary"
-                                                onClick={() => {
-                                                    // Handle package upgrade/renew logic here
-                                                }}
+                                                className={`def__btn ${activeRole === "package details" ? "rolesActiveBtn" : ""}`}
+                                                onClick={() => setActiveRole("package details")}
                                             >
-                                                Upgrade or Renew
+                                                package details
+                                            </button>
+                                            <button
+                                                className={`cust__btn ${activeRole === "transactions" ? "rolesActiveBtn" : ""}`}
+                                                onClick={() => setActiveRole("transactions")}
+                                            >
+                                                transactions
+                                            </button>
+                                            <button
+                                                className={`cust__btn ${activeRole === "payment methods" ? "rolesActiveBtn" : ""}`}
+                                                onClick={() => setActiveRole("payment methods")}
+                                            >
+                                                payment methods
                                             </button>
                                         </div>
-                                    ))}
+                                    </div>
+                                </div>
+                                {activeRole === 'package details' &&
+                                    <div className="content__card__list ms-4">
+                                        { packages?.length !== 0 ?
+                                            <div className='row business-signUp__packages'>
+                                            {packages.map((pack) => (
+                                                <div
+                                                    className={`col-lg-5 col-md-5 col-sm-10 m-auto p-4`}
+                                                    key={pack.id}
+                                                >
+                                                    <div
+                                                        className={`packageCard ${
+                                                            selectedPackageId === pack.id
+                                                                ? 'selectedPackage'
+                                                                : 'notSelectedPackage'
+                                                        }`}
+                                                    >
+                                                        <h5>{pack.name}</h5>
+                                                        <p className='price'>{pack.price}</p>
+                                                        {pack.discountPrice && (
+                                                            <p className='discount-price'>
+                                                                Discount Price: {pack.discountPrice}
+                                                            </p>
+                                                        )}
+                                                        <ul>
+                                                            {Object.entries(pack?.data)?.map(([key, value]) => (
+                                                                <li key={key}>
+                                                                    <span>
+                                                                        <i className='bi bi-check-lg'></i>
+                                                                    </span>
+                                                                    {key.replace(/_/g, ' ')}: {value}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                        <div
+                                                            onClick={() => handleSelectPackage(pack.id)}
+                                                            className={`text-center d-flex justify-content-center packageBtn ${
+                                                                selectedPackageId === pack.id
+                                                                    ? 'selectedPackageBtn'
+                                                                    : 'notSelectedPackageBtn'
+                                                            }`}
+                                                        >
+                                                            {selectedPackageId === pack.id ? 'Selected' : 'Select'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            </div>
+                                            :
+                                            <h3 className='text-danger'>
+                                                {message}
+                                            </h3>
+                                        }
+                                       { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
+                                        <div className="action-selector mt-4">
+                                            <h4>Choose Action</h4>
+                                            <select
+                                                value={actionType}
+                                                onChange={(e) => setActionType(e.target.value)}
+                                                className="form-select"
+                                            >
+                                                {
+                                                    companyPackageStatus?.map((status) =>(
+                                                        <option value={status} key={status}>
+                                                            {status}
+                                                        </option>
+                                                    ))
+                                                }
+                                                {/* <option value="upgrade">Upgrade</option>
+                                                <option value="renew">Renew</option>
+                                                <option value="subscribe">Subscribe</option> */}
+                                            </select>
+                                        </div>
+                                        }
+                                       { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
+                                        <button
+                                            className="btn btn-primary mt-4"
+                                            onClick={handleSubmit}
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Submitting...' : 'Submit Changes'}
+                                        </button>
+                                        }
                                     </div>
                                 }
                             </div>

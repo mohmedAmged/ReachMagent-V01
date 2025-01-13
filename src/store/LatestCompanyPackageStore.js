@@ -13,10 +13,11 @@ export const useLatestPackageStore = create((set, get) => ({
 
     fetchLatestCompanyPackage: async (loginType) => {
         if (loginType !== 'employee') return;
+        const now = new Date().getTime();
 
         set({ loading: true, unAuth: false });
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/latest-company-package`, {
+            const response = await axios.get(`${baseURL}/${loginType}/latest-company-package?t=${now}`, {
                 headers: Token ? { Authorization: `Bearer ${Token}` } : {}
             });
 
