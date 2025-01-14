@@ -41,7 +41,7 @@ export default function CompanyFollowers({ loginType, token }) {
     const filteredFollowers = loginType === "user"
         ? followers.filter((el, index, self) => index === self.findIndex((t) => t.companyId === el.companyId))
         : followers.filter((el, index, self) => index === self.findIndex((t) => t.userId === el.userId));
-console.log(followers);
+console.log(filteredFollowers);
 
     return (
         <>
@@ -127,7 +127,7 @@ console.log(followers);
                                                         <img src={el?.followableImage || el?.companyLogo} alt={`${el?.userName || el?.companyName} avatar`} />
                                                     </div>
                                                     <div className="followerContactInfo">
-                                                    <NavLink target="_blank" className={'nav-link'} to={`/show-company/${el?.companyId}`}>
+                                                    <NavLink target="_blank" className={'nav-link'} to={`/${el?.companySlug}`}>
                                                         <h1>{el?.followableName || el?.companyName}</h1>
                                                         </NavLink>
                                                         

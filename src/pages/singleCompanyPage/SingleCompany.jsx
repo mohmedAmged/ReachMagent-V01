@@ -148,6 +148,8 @@ export default function SingleCompany({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+    console.log(showCompaniesQuery?.data?.company);
+    
     return (
         <>
             {
@@ -578,7 +580,7 @@ export default function SingleCompany({ token }) {
 
 
                         <SingleCompanyNewsSec companyId={companyId} token={token} />
-                        {/* <SingleCompanyAffiliate /> */}
+                        {/* <SingleCompanyAffiliate /> */}c
                         {
                             token &&
                             <BookAppointMentFrom show={show} handleClose={handleClose} token={token} companyId={companyId} company={showCompaniesQuery?.data} />
