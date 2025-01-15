@@ -11,6 +11,9 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { scrollToTop } from '../../functions/scrollToTop';
+import { Table } from 'react-bootstrap';
+import { useCurrentPackageDetails } from '../../store/CurrentPackageDetails';
+import PackageTransactionsTable from '../packageTransactionsTableSec/PackageTransactionsTable';
 
 export default function MyPackagesSettings({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -20,12 +23,16 @@ export default function MyPackagesSettings({ token }) {
     const {
         loading,
         companyPackageStatus,
+        currentPackage,
         packages,
         message,
         unAuth,
         fetchLatestCompanyPackage,
     } = useLatestPackageStore();
-
+    const {
+        companyCurrPackages,
+        fetchCurrCompanyPackage,
+    } = useCurrentPackageDetails();
     const [selectedPackageId, setSelectedPackageId] = useState(null);
     const [actionType, setActionType] = useState('upgrade');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,8 +40,12 @@ export default function MyPackagesSettings({ token }) {
 
     useEffect(() => {
         fetchLatestCompanyPackage(loginType);
-    }, [loginType, fetchLatestCompanyPackage]);
-    console.log(companyPackageStatus);
+        fetchCurrCompanyPackage(loginType);
+        if (currentPackage !== null) {
+            setSelectedPackageId(currentPackage);
+        }
+    }, [loginType, fetchLatestCompanyPackage, currentPackage]);
+    console.log(companyCurrPackages);
 
     const handleSelectPackage = (id) => {
             setSelectedPackageId(id); // Update the selected package ID
@@ -74,6 +85,8 @@ export default function MyPackagesSettings({ token }) {
             setIsSubmitting(false);
         }
     };
+    console.log(selectedPackageId);
+    
     return (
         <>
             {loading ? (
@@ -114,90 +127,146 @@ export default function MyPackagesSettings({ token }) {
                                         </div>
                                     </div>
                                 </div>
-                                {activeRole === 'package details' &&
-                                    <div className="content__card__list ms-4">
-                                        { packages?.length !== 0 ?
-                                            <div className='row business-signUp__packages'>
-                                            {packages.map((pack) => (
-                                                <div
-                                                    className={`col-lg-5 col-md-5 col-sm-10 m-auto p-4`}
-                                                    key={pack.id}
-                                                >
-                                                    <div
-                                                        className={`packageCard ${
-                                                            selectedPackageId === pack.id
-                                                                ? 'selectedPackage'
-                                                                : 'notSelectedPackage'
-                                                        }`}
-                                                    >
-                                                        <h5>{pack.name}</h5>
-                                                        <p className='price'>{pack.price}</p>
-                                                        {pack.discountPrice && (
-                                                            <p className='discount-price'>
-                                                                Discount Price: {pack.discountPrice}
-                                                            </p>
-                                                        )}
-                                                        <ul>
-                                                            {Object.entries(pack?.data)?.map(([key, value]) => (
-                                                                <li key={key}>
-                                                                    <span>
-                                                                        <i className='bi bi-check-lg'></i>
-                                                                    </span>
-                                                                    {key.replace(/_/g, ' ')}: {value}
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                        <div
-                                                            onClick={() => handleSelectPackage(pack.id)}
-                                                            className={`text-center d-flex justify-content-center packageBtn ${
-                                                                selectedPackageId === pack.id
-                                                                    ? 'selectedPackageBtn'
-                                                                    : 'notSelectedPackageBtn'
-                                                            }`}
-                                                        >
-                                                            {selectedPackageId === pack.id ? 'Selected' : 'Select'}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            </div>
-                                            :
-                                            <h3 className='text-danger'>
-                                                {message}
-                                            </h3>
-                                        }
-                                       { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
-                                        <div className="action-selector mt-4">
-                                            <h4>Choose Action</h4>
-                                            <select
-                                                value={actionType}
-                                                onChange={(e) => setActionType(e.target.value)}
-                                                className="form-select"
-                                            >
-                                                {
-                                                    companyPackageStatus?.map((status) =>(
-                                                        <option value={status} key={status}>
-                                                            {status}
-                                                        </option>
-                                                    ))
-                                                }
-                                                {/* <option value="upgrade">Upgrade</option>
-                                                <option value="renew">Renew</option>
-                                                <option value="subscribe">Subscribe</option> */}
-                                            </select>
-                                        </div>
-                                        }
-                                       { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
-                                        <button
-                                            className="btn btn-primary mt-4"
-                                            onClick={handleSubmit}
-                                            disabled={isSubmitting}
-                                        >
-                                            {isSubmitting ? 'Submitting...' : 'Submit Changes'}
-                                        </button>
-                                        }
+                               
+                {activeRole === 'package details' &&
+                <>
+                    <div className="row">
+                                    <div className="col-12 mt-4">
+                                        <h3 className=' text-capitalize my-3 fs-5 fw-bold'>
+                                            current package details:
+                                        </h3>
+                                        <Table responsive>
+                                            <thead>
+                                                <tr className='table__default__header'>
+                                                    <th className='text-center'>Start Date</th>
+                                                    <th className='text-center'>End Date</th>
+                                                    <th className='text-center'>Price</th>
+                                                    <th className='text-center'>Discount Price</th>
+                                                    <th className='text-center'>Payment Status</th>
+                                                    <th className='text-center'>Status</th>
+                                                </tr>
+                                            </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.start_date}
+                                                            </td>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.end_date}
+                                                            </td>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.price}
+                                                            </td>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.discount_price}
+                                                            </td>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.payment_status}
+                                                            </td>
+                                                            <td className='text-center p-3'>
+                                                                {companyCurrPackages?.status}
+                                                            </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                        </Table>
                                     </div>
+                    </div>
+                    <div className="content__card__list mt-3">
+                        { packages?.length !== 0 ?
+                            <div className='row business-signUp__packages'>
+                                <h3 className=' text-capitalize my-3 fs-5 fw-bold'>
+                                            upgrade or renew package:
+                                        </h3>
+                            {packages.map((pack) => (
+                                <div
+                                    className={`col-lg-5 col-md-5 col-sm-10 m-auto p-4`}
+                                    key={pack.id}
+                                >
+                                    <div
+                                        className={`packageCard ${
+                                            selectedPackageId === pack.id 
+                                                ? 'selectedPackage'
+                                                : 'notSelectedPackage'
+                                        }`}
+                                    >
+                                        <h5>{pack.name}</h5>
+                                        <p className='price'>{pack.price}</p>
+                                        {pack.discountPrice && (
+                                            <p className='discount-price'>
+                                                Discount Price: {pack.discountPrice}
+                                            </p>
+                                        )}
+                                        <ul>
+                                            {Object.entries(pack?.data)?.map(([key, value]) => (
+                                                <li key={key}>
+                                                    <span>
+                                                        <i className='bi bi-check-lg'></i>
+                                                    </span>
+                                                    {key.replace(/_/g, ' ')}: {value}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div
+                                            onClick={() => handleSelectPackage(pack.id)}
+                                            className={`text-center d-flex justify-content-center packageBtn ${
+                                                selectedPackageId === pack.id
+                                                    ? 'selectedPackageBtn'
+                                                    : 'notSelectedPackageBtn'
+                                            }`}
+                                        >
+                                            {selectedPackageId === pack.id ? 'Selected' : 'Select'}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            </div>
+                            :
+                            <h3 className='text-danger'>
+                                {message}
+                            </h3>
+                        }
+                        { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
+                        <div className="action-selector mt-4">
+                            <h4>Choose Action</h4>
+                            <select
+                                value={actionType}
+                                onChange={(e) => setActionType(e.target.value)}
+                                className="form-select"
+                            >
+                                <option value="" disabled>choose type</option>
+                                {
+                                    companyPackageStatus?.map((status) =>(
+                                        <option value={status} key={status}>
+                                            {status}
+                                        </option>
+                                    ))
                                 }
+                            </select>
+                        </div>
+                        }
+                        { (packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
+                        <button
+                            className="btn btn-primary mt-4"
+                            onClick={handleSubmit}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Submitting...' : 'Submit Changes'}
+                        </button>
+                        }
+                    </div>
+                </>
+                    
+                }
+                { activeRole === 'transactions' &&
+                    <>
+                    <div className="row">
+                        <div className="col-12 mt-4">
+                            <PackageTransactionsTable token={token} loginType={loginType}/>
+                        </div>
+                    </div>
+                    </>
+                }
                             </div>
                         )}
                     </div>

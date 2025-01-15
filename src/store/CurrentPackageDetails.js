@@ -4,28 +4,24 @@ import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
 import { Token } from '../functions/Token';
 
-export const useLatestPackageStore = create((set, get) => ({
+export const useCurrentPackageDetails = create((set, get) => ({
     loading: true,
-    companyPackageStatus: [],
-    currentPackage: '',
-    packages: [],
+    companyCurrPackages: [],
     message: '',
     unAuth: false,
 
-    fetchLatestCompanyPackage: async (loginType) => {
+    fetchCurrCompanyPackage: async (loginType) => {
         if (loginType !== 'employee') return;
         const now = new Date().getTime();
 
         set({ loading: true, unAuth: false });
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/latest-company-package?t=${now}`, {
+            const response = await axios.get(`${baseURL}/${loginType}/all-company-packages?t=${now}`, {
                 headers: Token ? { Authorization: `Bearer ${Token}` } : {}
             });
 
             set({
-                companyPackageStatus: response?.data?.data?.company_package_status || [],
-                packages: response?.data?.data?.packages || [],
-                currentPackage: response?.data?.data?.current_package,
+                companyCurrPackages: response?.data?.data?.company_packages[0] || [],
                 message: response?.data?.message || '',
                 loading: false,
             });
@@ -43,8 +39,7 @@ export const useLatestPackageStore = create((set, get) => ({
     resetStore: () => {
         set({
             loading: false,
-            companyPackageStatus: [],
-            packages: [],
+            companyCurrPackages: [],
             message: '',
             unAuth: false,
         });
