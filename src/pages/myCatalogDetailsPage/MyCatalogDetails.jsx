@@ -230,6 +230,7 @@ export default function MyCatalogDetails({ token }) {
                                                     ) : (
                                                         <NavLink
                                                             to={`/${currentCatalog?.company_name}/request-quote`}
+                                                            target='_blank'
                                                             className={'nav-link'}
                                                         >
                                                             <p className='text-capitalize' style={{ color: 'rgb(63, 215, 86)' }}>
