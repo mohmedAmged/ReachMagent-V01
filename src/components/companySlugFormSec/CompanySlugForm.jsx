@@ -123,6 +123,6 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                 </>
             )}
         </div>
-    </form>
+        </form>
     );
 }

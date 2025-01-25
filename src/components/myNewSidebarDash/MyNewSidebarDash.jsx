@@ -14,6 +14,7 @@ import { useActivePackageStore } from '../../store/ActivePackageStore';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { useSidebarStatus } from '../../store/SidebarStatusStore';
 
 export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
@@ -58,40 +59,65 @@ export default function MyNewSidebarDash({ token }) {
         fetchActivePackage,
         unAuth,
     } = useActivePackageStore();
+    const {
+        ShowStatus,
+        fetchSidebarStatus,
+    } = useSidebarStatus();
     useEffect(() => {
         fetchActivePackage( loginType);
-    }, [loginType, fetchActivePackage]);
+        fetchSidebarStatus(loginType);
+    }, [loginType, fetchActivePackage, fetchSidebarStatus]);
+    console.log(ShowStatus);
     
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },
+        ShowStatus === 'all' && 
         { title: "Followers", link: "/profile/followers", icon: icon11 },
+        ShowStatus === 'all' && 
         { title: "Product Catalog", link: "/profile/catalog", icon: icon2 },
+        ShowStatus === 'all' && 
         { title: "Services", link: "/profile/service", icon: icon2 },
+        ShowStatus === 'all' && 
         features?.portfolios === 'yes' && 
         { title: "Media", link: "/profile/media", icon: icon2 },
+        ShowStatus === 'all' && 
         { title: "E-commerce Products", link: "/profile/products", icon: icon4 },
+        ShowStatus === 'all' && 
         features?.networks === 'yes' && 
         { title: "Network", link: "/profile/network", icon: icon4 },
+        ShowStatus === 'all' && 
         features?.pervious_work === 'yes' && 
         { title: "Previous Work", link: "/profile/previous-work", icon: icon4 },
+        ShowStatus === 'all' && 
         { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
+        ShowStatus === 'all' && 
         { title: "Collections", link: "/profile/product-order", icon: icon4 },
+        ShowStatus === 'all' && 
         { title: "FAQS", link: "/profile/faqs", icon: icon5 },
+        ShowStatus === 'all' && 
         features?.insights === 'yes' && 
         { title: "Posts", link: "/profile/posts", icon: icon5 },
         // { title: "Shipping Costs", link: "/profile/shipping-costs", icon: currencyIcon },
+        ShowStatus === 'all' && 
         features?.quotations === 'yes' && 
         { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+        ShowStatus === 'all' && 
         features?.one_click_quotations === 'yes' && 
         { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
+        ShowStatus === 'all' && 
         (features?.one_click_quotations === 'yes' ||  features?.quotations) &&
         { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
+        ShowStatus === 'all' && 
         features?.appointments === 'yes' && 
         { title: "Appointments", link: "/profile/appointments", icon: icon3 },
-
+        ShowStatus === 'all' && 
         { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
+        ShowStatus === 'all' && 
         { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
-        features?.messaging === 'yes' && { title: "Messages", link: "/your-messages", icon: icon6 },
+        ShowStatus === 'all' && 
+        features?.messaging === 'yes' && 
+        { title: "Messages", link: "/your-messages", icon: icon6 },
+        ShowStatus === 'all' && 
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
         { title: "Package Settings", link: "/profile/packages-settings", icon: icon6 },
         {

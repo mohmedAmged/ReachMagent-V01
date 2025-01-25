@@ -335,7 +335,11 @@ export default function NewCatalogItemForm({ token }) {
                 ? `${baseURL}/employee/update-catalog/${id}`
                 : `${baseURL}/employee/add-catalog`;
             await axios.post(url, submissionData, {
-                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
+                headers: 
+                { 
+                    Authorization: `Bearer ${token}`, 
+                'Content-Type': 'multipart/form-data' 
+            },
             });
 
             toast.success('Catalog saved successfully!', { id: toastId });

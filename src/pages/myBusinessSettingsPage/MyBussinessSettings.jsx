@@ -19,6 +19,7 @@ import CompanyFollowIndustryFrom from '../../components/companyFollowIndustryFor
 import { NavLink } from 'react-router-dom';
 import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/CompanyTimezoneForm';
 import CompanySlugForm from '../../components/companySlugFormSec/CompanySlugForm';
+import CompanyDocumentForm from '../../components/comapnyDocumentsFormSec/CompanyDocumentForm';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
@@ -102,6 +103,7 @@ export default function MyBussinessSettings({ token }) {
     const [activeItem, setActiveItem] = useState('Company Settings');
     const items = [
         { name: 'Company Settings', active: activeItem === 'Company Settings' },
+        { name: 'Company Documents', active: activeItem === 'Company Documents' },
         { name: 'Company Activities', active: activeItem === 'Company Activities' },
         { name: 'Company Industries', active: activeItem === 'Company Industries' },
         { name: 'Company Timezone', active: activeItem === 'Company Timezone' },
@@ -149,6 +151,7 @@ export default function MyBussinessSettings({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
+console.log(company);
 
     return (
         <>
@@ -269,6 +272,13 @@ export default function MyBussinessSettings({ token }) {
                                                     {activeItem === 'Company Slug'
                                                         &&
                                                         <CompanySlugForm
+                                                            setUnAuth={setUnAuth}
+                                                            token={token}
+                                                        />
+                                                    }
+                                                    {activeItem === 'Company Documents'
+                                                        &&
+                                                        <CompanyDocumentForm
                                                             setUnAuth={setUnAuth}
                                                             token={token}
                                                         />
