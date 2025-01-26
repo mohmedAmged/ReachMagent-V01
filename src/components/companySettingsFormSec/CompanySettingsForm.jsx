@@ -121,8 +121,8 @@ export default function CompanySettingsForm(
     setValue('category_id', `${mainCategories?.find(cat => cat?.mainCategoryName === company?.category )?.mainCategoryId}`);
     setValue('sub_category_id',`${subCategories?.find(cat => cat?.subCategoryName === company?.sub_category )?.subCategoryId}`);
     setCurrentBusinessTypes(allTypes.filter(type => watch('main_type')?.includes(type.name)));
-    allTypesRendered = allTypesRendered.filter(type => !watch('main_type')?.includes(type.name));
-  },[company,Cookies.get('currentUpdatedCompanyData')]);
+    allTypesRendered = allTypesRendered.filter(type => watch('main_type')?.includes(type.name));
+  },[company, linkedInLink, mainCategories, setValue, subCategories, watch,company?.email]);
   useEffect(()=>{
     setValue('logo',currnetImageUpdateFile);
   },[currnetImageUpdateFile]);
@@ -380,6 +380,7 @@ export default function CompanySettingsForm(
             defaultValue={selectValue}
             onChange={handleChangeBusinessType}
             className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''}`}
+            // {...register('main_type')}
             id="dashboardCompanymainType"
           >
           <option disabled value="">Select Company Types</option>

@@ -98,7 +98,7 @@ export default function MyBussinessSettings({ token }) {
                 })();
             };
         };
-    }, []);
+    }, [companyUpdated, loginType, token, company]);
 
     const [activeItem, setActiveItem] = useState('Company Settings');
     const items = [

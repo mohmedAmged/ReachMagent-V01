@@ -119,6 +119,7 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Messages", link: "/your-messages", icon: icon6 },
         ShowStatus === 'all' && 
         { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+        // ShowStatus === 'all' && 
         { title: "Package Settings", link: "/profile/packages-settings", icon: icon6 },
         {
             title: "Settings",

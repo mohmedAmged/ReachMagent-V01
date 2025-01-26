@@ -13,7 +13,7 @@ export const useSidebarStatus = create((set, get) => ({
     fetchSidebarStatus: async ( loginType) => {
         set({ loading: true, unAuth: false });
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/sidebar-status`, {
+            const response = await axios.get(`${baseURL}/${loginType}/sidebar-status?t=${new Date().getTime()}`, {
                headers: Token ? { Authorization: `Bearer ${Token}` } : {}
             });
 

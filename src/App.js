@@ -230,6 +230,7 @@ function App() {
         <Route path='/profile/followers' element={<CompanyFollowers loginType={loginType} token={token} />} />
 
         <Route path='/profile/packages-settings' element={<MyPackagesSettings token={token} />} />
+        {/* <Route path='/profile/packages-payment' element={<MyPackagesSettings token={token} />} /> */}
 
         <Route path='/profile/catalog' element={<MyCatalog token={token} />} />
         <Route path='/profile/catalog/addNewItem' element={<NewCatalogItemForm

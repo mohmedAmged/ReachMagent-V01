@@ -90,9 +90,9 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
     };
     return (
         <div>
-            <h3>Company Documents</h3>
+            <h3 className='mb-4 fs-4'>Company Documents</h3>
             {currCompanyDocument.map((doc) => (
-                <div key={doc.id} className="mb-3">
+                <div key={doc.id} className="mb-4">
                     <div className="d-flex align-items-center">
                         {doc.type === 'image' ? (
                             <img
