@@ -284,7 +284,7 @@ export default function MyPackagesSettings({ token }) {
                                     <option value="payment_link">Payment Link</option>
                                 </select>
 
-                                <h4 className="mt-4">Attach File (Optional)</h4>
+                                <h4 className="mt-4">Attach File</h4>
                                 <input
                                     type="file"
                                     className="form-control"

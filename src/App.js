@@ -186,7 +186,7 @@ function App() {
 
         {/* <Route path='/lastMinuteDeals/:singleDeal' element={<LastMinuteDetails token={token} />} /> */}
         <Route path='/About-ReachMagnet' element={<AboutUs />} />
-        <Route path='/packages' element={<BusinessSignUpPackages />} />
+        {/* <Route path='/packages' element={<BusinessSignUpPackages />} /> */}
 
 
         <Route path='/contact-us' element={<MyContactUs token={token} />} />

@@ -192,11 +192,13 @@ console.log(watch('about_us'));
   // });
   Object.keys(data).forEach((key) => {
     if (key !== 'logo' && key !== 'cover' && key !== 'main_type') {
-      formData.append(key, data[key]);
+      formData.append(key, data[key] || '');
     }
   });
   // formData.append('main_type', currentBusinessTypes.map((type) => type.name));
-  formData.append('about_us', data.about_us || '');
+  if (data.about_us) {
+    formData.append('about_us', data.about_us);
+  }
   if(imgChanged && data.logo[0]){
     formData.append('logo', data.logo[0]);
   };
