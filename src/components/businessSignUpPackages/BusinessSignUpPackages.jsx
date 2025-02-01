@@ -5,14 +5,11 @@ import { baseURL } from '../../functions/baseUrl';
 
 export default function BusinessSignUpPackages({ setValue, watch }) {
   const [packs, setPacks] = useState([]);
-  const [preferedTimePackage, setPreferedTimePackage] = useState('Monthly');
+  const [preferedTimePackage, setPreferedTimePackage] = useState('Yearly');
   const [preferedSelectedPackage, setPreferedSelectedPackage] = useState( watch('prefered_package_id') || null);
 
   const arrOfTimePackages = [
-    {
-      id: 1,
-      name: 'Monthly',
-    },
+    
     {
       id: 2,
       name: 'Yearly',
@@ -76,7 +73,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
       </ul>
       <div className='row'>
         <div className='col-12'>
-          <h5 className='suggested__package'>Suggested</h5>
+          {/* <h5 className='suggested__package'>Suggested</h5> */}
         </div>
         {packs.map((pack) => (
           <div

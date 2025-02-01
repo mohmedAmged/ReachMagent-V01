@@ -1126,12 +1126,17 @@ console.log(citizenships);
                             </div>
                             <div className="col-lg-12 mb-4 position-relative">
                               <label htmlFor="compnayLogo" className=''>
-                                Company's Logo<span className="requiredStar"> * </span>
+                                Company's Logo <span className="requiredStar"> * </span>
                                 <i title="logo.png" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <br/>
+                                <span style={{color:'gray', fontSize:'14px'}} >
+                                  (Recommended size 512 * 512)
+                                </span>
                               </label>
                               <input
                                 type='file'
                                 id='compnayLogo'
+                                placeholder=''
                                 className={`form-control newUploadBtn ${errors.logo ? 'inputError' : ''}`}
                                 onChange={handleImageChange}
                                 required
@@ -1550,7 +1555,7 @@ console.log(citizenships);
                             </div>
                             <div className='col-lg-6'>
                               <label htmlFor="signUpofficial_id_or_passport">
-                                Owner's <span className="optional">(Official-ID / Passport)</span><span className="requiredStar"> *</span>
+                                Owner's ID<span className="optional">(Official-ID / Passport)</span><span className="requiredStar"> *</span>
                                 <i title="" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input

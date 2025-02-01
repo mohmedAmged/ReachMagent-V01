@@ -176,7 +176,10 @@ console.log(company);
                                                 profileUpdateStatus !== 'notUpdating' &&
                                                 <>
                                                     <input type="file" className='invisibleInput' ref={fileCoverRef} onChange={hangleChangeCover} />
-                                                    <span onClick={handleCoverClick}><i className="bi bi-pencil-square"></i></span>
+                                                    <span onClick={handleCoverClick}>
+                                                        
+                                                        Edit cover (Recomended Size 1920 × 720 px) <i className="bi bi-pencil-square"></i>
+                                                    </span>
                                                 </>
                                             }
                                         </div>
@@ -225,20 +228,20 @@ console.log(company);
                                                 <div className="profile__form__inputs mt-3">
                                                     {activeItem === 'Company Settings'
                                                         &&
-                                                        <CompanySettingsForm
-                                                            setUnAuth={setUnAuth}
-                                                            token={token}
-                                                            imgChanged={imgChanged}
-                                                            currnetImageUpdateFile={currnetImageUpdateFile}
-                                                            setCurrentImageUpdateError={setCurrentImageUpdateError}
-                                                            coverChanged={imgCoverChanged}
-                                                            currnetCoverUpdateFile={currnetCoverUpdateFile}
-                                                            setCurrentCoverUpdateError={setCurrentCoverUpdateError}
-                                                            setProfileUpdateStatus={setProfileUpdateStatus}
-                                                            company={company}
-                                                            profileUpdateStatus={profileUpdateStatus}
-                                                            mainCategories={mainCategories}
-                                                        />
+                                                <CompanySettingsForm
+                                                    setUnAuth={setUnAuth}
+                                                    token={token}
+                                                    imgChanged={imgChanged}
+                                                    currnetImageUpdateFile={currnetImageUpdateFile}
+                                                    setCurrentImageUpdateError={setCurrentImageUpdateError}
+                                                    coverChanged={imgCoverChanged}
+                                                    currnetCoverUpdateFile={currnetCoverUpdateFile}
+                                                    setCurrentCoverUpdateError={setCurrentCoverUpdateError}
+                                                    setProfileUpdateStatus={setProfileUpdateStatus}
+                                                    company={company}
+                                                    profileUpdateStatus={profileUpdateStatus}
+                                                    mainCategories={mainCategories}
+                                                />
 
                                                     }
                                                     {activeItem === 'Company Activities'

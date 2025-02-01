@@ -283,7 +283,9 @@ export default function MyPackagesSettings({ token }) {
                                     <option value="bank_transfer">Bank Transfer</option>
                                     <option value="payment_link">Payment Link</option>
                                 </select>
-
+                                <p>
+                                    {}
+                                </p>
                                 <h4 className="mt-4">Attach File</h4>
                                 <input
                                     type="file"

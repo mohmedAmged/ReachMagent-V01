@@ -135,7 +135,15 @@ console.log(showCompaniesQuery);
                                 {showCompaniesQuery?.companyName}
                             </h1>
                             <span>
+                                {showCompaniesQuery?.can_book_with_company === true ? 
+                                <p style={{backgroundColor:'#e8e8e8', padding:'2px 5px', borderRadius:'5px', textTransform:'capitalize', color:'#8c64ee'}}>
+                                    premuim
+                                </p>
+                                :
                                 <img src={verfuIcon} alt="icon" />
+                            }
+                                
+
                             </span>
                         </div>
                         <div className="row">
