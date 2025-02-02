@@ -741,6 +741,11 @@ console.log(citizenships);
                         {
                           currentStep === 'One' &&
                           <>
+                          {/* <div className="col-12 mb-4">
+                            <h3 className="text-center">
+                              Step 1 of 4
+                            </h3>
+                          </div> */}
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_name">
                                 Company Name <span className="requiredStar">*</span> 
@@ -784,7 +789,7 @@ console.log(citizenships);
                                 <i title="01099558877" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
-                                <div className="col-3">
+                                <div className="col-md-5 col-sm-12">
                                   <CustomDropdown
                                     countries={countries}
                                     setValue={setValue}
@@ -792,7 +797,7 @@ console.log(citizenships);
                                     inputName={'phone_one_code'}
                                   />
                                 </div>
-                                <div className="col-9">
+                                <div className="col-md-7 col-sm-12">
                                   <input
                                     type='number'
                                     id='signUpPhone_numberOne'
@@ -815,7 +820,7 @@ console.log(citizenships);
                                 <i title="01088998899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
-                                <div className="col-3">
+                                <div className="col-md-5 col-sm-12">
                                   <CustomDropdown
                                     countries={countries}
                                     setValue={setValue}
@@ -823,7 +828,7 @@ console.log(citizenships);
                                     inputName={'phone_two_code'}
                                   />
                                 </div>
-                                <div className="col-9">
+                                <div className="col-md-7 col-sm-12">
                                   <input
                                     type='number'
                                     id='signUpPhone_numberTwo'
@@ -846,7 +851,7 @@ console.log(citizenships);
                                 <i title="123456" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
-                                type='number'
+                                type='text'
                                 id='signUpregisteration_number'
                                 placeholder="Company's Registeration Number"
                                 {...register('registeration_number')}
@@ -1165,6 +1170,11 @@ console.log(citizenships);
                         {
                           currentStep === 'Two' &&
                           <>
+                           {/* <div className="col-12 mb-4">
+                            <h3 className="text-center">
+                              step 2 of 4
+                            </h3>
+                          </div> */}
                             <div className="signUpForm__head col-12 mt-5 mb-3 pt-4">
                               <h4>
                                 Business Registered Address
@@ -1362,7 +1372,7 @@ console.log(citizenships);
                                 <i title="01055588899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
-                                <div className="col-3">
+                                <div className="col-md-5 col-sm-12">
                                 <CustomDropdown
                                 countries={countries}
                                 setValue={setValue}
@@ -1370,7 +1380,7 @@ console.log(citizenships);
                                 inputName={'employee_phone_code'}
                               />
                                 </div>
-                                <div className="col-9">
+                                <div className="col-md-7 col-sm-12">
                                   <input
                                     type='number'
                                     id='signUpemployee_phone'

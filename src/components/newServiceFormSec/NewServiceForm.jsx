@@ -361,6 +361,74 @@ export default function NewServiceForm({ token }) {
                 className="form-control"
             />
         </div>
+        {!id &&
+            <div className="row">
+                <div className="col-lg-12">
+                    <div style={{
+                        marginTop: '30px',
+                        borderTop: "1px solid #aaa"
+                    }} className="catalog__new__input">
+                        <label className="fw-bold my-3">Options and variations</label>
+                        <button type="button" className="btn btn-link" onClick={handleAddOption}>Add Option</button>
+                        {formData?.options?.map((option, index) => (
+                            <div key={index} className="option-group my-3">
+                                <div className="row">
+                                    <div className="col-lg-6">
+                                        <input
+                                            style={{
+                                                background: 'rgb(142 149 235 / 30%)'
+                                            }}
+                                            type="text"
+                                            placeholder="Attribute (e.g., Storage)"
+                                            value={option?.attribute}
+                                            onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                {option?.values?.map((value, valueIndex) => (
+                                    <div key={valueIndex} className="row">
+                                        <div className="col-lg-6">
+                                            <input
+                                                type="text"
+                                                placeholder="Option Name (e.g., 128 GB)"
+                                                value={value?.name}
+                                                onChange={(e) =>
+                                                    handleValueChange(
+                                                        index,
+                                                        valueIndex,
+                                                        'name',
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <input
+                                                type="text"
+                                                placeholder="Additional Price"
+                                                value={value?.price}
+                                                onChange={(e) =>
+                                                    handleValueChange(
+                                                        index,
+                                                        valueIndex,
+                                                        'price',
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">Add Value</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        }
         {
             id &&
             <div className="row">

@@ -40,7 +40,7 @@ export default function MyPackagesSettings({ token }) {
             fetchSidebarStatus,
         } = useSidebarStatus();
     const [selectedPackageId, setSelectedPackageId] = useState(null);
-    const [actionType, setActionType] = useState('upgrade');
+    const [actionType, setActionType] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeRole, setActiveRole] = useState('package details')
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -75,7 +75,7 @@ export default function MyPackagesSettings({ token }) {
         try {
             const formData = new FormData();
             formData.append('type', actionType);
-            formData.append('package', actionType === 'renew' ? null : selectedPackageId?.toString());
+            formData.append('package', selectedPackageId?.toString());
             formData.append('payment_method', paymentMethod);
             formData.append('attachment', attachment || '');
             formData.append('payment_type', 'offline');
@@ -101,14 +101,20 @@ export default function MyPackagesSettings({ token }) {
             } else {
                 throw new Error(response.data?.message || 'Submission failed');
             }
+            console.log(actionType);
+    console.log(selectedPackageId);
+            
         } catch (error) {
+            console.log(actionType);
+    console.log(selectedPackageId);
+            
             console.error('Error submitting changes:', error);
             toast.error(error.response?.data?.message || 'An error occurred');
         } finally {
             setIsSubmitting(false);
         }
     };
-    console.log(selectedPackageId);
+    // console.log(selectedPackageId);
 
     return (
         <>

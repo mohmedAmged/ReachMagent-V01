@@ -154,6 +154,7 @@ console.log(currentService);
                                             ) : (
                                                 <NavLink
                                                     to={`/${currentService?.company_name}/request-quote`}
+                                                    target='_blank'
                                                     className={'nav-link'}
                                                 >
                                                     <p className='text-capitalize' style={{ color: 'rgb(63, 215, 86)' }}>
@@ -171,11 +172,16 @@ console.log(currentService);
                                     }
                                         </div>
                                     }
-                                    <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
+                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
+                                        <NavLink target='_blanck' to={`/${currentService?.company_slug}`}>
+                                        <span style={{textDecoration:'underline', color:'rgba(6, 127, 173, 1)'}}>View Company Profile</span>
+                                        </NavLink>
+                                    </p>
+                                    {/* <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                         <span>
                                             Sold by <strong>{currentService?.company_name}</strong>
                                         </span>
-                                    </p>
+                                    </p> */}
                                 </div>
                             </Col>
                         </Row>
