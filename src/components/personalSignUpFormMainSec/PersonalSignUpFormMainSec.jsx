@@ -384,7 +384,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             Mobile Number <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
-                            <div className="col-4">
+                            <div className="col-md-5 col-sm-12">
                               <CustomDropdown
                                 countries={countries}
                                 setValue={setValue}
@@ -392,7 +392,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                 inputName={'phone_code'}
                               />
                             </div>
-                            <div className="col-8">
+                            <div className="col-md-7 col-sm-12">
                               <input
                                 type='text'
                                 id='signUpMobileNumber'
@@ -416,7 +416,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             Mobile Number <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
-                            <div className="col-3">
+                            <div className="col-md-5 col-sm-12">
                               <CustomDropdown
                                 countries={countries}
                                 setValue={setValue}
@@ -424,7 +424,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                 inputName={'phone_code'}
                               />
                             </div>
-                            <div className="col-9">
+                            <div className="col-md-7 col-sm-12">
                               <input
                                 type='text'
                                 id='signUpMobileNumber'

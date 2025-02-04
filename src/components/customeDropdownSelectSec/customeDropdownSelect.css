@@ -63,7 +63,7 @@
 
    .custom-dropdown {
     position: relative;
-    width: 250px; /* Adjust width to match UI */
+    width: 100%; /* Adjust width to match UI */
 }
 
 /* Selected dropdown button */
