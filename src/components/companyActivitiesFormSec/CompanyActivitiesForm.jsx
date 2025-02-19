@@ -8,7 +8,7 @@ import { baseURL } from '../../functions/baseUrl';
 
 // const activitiesFinalShape = { activity_id: [], sub_activity_id: [] };
 
-export default function CompanyActivitiesForm(token, setUnAuth) {
+export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) {
   const [companyActivities, setCompanyActivities] = useState([]);
   const [activitiesFinalShape, setActivitiesFinalShape] = useState({ activity_id: [], sub_activity_id: [] });
   const [allActivities, setAllActivities] = useState([]);
@@ -194,7 +194,33 @@ export default function CompanyActivitiesForm(token, setUnAuth) {
         });
       });
   };
-
+  const [currentSubActivitiesInsideMainActivity, setcurrentSubActivitiesInsideMainActivity] = useState([]);
+  useEffect(() => {
+    setcurrentSubActivitiesInsideMainActivity([]);
+    let currentActivityId = watch('activity_id');
+    const currentActivity = mainActivities?.find(Act => Act?.mainActivityId === +currentActivityId);
+    if (currentActivity) {
+      setValue('sub_activity_id', '');
+      const toastId = toast.loading('Loading , Please Wait !');
+      const subActInsideCurrentMainAct = async () => {
+        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`);
+        if (response?.status === 200) {
+          setcurrentSubActivitiesInsideMainActivity(response?.data?.data?.subActivities);
+          toast.success(`( ${response?.data?.data?.mainActivityName} )Activity Added Successfully.`, {
+            id: toastId,
+            duration: 2000
+          });
+        } else {
+          toast.error(`${response?.data?.error[0]}`, {
+            id: toastId,
+            duration: 2000
+          });
+          currentActivityId = '';
+        }
+      };
+      subActInsideCurrentMainAct();
+    };
+  }, [watch('activity_id')]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4'>
       <button type='button' className='editModeBtn' onClick={() => setEditMode(!editMode)}>
@@ -225,6 +251,7 @@ export default function CompanyActivitiesForm(token, setUnAuth) {
                   disabled={true}
                 />
               </div>
+              
             </div>
           
         )})

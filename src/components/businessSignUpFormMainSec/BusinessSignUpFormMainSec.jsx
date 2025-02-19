@@ -111,8 +111,8 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       registeration_number: '',
       category_id: '',
       sub_category_id: '',
-      activity_id: '',
-      sub_activity_id: '',
+      activity_id: [],
+      sub_activity_id: [],
       industry_id: '',
       website_link: '',
       documents: '',
@@ -181,6 +181,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       });
     }
   };
+
   const handleDeleteBusinessType = (type) => {
     const toastId = toast.loading('Loading , Please Wait !');
     allTypes.push(type);
@@ -204,7 +205,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
         const response = await axios.get(`${baseURL}/main-categories/${currentCategory?.mainCategorySlug}`);
         if (response?.status === 200) {
           setCurrentSubCategoriesInsideMainCategory(response?.data?.data?.subCategories);
-          toast.success(`( ${response?.data?.data?.mainCategoryName} )Category Added Successfully.`, {
+          toast.success(`( ${response?.data?.data?.mainCategoryName} )Activity Added Successfully.`, {
             id: toastId,
             duration: 2000
           });
@@ -219,77 +220,146 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       subCatInsideCurrentMainCat();
     };
   }, [watch('category_id')]);
+ 
 
-  // getting SubActivities From MainActivities Logic
-  const [allMainActivitiesChosen, setAllMainActivitiesChosen] = useState([]);
-  const [allSubActsInsideMainActsChosen, setAllSubActsInsideMainActsChosen] = useState([]);
-  const [chosenSubActivities, setChosenSubActivities] = useState([]);
-  // const handleChangeMainActivities = (event) => {
-  //   const toastId = toast.loading('Loading Sub Categories , Please Wait !');
-  //   const chosenActivity = mainActivities?.find(el => el?.mainActivityId === +event?.target?.value);
-  //   if (!allMainActivitiesChosen?.find(el => chosenActivity?.mainActivityId === el.mainActivityId)) {
-  //     setAllMainActivitiesChosen([...allMainActivitiesChosen, chosenActivity]);
-  //     const subActsInsideCurrentMainActs = async () => {
-  //       const response = await axios.get(`${baseURL}/main-activities/${chosenActivity?.mainActivitySlug}`);
+
+
+  const [currentSubActivitiesInsideMainActivity, setcurrentSubActivitiesInsideMainActivity] = useState([]);
+  const [selectedActivities, setSelectedActivities] = useState([]);
+const [selectedSubActivities, setSelectedSubActivities] = useState([]);
+const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
+  useEffect(() => {
+    setcurrentSubActivitiesInsideMainActivity([]);
+    let currentActivityId = watch('activity_id');
+    const currentActivity = mainActivities?.find(Act => Act?.mainActivityId === +currentActivityId);
+    if (currentActivity) {
+      setValue('sub_activity_id', []);
+      const toastId = toast.loading('Loading , Please Wait !');
+      const subActInsideCurrentMainAct = async () => {
+        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`);
+        if (response?.status === 200) {
+          setcurrentSubActivitiesInsideMainActivity(response?.data?.data?.subActivities);
+          toast.success(`( ${response?.data?.data?.mainActivityName} )Activity Added Successfully.`, {
+            id: toastId,
+            duration: 2000
+          });
+        } else {
+          toast.error(`${response?.data?.error[0]}`, {
+            id: toastId,
+            duration: 2000
+          });
+          currentActivityId = '';
+        }
+      };
+      subActInsideCurrentMainAct();
+    };
+  }, [watch('activity_id')]);
+
+  const handleAddActivity = () => {
+    setSelectedActivities((prev) => [...prev, '']);
+    setSelectedSubActivities((prev) => [...prev, '']);
+    setSubActivitiesForSelected((prev) => [...prev, []]);
+  };
+  // const handleAddActivity = () => {
+  //   setSelectedActivities((prev) => [...prev, '']);
+  //   setSelectedSubActivities((prev) => [...prev, '']);
+  // };
+  const handleRemoveActivity = (index) => {
+    if (selectedActivities.length > 1) { // Ensure at least one row is left
+      const updatedActivities = selectedActivities.filter((_, i) => i !== index);
+      const updatedSubActivities = selectedSubActivities.filter((_, i) => i !== index);
+      const updatedSubActivitiesList = subActivitiesForSelected.filter((_, i) => i !== index);
+  
+      setSelectedActivities(updatedActivities);
+      setSelectedSubActivities(updatedSubActivities);
+      setSubActivitiesForSelected(updatedSubActivitiesList);
+    }
+  };
+  // const handleRemoveActivity = (index) => {
+  //   const updatedActivities = selectedActivities.filter((_, i) => i !== index);
+  //   const updatedSubActivities = selectedSubActivities.filter((_, i) => i !== index);
+    
+  //   setSelectedActivities(updatedActivities);
+  //   setSelectedSubActivities(updatedSubActivities);
+  // };
+
+  // const handleActivityChange = (e, index) => {
+  //   const activityId = e.target.value;
+  //   const activitySlug = mainActivities.find(act => act.mainActivityId === parseInt(activityId))?.mainActivitySlug;
+  
+  //   // Update selected activity (store activity_id)
+  //   const updatedActivities = [...selectedActivities];
+  //   updatedActivities[index] = activityId;
+  //   setSelectedActivities(updatedActivities);
+  
+  //   // Fetch sub-activities for the selected activity slug
+  //   const fetchSubActivities = async () => {
+  //     try {
+  //       const response = await axios.get(`${baseURL}/main-activities/${activitySlug}`);
   //       if (response?.status === 200) {
-  //         setAllSubActsInsideMainActsChosen([...allSubActsInsideMainActsChosen, response?.data?.data]);
-  //         toast.success(`( ${chosenActivity?.mainActivityName} ) Sub Activities Loaded Successfully.`, {
-  //           id: toastId,
-  //           duration: 2000
-  //         })
-  //       } else {
-  //         toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
-  //           id: toastId,
-  //           duration: 2000
-  //         });
-  //       };
-  //     };
-  //     subActsInsideCurrentMainActs();
-  //     setSelectValue('');
-  //   } else {
-  //     toast.error(`( ${chosenActivity?.mainActivityName} ) has already been selected`, {
-  //       id: toastId,
-  //       duration: 2000
-  //     });
+  //         const newSubActivities = response?.data?.data?.subActivities;
+  //         // Update sub-activities for the selected activity
+  //         const updatedSubActivities = [...subActivitiesForSelected];
+  //         updatedSubActivities[index] = newSubActivities;
+  //         setSubActivitiesForSelected(updatedSubActivities);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching sub-activities:', error);
+  //     }
   //   };
+  
+  //   if (activitySlug) {
+  //     fetchSubActivities();
+  //   }
   // };
-  // const handleDeleteMainActivity = (act) => {
-  //   setAllMainActivitiesChosen(allMainActivitiesChosen.filter(el => +el?.mainActivityId !== +act?.mainActivityId));
-  //   const deletedActivity = allMainActivitiesChosen.filter(el => +el?.mainActivityId === +act?.mainActivityId);
-  //   const subActsInsideDeletedActivity = async () => {
-  //     const response = await axios.get(`${baseURL}/main-activities/${deletedActivity[0].mainActivitySlug}`);
-  //     const subActivitiesInsideDeletedActivity = [...response?.data?.data?.subActivities];
-  //     setChosenSubActivities(chosenSubActivities.filter((subAct) =>
-  //       !subActivitiesInsideDeletedActivity.some(el => subAct.subActivityId === el.subActivityId)
-  //     ));
-  //   };
-  //   subActsInsideDeletedActivity();
-  //   setAllSubActsInsideMainActsChosen(
-  //     allSubActsInsideMainActsChosen.filter(el => +el?.mainActivityId !== +deletedActivity[0]?.mainActivityId)
-  //   );
+  
+  const handleActivityChange = (e, index) => {
+    const activityId = e.target.value;
+    const activitySlug = mainActivities.find(act => act.mainActivityId === parseInt(activityId))?.mainActivitySlug;
+  
+    // Update selected activity (store activity_id)
+    const updatedActivities = [...selectedActivities];
+    updatedActivities[index] = activityId;
+    setSelectedActivities(updatedActivities);
+  
+    // Fetch sub-activities for the selected activity slug
+    const fetchSubActivities = async () => {
+      try {
+        const response = await axios.get(`${baseURL}/main-activities/${activitySlug}`);
+        if (response?.status === 200) {
+          const newSubActivities = response?.data?.data?.subActivities;
+          // Update sub-activities for the selected activity
+          const updatedSubActivities = [...subActivitiesForSelected];
+          updatedSubActivities[index] = newSubActivities;
+          setSubActivitiesForSelected(updatedSubActivities);
+        }
+      } catch (error) {
+        console.error('Error fetching sub-activities:', error);
+      }
+    };
+  
+    if (activitySlug) {
+      fetchSubActivities();
+    }
+  };
+  // const handleSubActivityChange = (e, index) => {
+  //   const subActivityId = e.target.value;
+  
+  //   // Update selected sub-activity
+  //   const updatedSubActivities = [...selectedSubActivities];
+  //   updatedSubActivities[index] = subActivityId;
+  //   setSelectedSubActivities(updatedSubActivities);
   // };
-  // // getting SlectedArrOfSubActivities Logic
-  // const handleChangeSubActivity = (event) => {
-  //   const toastId = toast.loading('Loading Sub Categories , Please Wait !');
-  //   const chosenSubActivityArr = allSubActsInsideMainActsChosen?.map(el =>
-  //     el?.subActivities?.find(subAct => +subAct?.subActivityId === +event?.target?.value));
-  //   const chosenSubActivity = chosenSubActivityArr.find(el => el && el);
-  //   if (!chosenSubActivities?.find(el => chosenSubActivity?.subActivityId === +el?.subActivityId)) {
-  //     setChosenSubActivities([...chosenSubActivities, chosenSubActivity]);
-  //     toast.success(`( ${chosenSubActivity?.subActivityName} ) Added Successfully`, {
-  //       id: toastId,
-  //       duration: 2000
-  //     });
-  //   } else {
-  //     toast.error(`( ${chosenSubActivity?.subActivityName} ) were Added Before`, {
-  //       id: toastId,
-  //       duration: 2000
-  //     });
-  //   };
-  // };
-  // const handleDeleteSubActivity = (subAct) => {
-  //   setChosenSubActivities(chosenSubActivities.filter(el => +el?.subActivityId !== +subAct?.subActivityId));
-  // };
+  
+  const handleSubActivityChange = (e, index) => {
+    const subActivityId = e.target.value;
+    // Update selected sub-activity
+    const updatedSubActivities = [...selectedSubActivities];
+    updatedSubActivities[index] = subActivityId;
+    setSelectedSubActivities(updatedSubActivities);
+  };
+  
+//try-end
 
   // Getting DocumentsArray
   const [documents, setDocuments] = useState([]);
@@ -391,8 +461,6 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
     setValue('longitude', location.lng);
     setValue('latitude', location.lat);
     setValue('documents', documents);
-    setValue('sub_activity_id', chosenSubActivities.map(el => el?.subActivityId));
-    setValue('activity_id', allMainActivitiesChosen.map(el => el?.mainActivityId));
     setValue('company_main_type', currentBusinessTypes?.map(el => el?.name));
     if (watch('comfirm_policies') === true) {
       setValue('comfirm_policies', 1);
@@ -405,8 +473,6 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       setValue('is_benifical_owner', 0);
     };
   }, [documents,
-    chosenSubActivities,
-    allMainActivitiesChosen,
     currentBusinessTypes,
     watch('comfirm_policies'),
     watch('is_benifical_owner')
@@ -477,8 +543,8 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
           registeration_number: watch('registeration_number'),
           category_id: watch('category_id'),
           sub_category_id: watch('sub_category_id'),
-          activity_id: watch('activity_id'),
-          sub_activity_id: watch('sub_activity_id'),
+          activity_id: selectedActivities,
+          sub_activity_id: selectedSubActivities,
           industry_id: watch('industry_id'),
           website_link: watch('website_link'),
           documents: watch('documents'),
@@ -700,6 +766,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       clearErrors("password_confirmation");
     };
   }, [watch('password_confirmation')]);
+
   useEffect(() => {
     if (watch('employee_password') !== watch('employee_password_confirmation')) {
       setError('employee_password_confirmation', { message: 'Passwords do not match' });
@@ -707,7 +774,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       clearErrors("employee_password_confirmation");
     };
   }, [watch('employee_password_confirmation')]);
-console.log(citizenships);
+console.log(currentSubActivitiesInsideMainActivity);
 
   return (
     <>
@@ -882,7 +949,7 @@ console.log(citizenships);
                                 (<span className='errorMessage'>{errors.referral_code.message}</span>)
                               }
                             </div>
-                            <div className="col-lg-6 mb-4">
+                            {/* <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpindustry_id">
                                 Industry <span className="requiredStar">*</span>
                                 <i title="industry" className="bi bi-info-circle ms-1 cursorPointer"></i>
@@ -904,8 +971,10 @@ console.log(citizenships);
                                 errors.industry_id &&
                                 <span className="errorMessage">{errors.industry_id.message}</span>
                               }
-                            </div>
-                            <div className="col-lg-6 mb-4">
+                            </div> */}
+                            <div className="col-lg-12">
+                              <div className="row">
+                              <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpCompany_main_types">
                                 Business Types
                                 <span className="requiredStar"> * </span>
@@ -944,9 +1013,12 @@ console.log(citizenships);
                                 (<span className='errorMessage'>{errors.company_main_type.message}</span>)
                               }
                             </div>
+                              </div>
+                            </div>
+                            
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcategory_id">
-                                Business Main Category
+                                Business Activity
                                 <span className="requiredStar"> *</span>
                                 <i title="business category" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
@@ -956,7 +1028,7 @@ console.log(citizenships);
                                 className={`form-select signUpInput ${errors.category_id ? 'inputError' : ''}`}
                                 {...register('category_id')} >
                                 <option value="" disabled>
-                                  Select a Category
+                                  Select an Activity
                                 </option>
                                 {mainCategories?.map((cat) => (
                                   <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
@@ -972,7 +1044,7 @@ console.log(citizenships);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpsub_category_id">
-                                Business Sub-Category
+                                Business Sub-Activity
                                 <span className="requiredStar"> *</span>
                                 <i title="business subcategory" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
@@ -982,7 +1054,7 @@ console.log(citizenships);
                                   className={`form-select signUpInput ${errors.sub_category_id ? 'inputError' : ''}`}
                                   {...register('sub_category_id')} >
                                   <option value="" disabled>
-                                    Select a Sub-Category
+                                    Select a Sub-Activity
                                   </option>
                                   {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                                     <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
@@ -996,87 +1068,68 @@ console.log(citizenships);
                                 &&
                                 (<span className='errorMessage'>{errors.sub_category_id.message}</span>)
                               }
-                            </div>
-                            {/* <div className="col-lg-6 mb-4">
-                              <label htmlFor="signUpactivity_id">
-                                Business Main Activity
-                                <span className="requiredStar"> * </span>
-                                <span className="optional">(MultiChoice)</span>
-                              </label>
-                              <select
-                                id="signUpactivity_id"
-                                value={selectValue}
-                                className={`form-select signUpInput ${errors.activity_id ? 'inputError' : ''}`}
-                                onChange={handleChangeMainActivities}
-                              >
-                                <option value="" disabled>
-                                  Select a Activity
-                                </option>
-                                {mainActivities?.map((activity) => (
-                                  <option key={activity?.mainActivityId} value={activity?.mainActivityId}>
-                                    {activity?.mainActivityName}
-                                  </option>
-                                ))}
-                              </select>
-                              <div>
-                                {allMainActivitiesChosen.map((act) => (
-                                  <span className='chosen__choice' key={act?.mainActivityId}>
-                                    {act.mainActivityName}
-                                    <i
-                                      onClick={() => {
-                                        handleDeleteMainActivity(act);
-                                      }}
-                                      className="bi bi-trash chosen__choice-delete"
-                                    ></i>
-                                  </span>
-                                ))}
+                            </div>                           
+                            <div className="col-lg-12">
+                              <div className=''>
+                                <button type="button" onClick={handleAddActivity} className="btn btn-primary my-3">
+                                    Add More Activity & Sub-Activity
+                                  </button>
                               </div>
-                              {
-                                errors.activity_id
-                                &&
-                                (<span className='errorMessage'>{errors.activity_id.message}</span>)
-                              }
+                              {selectedActivities.map((_, index) => (
+                                <div key={index} className="row">
+                                  
+                                  <div className="col-lg-6 mb-4">
+                                    <label htmlFor={`activity_id_${index}`}>
+                                      More Activity
+                                      <span className="requiredStar"> *</span>
+                                    </label>
+                                    <select
+                                      id={`activity_id_${index}`}
+                                      className="form-select signUpInput"
+                                      value={selectedActivities[index]}
+                                      onChange={(e) => handleActivityChange(e, index)}
+                                    >
+                                      <option value="" disabled>Select an Activity</option>
+                                      {mainActivities?.map((act) => (
+                                        <option key={act?.mainActivityId} value={act?.mainActivityId}>
+                                          {act?.mainActivityName}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+
+                                  <div className="col-lg-6 mb-4">
+                                    <label htmlFor={`sub_activity_id_${index}`}>
+                                      More Sub-Activity
+                                      <span className="requiredStar"> *</span>
+                                    </label>
+                                    <select
+                                      id={`sub_activity_id_${index}`}
+                                      className="form-select signUpInput"
+                                      value={selectedSubActivities[index]}
+                                      onChange={(e) => handleSubActivityChange(e, index)}
+                                    >
+                                      <option value="" disabled>Select a Sub-Activity</option>
+                                      {subActivitiesForSelected[index]?.map((subCat) => (
+                                        <option key={subCat?.subActivityId} value={subCat?.subActivityId}>
+                                          {subCat?.subActivityName}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  <div className="col-lg-12 mb-2 d-flex justify-content-center">
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() => handleRemoveActivity(index)}
+                                  >
+                                    Delete
+                                  </button>
+                                  </div>
+                                  
+                                </div>
+                              ))}
                             </div>
-                            <div className="col-lg-6 mb-4">
-                              <label htmlFor="signUpsub_activity_id">
-                                Business Sub-Activity
-                                <span className="requiredStar"> * </span>
-                                <span className="optional">(MultiChoice)</span>
-                              </label>
-                              <select
-                                onChange={handleChangeSubActivity}
-                                value={selectValue}
-                                id="signUpsub_activity_id"
-                                className={`form-select signUpInput ${errors.sub_activity_id ? 'inputError' : ''}`}
-                              >
-                                <option value="" disabled>
-                                  Select a Sub-Activity
-                                </option>
-                                {allSubActsInsideMainActsChosen?.map(activity => activity?.subActivities?.map((subAct) =>
-                                  <option key={subAct?.subActivityId} value={subAct?.subActivityId}>
-                                    {subAct?.subActivityName}
-                                  </option>
-                                ))}
-                              </select>
-                              <div>
-                                {chosenSubActivities?.map((subAct) => (
-                                  <span className='chosen__choice' key={subAct?.subActivityId}>
-                                    {subAct.subActivityName}
-                                    <i
-                                      onClick={() => {
-                                        handleDeleteSubActivity(subAct);
-                                      }}
-                                      className="bi bi-trash chosen__choice-delete"
-                                    ></i>
-                                  </span>
-                                ))}
-                              </div>
-                              {
-                                errors.sub_activity_id
-                                &&
-                                (<span className='errorMessage'>{errors.sub_activity_id.message}</span>)
-                              }
-                            </div> */}
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpwebsite_link">
                                 Website Link
