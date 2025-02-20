@@ -317,7 +317,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanyMainCategory">Main Category</label>
+        <label htmlFor="dashboardCompanyMainCategory">Main Activity</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
               <input
@@ -334,7 +334,7 @@ console.log(watch('about_us'));
                 {...register('category_id')}
                 id="dashboardCompanyMainCategory"
               >
-                <option disabled value="">Select Category</option>
+                <option disabled value="">Select Activity</option>
                 {
                   mainCategories?.map(cat => (
                       <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>{cat?.mainCategoryName}</option>
@@ -350,7 +350,7 @@ console.log(watch('about_us'));
             }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanySubCategory">Sub-Category</label>
+        <label htmlFor="dashboardCompanySubCategory">Sub-Activity</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
               <input
@@ -367,7 +367,7 @@ console.log(watch('about_us'));
                 {...register('sub_category_id')}
                 id="dashboardCompanySubCategory"
               >
-                <option disabled value="">Select Sub-Category</option>
+                <option disabled value="">Select Sub-Activity</option>
                 {
                   subCategories?.map(cat => (
                       <option key={cat?.subCategoryId} value={cat?.subCategoryId}>{cat?.subCategoryName}</option>

@@ -304,7 +304,7 @@ export default function SearchInHome() {
                                     <LastMinuteCard
                                         productImage={cata?.media[0].image || 'N/A'}
                                         productName={cata?.title}
-                                        productLink={`/show-company/${cata?.company_slug}/catalog-details/${cata?.slug
+                                        productLink={`/${cata?.company_slug}/catalog-details/${cata?.slug
                                         }`}
                                         showCustomContent={true}
                                         borderColor={'rgba(0, 0, 0, 0.5)'}
@@ -335,7 +335,7 @@ export default function SearchInHome() {
                                     <LastMinuteCard
                                         productImage={serv?.image || 'N/A'}
                                         productName={serv?.title}
-                                        productLink={`/show-company/${serv?.company_slug}/service-details/${serv?.slug}`}
+                                        productLink={`/${serv?.company_slug}/service-details/${serv?.slug}`}
                                         showCustomContent={true}
                                         borderColor={'rgba(0, 0, 0, 0.5)'}
                                         onAddClick={''}

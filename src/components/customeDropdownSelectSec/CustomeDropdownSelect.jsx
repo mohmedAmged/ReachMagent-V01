@@ -1,116 +1,60 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./customeDropdownSelect.css";
+import React from "react";
+import Select from "react-select";
 
 const CustomDropdown = ({ countries, errors, setValue, inputName }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filteredCountries, setFilteredCountries] = useState(countries);
-    const dropdownRef = useRef(null);
+    console.log(countries);
+    
+    // Format data for react-select
+    const options = countries.map((country) => ({
+        value: country.phoneCode,
+        label: `${country.name} (${country.phoneCode})`,
+        flag: country.flag, // Store flag for custom display
+    }));
 
-    const handleSelect = (country) => {
-        setSelectedOption(country);
-        setIsOpen(false);
-        setValue(inputName, country?.phoneCode);
-        setSearchTerm(""); 
+    const handleChange = (selectedOption) => {
+        setValue(inputName, selectedOption.value);
     };
 
-    const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsOpen(false);
-        }
-    };
+    // Custom option rendering (adds country flag)
+    const customSingleValue = ({ data }) => (
+        <div className="">
+            <img src={data.flag} alt={data.label} className="dropdown-flag" style={{ width: 20, marginRight: 10 }} />
+            {data.label}
+        </div>
+    );
 
-    const handleSearchCode = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    useEffect(() => {
-        setFilteredCountries(
-            searchTerm.trim() === ""
-                ? countries // Reset to original countries if search term is empty
-                : countries.filter((country) =>
-                      country.name.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
+    const customOption = (props) => {
+        const { data, innerRef, innerProps } = props;
+        return (
+            <div ref={innerRef} {...innerProps} className="d-flex align-items-center p-2">
+                <img src={data.flag} alt={data.label} className="dropdown-flag" style={{ width: 20, marginRight: 10 }} />
+                {data.label}
+            </div>
         );
-    }, [searchTerm, countries]);
-
-    // useEffect(() => {
-    //     if (isOpen) {
-    //         setFilteredCountries(
-    //             countries.filter((country) =>
-    //                 country.name.toLowerCase().includes(searchTerm.toLowerCase())
-    //             )
-    //         );
-    //     }
-    // }, [isOpen, searchTerm, countries]);
+    };
 
     return (
-        <div className="custom-dropdown position-relative" ref={dropdownRef}>
-            {/* Selected Value */}
-            <div
-                className={`form-select d-flex align-items-center justify-content-between dropdown-toggle ${errors.phone_code ? "is-invalid" : ""}`}
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                {selectedOption ? (
+        <div>
+            <Select
+            
+                options={options}
+                onChange={handleChange}
+                placeholder="Select a country"
+                className={errors.phone_code ? "is-invalid" : ""}
+                getOptionLabel={(e) => (
                     <div className="d-flex align-items-center">
-                        <img src={selectedOption?.flag} alt="" className="dropdown-flag" />
-                        {selectedOption?.name} ({selectedOption?.phoneCode})
+                        <img src={e.flag} alt={e.label} className="dropdown-flag" style={{ width: 20, marginRight: 10 }} />
+                        {e.label}
                     </div>
-                ) : (
-                    "Select a country"
                 )}
-                {/* <i className="bi bi-chevron-down"></i> */}
-            </div>
-
-            {/* Dropdown Options */}
-            {isOpen && (
-                <div className="dropdown-container">
-                    {/* Search Box */}
-                    <div className="dropdown-search">
-                        <input
-                            type="text"
-                            placeholder="Search country"
-                            className="form-control"
-                            value={searchTerm}
-                            onChange={(e) => handleSearchCode(e.target.value)}
-                            autoFocus // Ensures immediate focus for smooth experience
-                        />
-                    </div>
-                    <ul className="dropdown-menu w-100 show">
-                        {filteredCountries.length > 0 ? (
-                            filteredCountries.map((country) => (
-                                <li
-                                    key={country.phoneCode}
-                                    className={`dropdown-item d-flex align-items-center ${selectedOption?.phoneCode === country.phoneCode ? "selected" : ""}`}
-                                    onClick={() => handleSelect(country)}
-                                >
-                                    <img src={country.flag} alt="" className="dropdown-flag" />
-                                    {country.name} ({country.phoneCode})
-                                    {selectedOption?.phoneCode === country.phoneCode && (
-                                        <i className="bi bi-check-circle checkmark"></i>
-                                    )}
-                                </li>
-                            ))
-                        ) : (
-                            <li className="dropdown-item text-muted">No results found</li>
-                        )}
-                    </ul>
-                </div>
-            )}
-
-            {/* Validation Error */}
+                components={{ SingleValue: customSingleValue, Option: customOption,  }} // Custom rendering
+                filterOption={(option, inputValue) =>
+                    option.data.label.toLowerCase().includes(inputValue.toLowerCase()) // 🔥 Filters by country name
+                }
+            />
             {errors.phone_code && <span className="text-danger">{errors?.phone_code.message}</span>}
         </div>
     );
 };
 
 export default CustomDropdown;
-
