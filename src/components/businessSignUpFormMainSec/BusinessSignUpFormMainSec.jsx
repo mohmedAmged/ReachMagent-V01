@@ -265,7 +265,7 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
   //   setSelectedSubActivities((prev) => [...prev, '']);
   // };
   const handleRemoveActivity = (index) => {
-    if (selectedActivities.length > 1) { // Ensure at least one row is left
+    if (selectedActivities.length > 0) { // Ensure at least one row is left
       const updatedActivities = selectedActivities.filter((_, i) => i !== index);
       const updatedSubActivities = selectedSubActivities.filter((_, i) => i !== index);
       const updatedSubActivitiesList = subActivitiesForSelected.filter((_, i) => i !== index);
