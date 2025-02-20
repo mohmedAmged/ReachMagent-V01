@@ -855,7 +855,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                 <span className="requiredStar"> *</span>
                                 <i title="01099558877" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
-                              <div className="row">
+                              <div className="row align-items-center">
                                 <div className="col-md-5 col-sm-12">
                                   <CustomDropdown
                                     countries={countries}

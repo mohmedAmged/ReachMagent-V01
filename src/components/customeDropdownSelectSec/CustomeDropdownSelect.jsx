@@ -36,7 +36,6 @@ const CustomDropdown = ({ countries, errors, setValue, inputName }) => {
     return (
         <div>
             <Select
-            
                 options={options}
                 onChange={handleChange}
                 placeholder="Select a country"
