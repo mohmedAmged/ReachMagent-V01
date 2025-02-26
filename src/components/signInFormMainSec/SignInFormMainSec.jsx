@@ -169,7 +169,7 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                                             value={'Login'}
                                         />
                                         {
-                                            loginType === 'user' &&
+                                            // loginType === 'user' &&
                                             <div className="resetPasswordNavigatinoLink text-end">
                                                 <NavLink className='gotoLoginLink' to='/forget-password'>Forget Password ?</NavLink>
                                             </div>
