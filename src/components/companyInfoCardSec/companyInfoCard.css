@@ -74,7 +74,8 @@
     margin-bottom: 15px;
 }
 .btn__companyActions{
-    width: 121px;
+    width: fit-content;
+    padding: 10px;
     height: 48px;
     border-radius: 6px;
     background: rgba(245, 248, 250, 1);
@@ -124,6 +125,9 @@
     background: var(--primary-white);
 }
 .hidebtn__companyActions{
+    display: block;
+}
+.Showbtn__companyActions{
     display: none;
 }
 
@@ -147,10 +151,10 @@
 }
 @media screen and (max-width: 992px) {
     .Showbtn__companyActions{
-        display: none !important;
+        display: block !important;
     }
     .hidebtn__companyActions{
-        display: block !important;
+        display: none !important;
     }
     /* .hidebtn__companyActions .companyinfo__subTit{
         color: #000 !important;

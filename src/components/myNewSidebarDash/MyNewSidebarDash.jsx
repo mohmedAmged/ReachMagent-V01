@@ -67,7 +67,7 @@ export default function MyNewSidebarDash({ token }) {
         fetchActivePackage( loginType);
         fetchSidebarStatus(loginType);
     }, [loginType, fetchActivePackage, fetchSidebarStatus]);
-    console.log(ShowStatus);
+    console.log(features);
     
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },

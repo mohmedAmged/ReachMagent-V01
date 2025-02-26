@@ -13,7 +13,7 @@ export const useActivePackageStore = create((set, get) => ({
     fetchActivePackage: async ( loginType) => {
         set({ loading: true, unAuth: false });
         try {
-            const response = await axios.get(`${baseURL}/${loginType}/active-company-package`, {
+            const response = await axios.get(`${baseURL}/${loginType}/active-company-package?t=${new Date().getTime()}`, {
                headers: Token ? { Authorization: `Bearer ${Token}` } : {}
             });
 

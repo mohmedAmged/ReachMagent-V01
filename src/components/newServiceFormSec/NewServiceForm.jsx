@@ -354,11 +354,17 @@ export default function NewServiceForm({ token }) {
             </div>
         </div>
         <div className="upload__image__btn">
+        <label htmlFor="tax">
+                Add Image
+                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                <br />
+                <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+            </label>
             <input
                 type="file"
                 name="image"
                 onChange={handleImageChange}
-                className="form-control"
+                className="form-control mt-2"
             />
         </div>
         {!id &&
