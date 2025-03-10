@@ -13,6 +13,7 @@ export default function SubCategoryMain() {
     const {subIndustryID} = useParams()   
      
     const [contentData, setContentData] = useState([]);
+    const [subIndustry, setSubIndustry] = useState([]);
     const [industries, setIndustries] = useState([]);
     const fetchAllIndustries = async () => {
         try {
@@ -32,9 +33,18 @@ export default function SubCategoryMain() {
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };
+    const fetchAllSubFromMain = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/show-sub-industries/${subIndustryID}?t=${new Date().getTime()}`);
+            setSubIndustry(response?.data?.data?.industry?.sub_industries);
+        } catch (error) {
+            toast.error(error?.response?.data.message || 'Something Went Wrong!');
+        }
+    };
     useEffect(() => {
         fetchAllContentData();
         fetchAllIndustries()
+        fetchAllSubFromMain()
     }, [subIndustryID]);
 
     useEffect(() => {
@@ -58,7 +68,7 @@ export default function SubCategoryMain() {
                             headText='All Industries'
                         />
                         <div className="otherCategory__display__handler h-100 d-flex w-100 mb-4">
-                            <AllCategorySideBar industries={industries} handleClose={handleClose}  show={show} />
+                            <AllCategorySideBar industries={industries} handleClose={handleClose} subIndustry={subIndustry}  show={show} />
                             <div className="subCategory__mainContent container">
                                 <SubCategoryMainContent handleShow={handleShow} contentData={contentData} />
                             </div>
