@@ -33,6 +33,17 @@ export default function SubCategoryMain() {
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
         }
     };
+    const fetchAllContentDatafromSub = async (subIndustrySlug) => {
+       if (subIndustrySlug) {
+        console.log(subIndustrySlug);
+            try {
+                const response = await axios.get(`${baseURL}/show-sub-industry/${subIndustrySlug}?t=${new Date().getTime()}`);
+                setContentData(response?.data?.data?.subIndustry);
+            } catch (error) {
+                toast.error(error?.response?.data.message || 'Something Went Wrong!');
+            }
+       }
+    };
     const fetchAllSubFromMain = async () => {
         try {
             const response = await axios.get(`${baseURL}/show-sub-industries/${subIndustryID}?t=${new Date().getTime()}`);
@@ -68,7 +79,9 @@ export default function SubCategoryMain() {
                             headText='All Industries'
                         />
                         <div className="otherCategory__display__handler h-100 d-flex w-100 mb-4">
-                            <AllCategorySideBar industries={industries} handleClose={handleClose} subIndustry={subIndustry}  show={show} />
+                            <AllCategorySideBar industries={industries} handleClose={handleClose} subIndustry={subIndustry}  show={show} fetchAllContentDatafromSub={fetchAllContentDatafromSub}
+                            fetchAllContentData={fetchAllContentData}
+                            />
                             <div className="subCategory__mainContent container">
                                 <SubCategoryMainContent handleShow={handleShow} contentData={contentData} />
                             </div>

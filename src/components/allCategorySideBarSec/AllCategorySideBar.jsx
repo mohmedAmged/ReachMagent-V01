@@ -3,13 +3,14 @@ import { Offcanvas } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import styles from './allCategorySideBar.module.css';
 
-export default function AllCategorySideBar({ industries, show, handleClose, subIndustry }) {
+export default function AllCategorySideBar({ industries, show, handleClose, subIndustry, fetchAllContentDatafromSub, fetchAllContentData }) {
     const { subIndustryID } = useParams();
     console.log(subIndustryID);
     console.log(subIndustry);
     const [selectedIndustry, setSelectedIndustry] = useState(null);
     const handleIndustryClick = (industryId) => {
         setSelectedIndustry((prev) => (prev === industryId ? null : industryId));
+        fetchAllContentData()
     };
     return (
         <div className=' position-relative'>
@@ -46,13 +47,15 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                 {selectedIndustry === el?.id && subIndustry?.length > 0 && (
                                     <div className={`ps-4 mb-3 ${styles.subIndustryContainer} link-underline`}>
                                         {subIndustry.map((sub) => (
-                                            <Link
+                                            <p
                                                 key={sub?.id}
                                                 // to={`/all-Industries/${el?.slug}/${sub?.slug}`}
-                                                className={styles.subIndustryItem}
+                                                onClick={()=>{fetchAllContentDatafromSub(sub?.slug)}}
+                                                className={`mb-2 ${styles.subIndustryItem}`}
+                                                style={{cursor:'pointer'}}
                                             >
                                                 {sub?.name}
-                                            </Link>
+                                            </p>
                                         ))}
                                     </div>
                                 )}
