@@ -20,6 +20,7 @@ import { NavLink } from 'react-router-dom';
 import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/CompanyTimezoneForm';
 import CompanySlugForm from '../../components/companySlugFormSec/CompanySlugForm';
 import CompanyDocumentForm from '../../components/comapnyDocumentsFormSec/CompanyDocumentForm';
+import CompanyAddNewIndustry from '../../components/companyAddNewIndustrySec/CompanyAddNewIndustry';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
@@ -267,7 +268,7 @@ console.log(company);
                                                     }
                                                     {activeItem === 'Company Industries'
                                                         &&
-                                                        <CompanyFollowIndustryFrom
+                                                        <CompanyAddNewIndustry
                                                             setUnAuth={setUnAuth}
                                                             token={token}
                                                         />
