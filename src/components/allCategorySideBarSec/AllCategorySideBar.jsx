@@ -33,21 +33,21 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                     onClick={() => handleIndustryClick(el?.id)}
                                 >
                                     <div className={styles.sidebar__menu__info}>
+                                        <i
+                                        className={`bi ${selectedIndustry === el?.id ? 'bi-chevron-down' : 'bi-chevron-right'}`}
+                                        ></i>
                                         <img src={el?.icon} alt="menu-img" />
                                         <h5>{el?.name}</h5>
-                                            <i
-                                            className={`bi ${selectedIndustry === el?.id ? 'bi-chevron-down' : 'bi-chevron-right'}`}
-                                            ></i>
+                                            
                                     </div>
-                                   
-                                        
                                 </Link>
 
                                 {/* Sub-Industries */}
                                 {selectedIndustry === el?.id && subIndustry?.length > 0 && (
-                                    <div className={`ps-4 mb-3 ${styles.subIndustryContainer} link-underline`}>
+                                    <div  className={`ps-4 mb-3 ${styles.subIndustryContainer} link-underline`}>
+                                        <ul>
                                         {subIndustry.map((sub) => (
-                                            <p
+                                            <li
                                                 key={sub?.id}
                                                 // to={`/all-Industries/${el?.slug}/${sub?.slug}`}
                                                 onClick={()=>{fetchAllContentDatafromSub(sub?.slug)}}
@@ -55,8 +55,9 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                                 style={{cursor:'pointer'}}
                                             >
                                                 {sub?.name}
-                                            </p>
+                                            </li>
                                         ))}
+                                        </ul>
                                     </div>
                                 )}
                             </div>

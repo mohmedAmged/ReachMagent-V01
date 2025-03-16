@@ -32,7 +32,7 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
             console.log('Navigating to /profile/followers');
             navigate(`/profile/followers`);
         }else if (target === 'new_industry') {
-            navigate(`/show-company/${id}`);
+            navigate(`/${id}`);
         }
          else {
             console.warn(`Unhandled target: ${target}`);
