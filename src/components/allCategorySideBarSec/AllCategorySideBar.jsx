@@ -23,7 +23,7 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                         {industries?.map((el) =>
                         {
                             const relatedSubIndustries = subIndustry?.filter(sub => sub.industryId === el.id);
-                             return(
+                            return(
                             <div key={el?.id}>
                                 {/* Industry Link */}
                                 <Link
@@ -34,7 +34,7 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                 >
                                     <div className={styles.sidebar__menu__info}>
                                         <i
-                                        className={`bi ${selectedIndustry === el?.id ? 'bi-chevron-down' : 'bi-chevron-right'}`}
+                                        className={`bi ${subIndustryID === el?.slug?.toString() ? 'bi-chevron-down' : 'bi-chevron-right'}`}
                                         ></i>
                                         <img src={el?.icon} alt="menu-img" />
                                         <h5>{el?.name}</h5>
@@ -43,7 +43,7 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                 </Link>
 
                                 {/* Sub-Industries */}
-                                {selectedIndustry === el?.id && subIndustry?.length > 0 && (
+                                {subIndustryID === el?.slug?.toString() && subIndustry?.length > 0 && (
                                     <div  className={`ps-4 mb-3 ${styles.subIndustryContainer} link-underline`}>
                                         <ul>
                                         {subIndustry.map((sub) => (
