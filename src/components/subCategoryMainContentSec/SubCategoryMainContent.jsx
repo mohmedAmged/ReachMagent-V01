@@ -5,8 +5,9 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import locationIcon from "../../assets/icons/Duotone.png";
 import userIcon from "../../assets/icons/Duotone3.png";
 import { Button } from 'react-bootstrap';
-export default function SubCategoryMainContent({ contentData, handleShow }) {
+export default function SubCategoryMainContent({ contentData, handleShow, allowedCountries, setFilterWithCountry, filterWithCountry }) {
 console.log(contentData);
+console.log(allowedCountries);
 
     return (
         <div className='subCategoryMainContent__handler mainContentAllCompanies__handler position-relative  mt-5'>
@@ -16,6 +17,32 @@ console.log(contentData);
                    filter Indusries
                 </Button>
             </div>
+            {
+                allowedCountries?.length !== 0 &&
+                <>
+                    <div className="catalog__new__input">
+                        <label htmlFor="shopFilterationtitle">
+                            Filter by Country
+                        </label>
+                        <select
+                            name="type"
+                            id="shopFilterationtitle"
+                            className="form-select"
+                            // value={}
+                            onChange={(e) => setFilterWithCountry(e.target.value)}
+                        >
+                            <option value="" disabled>Choose Country</option>
+                            {
+                                allowedCountries?.map((el)=>(
+                                    <option key={el?.id} value={el?.code}>
+                                        {el?.name}
+                                    </option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                </>
+            }
             {
                 contentData?.companies?.length !== 0 ?
                     <>

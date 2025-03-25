@@ -3,7 +3,7 @@ import { Offcanvas } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import styles from './allCategorySideBar.module.css';
 
-export default function AllCategorySideBar({ industries, show, handleClose, subIndustry, fetchAllContentDatafromSub, fetchAllContentData }) {
+export default function AllCategorySideBar({ industries, show, handleClose, subIndustry, fetchAllContentDatafromSub, fetchAllContentData, setFilterWithCountry }) {
     const { subIndustryID } = useParams();
     console.log(subIndustryID);
     console.log(subIndustry);
@@ -30,7 +30,11 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                     to={`/all-Industries/${el?.slug}`}
                                     className={`${styles.sidebar__menu} nav-link 
                                     ${subIndustryID === el?.slug?.toString() ? styles.sidebar__menu_active : ''}`}
-                                    onClick={() => handleIndustryClick(el?.id)}
+                                    onClick={() =>{
+                                         handleIndustryClick(el?.id)
+                                         setFilterWithCountry('')
+                                        }
+                                    }
                                 >
                                     <div className={styles.sidebar__menu__info}>
                                         <i
@@ -50,7 +54,11 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
                                             <li
                                                 key={sub?.id}
                                                 // to={`/all-Industries/${el?.slug}/${sub?.slug}`}
-                                                onClick={()=>{fetchAllContentDatafromSub(sub?.slug)}}
+                                                onClick={()=>{fetchAllContentDatafromSub(sub?.slug)
+                                                setFilterWithCountry('')
+                                                }
+                                                
+                                                }
                                                 className={`mb-2 ${styles.subIndustryItem}`}
                                                 style={{cursor:'pointer'}}
                                             >
