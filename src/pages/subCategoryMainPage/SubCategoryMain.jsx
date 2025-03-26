@@ -62,7 +62,9 @@ export default function SubCategoryMain() {
         fetchAllContentData();
         fetchAllIndustries()
         fetchAllSubFromMain()
-    }, [subIndustryID, filterWithCountry]);
+    }, [subIndustryID, filterWithCountry, setAllowedCountries]);
+
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -88,6 +90,7 @@ export default function SubCategoryMain() {
                             <AllCategorySideBar industries={industries} handleClose={handleClose} subIndustry={subIndustry}  show={show} fetchAllContentDatafromSub={fetchAllContentDatafromSub}
                             fetchAllContentData={fetchAllContentData}
                             setFilterWithCountry={setFilterWithCountry}
+                            filterWithCountry={filterWithCountry}
                             />
                             <div className="subCategory__mainContent container">
                                 <SubCategoryMainContent handleShow={handleShow} contentData={contentData} allowedCountries={allowedCountries} setFilterWithCountry={setFilterWithCountry} filterWithCountry={filterWithCountry}/>

@@ -8,7 +8,6 @@ import { Button } from 'react-bootstrap';
 export default function SubCategoryMainContent({ contentData, handleShow, allowedCountries, setFilterWithCountry, filterWithCountry }) {
 console.log(contentData);
 console.log(allowedCountries);
-
     return (
         <div className='subCategoryMainContent__handler mainContentAllCompanies__handler position-relative  mt-5'>
             <div className="d-flex justify-content-end d-md-none">
@@ -21,12 +20,11 @@ console.log(allowedCountries);
                 allowedCountries?.length !== 0 &&
                 <>
                     <div className="catalog__new__input">
-                        <label htmlFor="shopFilterationtitle">
+                        <label htmlFor="filterByCountry">
                             Filter by Country
                         </label>
                         <select
-                            name="type"
-                            id="shopFilterationtitle"
+                            id="filterByCountry"
                             className="form-select"
                             // value={}
                             onChange={(e) => setFilterWithCountry(e.target.value)}
