@@ -574,13 +574,11 @@ export default function SingleCompany({ token }) {
                                 :
                                 ''
                         }
-
-
                         {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
 
 
                         <SingleCompanyNewsSec companyId={companyId} token={token} />
-                        {/* <SingleCompanyAffiliate /> */}c
+                        {/* <SingleCompanyAffiliate /> */}
                         {
                             token &&
                             <BookAppointMentFrom show={show} handleClose={handleClose} token={token} companyId={companyId} company={showCompaniesQuery?.data} />

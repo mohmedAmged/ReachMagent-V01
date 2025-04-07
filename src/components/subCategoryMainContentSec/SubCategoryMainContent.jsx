@@ -60,6 +60,7 @@ console.log(allowedCountries);
                                             <h5 className="mb-2">
                                                 <NavLink to={`/${el?.companySlug}`} target="_blank" className={'nav-link'}>
                                                 {el?.companyName}
+                                                
                                                 </NavLink>
                                             </h5>
                                             <div className="companySubInfo mb-2">
@@ -85,7 +86,12 @@ console.log(allowedCountries);
                                     </div> */}
                                             </div>
                                             <div className="companyDescrip mb-2">
-                                                <p>{el?.companyAboutUs}</p>
+                                                <p>
+                                                    {/* {el?.companyAboutUs} */}
+                                                    {el?.companyAboutUs?.length > 200
+                                                    ? `${el.companyAboutUs.slice(0, 200)}...`
+                                                    : el.companyAboutUs}
+                                                </p>
                                             </div>
                                             <div className="companyMainCountry">
                                                 {/* <img src={flag} alt="flag" /> */}
