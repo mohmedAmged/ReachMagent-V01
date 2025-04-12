@@ -90,8 +90,8 @@ export default function MyNewSidebarDash({ token }) {
         { title: "Previous Work", link: "/profile/previous-work", icon: icon4 },
         ShowStatus === 'all' && 
         { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
-        ShowStatus === 'all' && 
-        { title: "Collections", link: "/profile/product-order", icon: icon4 },
+        // ShowStatus === 'all' && 
+        // { title: "Collections", link: "/profile/product-order", icon: icon4 },
         ShowStatus === 'all' && 
         { title: "FAQS", link: "/profile/faqs", icon: icon5 },
         ShowStatus === 'all' && 
