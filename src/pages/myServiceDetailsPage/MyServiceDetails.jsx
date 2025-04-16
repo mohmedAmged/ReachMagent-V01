@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -18,25 +18,84 @@ export default function MyServiceDetails({ token }) {
     const [addedPreferences, setAddedPreferences] = useState([]);
 
     const { currentService, loading, fetchService } = useServiceStore();
+    const optionsRef = useRef(null);
 console.log(currentService);
 
     useEffect(() => {
         fetchService(servId, token);
     }, [servId, token, loginType, fetchService]);
 
+
+    const [activeItem, setActiveItem] = useState('About');
+    
+    
+    
+    const handleItemClick = (itemName) => {
+        setActiveItem(itemName);
+        if (itemName === 'Options' && optionsRef.current) {
+            optionsRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    // const handleAddProduct = (product) => {
+    //     const preferences = Object.values(addedPreferences);
+    //     const addedProduct = {
+    //         type:  product?.type,
+    //         item_id: `${product?.id}`,
+    //         preferences
+
+    //     };
+    //     (async () => {
+    //         const toastId = toast.loading('Loading...');
+    //         await axios.post(`${baseURL}/user/add-item-to-quotation-cart?t=${new Date().getTime()}`,
+    //             addedProduct
+    //             , {
+    //                 headers: {
+    //                     'Content-type': 'application/json',
+    //                     'Accept': 'application/json',
+    //                     Authorization: `Bearer ${token}`
+    //                 }
+    //             })
+    //             .then((response) => {
+    //                 toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
+    //                     id: toastId,
+    //                     duration: 1000
+    //                 });
+    //                 fetchService(servId, token);
+    //             })
+    //             .catch((error) => {
+    //                 const errorMessage =
+    //                     error?.response?.data?.message || 'Something went wrong!';
+    //                 const errorDetails =
+    //                     error?.response?.data?.errors || {}; 
+    //                 toast.error(errorMessage, {
+    //                     id: toastId,
+    //                     duration: 4000,
+    //                 });
+    //                 if (errorDetails.preferences && Array.isArray(errorDetails.preferences)) {
+    //                     errorDetails.preferences.forEach((err) => {
+    //                         toast.error(err, {
+    //                             duration: 4000,
+    //                         });
+    //                     });
+    //                 }
+    //             });
+    //     })();
+    // };
+
     const handleAddProduct = (product) => {
         const preferences = Object.values(addedPreferences);
         const addedProduct = {
-            type:  product?.type,
+            type: product?.type,
             item_id: `${product?.id}`,
             preferences
-
         };
+
         (async () => {
             const toastId = toast.loading('Loading...');
             await axios.post(`${baseURL}/user/add-item-to-quotation-cart?t=${new Date().getTime()}`,
-                addedProduct
-                , {
+                addedProduct,
+                {
                     headers: {
                         'Content-type': 'application/json',
                         'Accept': 'application/json',
@@ -44,47 +103,41 @@ console.log(currentService);
                     }
                 })
                 .then((response) => {
-                    toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
+                    toast.success(response?.data?.message || 'Added Successfully!', {
                         id: toastId,
                         duration: 1000
                     });
                     fetchService(servId, token);
                 })
                 .catch((error) => {
-                    // Handle error response
-                    const errorMessage =
-                        error?.response?.data?.message || 'Something went wrong!';
-                    const errorDetails =
-                        error?.response?.data?.errors || {}; // Object containing validation errors
-                    
-                    // Show the primary error message
+                    const errorMessage = error?.response?.data?.message || 'Something went wrong!';
+                    const errorDetails = error?.response?.data?.errors || {};
+
                     toast.error(errorMessage, {
                         id: toastId,
-                        duration: 3000,
+                        duration: 4000,
                     });
-        
-                    // Display specific validation errors (e.g., from preferences)
+
                     if (errorDetails.preferences && Array.isArray(errorDetails.preferences)) {
                         errorDetails.preferences.forEach((err) => {
-                            toast.error(err, {
-                                duration: 3000,
-                            });
+                            toast.error(err, { duration: 4000 });
                         });
+
+                        setActiveItem('Options');
+                        setTimeout(() => {
+                            if (optionsRef.current) {
+                                optionsRef.current.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }, 200);
                     }
                 });
         })();
     };
-
-     const [activeItem, setActiveItem] = useState('About');
-    
-             const items = [
-            { name: 'About', active: activeItem === 'About' },
-            { name: 'Options', active: activeItem === 'Options' },
-            ];
-    
-            const handleItemClick = (itemName) => {
-                setActiveItem(itemName);
-            };
+     
+    const items = [
+        { name: 'About', active: activeItem === 'About' },
+        { name: 'Options', active: activeItem === 'Options' },
+        ];
 
     console.log(currentService);
     
@@ -153,6 +206,8 @@ console.log(currentService);
                                                 </button>
                                             ) : (
                                                 <NavLink
+                                                onClick={() => {
+                                                    Cookies.set('currentCompanyRequestedQuote', currentService?.company_slug);}}
                                                     to={`/${currentService?.company_name}/request-quote`}
                                                     target='_blank'
                                                     className={'nav-link'}
@@ -223,8 +278,8 @@ console.log(currentService);
                                 }
                                 {
                                     activeItem === 'Options' && 
-                                    <>
-                                    <div className='productDetails__content mb-5 mt-4'>
+                                    
+                                    <div ref={optionsRef} className='productDetails__content mb-5 mt-4'>
                                      {
                                         currentService?.options?.map((option)=>(
                                             <div className='fw-medium text-capitalize fs-4'>
@@ -263,7 +318,7 @@ console.log(currentService);
                                      {/* <p className='mt-3 mb-4 fs-5'>     {currentCatalog?.options}
                                      </p> */}
                                      </div>
-                                    </>
+                                    
                                 }
                             </Col>
                         </Row>

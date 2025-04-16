@@ -44,7 +44,7 @@ export default function SingleCompanyQuote({ token }) {
         file: []
     });
     const companyIdWantedToHaveQuoteWith = Cookies.get('currentCompanyRequestedQuote');
-    console.log(companyIdWantedToHaveQuoteWith);
+
     
     const [distinationData, setDistinationData] = useState({
         include_shipping: false,
@@ -145,6 +145,7 @@ export default function SingleCompanyQuote({ token }) {
         (async () => {
             setloadingCart(true);
             setRequestIntries({ type: '', category_id: '', sub_category_id: '', title: '' });
+            
             const toastId = toast.loading('Loading...');
             const res = await fetch(`${baseURL}/user/reset-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`
                 , {
@@ -161,6 +162,21 @@ export default function SingleCompanyQuote({ token }) {
                     id: toastId,
                     duration: 1000
                 });
+                setDistinationData({
+                    include_shipping: false,
+                    include_insurance: false,
+                    country_id: '',
+                    city_id: '',
+                    area_id: '',
+                    type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
+                    address: '',
+                    longitude: '',
+                    latitude: '',
+                    currency: '',
+                    request_by_notes:'' 
+                });
+                setCurrCurrency('')
+                console.log(distinationData);
             } else {
                 toast.error(`${response?.message || 'Error!'}`, {
                     id: toastId,
@@ -202,63 +218,176 @@ export default function SingleCompanyQuote({ token }) {
                 })
         })();
     };
+console.log(cart);
 
+    // const handleFormSubmit = (e) => {
+    //     e.preventDefault();
+    //     (async () => {
+    //         setloadingSubmit(true);
+    
+    //         const data = {
+    //             ...distinationData,
+    //             include_shipping: distinationData?.include_shipping ? 'yes' : 'no',
+    //             include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
+    //         };
+    
+    //         const toastId = toast.loading('Loading...');
+    
+    //         await axios.post(
+    //             `${baseURL}/user/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+    //             data,
+    //             {
+    //                 headers: {
+    //                     'Content-type': 'application/json',
+    //                     'Accept': 'application/json',
+    //                     Authorization: `Bearer ${token}`
+    //                 }
+    //             }
+    //         )
+    //         .then((response) => {
+    //             setDistinationData({
+    //                 include_shipping: false,
+    //                 include_insurance: false,
+    //                 country_id: '',
+    //                 city_id: '',
+    //                 area_id: '',
+    //                 type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
+    //                 address: '',
+    //                 longitude: '',
+    //                 latitude: '',
+    //                 currency: '',
+    //             });
+    
+    //             setCart([]);
+    //             setCurrCurrency('');
+    
+    //             toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
+    //                 id: toastId,
+    //                 duration: 1000
+    //             });
+    
+    //             console.log(distinationData);
+    //         })
+    //         .catch(error => {
+    //             const res = error?.response;
+    //             let message = 'Error!';
+    
+    //             if (res?.status === 422 && res?.data?.errors) {
+    //                 const errors = res.data.errors;
+    //                 message = Object.values(errors).flat().join('\n');
+    //             } else if (res?.data?.message) {
+    //                 message = res.data.message;
+    //             }
+    
+    //             toast.error(message, {
+    //                 id: toastId,
+    //                 duration: 4000
+    //             });
+    
+    //             console.log(distinationData);
+    //         });
+    
+    //         setloadingSubmit(false);
+    //     })();
+    // };
+    
     const handleFormSubmit = (e) => {
         e.preventDefault();
         (async () => {
             setloadingSubmit(true);
+    
             const data = {
-                ...distinationData
-                , include_shipping: distinationData?.include_shipping ? 'yes' : 'no'
-                , include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
+                ...distinationData,
+                include_shipping: distinationData?.include_shipping ? 'yes' : 'no',
+                include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
             };
+    
             const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/user/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-                data, {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
+    
+            await axios.post(
+                `${baseURL}/user/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                data,
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            })
-                .then((response) => {
-                    setDistinationData({
-                        include_shipping: false,
-                        include_insurance: false,
-                        country_id: '',
-                        city_id: '',
-                        area_id: '',
-                        type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
-                        address: '',
-                        longitude: '',
-                        latitude: '',
-                        currency: '', 
-                    });
-                    setCart([]);
-                    toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                console.log(distinationData);
-
-                })
-                
-                .catch(error => {
-                    toast.error(`${error?.response?.data?.message || 'Error!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                console.log(distinationData);
-
+            )
+            .then((response) => {
+                setDistinationData({
+                    include_shipping: false,
+                    include_insurance: false,
+                    country_id: '',
+                    city_id: '',
+                    area_id: '',
+                    type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
+                    address: '',
+                    longitude: '',
+                    latitude: '',
+                    currency: '',
                 });
+    
+                setCart([]);
+                setCurrCurrency('');
+    
+                toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
+                    id: toastId,
+                    duration: 1000
+                });
+    
+                console.log(distinationData);
+            })
+            .catch(error => {
+                const res = error?.response;
+                let message = 'Error!';
+    
+                if (res?.status === 422 && res?.data?.errors) {
+                    const errors = res.data.errors;
+                    if (
+                        errors?.include_shipping &&
+                        errors.include_shipping.includes("Cannot Request Quotaiton Include Shipping")
+                    ) {
+                        message = "Request for quotation related to services (only) cannot include shipping";
+                    } else {
+                        message = Object.values(errors).flat().join('\n');
+                    }
+    
+                } else if (res?.data?.message) {
+                    message = res.data.message;
+                }
+    
+                toast.error(message, {
+                    id: toastId,
+                    duration: 7000
+                });
+    
+                console.log(distinationData);
+            });
+    
             setloadingSubmit(false);
         })();
     };
-
+    
     const handleCheckboxChange = (e) => {
         setDistinationData({ ...distinationData, [e.target.name]: e.target.checked });
     };
-
+// const handleDeleteQuoteation =()=>{
+//     handleResetCurrentQuotation()
+//     setDistinationData({
+//         include_shipping: false,
+//         include_insurance: false,
+//         country_id: '',
+//         city_id: '',
+//         area_id: '',
+//         type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
+//         address: '',
+//         longitude: '',
+//         latitude: '',
+//         currency: '', 
+//     })
+// }
     const handleCustomProductChange = (e) => {
         const { name, value } = e.target;
         setCustomProduct(prevState => ({
@@ -344,12 +473,14 @@ export default function SingleCompanyQuote({ token }) {
         })();
     };
 
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
         }, 500);
     }, [loading]);
 console.log(currentProd);
+// const hasNoCatalog = cart?.some(item => item.item.type === 'catalog');
 
     return (
         <>
@@ -704,6 +835,7 @@ console.log(currentProd);
                                         </div>
                                     </div>
                                 }
+                               { 
                                 <div className="col-12">
                                     <div className="quotaionCheckInputs__handler mt-5">
                                         <div className="form-check">
@@ -739,12 +871,13 @@ console.log(currentProd);
                                         }
                                     </div>
                                 </div>
-                                {distinationData?.include_shipping && (
+}
+                                { distinationData?.include_shipping && (
                                     <div className="col-12">
                                         <DestinationForm isOneClickQuotation={false} countries={countries} distinationData={distinationData} setDistinationData={setDistinationData} />
                                     </div>
                                 )}
-
+                            
                                 <div className="col-12">
                                     <div className="customizationQuote__handler">
                                         <h3 className='text-capitalize customizationHead'>
