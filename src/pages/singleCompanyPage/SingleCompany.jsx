@@ -22,6 +22,8 @@ import CompanyMediaCard from '../../components/companyMediaCardSec/CompanyMediaC
 import BookAppointMentFrom from '../../components/bookAppointMentFrom/BookAppointMentFrom'
 import PrevWorkCard from '../../components/prevWorkCard/PrevWorkCard'
 import { usePrevWorkStore } from '../../store/AllPrevWorkStore'
+import axios from 'axios'
+import { baseURL } from '../../functions/baseUrl'
 
 export default function SingleCompany({ token }) {
     const [loading, setLoading] = useState(true);
@@ -102,6 +104,27 @@ export default function SingleCompany({ token }) {
     //     { name: 'Partners', active: activeItem === 'Partners' },
     // ];
 
+    const [newData, setNewdata] = useState([])
+    const fetchCompanyPosts = async () => {
+      try {
+        if (companyId) {
+            const response = await axios.get(`${baseURL}/company-posts/${companyId}?t=${new Date().getTime()}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+            setNewdata(response?.data?.data?.posts);
+        }
+        
+      } catch (error) {
+        // toast.error(error?.response?.data?.message);
+      };
+    };
+  
+    useEffect(() => {
+      fetchCompanyPosts();
+    }, []);
+    
     const items = [
         {
             name: 'Overview',
@@ -137,6 +160,12 @@ export default function SingleCompany({ token }) {
             active: activeItem === 'Previous Work',
             render: companyPrevWorks?.data?.pervious_works?.pervious_works?.length > 0
         },
+        {
+            name: 'Insights',
+            active: activeItem === 'Insights',
+            render: newData?.length > 0
+        },
+        
     ].filter(item => item.render !== false);
 
     const handleItemClick = (itemName) => {
@@ -148,8 +177,8 @@ export default function SingleCompany({ token }) {
             setLoading(false);
         }, 500);
     }, [loading]);
-    console.log(showCompaniesQuery?.data?.company?.companyServices);
-    
+    console.log(showCompaniesQuery?.data?.company);
+
     return (
         <>
             {
@@ -577,7 +606,7 @@ export default function SingleCompany({ token }) {
                         {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
 
 
-                        <SingleCompanyNewsSec companyId={companyId} token={token} />
+                        <SingleCompanyNewsSec newData={newData} companyId={companyId} token={token} />
                         {/* <SingleCompanyAffiliate /> */}
                         {
                             token &&
