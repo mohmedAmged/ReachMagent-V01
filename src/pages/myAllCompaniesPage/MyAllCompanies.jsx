@@ -309,7 +309,14 @@ console.log(companies);
                                                 <div className="companySubInfo mb-2">
                                                     <div className="subInfoItem">
                                                         <img src={userIcon} alt="user-icon" />
-                                                        <span>{el?.companyIndustries[0]?.industryName}</span>
+                                                        {/* <span>{el?.companyIndustries[0]?.industryName}</span> */}
+                                                        {
+                                                        el?.companyIndustries?.length > 0 ? (
+                                                            <span>{el.companyIndustries.map(i => i?.industryName).join(', ')}</span>
+                                                        ) : (
+                                                            <span>{el?.companyCategory || 'Not specified'}</span>
+                                                        )
+                                                        }
                                                     </div>
                                                     <div className="subInfoItem">
                                                         <img src={locationIcon} alt="location-icon" />

@@ -66,7 +66,12 @@ console.log(allowedCountries);
                                             <div className="companySubInfo mb-2">
                                                 <div className="subInfoItem">
                                                     <img src={userIcon} alt="locateion-icon" />
-                                                    <span>{el?.companySubCategory}</span>
+                                                    {/* <span>{el?.companySubCategory}</span> */}
+                                                    {
+
+    <span>{el.companyIndustries.map(i => i?.industryName).join(', ')}</span>
+  
+}
                                                 </div>
                                                 <div className="subInfoItem">
                                                     <img

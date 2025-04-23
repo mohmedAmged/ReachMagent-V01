@@ -39,7 +39,7 @@ console.log(newData);
   return (
     <>
       {
-        newData.length > 0 && (
+        newData?.length > 0 && (
           <>
             <HeaderOfSec
               secHead='Companies Insights'

@@ -231,7 +231,14 @@ export default function SearchInHome() {
                                                 <div className="companySubInfo mb-2">
                                                     <div className="subInfoItem">
                                                         <img src={userIcon} alt="locateion-icon" />
-                                                        <span>{el?.companyIndustries[0]?.industryName || 'N/A'}</span>
+                                                        {/* <span>{el?.companyIndustries[0]?.industryName || 'N/A'}</span> */}
+                                                        {
+                                                        el?.companyIndustries?.length > 0 ? (
+                                                            <span>{el.companyIndustries.map(i => i?.industryName).join(', ')}</span>
+                                                        ) : (
+                                                            <span>{el?.companyCategory || 'Not specified'}</span>
+                                                        )
+                                                        }
                                                     </div>
                                                     <div className="subInfoItem">
                                                         <img
