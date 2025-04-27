@@ -858,11 +858,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <div className="row align-items-center">
                                 <div className="col-md-5 col-sm-12">
                                   <CustomDropdown
-                                    countries={countries}
-                                    setValue={setValue}
-                                    errors={errors}
-                                    inputName={'phone_one_code'}
-                                  />
+                                  optionsData={countries}
+                                  setValue={setValue}
+                                  errors={errors}
+                                  inputName="phone_one_code"
+                                  placeholder="Select a country"
+                                  isFlagDropdown={true}
+                                />
                                 </div>
                                 <div className="col-md-7 col-sm-12">
                                   <input
@@ -888,12 +890,14 @@ console.log(currentSubActivitiesInsideMainActivity);
                               </label>
                               <div className="row">
                                 <div className="col-md-5 col-sm-12">
-                                  <CustomDropdown
-                                    countries={countries}
-                                    setValue={setValue}
-                                    errors={errors}
-                                    inputName={'phone_two_code'}
-                                  />
+                                   <CustomDropdown
+                                  optionsData={countries}
+                                  setValue={setValue}
+                                  errors={errors}
+                                  inputName="phone_two_code"
+                                  placeholder="Select a country"
+                                  isFlagDropdown={true}
+                                />
                                 </div>
                                 <div className="col-md-7 col-sm-12">
                                   <input
@@ -1426,12 +1430,14 @@ console.log(currentSubActivitiesInsideMainActivity);
                               </label>
                               <div className="row">
                                 <div className="col-md-5 col-sm-12">
-                                <CustomDropdown
-                                countries={countries}
-                                setValue={setValue}
-                                errors={errors}
-                                inputName={'employee_phone_code'}
-                              />
+                              <CustomDropdown
+                                  optionsData={countries}
+                                  setValue={setValue}
+                                  errors={errors}
+                                  inputName="employee_phone_code"
+                                  placeholder="Select a country"
+                                  isFlagDropdown={true}
+                                />
                                 </div>
                                 <div className="col-md-7 col-sm-12">
                                   <input

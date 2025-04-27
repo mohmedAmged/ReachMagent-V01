@@ -385,12 +385,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           </label>
                           <div className="row">
                             <div className="col-md-5 col-sm-12">
-                              <CustomDropdown
-                                countries={countries}
-                                setValue={setValue}
-                                errors={errors}
-                                inputName={'phone_code'}
-                              />
+                            <CustomDropdown
+                              optionsData={countries}
+                              setValue={setValue}
+                              errors={errors}
+                              inputName="phone_code"
+                              placeholder="Select a country"
+                              isFlagDropdown={true}
+                            />
                             </div>
                             <div className="col-md-7 col-sm-12">
                               <input
@@ -417,12 +419,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           </label>
                           <div className="row">
                             <div className="col-md-5 col-sm-12">
-                              <CustomDropdown
-                                countries={countries}
-                                setValue={setValue}
-                                errors={errors}
-                                inputName={'phone_code'}
-                              />
+                            <CustomDropdown
+                              optionsData={countries}
+                              setValue={setValue}
+                              errors={errors}
+                              inputName="phone_code"
+                              placeholder="Select a country"
+                              isFlagDropdown={true}
+                            />
                             </div>
                             <div className="col-md-7 col-sm-12">
                               <input

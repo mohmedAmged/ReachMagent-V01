@@ -6,6 +6,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
 import MyLoader from "../../components/myLoaderSec/MyLoader";
 import { useCompaniesStore } from "../../store/FIlterCompanies";
+import CustomDropdown from "../../components/customeDropdownSelectSec/CustomeDropdownSelect";
 
 export default function MyAllCompanies() {
     const [loading, setLoading] = useState(true);
@@ -134,7 +135,7 @@ export default function MyAllCompanies() {
             scrollToTop(500);
         }
     };
-console.log(companies);
+console.log(uniqueAllowedCompNames);
 
     return (
         <>
@@ -180,8 +181,8 @@ console.log(companies);
                             </div>
                         </div>
                         <div className="sidebarItemFilter">
-                            <div className="catalog__new__input">
-                                <label htmlFor="shopFilterationcompany">
+                            <div className="catalog__new__input mb-3">
+                                {/* <label htmlFor="shopFilterationcompany">
                                     Filter by Company
                                 </label>
                                 <select
@@ -199,7 +200,18 @@ console.log(companies);
                                             {company}
                                         </option>
                                     ))}
-                                </select>
+                                </select> */}
+                                <label htmlFor="shopFilterationcompany">
+                                    Filter by Company
+                                </label>
+                                <CustomDropdown
+                                    optionsData={uniqueAllowedCompNames}
+                                    handleInputChange={handleInputChange}
+                                    inputName="name" 
+                                    value={formData?.name}
+                                    placeholder="Select a company"
+                                    isFlagDropdown={false}
+                                />
                             </div>
                         </div>
                         <div className="sidebarItemFilter">
