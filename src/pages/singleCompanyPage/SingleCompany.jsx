@@ -243,6 +243,7 @@ export default function SingleCompany({ token }) {
                                                                     productLink={`/${companyId}/service-details/${el?.serviceSlug}`}
                                                                     borderColor={'rgba(0, 0, 0, 0.5)'}
                                                                     onAddClick={''}
+                                                                    productCatgeory={el?.serviceCategory}
                                                                 />
                                                             </SwiperSlide>
                                                         )
@@ -301,6 +302,7 @@ export default function SingleCompany({ token }) {
                                                                 showCustomContent={true}
                                                                 borderColor={'rgba(0, 0, 0, 0.5)'}
                                                                 onAddClick={''}
+                                                                productCatgeory={el?.catalogCategory}
                                                             />
                                                         </SwiperSlide>
                                                     )

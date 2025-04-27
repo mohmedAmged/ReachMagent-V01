@@ -316,6 +316,10 @@ export default function SearchInHome() {
                                         showCustomContent={true}
                                         borderColor={'rgba(0, 0, 0, 0.5)'}
                                         onAddClick={''}
+                                        showMoreDetails={true}
+                                        productCatgeory={cata?.category}
+                                        productCompany={cata?.company_name}
+                                        productCompanySlug={cata?.company_slug}
                                     />
                                 </div>
                             ))
@@ -346,6 +350,10 @@ export default function SearchInHome() {
                                         showCustomContent={true}
                                         borderColor={'rgba(0, 0, 0, 0.5)'}
                                         onAddClick={''}
+                                        showMoreDetails={true}
+                                        productCatgeory={serv?.category}
+                                        productCompany={serv?.company_name}
+                                        productCompanySlug={serv?.company_slug}
                                     />
                                 </div>
                             ))
