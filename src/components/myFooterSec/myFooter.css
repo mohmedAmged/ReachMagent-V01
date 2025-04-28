@@ -1,5 +1,6 @@
 .myFooterSec__handler{
     background: rgba(6, 127, 173, 0.15);
+    /* background: var(--main-blue-color); */
     padding: 60px 0;
 }
 .myFooterSec__handler .footer__icons{

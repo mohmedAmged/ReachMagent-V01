@@ -50,7 +50,7 @@ console.log(productCompanySlug);
                             scrollToTop();
                         }}>
                             <h3 className='text-capitalize' title={productName}> 
-                                {productName.length > 20 ? `${productName.slice(0, 25)}...` : productName}{' '}({productCatgeory})
+                                {productName.length > 20 ? `${productName.slice(0, 25)}...` : productName}
                                 {/* {productName} */}
                             </h3>
 
