@@ -306,7 +306,7 @@ export default function MyCatalogDetails({ token }) {
                                     }
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                        <NavLink target='_blanck' to={`/${currentCatalog?.company_slug}`}>
-                                        <span style={{textDecoration:'underline', color:'rgba(6, 127, 173, 1)'}}>View Company Profile</span>
+                                        <span style={{textDecoration:'underline', color:'#000'}}>View Company Profile</span>
                                        </NavLink>
                                     </p>
                                 </div>

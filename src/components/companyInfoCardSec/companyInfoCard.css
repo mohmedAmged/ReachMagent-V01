@@ -117,12 +117,13 @@
     background: var(--primary-white);
 }
 .btnColoredBlue.terquase{
-    background: var(--main-turquoise);
+    background: var(--primary-white);
     border: 1px solid var(--main-turquoise);
+    color: var(--main-turquoise);
 }
 .btnColoredBlue.terquase:hover{
-    color: var(--main-turquoise);
-    background: var(--primary-white);
+    color: var(--primary-white);
+    background: var(--main-turquoise);
 }
 .hidebtn__companyActions{
     display: block;

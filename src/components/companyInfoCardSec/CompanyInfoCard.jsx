@@ -194,8 +194,10 @@ console.log(showCompaniesQuery);
                                             </NavLink>
                                         </button>
                                         <button className='btn__companyActions hidebtn__companyActions'>
-                                            <NavLink to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
-                                                <p className='companyinfo__subTit'>
+                                            <NavLink className='nav-link' to={`tel:${showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}`}>
+                                                <p   
+                                                style={{color:'#4f2d7f'}}
+                                                className='companyinfo__subTit' >
                                                     {showCompaniesQuery?.companyBranches[0]?.branchFullPhoneOne}
                                                 </p>
                                             </NavLink>
