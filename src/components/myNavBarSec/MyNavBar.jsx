@@ -20,7 +20,7 @@ import { GetAllCompaniesStore } from '../../store/AllCompanies';
 import { GetAllRegionsStore } from '../../store/AllResions';
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships';
 import { useActivePackageStore } from '../../store/ActivePackageStore';
-import webLogo from '../../assets/logos/weblogo3.png'
+import webLogo from '../../assets/logos/weblogo4.png'
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, fireMessage, setFireNotification, fireNotification }) {
     const navigate = useNavigate()
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -127,7 +127,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         <NavLink className='logo__text' to={`/`}>
                             <>
                                 {/* ReachMag<span className='letter__color'>n</span>et */}
-                                <img style={{width:'150px'}} src={webLogo} alt="" />
+                                <img style={{width:'160px'}} src={webLogo} alt="" />
                             </>
                         </NavLink>
                     </Navbar.Brand>

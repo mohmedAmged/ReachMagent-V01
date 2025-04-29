@@ -67,8 +67,8 @@ console.log(productCompanySlug);
                             </div>
                         )}
                         { showMoreDetails === true && 
-                            <h4 style={{fontSize:'18px'}}>
-                                Sold by <NavLink target='_blank' to={`/${productCompanySlug}`}>
+                            <h4 style={{fontSize:'18px', color:'#412794', textTransform:'capitalize'}}>
+                                 <NavLink target='_blank' className='nav-link'  to={`/${productCompanySlug}`}>
                                             {productCompany}
                                         </NavLink>
                             </h4>
