@@ -509,6 +509,7 @@ export default function ShowSingleQuotation({ token }) {
     };
 
     console.log(newData)
+console.log(acceptedSingleQuotations);
 
     return (
         <>
@@ -551,257 +552,257 @@ export default function ShowSingleQuotation({ token }) {
                                                         }
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    {
-                                                        acceptedSingleQuotations?.map((row, idx) => (
-                                                            <>
-                                                                <tr key={`${row?.id}${row?.title}`}>
-                                                                    <td className='text-capitalize'>
-                                                                        <span className='me-2 indexOfTheTable'>{idx + 1}</span>
-                                                                        <span title={`${row?.title}`} className=' cursorPointer'>
-                                                                            {
-                                                                                `${row?.code ?
-                                                                                    `(${row?.code})` :
-                                                                                    ''
-                                                                                } ${row?.title} `
-                                                                            }
-                                                                        </span>
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        {
-                                                                            row?.unit_of_measure
-                                                                                ? row?.unit_of_measure !== 'N/A'
-                                                                                    ? row?.unit_of_measure
-                                                                                    : ''
-                                                                                : row?.type === 'service'
-                                                                                    ? 'services item'
-                                                                                    : 'Customized Product'
-                                                                        }
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        {row?.quantity !== 'N/A' ? +row?.quantity : 0}
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        {
-                                                                            !isOneClickQuotation ?
-                                                                                <input
-                                                                                    type="number"
-                                                                                    className={`form-control m-auto ${(!isOneClickQuotation &&
-                                                                                        (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell'))}`}
-                                                                                    defaultValue={
-                                                                                        (row?.offer_price !== 'N/A' ? (row?.offer_price ? +row?.offer_price : 0) : 0)
-                                                                                    }
-                                                                                    name={'offer_price'}
-                                                                                    min={1}
-                                                                                    minLength={1}
-                                                                                    onChange={(e) => handleChangeValuesInRow(e, row?.id)}
-                                                                                    disabled={(!isOneClickQuotation ? (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell') : !(fullData?.quotation_type === 'sell'))}
-                                                                                />
-                                                                                :
-                                                                                <input
-                                                                                    type="number"
-                                                                                    className={`form-control w-100 m-auto ${(fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false) ? 'bg-white' : ''}`}
-                                                                                    defaultValue={
-                                                                                        (row?.offer_price !== 'N/A' ? (row?.offer_price ? +row?.offer_price : 0) : 0)
-                                                                                    }
-                                                                                    name={'item_price'}
-                                                                                    min={1}
-                                                                                    minLength={1}
-                                                                                    onChange={(e) => handleChangeValuesInRow(e, row?.id)}
-                                                                                    disabled={fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'}
-                                                                                />
-                                                                        }
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        <input
-                                                                            type="number"
-                                                                            className={`form-control ${(!isOneClickQuotation ?
-                                                                                (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell')
-                                                                                :
-                                                                                (fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false)) ? 'bg-white' : ''}`}
-                                                                            defaultValue={row?.tax !== 'N/A' ? +row?.tax : 0}
-                                                                            name='tax'
-                                                                            onChange={(e) => handleChangeValuesInRow(e, row?.id)}
-                                                                            disabled={(!isOneClickQuotation ?
-                                                                                (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell')
-                                                                                :
-                                                                                (fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'))}
-                                                                        />
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        {newData?.currency_symbol} {!isOneClickQuotation ?
-                                                                            ((row?.quantity * updatedData?.find(el => el?.quotation_detail_id === row?.id)?.offer_price)
-                                                                                +
-                                                                                (
-                                                                                    (row?.quantity * updatedData?.find(el => el?.quotation_detail_id === row?.id)?.offer_price
-                                                                                        * (updatedData?.find(el => el?.quotation_detail_id === row?.id)?.tax / 100))
-                                                                                ))
-                                                                            || (row?.total_price !== 'N/A' ? (row?.total_price ? +row?.total_price : 0) : 0)
-                                                                            :
-                                                                            ((row?.quantity * updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.item_price)
-                                                                                +
-                                                                                (
-                                                                                    (row?.quantity * updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.item_price
-                                                                                        * (updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.tax / 100))
-                                                                                ))
-                                                                            || (row?.total_price !== 'N/A' ? (row?.total_price ? +row?.total_price : 0) : 0)
-                                                                        }
-                                                                    </td>
-                                                                    <td className='text-center text-capitalize'>
-                                                                        <input
-                                                                            type="number"
-                                                                            name={'duration'}
-                                                                            defaultValue={row?.duration === 'N/A' ? 0 : row?.duration}
-                                                                            disabled={(!isOneClickQuotation ?
-                                                                                (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell')
-                                                                                :
-                                                                                (fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'))}
-                                                                            onChange={(e) => handleChangeValuesInRow(e, row?.id)}
-                                                                            className={`form-control m-auto ${(!isOneClickQuotation ?
-                                                                                (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell')
-                                                                                :
-                                                                                (fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false)) ? 'bg-white' : ''}`} />
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className={` tableBtnSingleQuote`}>
-                                                                            <p className={`order__statue ${row?.status}`}>
-                                                                                {row?.status}
-                                                                            </p>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className='text-center'>
-                                                                        {
-                                                                            row?.note !== 'N/A' ?
-                                                                                <i onClick={() => handleViewNotes(row?.id)} className="bi bi-eye cursorPointer"></i>
-                                                                                :
-                                                                                'No Notes'
-                                                                        }
-                                                                    </td>
-                                                                    <Modal show={show} onHide={() => setShow(false)}>
-                                                                        <Modal.Header closeButton>
-                                                                            <Modal.Title>Notes</Modal.Title>
-                                                                        </Modal.Header>
-                                                                        <Modal.Body>{currNote}</Modal.Body>
-                                                                        <Modal.Footer>
-                                                                            <Button variant="secondary" onClick={() => setShow(false)}>
-                                                                                Close
-                                                                            </Button>
-                                                                        </Modal.Footer>
-                                                                    </Modal>
-                                                                    <td className='text-center'>
-                                                                        {
-                                                                            row?.type === "customized" ?
-                                                                                <i onClick={() => handleViewFiles(row?.medias)}
-                                                                                    className="bi bi-box-arrow-up-right cursorPointer"
-                                                                                >
-                                                                                </i>
-                                                                                :
-                                                                                'No Files'
-                                                                        }
+            <tbody>
+                {
+                    acceptedSingleQuotations?.map((row, idx) => (
+                        <>
+                            <tr key={`${row?.id}${row?.title}`}>
+                                <td className='text-capitalize'>
+                                    <span className='me-2 indexOfTheTable'>{idx + 1}</span>
+                                    <span title={`${row?.title}`} className=' cursorPointer'>
+                                        {
+                                            `${row?.code ?
+                                                `(${row?.code})` :
+                                                ''
+                                            } ${row?.title} `
+                                        }
+                                    </span>
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    {
+                                        row?.unit_of_measure
+                                            ? row?.unit_of_measure !== 'N/A'
+                                                ? row?.unit_of_measure
+                                                : ''
+                                            : row?.type === 'service'
+                                                ? 'services item'
+                                                : 'Customized Product'
+                                    }
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    {row?.quantity !== 'N/A' ? +row?.quantity : 0}
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    {
+                                        !isOneClickQuotation ?
+                                            <input
+                                                type="number"
+                                                className={`form-control m-auto ${(!isOneClickQuotation &&
+                                                    (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell'))}`}
+                                                defaultValue={
+                                                    (row?.offer_price !== 'N/A' ? (row?.offer_price ? +row?.offer_price : 0) : 0)
+                                                }
+                                                name={'offer_price'}
+                                                min={1}
+                                                minLength={1}
+                                                onChange={(e) => handleChangeValuesInRow(e, row?.id)}
+                                                disabled={(!isOneClickQuotation ? (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell') : !(fullData?.quotation_type === 'sell'))}
+                                            />
+                                            :
+                                            <input
+                                                type="number"
+                                                className={`form-control w-100 m-auto ${(fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false) ? 'bg-white' : ''}`}
+                                                defaultValue={
+                                                    (row?.offer_price !== 'N/A' ? (row?.offer_price ? +row?.offer_price : 0) : 0)
+                                                }
+                                                name={'item_price'}
+                                                min={1}
+                                                minLength={1}
+                                                onChange={(e) => handleChangeValuesInRow(e, row?.id)}
+                                                disabled={fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'}
+                                            />
+                                    }
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    <input
+                                        type="number"
+                                        className={`form-control ${(!isOneClickQuotation ?
+                                            (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell')
+                                            :
+                                            (fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false)) ? 'bg-white' : ''}`}
+                                        defaultValue={row?.tax !== 'N/A' ? +row?.tax : 0}
+                                        name='tax'
+                                        onChange={(e) => handleChangeValuesInRow(e, row?.id)}
+                                        disabled={(!isOneClickQuotation ?
+                                            (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell')
+                                            :
+                                            (fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'))}
+                                    />
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    {newData?.currency_symbol} {!isOneClickQuotation ?
+                                        ((row?.quantity * updatedData?.find(el => el?.quotation_detail_id === row?.id)?.offer_price)
+                                            +
+                                            (
+                                                (row?.quantity * updatedData?.find(el => el?.quotation_detail_id === row?.id)?.offer_price
+                                                    * (updatedData?.find(el => el?.quotation_detail_id === row?.id)?.tax / 100))
+                                            ))
+                                        || (row?.total_price !== 'N/A' ? (row?.total_price ? +row?.total_price : 0) : 0)
+                                        :
+                                        ((row?.quantity * updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.item_price)
+                                            +
+                                            (
+                                                (row?.quantity * updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.item_price
+                                                    * (updatedData?.find(el => el?.negotiate_one_click_quotation_detail_id === row?.id)?.tax / 100))
+                                            ))
+                                        || (row?.total_price !== 'N/A' ? (row?.total_price ? +row?.total_price : 0) : 0)
+                                    }
+                                </td>
+                                <td className='text-center text-capitalize'>
+                                    <input
+                                        type="number"
+                                        name={'duration'}
+                                        defaultValue={row?.duration === 'N/A' ? 0 : row?.duration}
+                                        disabled={(!isOneClickQuotation ?
+                                            (newData?.company_status !== 'Pending' || loginType === 'user' || newData?.quotation_type !== 'sell')
+                                            :
+                                            (fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'))}
+                                        onChange={(e) => handleChangeValuesInRow(e, row?.id)}
+                                        className={`form-control m-auto ${(!isOneClickQuotation ?
+                                            (newData?.company_status === 'Pending' && loginType !== 'user' && newData?.quotation_type === 'sell')
+                                            :
+                                            (fullData?.quotation_type === 'sell' ? newData?.company_status === 'Pending' : false)) ? 'bg-white' : ''}`} />
+                                </td>
+                                <td>
+                                    <div className={` tableBtnSingleQuote`}>
+                                        <p className={`order__statue ${row?.status}`}>
+                                            {row?.status}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td className='text-center'>
+                                    {
+                                        row?.note !== 'N/A' ?
+                                            <i onClick={() => handleViewNotes(row?.id)} className="bi bi-eye cursorPointer"></i>
+                                            :
+                                            'No Notes'
+                                    }
+                                </td>
+                                <Modal show={show} onHide={() => setShow(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Notes</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>{currNote}</Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShow(false)}>
+                                            Close
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <td className='text-center'>
+                                    {
+                                        row?.type === "customized" || isOneClickQuotation ?
+                                            <i onClick={() => handleViewFiles(row?.medias)}
+                                                className="bi bi-box-arrow-up-right cursorPointer"
+                                            >
+                                            </i>
+                                            :
+                                            'No Files'
+                                    }
 
-                                                                    </td>
-                                                                    {!isOneClickQuotation &&
-                                                                        <td className='text-center'>
-                                                                            {
-                                                                                row?.type !== 'customized' ?
-                                                                                    <i onClick={() => handleViewOptions(row?.preferences)}
-                                                                                        className="bi bi-sliders cursorPointer"></i>
-                                                                                    :
-                                                                                    'No Preferences'
-                                                                            }
-                                                                        </td>
-                                                                    }
-                                                                    <Modal show={showOptions} onHide={() => setShowOptions(false)}>
-                                                                        <Modal.Header closeButton>
-                                                                            <Modal.Title>Options</Modal.Title>
-                                                                        </Modal.Header>
-                                                                        <Modal.Body
-                                                                        >
-                                                                            <>
-                                                                                {
-                                                                                    currOptions?.map((opp) => (
-                                                                                        <div className='d-flex gap-4 mb-3'>
-                                                                                            <p className='text-capitalize'>
-                                                                                                {opp?.attribute} : <span>{opp?.valiue}</span>
-                                                                                            </p>
-                                                                                            <p className='text-capitalize'>
-                                                                                                price: <span>${opp?.price}</span>
-                                                                                            </p>
-                                                                                        </div>
+                                </td>
+                                {!isOneClickQuotation &&
+                                    <td className='text-center'>
+                                        {
+                                            row?.type !== 'customized' ?
+                                                <i onClick={() => handleViewOptions(row?.preferences)}
+                                                    className="bi bi-sliders cursorPointer"></i>
+                                                :
+                                                'No Preferences'
+                                        }
+                                    </td>
+                                }
+                                <Modal show={showOptions} onHide={() => setShowOptions(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Options</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body
+                                    >
+                                        <>
+                                            {
+                                                currOptions?.map((opp) => (
+                                                    <div className='d-flex gap-4 mb-3'>
+                                                        <p className='text-capitalize'>
+                                                            {opp?.attribute} : <span>{opp?.valiue}</span>
+                                                        </p>
+                                                        <p className='text-capitalize'>
+                                                            price: <span>${opp?.price}</span>
+                                                        </p>
+                                                    </div>
 
-                                                                                    ))
-                                                                                }
-                                                                            </>
-                                                                        </Modal.Body>
-                                                                        <Modal.Footer>
-                                                                            <Button variant="secondary" onClick={() => setShowOptions(false)}>
-                                                                                Close
-                                                                            </Button>
-                                                                        </Modal.Footer>
-                                                                    </Modal>
-                                                                    <Modal show={showFiles} onHide={() => setShowFiles(false)}>
-                                                                        <Modal.Header closeButton>
-                                                                            <Modal.Title>Files</Modal.Title>
-                                                                        </Modal.Header>
-                                                                        <Modal.Body
-                                                                            style={{
-                                                                                display: 'flex',
-                                                                                justifyContent: 'start',
-                                                                                height: 'calc(80vh - 250px)',
-                                                                                overflowY: 'auto'
-                                                                            }}
-                                                                        >
-                                                                            <div className="mediasModal__handler">
-                                                                                {currFile && currFile.length > 0 ? (
-                                                                                    currFile.map((media, i) => (
-                                                                                        <div key={i} className="media__handler">
-                                                                                            <NavLink to={media.media} target="_blank">
-                                                                                                {media.type === "image" ? (
-                                                                                                    <img
-                                                                                                        src={media.media}
-                                                                                                        alt="media"
-                                                                                                        className="mb-3"
-                                                                                                        style={{
-                                                                                                            maxWidth: '200px',
-                                                                                                            maxHeight: '200px',
-                                                                                                            objectFit: 'contain',
-                                                                                                            borderRadius: "8px",
-                                                                                                        }}
-                                                                                                    />
-                                                                                                ) : (
-                                                                                                    "View File"
-                                                                                                )}
-                                                                                            </NavLink>
-                                                                                        </div>
-                                                                                    ))
-                                                                                ) : (
-                                                                                    <p>No files available</p>
-                                                                                )}
-                                                                            </div>
-                                                                        </Modal.Body>
-                                                                        <Modal.Footer>
-                                                                            <Button variant="secondary" onClick={() => setShowFiles(false)}>
-                                                                                Close
-                                                                            </Button>
-                                                                        </Modal.Footer>
-                                                                    </Modal>
-                                                                    {(!isOneClickQuotation ? (loginType === 'employee' && newData?.quotation_type === 'sell') : (fullData?.quotation_type === 'sell')) &&
-                                                                        <td className='text-center text-capitalize p-0'>
-                                                                            <div className="actions w-100 position-relative">
-                                                                                <i style={{ cursor: 'pointer' }} className="bi bi-three-dots-vertical" onClick={() => toggleOptions(row?.id)}></i>
-                                                                                {visibleRowId === row?.id && newData?.company_status === 'Pending' && (
-                                                                                    <div className="options-box" ref={optionsRef}>
-                                                                                        <p className="option mb-1 text-danger" onClick={() => handleChangeStatusSingleQuoteRow('rejected', row?.id)}>Reject</p>
-                                                                                        <p className=" option mb-0 text-success" onClick={() => handleChangeStatusSingleQuoteRow('accepted', row?.id)}>Accept</p>
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
-                                                                        </td>}
-                                                                </tr>
-                                                            </>
-                                                        ))
-                                                    }
-                                                </tbody>
+                                                ))
+                                            }
+                                        </>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShowOptions(false)}>
+                                            Close
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <Modal show={showFiles} onHide={() => setShowFiles(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Files</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'start',
+                                            height: 'calc(80vh - 250px)',
+                                            overflowY: 'auto'
+                                        }}
+                                    >
+                                        <div className="mediasModal__handler">
+                                            {currFile && currFile.length > 0 ? (
+                                                currFile.map((media, i) => (
+                                                    <div key={i} className="media__handler">
+                                                        <NavLink to={media.media} target="_blank">
+                                                            {media.type === "image" ? (
+                                                                <img
+                                                                    src={media.media}
+                                                                    alt="media"
+                                                                    className="mb-3"
+                                                                    style={{
+                                                                        maxWidth: '200px',
+                                                                        maxHeight: '200px',
+                                                                        objectFit: 'contain',
+                                                                        borderRadius: "8px",
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                "View File"
+                                                            )}
+                                                        </NavLink>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p>No files available</p>
+                                            )}
+                                        </div>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShowFiles(false)}>
+                                            Close
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                {(!isOneClickQuotation ? (loginType === 'employee' && newData?.quotation_type === 'sell') : (fullData?.quotation_type === 'sell')) &&
+                                    <td className='text-center text-capitalize p-0'>
+                                        <div className="actions w-100 position-relative">
+                                            <i style={{ cursor: 'pointer' }} className="bi bi-three-dots-vertical" onClick={() => toggleOptions(row?.id)}></i>
+                                            {visibleRowId === row?.id && newData?.company_status === 'Pending' && (
+                                                <div className="options-box" ref={optionsRef}>
+                                                    <p className="option mb-1 text-danger" onClick={() => handleChangeStatusSingleQuoteRow('rejected', row?.id)}>Reject</p>
+                                                    <p className=" option mb-0 text-success" onClick={() => handleChangeStatusSingleQuoteRow('accepted', row?.id)}>Accept</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </td>}
+                            </tr>
+                        </>
+                    ))
+                }
+            </tbody>
                                             </Table>
                                         </div>
                                         <div className="quoteTotals__handler">
