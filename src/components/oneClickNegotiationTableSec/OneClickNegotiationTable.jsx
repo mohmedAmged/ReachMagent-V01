@@ -14,7 +14,9 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
   const { negotiateId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [can_achieve_target_budget, setCan_achieve_target_budget] = useState(null);
+    const [can_achieve_target_delivery_time, setCan_achieve_target_delivery_time] = useState(null);
+      const [can_achieve_preferred_delivery_terms, setCan_achieve_preferred_delivery_terms] = useState(null);
   const fetchShowQuotations = async () => {
     const slug =
       loginType === "user"
@@ -27,6 +29,11 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            can_achieve_target_budget,
+            can_achieve_target_delivery_time,
+            can_achieve_preferred_delivery_terms
+          }
         }
       );
       setNewdata(response?.data?.data?.one_click_quotation?.negotiate_one_click_quotation);
@@ -41,18 +48,66 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
 
   useEffect(() => {
     fetchShowQuotations();
-  }, [loginType, token]);
+  }, [ 
+    loginType,
+    token,
+    currentPage,
+    can_achieve_target_budget,
+    can_achieve_target_delivery_time,
+    can_achieve_preferred_delivery_terms]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     };
   };
+
+    const handleFilterChange = (e) => {
+    const value = e.target.value;
+    setCan_achieve_target_budget(null);
+    setCan_achieve_target_delivery_time(null);
+    setCan_achieve_preferred_delivery_terms(null);
+
+    if (value === "budget") {
+      setCan_achieve_target_budget("yes");
+    } else if (value === "delivery_time") {
+      setCan_achieve_target_delivery_time("yes");
+    } else if (value === "delivery_terms") {
+      setCan_achieve_preferred_delivery_terms("yes");
+    }
+    setCurrentPage(1); // Reset to page 1 when filters change
+  };
+
 console.log(newData);
 
   return (
     <div className="quotationTable__handler content__view__handler">
-      <ContentViewHeader title={`All Requested Companies`} />
+      
+       <div className="row align-items-center">
+        <div className="col-6">
+          <ContentViewHeader title={`All Requested Companies`} />
+        </div>
+        <div className="col-6">
+          <div className="singleQuoteInput">
+            {/* <label htmlFor="oneclickquotationFilterComapnies">
+                filter companies
+            </label> */}
+            <select
+                className='form-select'
+                id="oneclickquotationFilterComapnies"
+                 onChange={handleFilterChange}
+            >
+                <option value="" disabled>filter companies</option>
+                <option value="budget">can achieve target budget</option>
+                <option value="delivery_time">can achieve target delivery time</option>
+                <option value="delivery_terms">can achieve preferred delivery terms
+                </option>
+                
+              
+            </select>
+        </div>
+        </div>
+       </div>
       <div className="quotationTable__content">
         <Table responsive>
           <thead>
@@ -62,7 +117,8 @@ console.log(newData);
             </tr>
           </thead>
           <tbody>
-            {newData?.map((row, index) => (
+            { newData?.length > 0 ?
+            newData?.map((row, index) => (
               <tr className="" key={index}>
                 <td>
                   {row?.company_name}
@@ -87,7 +143,10 @@ console.log(newData);
                   </NavLink>
                 </td>
               </tr>
-            ))}
+            ))
+            : 
+            <h2 className="text-danger text-center text-capitalize my-3 fs-4">no company accecpt with this filter</h2>
+          }
           </tbody>
         </Table>
         {
