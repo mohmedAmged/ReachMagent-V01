@@ -399,7 +399,7 @@ export default function CartProduct({
                             </>
                     }
                     {
-                        options?.length !== 0 &&
+                        companyIdWantedToHaveQuoteWith && options?.length !== 0 &&
                         <>
                             <strong className='d-block mt-3 mb-2 text-capitalize'>
                                 options:

@@ -599,24 +599,24 @@ console.log(distinationData);
                                                                 Selected Products
                                                             </h3>
                                                             <h4 className={'mt-3 fw-bold fs-5 mb-3'}>Number Of Companies: {cartCompanies || 0}</h4>
-                                                            {(cart?.one_click_quotation_cart?.length === 0) ? (
-                                                                <p>No products selected</p>
-                                                            ) : (
-                                                                cart?.one_click_quotation_cart?.map((el) => {
-                                                                    return <CartProduct
-                                                                        key={el?.one_click_quotation_cart_id}
-                                                                        title={el?.item?.title}
-                                                                        description={el?.item?.description}
-                                                                        notes={el?.note}
-                                                                        imageSrc={el?.item?.image ? el?.item?.image : el?.item?.medias[0]?.media}
-                                                                        showImage={el?.item?.image ? !!el?.item?.image : !!el?.item?.medias[0]?.media}
-                                                                        quantity={el?.quantity}
-                                                                        cartId={el?.one_click_quotation_cart_id}
-                                                                        token={token}
-                                                                        setCart={setCart}
-                                                                    />
-                                                                })
-                                                            )}
+                                {(cart?.one_click_quotation_cart?.length === 0) ? (
+                                    <p>No products selected</p>
+                                ) : (
+                                    cart?.one_click_quotation_cart?.map((el) => {
+                                        return <CartProduct
+                                            key={el?.one_click_quotation_cart_id}
+                                            title={el?.item?.title}
+                                            description={el?.item?.description}
+                                            notes={el?.note}
+                                            imageSrc={el?.item?.image ? el?.item?.image : el?.item?.medias[0]?.media}
+                                            showImage={el?.item?.image ? !!el?.item?.image : !!el?.item?.medias[0]?.media}
+                                            quantity={el?.quantity}
+                                            cartId={el?.one_click_quotation_cart_id}
+                                            token={token}
+                                            setCart={setCart}
+                                        />
+                                    })
+                                )}
                                                         </div>
                                                     </div>
                                                 </div>

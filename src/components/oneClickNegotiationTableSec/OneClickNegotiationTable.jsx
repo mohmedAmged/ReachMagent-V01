@@ -98,9 +98,9 @@ console.log(newData);
                  onChange={handleFilterChange}
             >
                 <option value="" disabled>filter companies</option>
-                <option value="budget">can achieve target budget</option>
-                <option value="delivery_time">can achieve target delivery time</option>
-                <option value="delivery_terms">can achieve preferred delivery terms
+                <option value="budget" className="text-capitalize">can achieve target budget</option>
+                <option value="delivery_time" className="text-capitalize">can achieve target delivery time</option>
+                <option value="delivery_terms" className="text-capitalize">can achieve preferred delivery terms
                 </option>
                 
               

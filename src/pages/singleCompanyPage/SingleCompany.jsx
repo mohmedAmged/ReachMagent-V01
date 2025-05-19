@@ -31,6 +31,8 @@ export default function SingleCompany({ token }) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     const loginType = localStorage.getItem('loginType');
     const companyData = {
         aboutMark: aboutMarkImage,
@@ -103,6 +105,11 @@ export default function SingleCompany({ token }) {
     //     { name: 'Clients', active: activeItem === 'Clients' },
     //     { name: 'Partners', active: activeItem === 'Partners' },
     // ];
+    const secondItemsToFilter = showCompaniesQuery?.data?.company?.companyServices?.map((ele)=>(ele?.categoryName));
+    const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0] || '');
+    ///////
+    const secondCatalogItemsToFilter = showCompaniesQuery?.data?.company?.companyCatalogs?.map((ele)=>(ele?.categoryName))
+    const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(secondCatalogItemsToFilter?.[0] || '');   
 
     const [newData, setNewdata] = useState([])
     const fetchCompanyPosts = async () => {
@@ -171,6 +178,25 @@ export default function SingleCompany({ token }) {
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
     };
+const handleServiceCategoryClick = (name) => {
+  setSelectedServiceCategory(name);
+};
+
+const handleCatalogCategoryClick = (name) => {
+  setSelectedCatalogCategory(name);
+};
+
+
+
+    const serviceCategoryItems = secondItemsToFilter?.map(ele => ({
+        name: ele,
+        active: selectedServiceCategory === ele
+    })) || [];
+
+        const catalogCategoryItems = secondCatalogItemsToFilter?.map(ele => ({
+        name: ele,
+        active: selectedCatalogCategory === ele
+    })) || [];
 
     useEffect(() => {
         setTimeout(() => {
@@ -178,6 +204,8 @@ export default function SingleCompany({ token }) {
         }, 500);
     }, [loading]);
     console.log(showCompaniesQuery?.data?.company);
+
+    console.log(secondCatalogItemsToFilter);
 
     return (
         <>
@@ -189,7 +217,7 @@ export default function SingleCompany({ token }) {
                         <HeroOnlyCover companyCover={showCompaniesQuery?.data?.company?.companyCover} />
                         <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
                         <div className='my-5'>
-                            <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
+                            <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} secondFilter={false}/>
                         </div>
                         {!showCompaniesQuery?.isLoading &&
                             <div className='container showCompany__Service'>
@@ -200,13 +228,13 @@ export default function SingleCompany({ token }) {
                                 {
                                     activeItem === 'Services' &&
                                     <>
+                                     <ProductDetailsFilterationBar items={serviceCategoryItems} onItemClick={handleServiceCategoryClick} secondFilter={true}/>
                                     {
-                                    showCompaniesQuery?.data?.company?.companyServices?.length !== 0 ?
-                                    showCompaniesQuery?.data?.company?.companyServices?.map((el)=>(
+                                    selectedServiceCategory &&
+                                    showCompaniesQuery?.data?.company?.companyServices
+                                        ?.filter(serviceGroup => serviceGroup.categoryName === selectedServiceCategory)
+                                        ?.map((el)=>(
                                     <>
-                                    <h3 className='my-3'>
-                                        {el?.categoryName}
-                                    </h3>
                                     <Swiper
                                         className='mySwiper'
                                         modules={[Autoplay]}
@@ -255,24 +283,26 @@ export default function SingleCompany({ token }) {
                                         })}
                                     </Swiper>
                                     </>
-                                    ))
-                                    :
-                                    <h5 className='text-center text-danger text-capitalize mb-4'>
-                                        No Services for this company
-                                    </h5>
-                                    }
+                                    ))}
+                                
+                                    {!selectedServiceCategory && (
+                                        <h5 className='text-center text-muted text-capitalize mb-4'>
+                                            Please select a service category
+                                        </h5>
+                                    )}
 
                                     </>
                                 }
                                 {
                                     activeItem === 'Product Catalog' &&
                                     <>
+                                    <ProductDetailsFilterationBar items={catalogCategoryItems} onItemClick={handleCatalogCategoryClick} secondFilter={true}/>
                                     {
-                                        showCompaniesQuery?.data?.company?.companyCatalogs?.map((el)=>(
+                                    selectedCatalogCategory &&
+                                    showCompaniesQuery?.data?.company?.companyCatalogs
+                                        ?.filter(catalogGroup => catalogGroup.categoryName === selectedCatalogCategory)
+                                        ?.map((el)=>(
                                             <>
-                                            <h3 className='my-3'>
-                                                {el?.categoryName}
-                                            </h3>
                                         <Swiper
                                             className='mySwiper'
                                             modules={[Autoplay]}
@@ -319,6 +349,11 @@ export default function SingleCompany({ token }) {
                                                 )
                                             })}
                                         </Swiper>
+                                        {!selectedCatalogCategory && (
+                                        <h5 className='text-center text-muted text-capitalize mb-4'>
+                                            Please select a Catalog category
+                                        </h5>
+                                    )}
                                             </>
                                         ))
                                     }

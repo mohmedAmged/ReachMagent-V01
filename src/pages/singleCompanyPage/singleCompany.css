@@ -1,5 +1,5 @@
 .singleCompany__handler .productDetailsFilterationBar-list{
-    background: var(--primary-white) !important;
+    background: var(--primary-white) ;
 }
 .singleCompany__handler .readyToBuy__navigationBar{
     display: none;
