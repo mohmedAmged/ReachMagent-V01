@@ -44,6 +44,7 @@ export default function SingleCompanyQuote({ token }) {
         file: []
     });
     const companyIdWantedToHaveQuoteWith = Cookies.get('currentCompanyRequestedQuote');
+    const [selectedPreferences, setSelectedPreferences] = useState({});
 
     
     const [distinationData, setDistinationData] = useState({
@@ -186,108 +187,87 @@ export default function SingleCompanyQuote({ token }) {
         })();
     };
 
-    const handleAddProduct = (product) => {
-        const addedProduct = {
-            type: requestIntries?.type || product?.type,
-            item_id: `${product?.id}`
-        };
-        (async () => {
-            const toastId = toast.loading('Loading...');
-            await axios.post(`${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-                addedProduct
-                , {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                .then((response) => {
-                    setCart(response?.data?.data?.cart);
-                    toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                })
-                .catch(error => {
-                    toast.error(`${error?.response?.data?.message || 'Error!'}`, {
-                        id: toastId,
-                        duration: 1000
-                    });
-                })
-        })();
-    };
-
-    // const handleFormSubmit = (e) => {
-    //     e.preventDefault();
+    // const handleAddProduct = (product) => {
+    //     const addedProduct = {
+    //         type: requestIntries?.type || product?.type,
+    //         item_id: `${product?.id}`,
+    //         preference: product?.options[0]?.values[0]?.id || ''
+    //     };
     //     (async () => {
-    //         setloadingSubmit(true);
-    
-    //         const data = {
-    //             ...distinationData,
-    //             include_shipping: distinationData?.include_shipping ? 'yes' : 'no',
-    //             include_insurance: distinationData?.include_insurance ? 'yes' : 'no',
-    //         };
-    
     //         const toastId = toast.loading('Loading...');
-    
-    //         await axios.post(
-    //             `${baseURL}/user/make-quotation/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-    //             data,
-    //             {
+    //         await axios.post(`${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+    //             addedProduct
+    //             , {
     //                 headers: {
     //                     'Content-type': 'application/json',
     //                     'Accept': 'application/json',
     //                     Authorization: `Bearer ${token}`
     //                 }
-    //             }
-    //         )
-    //         .then((response) => {
-    //             setDistinationData({
-    //                 include_shipping: false,
-    //                 include_insurance: false,
-    //                 country_id: '',
-    //                 city_id: '',
-    //                 area_id: '',
-    //                 type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
-    //                 address: '',
-    //                 longitude: '',
-    //                 latitude: '',
-    //                 currency: '',
-    //             });
-    
-    //             setCart([]);
-    //             setCurrCurrency('');
-    
-    //             toast.success(`${response?.data?.message || 'Sent Successfully!'}`, {
-    //                 id: toastId,
-    //                 duration: 1000
-    //             });
-    
-    //             console.log(distinationData);
-    //         })
-    //         .catch(error => {
-    //             const res = error?.response;
-    //             let message = 'Error!';
-    
-    //             if (res?.status === 422 && res?.data?.errors) {
-    //                 const errors = res.data.errors;
-    //                 message = Object.values(errors).flat().join('\n');
-    //             } else if (res?.data?.message) {
-    //                 message = res.data.message;
-    //             }
-    
-    //             toast.error(message, {
-    //                 id: toastId,
-    //                 duration: 4000
-    //             });
-    
-    //             console.log(distinationData);
-    //         });
-    
-    //         setloadingSubmit(false);
+    //             })
+    //             .then((response) => {
+    //                 setCart(response?.data?.data?.cart);
+    //                 toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
+    //                     id: toastId,
+    //                     duration: 1000
+    //                 });
+    //             })
+    //             .catch(error => {
+    //                 toast.error(`${error?.response?.data?.message || 'Error!'}`, {
+    //                     id: toastId,
+    //                     duration: 1000
+    //                 });
+    //             })
     //     })();
     // };
+
+    const handleAddProduct = (product) => {
+        const selectedIds = Object.values(selectedPreferences);
+
+        // Optional: validate all option groups were selected
+        // if (selectedIds.length !== product.options.length) {
+        //     toast.error('Please select a value for each option');
+        //     return;
+        // }
+
+        const addedProduct = {
+            type: requestIntries?.type || product?.type,
+            item_id: `${product?.id}`,
+            preferences: selectedIds // assuming backend supports array of ids
+        };
+
+        (async () => {
+            const toastId = toast.loading('Loading...');
+            try {
+            const response = await axios.post(
+                `${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
+                addedProduct,
+                {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+                }
+            );
+            setCart(response?.data?.data?.cart);
+             setSelectedPreferences({});
+            toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
+                id: toastId,
+                duration: 1000
+            });
+            console.log(selectedIds);
+            
+            } catch (error) {
+                const backendErrors = error?.response?.data?.errors;
+                const preferenceError = backendErrors?.preferences?.[0];
+                toast.error(preferenceError || error?.response?.data?.message || 'Error!', {
+                    duration: 4000, // 4 seconds
+                    id: toastId,
+                });
+            }
+    })();
+    };
+
     
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -371,21 +351,7 @@ export default function SingleCompanyQuote({ token }) {
     const handleCheckboxChange = (e) => {
         setDistinationData({ ...distinationData, [e.target.name]: e.target.checked });
     };
-// const handleDeleteQuoteation =()=>{
-//     handleResetCurrentQuotation()
-//     setDistinationData({
-//         include_shipping: false,
-//         include_insurance: false,
-//         country_id: '',
-//         city_id: '',
-//         area_id: '',
-//         type: requestIntries?.type ? requestIntries?.type : customProduct?.type,
-//         address: '',
-//         longitude: '',
-//         latitude: '',
-//         currency: '', 
-//     })
-// }
+
     const handleCustomProductChange = (e) => {
         const { name, value } = e.target;
         setCustomProduct(prevState => ({
@@ -479,6 +445,7 @@ export default function SingleCompanyQuote({ token }) {
     }, [loading]);
 console.log(currentProd);
 // const hasNoCatalog = cart?.some(item => item.item.type === 'catalog');
+console.log(cart);
 
     return (
         <>
@@ -660,9 +627,15 @@ console.log(currentProd);
                                     showCustomContent={true}
                                     buttonLabel={isAdded ? "Added" : "Add"}
                                     onAddClick={() => handleAddProduct(el)}
+                                    renderdublicate={isAdded ? true : false}
+                                    renderOptionData={true}
+                                    onDublicateItem={()=>handleAddProduct(el)}
                                     borderColor={
                                         isAdded ? "rgba(7, 82, 154, 1)" : "rgba(0, 0, 0, 0.5)"
                                     }
+                                    data={el}
+                                    setSelectedPreferences={setSelectedPreferences}
+                                    selectedPreferences={selectedPreferences}
                                 />
                             </SwiperSlide>
                         );

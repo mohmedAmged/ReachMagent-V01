@@ -18,7 +18,13 @@ export default function LastMinuteCard({
     showMoreDetails= false,
     productCatgeory,
     productCompany,
-    productCompanySlug
+    productCompanySlug,
+    data,
+    setSelectedPreferences,
+    selectedPreferences, 
+    onDublicateItem,
+    renderdublicate,
+    renderOptionData = false
 }) {
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
@@ -56,7 +62,13 @@ console.log(productCompanySlug);
 
                         </NavLink>
                         {showCustomContent ? (
-                            <p>Price on Request</p>
+                            <>
+                                <p>Price on Request</p>
+                               
+
+                            </>
+                            
+                            
                         ) : (
                             <div className="deal__time">
                                 <img src={timeImg} alt="time" />
@@ -66,6 +78,36 @@ console.log(productCompanySlug);
                                 </div>
                             </div>
                         )}
+                        {
+                            renderOptionData &&
+                            <>
+                             {data.options.map((option, index) => (
+                                    <div key={option.attribute_id}>
+                                        <div >
+                                            <label>{option.attribute}</label>
+                                            <select
+                                            className='form-select'
+                                            onChange={(e) =>
+                                                setSelectedPreferences(prev => ({
+                                                ...prev,
+                                                [option.attribute_id]: e.target.value
+                                                }))
+                                            }
+                                            value={selectedPreferences[option.attribute_id] || ''}
+                                            >
+                                            <option value="" disabled>Select one</option>
+                                            {option.values.map(val => (
+                                                <option key={val.id} value={val.id}>
+                                                {val.name} - ${val.price}
+                                                </option>
+                                            ))}
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                ))}
+                            </>
+                        }
                         { showMoreDetails === true && 
                             <h4 style={{fontSize:'18px', color:'#412794', textTransform:'capitalize'}}>
                                  <NavLink target='_blank' className='nav-link'  to={`/${productCompanySlug}`}>
@@ -81,6 +123,11 @@ console.log(productCompanySlug);
                         <span className={`pageMainBtnStyle d-flex justify-content-center ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
                         </span>
+                         {renderdublicate &&
+                            <button type='button' className={`pageMainBtnStyle d-flex justify-content-center mt-3`} onClick={onDublicateItem}>
+                            Dublicate 
+                        </button>
+                        }
                     </div>
                 </div>
             </div>

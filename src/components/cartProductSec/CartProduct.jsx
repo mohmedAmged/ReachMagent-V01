@@ -408,7 +408,7 @@ export default function CartProduct({
                                 options?.map((option, index) => (
                                     <div key={index} className='mb-3'>
                                         <p className=' text-capitalize'>
-                                            choose a {option?.attribute}
+                                           choosen {option?.attribute} attribute
                                         </p>
                                         <div className='d-flex align-items-center gap-2'>
                                             {
@@ -416,7 +416,7 @@ export default function CartProduct({
                                                     <div style={{
                                                         backgroundColor: 'rgba(211, 212, 219, 0.5)', padding: '4px', borderRadius: '5px',
                                                     }} key={index} className='mt-2 d-flex gap-2 align-items-center'>
-                                                        <input
+                                                        {/* <input
                                                             className='form-check cursorPointer'
                                                             type="radio"
                                                             id={`option-${value.id}`}
@@ -430,7 +430,7 @@ export default function CartProduct({
                                                                 }));
                                                                 handleAddOptionToCart(cartId, option.attribute_id, value.id);
                                                             }}
-                                                        />
+                                                        /> */}
                                                         <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
                                                     </div>
                                                 ))
