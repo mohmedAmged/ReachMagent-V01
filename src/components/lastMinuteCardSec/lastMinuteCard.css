@@ -3,6 +3,20 @@
     padding: 10px;
     border-radius: 20px;
     border: 2px solid rgba(148, 21, 21, 1);
+    /* height: fit-content; */
+    /* height: auto; */
+    flex-direction: column;
+  height: 100%;
+}
+.equal-slide {
+  display: flex;
+  height: auto;
+}
+.card__wrapper_last {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 .lastMinuteCard__handler .product__info{

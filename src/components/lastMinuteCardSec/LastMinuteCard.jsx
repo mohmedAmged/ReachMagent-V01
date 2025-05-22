@@ -50,7 +50,7 @@ console.log(productCompanySlug);
                 <div className="product__image">
                     <img src={productImage} alt="product-imag" />
                 </div>
-                <div className="product__info">
+                <div className="product__info align-items-center">
                     <div className="main__info">
                         <NavLink target="_blank" className={'nav-link'} to={productLink ? productLink : ''} onClick={() => {
                             scrollToTop();
@@ -64,8 +64,6 @@ console.log(productCompanySlug);
                         {showCustomContent ? (
                             <>
                                 <p>Price on Request</p>
-                               
-
                             </>
                             
                             
@@ -83,8 +81,8 @@ console.log(productCompanySlug);
                             <>
                              {data.options.map((option, index) => (
                                     <div key={option.attribute_id}>
-                                        <div >
-                                            <label>{option.attribute}</label>
+                                        <div className=''>
+                                            <label className='text-capitalize my-2'>{option.attribute}</label>
                                             <select
                                             className='form-select'
                                             onChange={(e) =>
@@ -95,7 +93,7 @@ console.log(productCompanySlug);
                                             }
                                             value={selectedPreferences[option.attribute_id] || ''}
                                             >
-                                            <option value="" disabled>Select one</option>
+                                            <option value="" disabled>Select one option</option>
                                             {option.values.map(val => (
                                                 <option key={val.id} value={val.id}>
                                                 {val.name} - ${val.price}

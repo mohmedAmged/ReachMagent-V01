@@ -568,7 +568,7 @@ console.log(cart);
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-12">
+                                <div  className="col-12">
                                     {
                                         loadingCart ?
                                             <div className="permissionsLoader"></div>
@@ -611,32 +611,35 @@ console.log(cart);
                             (selectedProduct) => selectedProduct.item.slug === el?.slug
                         );
                         return (
-                            <SwiperSlide className="my-3" key={el?.id}>
-                                <LastMinuteCard
-                                    productImage={
-                                        el?.image
-                                            ? el?.image
-                                            : el?.media[0].image
-                                                ? el?.media[0].image
-                                                : el.media[0]
-                                    }
-                                    productName={el?.title}
-                                    productLink={`/${companyIdWantedToHaveQuoteWith}/${el?.type === "catalog" ? "catalog-details" : "service-details"
-                                        }/${el?.slug}`}
-                                    dealQuantity={el?.dealQuantity}
-                                    showCustomContent={true}
-                                    buttonLabel={isAdded ? "Added" : "Add"}
-                                    onAddClick={() => handleAddProduct(el)}
-                                    renderdublicate={isAdded ? true : false}
-                                    renderOptionData={true}
-                                    onDublicateItem={()=>handleAddProduct(el)}
-                                    borderColor={
-                                        isAdded ? "rgba(7, 82, 154, 1)" : "rgba(0, 0, 0, 0.5)"
-                                    }
-                                    data={el}
-                                    setSelectedPreferences={setSelectedPreferences}
-                                    selectedPreferences={selectedPreferences}
-                                />
+                            <SwiperSlide className="my-3 equal-slide" key={el?.id}>
+                                <div className="card__wrapper_last">
+                                    <LastMinuteCard
+                                        productImage={
+                                            el?.image
+                                                ? el?.image
+                                                : el?.media[0].image
+                                                    ? el?.media[0].image
+                                                    : el.media[0]
+                                        }
+                                        productName={el?.title}
+                                        productLink={`/${companyIdWantedToHaveQuoteWith}/${el?.type === "catalog" ? "catalog-details" : "service-details"
+                                            }/${el?.slug}`}
+                                        dealQuantity={el?.dealQuantity}
+                                        showCustomContent={true}
+                                        buttonLabel={isAdded ? "Added" : "Add"}
+                                        onAddClick={() => handleAddProduct(el)}
+                                        renderdublicate={isAdded ? true : false}
+                                        renderOptionData={true}
+                                        onDublicateItem={()=>handleAddProduct(el)}
+                                        borderColor={
+                                            isAdded ? "rgba(7, 82, 154, 1)" : "rgba(0, 0, 0, 0.5)"
+                                        }
+                                        data={el}
+                                        setSelectedPreferences={setSelectedPreferences}
+                                        selectedPreferences={selectedPreferences}
+                                    />
+                                </div>
+                                
                             </SwiperSlide>
                         );
                     })
