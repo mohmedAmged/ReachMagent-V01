@@ -15,6 +15,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { useSidebarStatus } from '../../store/SidebarStatusStore';
+import webLogo from '../../assets/logos/weblogo4.png'
 
 export default function MyNewSidebarDash({ token }) {
     const location = useLocation();
@@ -297,7 +298,7 @@ export default function MyNewSidebarDash({ token }) {
                             !collapsed &&
                             <h1 className="logo__text mb-3 cursorPointer">
                                 <NavLink className={'nav-link'} to={'/'}>
-                                    ReachMag<span className='letter__color'>n</span>et
+                                    <img style={{width:'160px'}} src={webLogo} alt="" />
                                 </NavLink>
                             </h1>
                         }

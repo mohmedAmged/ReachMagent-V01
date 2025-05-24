@@ -5,7 +5,8 @@
 .contactCompany-type li {
     font-size: 14px;
     padding: 15px 35px;
-    border: 1px solid #011F5B;
+    /* border: 1px solid #011F5B; */
+    border: 1px solid var(--main-blue-color);
     color: var(--primary-black);
     background-color: var(--primary-white);
     border-radius: 8px 8px 0 0 ;
@@ -24,11 +25,15 @@
 
 .contactCompany-type li:hover {
     color: var(--primary-white);
-    background-color: #011F5B;
+    /* background-color: #011F5B; */
+    background-color: #331e79;
+
 }
 .contactCompany-type .contactCompany-type-active {
     color: var(--primary-white);
-    background-color: #011F5B;
+    /* background-color: #011F5B; */
+    background-color: var(--main-blue-color);
+
 }
 .contactCompany__form {
     border: 1px solid var(--text-gray-color);
@@ -45,8 +50,8 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--primary-white);
-    background-color: #011F5B;
-    border: 1px solid #011F5B;
+    background-color: var(--main-blue-color);
+    border: 1px solid var(--main-blue-color);
     border-radius: 0 8px 0 0;
     -webkit-border-radius: 0 8px 0 0;
     -moz-border-radius: 0 8px 0 0;
@@ -80,7 +85,7 @@
 .contactCompany__form textarea:focus,
 .contactCompany__form textarea:focus-visible {
     outline: none;
-    border-color: #011F5B;
+    border-color: var(--main-blue-color);
 }
 .contactCompany__form input::placeholder ,
 .contactCompany__form textarea::placeholder {
@@ -90,7 +95,7 @@
     height: 200px;
 }
 .contactCompany__form-submitBtn {
-    border: 1px solid #011F5B !important;
+    border: 1px solid var(--main-blue-color) !important;
     outline: none;
     border-radius: 8px;
     -webkit-border-radius: 8px;
@@ -101,7 +106,7 @@
     width: 100%;
     padding: 10px 0;
     text-align: center;
-    background-color: #011F5B !important;
+    background-color: var(--main-blue-color) !important;
     color: var(--primary-white) !important;
     font-size: 22px;
     font-weight: 500;
@@ -112,7 +117,7 @@
     -o-transition: all 0.3s ease-in-out;
 }
 .contactCompany__form-submitBtn:hover {
-    color: #011F5B !important;
+    color: var(--main-blue-color) !important;
     background-color: var(--primary-white) !important;
 }
 @media (max-width: 767px) {

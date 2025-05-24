@@ -312,6 +312,7 @@ export default function CartProduct({
             }
         })();
     };
+console.log(options);
 
     return (
         <div className="selected__product__item" >
@@ -399,7 +400,7 @@ export default function CartProduct({
                             </>
                     }
                     {
-                        companyIdWantedToHaveQuoteWith && options?.length !== 0 &&
+                        companyIdWantedToHaveQuoteWith && options?.length !== 0 && options !== undefined &&
                         <>
                             <strong className='d-block mt-3 mb-2 text-capitalize'>
                                 options:
