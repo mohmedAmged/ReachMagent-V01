@@ -388,6 +388,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             <CustomDropdown
                               optionsData={countries}
                               setValue={setValue}
+                              value={watch("phone_code")}
                               errors={errors}
                               inputName="phone_code"
                               placeholder="Select a country"
@@ -422,6 +423,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             <CustomDropdown
                               optionsData={countries}
                               setValue={setValue}
+                              value={watch("phone_code")}
                               errors={errors}
                               inputName="phone_code"
                               placeholder="Select a country"

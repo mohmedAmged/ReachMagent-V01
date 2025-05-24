@@ -30,7 +30,7 @@ export default function CompanyMediaCard({ type, mediaSrc, mainInfo, mainInfoNam
                     <NavLink to={mainInfoLink} target='_blank' className={'nav-link'}>
                         <h5 className='text-capitalize fs-4'>{mainInfoName}</h5>
                     </NavLink>
-                    <p style={{color:'rgba(1, 31, 91, 1)'}} className='text-capitalize'>
+                    <p style={{color:'#412794'}} className='text-capitalize'>
                         {mainInfoType}
                     </p>
                 </div>

@@ -136,15 +136,15 @@
     padding: 20px;
 }
 .addedButtonStyle.btnSubmitQuote{
-    background: rgba(7, 82, 154, 1);
-    border: 1px solid rgba(7, 82, 154, 1);
+    background: var(--main-blue-color);
+    border: 1px solid var(--main-blue-color);
     padding: 15px 30px;
     font-size: 18px;
     font-weight: 600;
 }
 .addedButtonStyle.btnSubmitQuote:hover{
     background: #fff;
-    color: rgba(7, 82, 154, 1);
+    color: var(--main-blue-color);
 }
 
 

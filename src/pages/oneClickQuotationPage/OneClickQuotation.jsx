@@ -675,7 +675,7 @@ console.log(distinationData);
                                                         </div>
                                                         <div className="col-lg-6">
                                                             <div className="customizationQuote__actions singleQuoteInput">
-                                                                <label>UpLoad A Reference</label>
+                                                                <label>Upload A Reference</label>
                                                                 <p className='fw-light mb-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
                                                                 <input
                                                                     type='file'

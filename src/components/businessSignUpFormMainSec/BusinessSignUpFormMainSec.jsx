@@ -1077,7 +1077,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>                           
                             <div className="col-lg-12">
                               <div className=''>
-                                <button type="button" onClick={handleAddActivity} className="btn btn-primary my-3">
+                                <button style={{background: '#412794'}} type="button" onClick={handleAddActivity} className="btn btn-primary btn__Activity my-3">
                                     Add More Activity & Sub-Activity
                                   </button>
                               </div>

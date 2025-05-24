@@ -248,7 +248,7 @@ console.log(currentService);
                                 {
                                     activeItem === 'About' &&
                                     <>
-                                    <div className='productDetails__content mb-5 mt-4'>
+                                    <div className='productDetails__content mb-5 mt-4 ms-4'>
                                     <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>
                                         Description
                                     </h4>
@@ -279,7 +279,7 @@ console.log(currentService);
                                 {
                                     activeItem === 'Options' && 
                                     
-                                    <div ref={optionsRef} className='productDetails__content mb-5 mt-4'>
+                                    <div ref={optionsRef} className='productDetails__content mb-5 mt-4 ms-4'>
                                      {
                                         currentService?.options?.map((option)=>(
                                             <div className='fw-medium text-capitalize fs-4'>
@@ -305,8 +305,10 @@ console.log(currentService);
                                                             }));
                                                         }}
                                                         />
-                                                        <label className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
-                                                        <span className='ms-2'>
+                                                        <label 
+                                                        style={{fontSize:'20px'}}
+                                                        className='text-capitalize' htmlFor={`option-${value.id}`}>{value.name}</label>
+                                                        <span style={{fontSize:'20px'}} className='ms-2'>
                                                         {value?.price} 
                                                         </span>
                                                         </div>

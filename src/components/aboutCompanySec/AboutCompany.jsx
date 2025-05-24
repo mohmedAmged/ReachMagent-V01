@@ -107,7 +107,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                 <div className="aboutCompany__location">
                     <div className='aboutCompany__title'>
                         <img src={mapIcon} alt="mark" />
-                        <h1>company full address</h1>
+                        <h1>company location</h1>
                     </div>
                     <div className="aboutCompany__content__info my-3">
                         <p className='fixed__desc my-3'>{showCompaniesQuery?.companyFullAddress}</p>

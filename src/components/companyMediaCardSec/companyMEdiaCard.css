@@ -15,6 +15,6 @@
     /* width: 311px; */
     /* height: 311px; */
     border-radius: 8px !important;
-    object-fit: fill !important;
+    object-fit: contain !important;
     /* margin-bottom: 10px; */
 }

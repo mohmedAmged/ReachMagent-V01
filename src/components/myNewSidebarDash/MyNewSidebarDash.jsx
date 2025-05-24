@@ -81,16 +81,16 @@ export default function MyNewSidebarDash({ token }) {
         ShowStatus === 'all' && 
         features?.portfolios === 'yes' && 
         { title: "Media", link: "/profile/media", icon: icon2 },
-        ShowStatus === 'all' && 
-        { title: "E-commerce Products", link: "/profile/products", icon: icon4 },
+        // ShowStatus === 'all' && 
+        // { title: "E-commerce Products", link: "/profile/products", icon: icon4 },
         ShowStatus === 'all' && 
         features?.networks === 'yes' && 
         { title: "Network", link: "/profile/network", icon: icon4 },
         ShowStatus === 'all' && 
         features?.pervious_work === 'yes' && 
         { title: "Previous Work", link: "/profile/previous-work", icon: icon4 },
-        ShowStatus === 'all' && 
-        { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
+        // ShowStatus === 'all' && 
+        // { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
         // ShowStatus === 'all' && 
         // { title: "Collections", link: "/profile/product-order", icon: icon4 },
         ShowStatus === 'all' && 
@@ -143,7 +143,7 @@ export default function MyNewSidebarDash({ token }) {
             { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
             // { title: "Products", link: "/profile/products", icon: icon4 },
             { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
-            { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
+            // { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
             { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
             // { title: "Insights", link: "/profile/insights", icon: icon5 },
             { title: "Messages", link: "/your-messages", icon: icon6 },

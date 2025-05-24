@@ -84,7 +84,7 @@ console.log(productCompanySlug);
                                         <div className=''>
                                             <label className='text-capitalize my-2'>{option.attribute}</label>
                                             <select
-                                            className='form-select'
+                                            className='form-select w-80'
                                             onChange={(e) =>
                                                 setSelectedPreferences(prev => ({
                                                 ...prev,
@@ -96,7 +96,7 @@ console.log(productCompanySlug);
                                             <option value="" disabled>Select one option</option>
                                             {option.values.map(val => (
                                                 <option key={val.id} value={val.id}>
-                                                {val.name} - ${val.price}
+                                                {val.name}
                                                 </option>
                                             ))}
                                             </select>
@@ -123,7 +123,7 @@ console.log(productCompanySlug);
                         </span>
                          {renderdublicate &&
                             <button type='button' className={`pageMainBtnStyle d-flex justify-content-center mt-3`} onClick={onDublicateItem}>
-                            Dublicate 
+                            Add More 
                         </button>
                         }
                     </div>
