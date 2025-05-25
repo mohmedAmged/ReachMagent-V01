@@ -200,10 +200,15 @@ const handleCatalogCategoryClick = (name) => {
     })) || [];
 
     useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
-    }, [loading]);
+        // setTimeout(() => {
+        //     if (showCompaniesQuery?.data?.company !== undefined) {
+        //         setLoading(false);
+        //     }
+        // }, 3000);
+         if (showCompaniesQuery?.data?.company !== undefined) {
+        setLoading(false);
+    }
+    }, [showCompaniesQuery?.data?.company]);
     console.log(showCompaniesQuery?.data?.company);
 
     console.log(secondCatalogItemsToFilter);
@@ -212,9 +217,9 @@ const handleCatalogCategoryClick = (name) => {
         <>
             {
                 loading ?
-                    <MyNewLoader />
+                    (<MyNewLoader />)
                     :
-                    <div className='singleCompany__handler'>
+                    (<div className='singleCompany__handler'>
                         <HeroOnlyCover companyCover={showCompaniesQuery?.data?.company?.companyCover} />
                         <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
                         <div className='my-5'>
@@ -667,7 +672,7 @@ const handleCatalogCategoryClick = (name) => {
                             <CompanyContact company={showCompaniesQuery} token={token} companyId={companyId} />
                         }
 
-                    </div >
+                    </div >)
             }
         </>
     );

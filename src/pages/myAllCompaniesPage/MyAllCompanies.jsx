@@ -352,6 +352,7 @@ console.log(uniqueAllowedCompNames);
                                                 <NavLink
                                                     onClick={() => scrollToTop()}
                                                     className="nav-link"
+                                                    target="_blank"
                                                     to={`/${el?.companySlug}`}
                                                 >
                                                     <button className="pageMainBtnStyle">more info</button>
