@@ -6,6 +6,7 @@ import { GetAllIndustriesStore } from '../../store/AllIndustries';
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
 import { GetAllMainActivitiesStore } from '../../store/AllMainActivities';
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function BusinessSignUp() {
   const [loading, setLoading] = useState(true);
@@ -18,14 +19,14 @@ export default function BusinessSignUp() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 2000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <div className='signUp__page'>
             <BusinessSignUpFormMainSec

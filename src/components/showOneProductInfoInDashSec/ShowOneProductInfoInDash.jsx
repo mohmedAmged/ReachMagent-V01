@@ -10,6 +10,7 @@ import MyLoader from '../myLoaderSec/MyLoader';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function ShowOneProductInfoInDash(
     { token, show_slug }) {
@@ -51,7 +52,7 @@ export default function ShowOneProductInfoInDash(
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 console.log(newData);
 
@@ -59,7 +60,7 @@ console.log(newData);
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler showOneProductInDash__handler d-flex'>
                         <MyNewSidebarDash />

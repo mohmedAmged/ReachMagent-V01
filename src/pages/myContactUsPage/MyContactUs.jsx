@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { scrollToTop } from '../../functions/scrollToTop';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyContactUs({token}) {
     const [loading, setLoading] = useState(true);
@@ -87,78 +88,84 @@ export default function MyContactUs({token}) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
     return (
-        <div className='myContactUs__handler singleCompanyQuote__handler'>
-            <MyMainHeroSec
-                heroSecContainerType='singleCompany__quote'
-                headText='Contact Us'
-            />
-            <div className="myContactUs_form_handler container">
-                <div className="row justify-content-start">
-                    <div className="col-md-12">
-                        <div className="contactCompany__form my-5">
-                            <form onSubmit={handleFormSubmit} className='p-3'>
-                                <div className="mb-4">
-                                    <label htmlFor="name">
-                                        Full Name
-                                    </label>
-                                    <input name='name' type="text" className='w-100' 
-                                    placeholder='Full Name' 
-                                    value={formData?.name}
-                                    onChange={handleInputChange} 
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="phone">
-                                        Phone Number
-                                    </label>
-                                    <input 
-                                    name='phone'
-                                    type="text" 
-                                    className='w-100' 
-                                    placeholder='Phone Number'
-                                    value={formData?.phone}
-                                    onChange={handleInputChange} 
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="email">
-                                        Email Address
-                                    </label>
-                                    <input 
-                                    name='email'
-                                    type="text" 
-                                    className='w-100' 
-                                    placeholder='Email Address'
-                                    value={formData?.email}
-                                    onChange={handleInputChange} 
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="message">
-                                        Your Message
-                                    </label>
-                                    <textarea 
-                                    name="message"
-                                    className='w-100' 
-                                    placeholder='Your Message'
-                                    value={formData?.message}
-                                    onChange={handleInputChange}
-                                    ></textarea>
-                                </div>
-                                <div className="form__submit__button">
-                                        <button type="submit" className="contactCompany__form-submitBtn">
-                                            {'Contact Us'}
-                                        </button>
+        <>
+        { loading ?
+            <MyNewLoader />
+            :
+            <div className='myContactUs__handler singleCompanyQuote__handler'>
+                <MyMainHeroSec
+                    heroSecContainerType='singleCompany__quote'
+                    headText='Contact Us'
+                />
+                <div className="myContactUs_form_handler container">
+                    <div className="row justify-content-start">
+                        <div className="col-md-12">
+                            <div className="contactCompany__form my-5">
+                                <form onSubmit={handleFormSubmit} className='p-3'>
+                                    <div className="mb-4">
+                                        <label htmlFor="name">
+                                            Full Name
+                                        </label>
+                                        <input name='name' type="text" className='w-100' 
+                                        placeholder='Full Name' 
+                                        value={formData?.name}
+                                        onChange={handleInputChange} 
+                                        />
                                     </div>
-                            </form>
+                                    <div className="mb-4">
+                                        <label htmlFor="phone">
+                                            Phone Number
+                                        </label>
+                                        <input 
+                                        name='phone'
+                                        type="text" 
+                                        className='w-100' 
+                                        placeholder='Phone Number'
+                                        value={formData?.phone}
+                                        onChange={handleInputChange} 
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="email">
+                                            Email Address
+                                        </label>
+                                        <input 
+                                        name='email'
+                                        type="text" 
+                                        className='w-100' 
+                                        placeholder='Email Address'
+                                        value={formData?.email}
+                                        onChange={handleInputChange} 
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="message">
+                                            Your Message
+                                        </label>
+                                        <textarea 
+                                        name="message"
+                                        className='w-100' 
+                                        placeholder='Your Message'
+                                        value={formData?.message}
+                                        onChange={handleInputChange}
+                                        ></textarea>
+                                    </div>
+                                    <div className="form__submit__button">
+                                            <button type="submit" className="contactCompany__form-submitBtn">
+                                                {'Contact Us'}
+                                            </button>
+                                        </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
+        }
+        </>
     )
 }

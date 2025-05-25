@@ -6,6 +6,7 @@ import OneClickNegotiationTable from '../../components/oneClickNegotiationTableS
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function OneClickNegotiationCompanies({ token }) {
   const [loading, setLoading] = useState(true);
@@ -23,14 +24,14 @@ export default function OneClickNegotiationCompanies({ token }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 3000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <div className='dashboard__handler d-flex'>
             <MyNewSidebarDash />

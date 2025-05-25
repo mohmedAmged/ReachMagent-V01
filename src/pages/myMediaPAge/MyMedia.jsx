@@ -9,6 +9,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { getYoutubeVideoId } from '../../functions/getYoutubeVideo';
 import { useDashBoardMediaStore } from '../../store/DashBoardMedia';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyMedia({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -56,7 +57,7 @@ export default function MyMedia({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />

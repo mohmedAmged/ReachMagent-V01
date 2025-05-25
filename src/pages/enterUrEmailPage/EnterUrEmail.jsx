@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SignUpHead from '../../components/signUpHeadSec/SignUpHead'
 import ForgetPasswordForm from '../../components/forgetPasswordFormMainSec/ForgetPasswordForm'
 import MyLoader from '../../components/myLoaderSec/MyLoader';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function EnterUrEmail() {
   const [loading, setLoading] = useState(true);
@@ -10,14 +11,14 @@ export default function EnterUrEmail() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <>
             {

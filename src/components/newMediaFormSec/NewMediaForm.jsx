@@ -10,6 +10,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewMediaForm({token}) {
     const [loading, setLoading] = useState(true);
@@ -135,14 +136,14 @@ export default function NewMediaForm({token}) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 2000);
     }, [loading]);
 
     return (
     <>
     {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

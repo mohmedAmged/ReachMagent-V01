@@ -8,6 +8,7 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useDashBoardServiceStore } from '../../store/DashBoardServices';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyService({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -51,7 +52,7 @@ export default function MyService({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />

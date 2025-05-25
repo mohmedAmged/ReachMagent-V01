@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 export default function SubCategoryMain() {
     const [loading, setLoading] = useState(true);
     const {subIndustryID} = useParams()   
@@ -69,7 +70,7 @@ export default function SubCategoryMain() {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -79,7 +80,7 @@ export default function SubCategoryMain() {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='otherCategory__handler subCategoryMain__handler singleCompanyQuote__handler'>
                         <MyMainHeroSec

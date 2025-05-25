@@ -9,6 +9,7 @@ import MyLoader from "../../components/myLoaderSec/MyLoader";
 import MyNewSidebarDash from "../../components/myNewSidebarDash/MyNewSidebarDash";
 import MainContentHeader from "../../components/mainContentHeaderSec/MainContentHeader";
 import ContentViewHeader from "../../components/contentViewHeaderSec/ContentViewHeader";
+import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
 
 export default function AddNewPrevWork({ token }) {
     const [loading, setLoading] = useState(true);
@@ -136,7 +137,7 @@ export default function AddNewPrevWork({ token }) {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

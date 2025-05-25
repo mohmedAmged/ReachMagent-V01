@@ -8,7 +8,9 @@ import MainContentHeader from '../../components/mainContentHeaderSec/MainContent
 import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { handleApiError, rateLimiter } from '../../functions/requestUtils';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 export default function MyNotfications({ token, fireNotification, setFireNotification }) {
+    const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [allNotifications, setAllNotifications] = useState([]);
@@ -150,9 +152,17 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
     }, [Cookies.get('currentLoginedData'), currentUserLogin]);
     
     console.log(allNotifications);
-
+    useEffect(() => {
+        setTimeout(() => {
+        setLoading(false);
+        }, 3000);
+    }, [loading]);
     return (
         <>
+        {
+            loading ?
+            <MyNewLoader />
+            :
             <div className='dashboard__handler d-flex'>
                 <MyNewSidebarDash />
                 <div className='main__content container'>
@@ -264,7 +274,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                     </div>
                 </div>
             </div>
-
+        }
         </>
     );
 };

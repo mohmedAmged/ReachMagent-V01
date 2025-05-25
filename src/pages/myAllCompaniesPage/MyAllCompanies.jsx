@@ -7,6 +7,7 @@ import { scrollToTop } from "../../functions/scrollToTop";
 import MyLoader from "../../components/myLoaderSec/MyLoader";
 import { useCompaniesStore } from "../../store/FIlterCompanies";
 import CustomDropdown from "../../components/customeDropdownSelectSec/CustomeDropdownSelect";
+import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
 
 export default function MyAllCompanies() {
     const [loading, setLoading] = useState(true);
@@ -126,7 +127,7 @@ export default function MyAllCompanies() {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 
     const handlePageChange = (newPage) => {
@@ -140,7 +141,7 @@ console.log(uniqueAllowedCompNames);
     return (
         <>
             {companiesLoading || loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
     <div className="MyAllCompanies__handler">
         <div className="container">

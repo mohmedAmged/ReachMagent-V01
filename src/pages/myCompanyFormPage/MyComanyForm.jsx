@@ -9,6 +9,7 @@ import MainContentHeader from '../../components/mainContentHeaderSec/MainContent
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader';
 import { useDashBoardFormDataStore } from '../../store/DashBoardCompanyForm';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyCompanyForm({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -47,7 +48,7 @@ export default function MyCompanyForm({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='dashboard__handler d-flex'>
                     <MyNewSidebarDash />

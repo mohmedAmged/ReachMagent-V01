@@ -8,6 +8,7 @@ import ContentViewHeader from '../../components/contentViewHeaderSec/ContentView
 import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useDashBoardAppointmentsStore } from '../../store/DashBoardAppointMents';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyAppointments({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -41,7 +42,7 @@ export default function MyAppointments({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='dashboard__handler d-flex'>
                     <MyNewSidebarDash />

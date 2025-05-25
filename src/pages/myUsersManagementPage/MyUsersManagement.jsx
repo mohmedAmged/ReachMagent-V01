@@ -11,6 +11,7 @@ import PersonalSignUpFormMainSec from '../../components/personalSignUpFormMainSe
 import AllEmployeesSection from '../../components/allEmployeesSection/AllEmployeesSection'
 import { GetAllCountriesStore } from '../../store/AllCountries'
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 
 export default function MyUsersManagement({ token }) {
     const [loading, setLoading] = useState(true);
@@ -43,14 +44,14 @@ export default function MyUsersManagement({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 
     return (
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

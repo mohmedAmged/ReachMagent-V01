@@ -13,6 +13,7 @@ import { GetAllCountriesStore } from '../../store/AllCountries'
 import CompanyFollowIndustryFrom from '../../components/companyFollowIndustryFormSec/CompanyFollowIndustryFrom'
 import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/CompanyTimezoneForm'
 import EmployeeTimezoneForm from '../../components/employeeTimezoneFormItem/EmployeeTimezoneForm'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 
 localStorage.setItem('updatingProfile', 'notUpdating');
 
@@ -83,7 +84,7 @@ export default function MyProfileSettings({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 
 
@@ -91,7 +92,7 @@ export default function MyProfileSettings({ token }) {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash loginType={loginType} />

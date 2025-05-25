@@ -7,6 +7,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import { useDashBoardQuotationStore } from '../../store/DashBoardQuotations';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyQuotations({ token }) {
   const {
@@ -38,7 +39,7 @@ export default function MyQuotations({ token }) {
   return (
     <>
       {loading ? (
-        <MyLoader />
+        <MyNewLoader />
       ) : (
         <div className="dashboard__handler d-flex">
           <MyNewSidebarDash />

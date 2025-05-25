@@ -14,6 +14,7 @@ import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import ShowLocationOnMap from '../showLocationOnMapSec/ShowLocationOnMap';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import './showSinglequotation.css';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function ShowSingleQuotation({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -515,7 +516,7 @@ console.log(acceptedSingleQuotations);
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler showSingleQuotation__handler d-flex'>
                         <MyNewSidebarDash />

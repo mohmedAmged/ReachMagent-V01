@@ -11,7 +11,10 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import './myOrderStyle.css'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 export default function MyOrders({ token }) {
+    const [loading, setLoading] = useState(true);
+  
   const [activeRole, setActiveRole] = useState('All');
   const loginType = localStorage.getItem('loginType');
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -76,9 +79,17 @@ export default function MyOrders({ token }) {
   //     })
   // };
 console.log(allOrders);
-
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [loading]);
   return (
     <>
+    {
+      loading ? 
+      <MyNewLoader />
+      :
       <div className='dashboard__handler d-flex'>
         <MyNewSidebarDash />
         <div className='main__content container'>
@@ -272,6 +283,7 @@ console.log(allOrders);
           </div>
         </div>
       </div>
+    }
     </>
   )
 }

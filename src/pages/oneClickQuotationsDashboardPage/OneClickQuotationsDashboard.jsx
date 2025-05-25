@@ -7,6 +7,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import { useDashBoardOneClickQuotationStore } from '../../store/DashBoardOneClickQutations';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function OneClickQuotationsDashboard({ token }) {
   const {
@@ -36,7 +37,7 @@ export default function OneClickQuotationsDashboard({ token }) {
   return (
     <>
       {loading ? (
-        <MyLoader />
+        <MyNewLoader />
       ) : (
         <div className='dashboard__handler d-flex'>
           <MyNewSidebarDash />

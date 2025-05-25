@@ -9,6 +9,7 @@ import MyLoader from '../myLoaderSec/MyLoader';
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewNetworkForm({token}) {
     const [loading, setLoading] = useState(true);
@@ -135,7 +136,7 @@ export default function NewNetworkForm({token}) {
     <>
     {
         loading ?
-            <MyLoader />
+            <MyNewLoader />
             :
             <div className='dashboard__handler d-flex'>
                 <MyNewSidebarDash />

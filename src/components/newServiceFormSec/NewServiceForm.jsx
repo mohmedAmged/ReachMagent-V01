@@ -11,6 +11,7 @@ import MyLoader from '../myLoaderSec/MyLoader'
 import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec'
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories'
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader'
 
 export default function NewServiceForm({ token }) {
     const [loading, setLoading] = useState(true);
@@ -214,14 +215,14 @@ export default function NewServiceForm({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 2000);
     }, [loading]);
 
     return (
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

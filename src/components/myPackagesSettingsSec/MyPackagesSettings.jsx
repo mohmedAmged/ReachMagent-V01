@@ -16,6 +16,7 @@ import { useCurrentPackageDetails } from '../../store/CurrentPackageDetails';
 import PackageTransactionsTable from '../packageTransactionsTableSec/PackageTransactionsTable';
 import MyPackagePayment from '../myPackagePaymentSec/MyPackagePayment';
 import { useSidebarStatus } from '../../store/SidebarStatusStore';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function MyPackagesSettings({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -119,7 +120,7 @@ export default function MyPackagesSettings({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />

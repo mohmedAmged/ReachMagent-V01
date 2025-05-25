@@ -5,6 +5,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
 import { GetAllIndustriesStore } from '../../store/AllIndustries';
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function PersonalSignUp() {
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,14 @@ export default function PersonalSignUp() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 2000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <div className='signUp__page'>
             <PersonalSignUpFormMainSec

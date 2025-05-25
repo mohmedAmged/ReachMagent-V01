@@ -12,6 +12,7 @@ import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie'
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewCatalogItemForm({ token }) {
     const [unAuth, setUnAuth] = useState(false);
@@ -362,14 +363,14 @@ export default function NewCatalogItemForm({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 2000);
     }, [loading]);
 
     return (
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

@@ -24,6 +24,7 @@ import PrevWorkCard from '../../components/prevWorkCard/PrevWorkCard'
 import { usePrevWorkStore } from '../../store/AllPrevWorkStore'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 
 export default function SingleCompany({ token }) {
     const [loading, setLoading] = useState(true);
@@ -201,7 +202,7 @@ const handleCatalogCategoryClick = (name) => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
     console.log(showCompaniesQuery?.data?.company);
 
@@ -211,7 +212,7 @@ const handleCatalogCategoryClick = (name) => {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='singleCompany__handler'>
                         <HeroOnlyCover companyCover={showCompaniesQuery?.data?.company?.companyCover} />

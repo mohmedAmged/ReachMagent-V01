@@ -9,6 +9,7 @@ import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import './myFaqs.css';
 import Cookies from 'js-cookie';
 import { useDashBoardFaqsStore } from '../../store/DashBoardFaqs';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyFaqs({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -44,7 +45,7 @@ export default function MyFaqs({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='dashboard__handler allFaqsDash__handler d-flex'>
                     <MyNewSidebarDash />

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { GetAllChatsStore } from '../../store/AllChats';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyMessage({token, fireMessage, setFireMessage }) {
     const loginType = localStorage.getItem('loginType');
@@ -82,7 +83,7 @@ export default function MyMessage({token, fireMessage, setFireMessage }) {
     }, [token, loginType, fireMessage]);
 
     useEffect(() => {
-        setTimeout(() => setLoading(false), 500);
+        setTimeout(() => setLoading(false), 2000);
     }, []);
 
     useEffect(() => {
@@ -96,7 +97,7 @@ console.log(chats);
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='myMessage__handler px-5'>
                     <div className="container-fluid">

@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import MyLoader from "../myLoaderSec/MyLoader";
 import UnAuthSec from "../unAuthSection/UnAuthSec";
 import Cookies from "js-cookie";
+import MyNewLoader from "../myNewLoaderSec/MyNewLoader";
 
 export default function ShowOneClickQuotation({ token }) {
   const loginType = localStorage.getItem("loginType");
@@ -179,14 +180,14 @@ export default function ShowOneClickQuotation({ token }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 3000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <div className="dashboard__handler showSingleQuotation__handler d-flex">
             <MyNewSidebarDash />

@@ -9,6 +9,7 @@ import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewFaqForm({ token }) {
     const [loading, setLoading] = useState(true);
@@ -122,14 +123,14 @@ export default function NewFaqForm({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 2000);
     }, [loading]);
 
     return (
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

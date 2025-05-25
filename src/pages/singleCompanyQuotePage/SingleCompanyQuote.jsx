@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function SingleCompanyQuote({ token }) {
     const [loading, setLoading] = useState(true);
@@ -441,7 +442,7 @@ export default function SingleCompanyQuote({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 console.log(currentProd);
 // const hasNoCatalog = cart?.some(item => item.item.type === 'catalog');
@@ -451,7 +452,7 @@ console.log(cart);
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='singleCompanyQuote__handler'>
                         <MyMainHeroSec

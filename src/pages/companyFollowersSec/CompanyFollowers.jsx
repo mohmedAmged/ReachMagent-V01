@@ -8,6 +8,7 @@ import UnAuthSec from "../../components/unAuthSection/UnAuthSec";
 import Cookies from "js-cookie";
 import { useFollowersStore } from "../../store/Followers";
 import { NavLink } from "react-router-dom";
+import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
 
 export default function CompanyFollowers({ loginType, token }) {
     const cookiesData = Cookies.get("currentLoginedData");
@@ -46,7 +47,7 @@ console.log(filteredFollowers);
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />

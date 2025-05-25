@@ -9,6 +9,7 @@ import MyLoader from '../myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
 import { SearchStore } from '../../store/MainSearch';
 import LastMinuteCard from '../lastMinuteCardSec/LastMinuteCard';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function SearchInHome() {
     const [loading, setLoading] = useState(true);
@@ -122,7 +123,7 @@ export default function SearchInHome() {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className="MyAllCompanies__handler">
                         <div className="container">

@@ -21,6 +21,7 @@ import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/Compan
 import CompanySlugForm from '../../components/companySlugFormSec/CompanySlugForm';
 import CompanyDocumentForm from '../../components/comapnyDocumentsFormSec/CompanyDocumentForm';
 import CompanyAddNewIndustry from '../../components/companyAddNewIndustrySec/CompanyAddNewIndustry';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
@@ -150,7 +151,7 @@ export default function MyBussinessSettings({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 console.log(company);
 
@@ -158,7 +159,7 @@ console.log(company);
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

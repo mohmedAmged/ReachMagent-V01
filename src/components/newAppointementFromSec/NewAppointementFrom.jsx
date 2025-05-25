@@ -10,6 +10,7 @@ import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewAppointementFrom({token}) {
     const [loading, setLoading] = useState(true);
@@ -95,13 +96,13 @@ export default function NewAppointementFrom({token}) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
   return (
     <>
       {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

@@ -11,6 +11,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
 import { GetAllIndustriesStore } from '../../store/AllIndustries';
 import { GetAllCompaniesStore } from '../../store/AllCompanies';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 
 export default function Home({ token }) {
@@ -53,14 +54,14 @@ export default function Home({ token }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 3000);
   }, [loading]);
 
   return (
     <>
       {
         loading ?
-          <MyLoader />
+          <MyNewLoader />
           :
           <div className='myHomeSec__handler'>
             <MyMainHeroSec

@@ -16,6 +16,7 @@ import fileImage from '../../assets/productImages/file-txt-1-icon-512x510-5cj009
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { findRenderedDOMComponentWithTag } from 'react-dom/test-utils';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 export default function ShowOneOrderInfo({ token }) {
     const [loading, setLoading] = useState(true);
     const { orderId } = useParams();
@@ -107,7 +108,7 @@ const handleViewFiles = (files) => {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler showOneProductInDash__handler d-flex'>
                         <MyNewSidebarDash />

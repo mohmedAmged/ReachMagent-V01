@@ -8,6 +8,7 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyServiceDetails({ token }) {
     const { servId } = useParams();
@@ -144,7 +145,7 @@ console.log(currentService);
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='productDetailsPage'>
                     <Container className='productDetails__sec mb-5 mt-3'>

@@ -8,6 +8,7 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader';
 import { useDashBoardBookedAppointmentsStore } from '../../store/DashBoardBookedAppointMents';
 import { NavLink } from 'react-router-dom';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyBookedAppointments({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -95,7 +96,7 @@ export default function MyBookedAppointments({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='dashboard__handler d-flex'>
                     <MyNewSidebarDash />

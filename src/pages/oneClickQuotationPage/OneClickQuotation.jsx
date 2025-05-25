@@ -10,6 +10,7 @@ import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
 import { GetAllRegionsStore } from '../../store/AllResions';
 import { GetQutationsAllIndustriesStore } from '../../store/QutationsAllIndustries';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 export default function OneClickQuotation({ token }) {
     const [loading, setLoading] = useState(true);
     const [requestIntries, setRequestIntries] = useState({
@@ -431,7 +432,7 @@ export default function OneClickQuotation({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 console.log(distinationData);
 
@@ -439,7 +440,7 @@ console.log(distinationData);
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='oneClickQuotation__handler'>
                         <MyMainHeroSec

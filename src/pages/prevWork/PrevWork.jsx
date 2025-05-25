@@ -8,6 +8,7 @@ import UnAuthSec from "../../components/unAuthSection/UnAuthSec";
 import ContentViewHeader from "../../components/contentViewHeaderSec/ContentViewHeader";
 import AddNewItem from "../../components/addNewItemBtn/AddNewItem";
 import PrevWorkCard from "../../components/prevWorkCard/PrevWorkCard";
+import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
 
 export default function PrevWork({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -42,7 +43,7 @@ export default function PrevWork({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />

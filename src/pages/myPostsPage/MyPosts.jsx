@@ -9,6 +9,7 @@ import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import Cookies from 'js-cookie';
 import './myPosts.css';
 import { useDashBoardPostsStore } from '../../store/DashBoardPosts';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyPosts({ token }) {
     const loginType = localStorage.getItem('loginType');
@@ -45,7 +46,7 @@ export default function MyPosts({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='dashboard__handler postsInDash__handler d-flex'>
                     <MyNewSidebarDash />

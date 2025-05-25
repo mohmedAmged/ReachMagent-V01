@@ -3,6 +3,7 @@ import { useLocation, useNavigate, NavLink } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { useInsightsStore } from '../../store/AllInsightsPageActions';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyCompaniesInsights({ token }) {
     const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function MyCompaniesInsights({ token }) {
     return (
         <>
             {loading ? (
-                <MyLoader />
+                <MyNewLoader />
             ) : (
                 <div className='MyAllCompanies__handler myCompaniesInsights__handler'>
                     <div className="container">

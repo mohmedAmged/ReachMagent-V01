@@ -9,6 +9,7 @@ import ContentViewHeader from '../../components/contentViewHeaderSec/ContentView
 import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useNetworkStore } from '../../store/DashBoardNetwork';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyNetwork({ token }) {
   const loginType = localStorage.getItem('loginType');
@@ -43,7 +44,7 @@ export default function MyNetwork({ token }) {
   return (
     <>
       {loading ? (
-        <MyLoader />
+        <MyNewLoader />
       ) : (
         <div className="dashboard__handler d-flex">
           <MyNewSidebarDash />

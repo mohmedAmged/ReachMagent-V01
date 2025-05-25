@@ -9,6 +9,7 @@ import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
+import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 
 export default function NewPostForm({ token }) {
     const [loading, setLoading] = useState(true);
@@ -129,7 +130,7 @@ export default function NewPostForm({ token }) {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 
     console.log(currPost);
@@ -138,7 +139,7 @@ export default function NewPostForm({ token }) {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='dashboard__handler d-flex'>
                         <MyNewSidebarDash />

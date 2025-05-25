@@ -1,0 +1,38 @@
+.loaderNew {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loaderNew .loader_cube {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 30px;
+}
+
+.loaderNew .loader_cube--glowing {
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.loaderNew .loader_cube--color {
+  z-index: 1;
+  filter: blur(2px);
+  background: linear-gradient(135deg, #1afbf0, #da00ff);
+  animation: loadtwo 2.5s ease-in-out infinite;
+}
+
+@keyframes loadtwo {
+  50% {
+    transform: rotate(-80deg);
+  }
+}

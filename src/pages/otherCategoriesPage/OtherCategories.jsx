@@ -5,6 +5,7 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import CategoryOctagonShape from '../../components/categoryOctagonShapeSec/CategoryOctagonShape'
+import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 
 export default function OtherCategories() {
     const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ export default function OtherCategories() {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 500);
+        }, 3000);
     }, [loading]);
 
     const handlePageChange = (newPage) => {
@@ -43,7 +44,7 @@ export default function OtherCategories() {
         <>
             {
                 loading ?
-                    <MyLoader />
+                    <MyNewLoader />
                     :
                     <div className='otherCategory__handler singleCompanyQuote__handler'>
                         <MyMainHeroSec
