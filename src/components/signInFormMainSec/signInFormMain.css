@@ -100,3 +100,8 @@ ul.loginToggler li.active {
     -o-transform: translateY(180px);
     padding-bottom: 250px !important;
 }
+@media screen and (max-width: 600px) {
+    ul.loginToggler {
+    padding-inline-start: 0px;
+}
+}

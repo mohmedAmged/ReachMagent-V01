@@ -120,7 +120,7 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                                 <h3 className="col-12 text-center pt-5 signUpForm__head">
                                     {loginType === 'user' ? 'User Login' : 'Login as a Business'}
                                 </h3>
-                                <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
+                                <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center mt-3'>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInEmailAddress">
                                             E-mail Address <span className="requiredStar">*</span>
@@ -179,7 +179,7 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                                         }
                                     </div>
 
-                                    <div className="col-12 text-dark text-center">
+                                    <div className="col-12 text-dark text-center mt-3">
                                         <span>Don't Have and account?</span>
                                         <NavLink className="gotoLoginLink ms-2" to="/personalsignUp">
                                             Create New Account

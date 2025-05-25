@@ -70,10 +70,10 @@
     .product__info{
         padding: 5px 0;
     }
-    .lastMinuteCard__handler{
+    /* .lastMinuteCard__handler{
         width: 300px;
         height: 226.6px;
-    }
+    } */
     .product__info .sub__info p{
         font-size: 12px;
     }

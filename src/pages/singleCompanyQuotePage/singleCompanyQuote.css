@@ -149,16 +149,16 @@
 
 
 @media screen and (max-width: 600px) {
-    .singleQuote__slideProducts .lastMinuteCard__handler{
+    /* .singleQuote__slideProducts .lastMinuteCard__handler{
         width: 300px;
         height: 270px;
-    }
+    } */
 }
 @media screen and (max-width: 992px){
-    .singleQuote__slideProducts .lastMinuteCard__handler{
+    /* .singleQuote__slideProducts .lastMinuteCard__handler{
         width: 300px;
         height: 300px;
-    }
+    } */
 }
 .customizedInput::placeholder {
     color: #969696;
