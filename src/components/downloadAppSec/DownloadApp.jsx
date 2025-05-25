@@ -13,7 +13,7 @@ export default function DownloadApp() {
                     secText='Enhance your experience: Download the app to stay notified and up-to-date on industries important to you, plus access many other features'
                 />
                 <div className="downloadAppSec__btnss">
-                    <div className='d-flex gap-5'>
+                    <div className='d-flex downloadAppSec__btnss__div  gap-5'>
                         <NavLink to={''} className='nav-link btnForDownload'>
                             <img src={googlePlayBtn} alt="btn__app" />
                         </NavLink>

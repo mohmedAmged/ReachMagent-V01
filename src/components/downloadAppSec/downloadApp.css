@@ -16,6 +16,11 @@
     margin: 0;
 }
 @media screen and (max-width: 600px) {
+    .downloadAppSec__btnss__div{
+        flex-direction: column;
+        justify-content: start;
+        gap: 3px !important;
+    }
     .downloadAppSec__handler .header_ofSec{
         text-align: center !important;
     }
