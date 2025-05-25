@@ -53,7 +53,7 @@ export default function MyQuotations({ token }) {
               setFilteration={setFilteration}
             />
             <div className="myQuotations__handler ">
-              <QuotationStateSec />
+              {/* <QuotationStateSec /> */}
               {unAuth ? (
                 <UnAuthSec />
               ) : (

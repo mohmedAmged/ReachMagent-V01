@@ -15,7 +15,7 @@ import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 export default function MyOrders({ token }) {
     const [loading, setLoading] = useState(true);
   
-  const [activeRole, setActiveRole] = useState('All');
+  const [activeRole, setActiveRole] = useState('Sell');
   const loginType = localStorage.getItem('loginType');
   const [currentUserLogin, setCurrentUserLogin] = useState(null);
   const [unAuth, setUnAuth] = useState(false);
@@ -98,7 +98,7 @@ console.log(allOrders);
             {
               loginType === 'employee' &&
               <div className="my__roles__actions mb-5 ps-0 ms-0">
-                <button
+                {/* <button
                   className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn ' : ''}`}
                   onClick={() =>{
                     setActiveRole('All');
@@ -106,9 +106,9 @@ console.log(allOrders);
                   } }
                 >
                   All
-                </button>
+                </button> */}
                 <button
-                  className={`def__btn meddle_btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
+                  className={`def__btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
                   onClick={() =>{
                     setActiveRole('Sell');
                     getAllOrders('?q=sell');
