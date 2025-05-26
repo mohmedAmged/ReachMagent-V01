@@ -6,8 +6,13 @@
     position: relative;
     height: 70vh;
 }
-@media screen and (min-width: 1450px ) {
+@media screen and (min-width: 1024px ) {
     .heroOnlyCover__handler{
-    height: 45vh;
+    height: 35vh;
+    }
+}
+@media screen and (max-width: 884px ) {
+    .heroOnlyCover__handler{
+    height: 35vh;
     }
 }

@@ -38,7 +38,7 @@ export default function OneClickNegotiationCompanies({ token }) {
             <div className='main__content container'>
               <MainContentHeader currentUserLogin={currentUserLogin} />
               <div className='myQuotations__handler '>
-                <QuotationStateSec />
+                {/* <QuotationStateSec /> */}
                 {
                   unAuth ? 
                   <UnAuthSec />

@@ -107,10 +107,10 @@ export default function SingleCompany({ token }) {
     //     { name: 'Partners', active: activeItem === 'Partners' },
     // ];
     const secondItemsToFilter = showCompaniesQuery?.data?.company?.companyServices?.map((ele)=>(ele?.categoryName));
-    const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0] || '');
+    const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0]);
     ///////
     const secondCatalogItemsToFilter = showCompaniesQuery?.data?.company?.companyCatalogs?.map((ele)=>(ele?.categoryName))
-    const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(secondCatalogItemsToFilter?.[0] || '');   
+    const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(secondCatalogItemsToFilter?.[0]);   
 
     const [newData, setNewdata] = useState([])
     const fetchCompanyPosts = async () => {
@@ -668,7 +668,7 @@ const handleCatalogCategoryClick = (name) => {
                             token &&
                             <BookAppointMentFrom show={show} handleClose={handleClose} token={token} companyId={companyId} company={showCompaniesQuery?.data} />
                         }
-                        {
+                        { showCompaniesQuery?.data?.company?.companyForms?.length !==0 &&
                             <CompanyContact company={showCompaniesQuery} token={token} companyId={companyId} />
                         }
 

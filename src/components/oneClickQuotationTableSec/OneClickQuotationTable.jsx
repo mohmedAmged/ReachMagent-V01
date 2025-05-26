@@ -37,13 +37,13 @@ export default function OneClickQuotationTable({
             className={`def__btn meddle_btn px-5 ${filteration.activeRole === "Sell" ? "rolesActiveBtn" : ""}`}
             onClick={() => handleRoleChange("Sell", "sell")}
           >
-            Sell
+            Selling
           </button>
           <button
             className={`cust__btn px-5 ${filteration.activeRole === "Buy" ? "rolesActiveBtn" : ""}`}
             onClick={() => handleRoleChange("Buy", "buy")}
           >
-            Buy
+            Buying
           </button>
         </div>
       )}
@@ -54,9 +54,9 @@ export default function OneClickQuotationTable({
             <tr className="table__default__header">
               <th>ID</th>
               <th>Submission Date</th>
-              <th>Requested {loginType === "user" ? "From" : "By"}</th>
+              {/* <th>Requested {loginType === "user" ? "From" : "By"}</th>
               {loginType === "employee" && <th>Requester Phone</th>}
-              <th>Country</th>
+              <th>Country</th> */}
             </tr>
           </thead>
           <tbody>
@@ -75,9 +75,9 @@ export default function OneClickQuotationTable({
                   </NavLink>
                 </td>
                 <td>{row?.created_at}</td>
-                <td>{loginType === "user" ? row?.company_name : row?.request_by_name}</td>
+                {/* <td>{loginType === "user" ? row?.company_name : row?.request_by_name}</td>
                 {loginType === "employee" && <td>{row?.request_by_phone}</td>}
-                <td>{row?.destination_country}</td>
+                <td>{row?.destination_country}</td> */}
               </tr>
             ))}
           </tbody>

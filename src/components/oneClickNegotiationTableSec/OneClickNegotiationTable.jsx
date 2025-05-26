@@ -85,7 +85,7 @@ console.log(newData);
       
        <div className="row align-items-center">
         <div className="col-6">
-          <ContentViewHeader title={`All Requested Companies`} />
+          <ContentViewHeader title={`All Submissions`} />
         </div>
         <div className="col-6">
           <div className="singleQuoteInput">
@@ -97,7 +97,7 @@ console.log(newData);
                 id="oneclickquotationFilterComapnies"
                  onChange={handleFilterChange}
             >
-                <option value="" disabled>filter companies</option>
+                <option value=""  className="text-capitalize">Filter Companies</option>
                 <option value="budget" className="text-capitalize">can achieve target budget</option>
                 <option value="delivery_time" className="text-capitalize">can achieve target delivery time</option>
                 <option value="delivery_terms" className="text-capitalize">can achieve preferred delivery terms
@@ -118,7 +118,7 @@ console.log(newData);
           </thead>
           <tbody>
             { newData?.length > 0 ?
-            newData?.map((row, index) => (
+            newData?.filter((el)=>el.company_status !== "Pending").map((row, index) => (
               <tr className="" key={index}>
                 <td>
                   {row?.company_name}
