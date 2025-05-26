@@ -24,7 +24,7 @@ export default function MyCatalogDetails({ token }) {
     const [currImages, setCurrentImages] = useState([]);
     const [currImg, setCurrImg] = useState('');
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
-    const [addedPreferences, setAddedPreferences] = useState([]);
+    const [addedPreferences, setAddedPreferences] = useState({});
     const optionsRef = useRef(null);
 
     useEffect(() => {
@@ -45,61 +45,18 @@ export default function MyCatalogDetails({ token }) {
         }
     }, [currentCatalog?.media]);
 
-    // const handleAddProduct = (product) => {
-    //     const preferences = Object.values(addedPreferences);
-    //     const addedProduct = {
-    //         type: product?.type,
-    //         item_id: `${product?.id}`,
-    //         preferences
-    //     };
-    //     (async () => {
-    //         const toastId = toast.loading('Loading...');
-    //         await axios.post(`${baseURL}/user/add-item-to-quotation-cart?t=${new Date().getTime()}`,
-    //             addedProduct
-    //             , {
-    //                 headers: {
-    //                     'Content-type': 'application/json',
-    //                     'Accept': 'application/json',
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             })
-    //             .then((response) => {
-    //                 toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
-    //                     id: toastId,
-    //                     duration: 1000
-    //                 });
-    //                 console.log(addedProduct);
-
-    //                 fetchCatalog(catalogId, token);
-    //             })
-    //             .catch((error) => {
-    //                 const errorMessage =
-    //                     error?.response?.data?.message || 'Something went wrong!';
-    //                 const errorDetails =
-    //                     error?.response?.data?.errors || {};
-
-    //                 toast.error(errorMessage, {
-    //                     id: toastId,
-    //                     duration: 3000,
-    //                 });
-
-    //                 if (errorDetails.preferences && Array.isArray(errorDetails.preferences)) {
-    //                     errorDetails.preferences.forEach((err) => {
-    //                         toast.error(err, {
-    //                             duration: 3000,
-    //                         });
-    //                     });
-    //                 }
-    //             });
-    //     })();
-    // };
 
     const handleAddProduct = (product) => {
-        const preferences = Object.values(addedPreferences);
+        const requiredOptions = product?.options || [];
+        const selectedIds = Object.values(addedPreferences);
+         const missingOption = requiredOptions.find(
+        (option) => !addedPreferences[option.attribute_id]
+    );
+    
         const addedProduct = {
             type: product?.type,
             item_id: `${product?.id}`,
-            preferences
+            preferences: selectedIds
         };
 
         (async () => {
@@ -142,6 +99,8 @@ export default function MyCatalogDetails({ token }) {
                         }, 200);
                     }
                 });
+                console.log(addedProduct);
+                
         })();
     };
 
@@ -150,9 +109,6 @@ export default function MyCatalogDetails({ token }) {
         { name: 'Options', active: activeItem === 'Options' },
         { name: 'Details', active: activeItem === 'Details' },
     ];
-
-   
-
     console.log(currentCatalog);
 
     return (

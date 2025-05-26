@@ -4,7 +4,9 @@
     padding: 30px;
     border-radius: 10px;
 }
+.content__view__handler .profileCoverImg{
 
+}
 .content__card__list {
     margin-top: 70px;
 }
@@ -139,6 +141,10 @@ font-size: 14px;
 }
 
 @media screen and (max-width: 600px){
+
+    .content__view__handler .profileCoverImg{
+        height: 45vh;
+    }
     .card__item{
         width: 100%;
     }
@@ -151,5 +157,21 @@ font-size: 14px;
     }
     .my__roles__actions button {
         padding: 10px !important;
+    }
+}
+
+@media screen and (min-width: 885px ) and (max-width: 1440px) {
+    .content__view__handler .profileCoverImg img{
+        height: 40vh;
+    }
+}
+@media screen and (max-width: 884px ) {
+    .content__view__handler .profileCoverImg img{
+        height: 30vh;
+    }
+}
+@media screen and (min-width: 1441px ) {
+    .content__view__handler .profileCoverImg img{
+    height: 30vh;
     }
 }

@@ -137,6 +137,8 @@ export default function MyAllCompanies() {
         }
     };
 console.log(uniqueAllowedCompNames);
+console.log(subCategories);
+console.log(companies);
 
     return (
         <>
@@ -149,7 +151,7 @@ console.log(uniqueAllowedCompNames);
             <div className="row">
                 <div className="col-lg-3 col-md-4">
                     <div className="sidebarForItemsFilter__handler">
-                        <div className="sidebarItemFilter">
+                        {/* <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationtitle">
                                     Filter by Product
@@ -164,7 +166,7 @@ console.log(uniqueAllowedCompNames);
                                     onChange={handleInputChange}
                                 />
                             </div>
-                        </div>
+                        </div> */}
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationServ">
@@ -253,13 +255,13 @@ console.log(uniqueAllowedCompNames);
                                     <option value="" disabled>
                                         Select Sub-Category
                                     </option>
-                                    {subCategories
-                                        .filter((subCat) => subCat.categoryId === formData.category_id)
-                                        .map((subCategory, index) => (
+                                    {subCategories.map((subCategory, index) => (
                                             <option key={index} value={subCategory.subCategoryId}>
                                                 {subCategory.subCategoryName}
                                             </option>
                                         ))}
+                                        {/* // .filter((subCat) => subCat.categoryId === formData.category_id) */}
+                                        
                                 </select>
                             </div>
                         </div>
