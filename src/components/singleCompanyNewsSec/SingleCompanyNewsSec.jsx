@@ -97,7 +97,7 @@ console.log(newData);
                                     </NavLink>
                                   </div>
                                   <h4>{el?.postTitle}</h4>
-                                  <p>Type: {el?.postType}</p>
+                                  <p>{el?.postType}</p>
                                   <p>{el?.postDate}</p>
                                 </div>
                               </div>

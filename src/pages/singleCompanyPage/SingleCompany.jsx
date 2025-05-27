@@ -107,10 +107,21 @@ export default function SingleCompany({ token }) {
     //     { name: 'Partners', active: activeItem === 'Partners' },
     // ];
     const secondItemsToFilter = showCompaniesQuery?.data?.company?.companyServices?.map((ele)=>(ele?.categoryName));
-    const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0]);
+    // const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0]);
+    const [selectedServiceCategory, setSelectedServiceCategory] = useState(null);
+    useEffect(() => {
+            if (activeItem === 'Services' && secondItemsToFilter?.length > 0 && !selectedServiceCategory) {
+                setSelectedServiceCategory(secondItemsToFilter[0]);
+            }
+    }, [activeItem, secondItemsToFilter, selectedServiceCategory]);
     ///////
     const secondCatalogItemsToFilter = showCompaniesQuery?.data?.company?.companyCatalogs?.map((ele)=>(ele?.categoryName))
-    const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(secondCatalogItemsToFilter?.[0]);   
+    const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(null);   
+    useEffect(() => {
+            if (activeItem === 'Product Catalog' && secondCatalogItemsToFilter?.length > 0 && !selectedCatalogCategory) {
+                setSelectedCatalogCategory(secondCatalogItemsToFilter[0]);
+            }
+    }, [activeItem, secondCatalogItemsToFilter, selectedCatalogCategory]);
 
     const [newData, setNewdata] = useState([])
     const fetchCompanyPosts = async () => {
@@ -233,8 +244,20 @@ const handleCatalogCategoryClick = (name) => {
                                 }
                                 {
                                     activeItem === 'Services' &&
-                                    <>
-                                     <ProductDetailsFilterationBar items={serviceCategoryItems} onItemClick={handleServiceCategoryClick} secondFilter={true}/>
+                                    <div className='ms-4'>
+                                    <div className="contactCompany-type">
+                                        <ul  className='d-flex flex-wrap mb-3'>
+                                            {serviceCategoryItems?.map((el, index) => {
+                                            return (
+                                                <li key={index} onClick={() => {
+                                                handleServiceCategoryClick(el?.name);
+                                                }} className={`me-2 ${el.active ? 'contactCompany-type-active' : ''}`}>
+                                                {el?.name}
+                                                </li>
+                                            )
+                                            })}
+                                        </ul>
+                                    </div>
                                     {
                                     selectedServiceCategory &&
                                     showCompaniesQuery?.data?.company?.companyServices
@@ -297,12 +320,25 @@ const handleCatalogCategoryClick = (name) => {
                                         </h5>
                                     )}
 
-                                    </>
+                                    </div>
                                 }
                                 {
                                     activeItem === 'Product Catalog' &&
-                                    <>
-                                    <ProductDetailsFilterationBar items={catalogCategoryItems} onItemClick={handleCatalogCategoryClick} secondFilter={true}/>
+                                    <div className='ms-4'>
+                                    {/* <ProductDetailsFilterationBar items={catalogCategoryItems} onItemClick={handleCatalogCategoryClick} secondFilter={true}/> */}
+                                    <div className="contactCompany-type">
+                                        <ul className='mb-3 d-flex flex-wrap'>
+                                            {catalogCategoryItems?.map((el, index) => {
+                                            return (
+                                                <li key={index} onClick={() => {
+                                                handleCatalogCategoryClick(el?.name);
+                                                }} className={` me-2 ${el.active ? 'contactCompany-type-active' : ''}`}>
+                                                {el?.name}
+                                                </li>
+                                            )
+                                            })}
+                                        </ul>
+                                    </div>
                                     {
                                     selectedCatalogCategory &&
                                     showCompaniesQuery?.data?.company?.companyCatalogs
@@ -364,7 +400,7 @@ const handleCatalogCategoryClick = (name) => {
                                         ))
                                     }
                                         
-                                    </>
+                                    </div>
                                 }
                                 {
                                     activeItem === 'Products' &&
