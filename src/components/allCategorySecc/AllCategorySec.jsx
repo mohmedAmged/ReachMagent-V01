@@ -3,6 +3,7 @@ import './allCategorySec.css'
 import HeaderSec from '../myHeaderSec/HeaderSec'
 import other from '../../assets/categoryIcons/other.png'
 import CategoryOctagonShape from '../categoryOctagonShapeSec/CategoryOctagonShape'
+import otherIcon from '../../assets/categoryIcons/other.jpg'
 
 export default function AllCategorySec({selectedIndustries}) {
     console.log(selectedIndustries);
@@ -30,7 +31,7 @@ export default function AllCategorySec({selectedIndustries}) {
                         }
                         <div>
                             <CategoryOctagonShape 
-                                octagonIcon={other} 
+                                octagonIcon={otherIcon} 
                                 iconName={'other'} 
                                 iconLink={'/all-Industries'}
                             />

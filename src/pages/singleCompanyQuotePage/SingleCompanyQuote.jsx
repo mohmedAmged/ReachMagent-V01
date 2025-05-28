@@ -654,7 +654,7 @@ console.log(cart);
                                         <div className="col-lg-8">
                                             <div className="selectedProducts__handler">
                                                 <h3>
-                                                    Selected Products
+                                                    Selected Items
                                                 </h3>
                                                 {(cart?.length === 0) ? (
                                                     <p>No products selected</p>
@@ -828,21 +828,29 @@ console.log(cart);
                                                 <i title='want Shipping to your place' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                             </label>
                                         </div>
+                                        <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
+                                            Enable this option to include shipping cost only for shippable products (not services).
+                                        </p>
                                         {
                                             distinationData?.include_shipping &&
-                                            <div className="form-check">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="checkbox"
-                                                    name={'include_insurance'}
-                                                    checked={distinationData?.include_insurance}
-                                                    onChange={handleCheckboxChange}
-                                                    id="flexCheckDefault2" />
-                                                <label className="form-check-label position-relative" htmlFor="flexCheckDefault2">
-                                                    Include Insurance
-                                                    <i title='Include Insurance' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
-                                                </label>
-                                            </div>
+                                            <>
+                                                <div className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        name={'include_insurance'}
+                                                        checked={distinationData?.include_insurance}
+                                                        onChange={handleCheckboxChange}
+                                                        id="flexCheckDefault2" />
+                                                    <label className="form-check-label position-relative" htmlFor="flexCheckDefault2">
+                                                        Include Insurance
+                                                        <i title='Include Insurance' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    </label>
+                                                </div>
+                                                <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
+                                                    Enable this option if you want to insure the shipment.
+                                                </p>
+                                            </>
                                         }
                                     </div>
                                 </div>

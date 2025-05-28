@@ -66,7 +66,7 @@
     font-size: 16px !important;
     line-height: auto;
     color: var(--primary-black) !important;
-    font-weight: normal !important;
+    font-weight: 600 !important;
     font-style: 500;
     text-transform: capitalize !important;
     transition: all 0.3s linear;
@@ -74,12 +74,12 @@
 
 .nav__link__style:hover {
     color: var(--main-blue-color) !important;
-    font-weight: 500 !important;
+    /* font-weight: 500 !important; */
 }
 
 .navbar-nav .nav-link.active {
     color: var(--main-blue-color) !important;
-    font-weight: 500 !important;
+    /* font-weight: 500 !important; */
 }
 .sign__in__btn ,
 .sign__in__btn.nav-link.active {

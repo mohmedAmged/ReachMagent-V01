@@ -136,7 +136,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
         } else if (target === 'followers') {
             navigate(`/profile/followers`);
         }else if (target === 'new_industry') {
-            navigate(`/show-company/${id}`);
+            navigate(`/${id}`);
         }
          else {
             console.warn(`Unhandled target: ${target}`);
