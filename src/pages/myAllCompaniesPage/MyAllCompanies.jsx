@@ -240,7 +240,7 @@ console.log(companies);
                                 </select>
                             </div>
                         </div>
-                        <div className="sidebarItemFilter">
+                        {/* <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationsubcategory">
                                     Filter by Sub-Category
@@ -255,16 +255,15 @@ console.log(companies);
                                     <option value="" disabled>
                                         Select Sub-Category
                                     </option>
-                                    {subCategories.map((subCategory, index) => (
+                                    {subCategories.filter((subCat) => subCat.categoryId === formData.category_id).map((subCategory, index) => (
                                             <option key={index} value={subCategory.subCategoryId}>
                                                 {subCategory.subCategoryName}
                                             </option>
                                         ))}
-                                        {/* // .filter((subCat) => subCat.categoryId === formData.category_id) */}
                                         
                                 </select>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationSorting">
