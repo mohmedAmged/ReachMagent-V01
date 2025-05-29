@@ -579,9 +579,9 @@ console.log(cart);
                 className='mySwiper'
                 modules={[Autoplay]}
                 autoplay={{
-                    delay: 2500,
+                    delay: 4500,
                     pauseOnMouseEnter: true,
-                    disableOnInteraction: false
+                    disableOnInteraction: true
                 }}
                 breakpoints={{
                     300: {

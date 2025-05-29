@@ -139,6 +139,7 @@ export default function MyAllCompanies() {
 console.log(uniqueAllowedCompNames);
 console.log(subCategories);
 console.log(companies);
+console.log(categories);
 
     return (
         <>
@@ -240,7 +241,7 @@ console.log(companies);
                                 </select>
                             </div>
                         </div>
-                        {/* <div className="sidebarItemFilter">
+                        <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationsubcategory">
                                     Filter by Sub-Category
@@ -255,7 +256,8 @@ console.log(companies);
                                     <option value="" disabled>
                                         Select Sub-Category
                                     </option>
-                                    {subCategories.filter((subCat) => subCat.categoryId === formData.category_id).map((subCategory, index) => (
+                                    {formData.category_id && subCategories.length > 0 &&
+                                    subCategories.map((subCategory, index) => (
                                             <option key={index} value={subCategory.subCategoryId}>
                                                 {subCategory.subCategoryName}
                                             </option>
@@ -263,7 +265,7 @@ console.log(companies);
                                         
                                 </select>
                             </div>
-                        </div> */}
+                        </div>
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationSorting">

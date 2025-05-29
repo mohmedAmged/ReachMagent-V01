@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './lastMinuteCard.css'
 import timeImg from '../../assets/lastMinuteCardImgs/mdi_timer-sand.png'
 import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
+import { Button, Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 export default function LastMinuteCard({
     productImage,
     productName,
@@ -26,6 +28,9 @@ export default function LastMinuteCard({
     renderdublicate,
     renderOptionData = false
 }) {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
             onKnowMoreClick();
@@ -34,6 +39,21 @@ export default function LastMinuteCard({
         };
     };
 
+     const handleModalSubmit = () => {
+        const allSelected = data.options.every(
+            option => selectedPreferences[option.attribute_id]
+        );
+
+        if (!allSelected) {
+            toast.error('Please select all options before submitting.');
+            return;
+        }
+
+        toast.success('options added successufully')
+    console.log('Selected preferences:', selectedPreferences);
+
+        handleClose();
+    };
 
     const cardStyles = {
         background: 'var(--primary-white)',
@@ -43,7 +63,6 @@ export default function LastMinuteCard({
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
 console.log(productCompanySlug);
-
     return (
         <>
             <div className='lastMinuteCard__handler' style={cardStyles} >
@@ -77,34 +96,65 @@ console.log(productCompanySlug);
                             </div>
                         )}
                         {
-                            renderOptionData &&
-                            <>
-                             {data.options.map((option, index) => (
-                                    <div key={option.attribute_id}>
-                                        <div className=''>
-                                            <label className='text-capitalize my-2'>{option.attribute}</label>
-                                            <select
-                                            className='form-select w-80'
-                                            onChange={(e) =>
-                                                setSelectedPreferences(prev => ({
-                                                ...prev,
-                                                [option.attribute_id]: e.target.value
-                                                }))
-                                            }
-                                            value={selectedPreferences[option.attribute_id] || ''}
-                                            >
-                                            <option value="" disabled>Select one option</option>
-                                            {option.values.map(val => (
-                                                <option key={val.id} value={val.id}>
-                                                {val.name}
-                                                </option>
-                                            ))}
-                                            </select>
-                                        </div>
-                                        
+                            renderOptionData && data?.options?.length > 0 &&
+                            (<>
+                            
+                                <button
+                                type='button'
+                                onClick={handleShow}
+                                className='btnColoredBlue terquase mt-3'
+                            >
+                               Choose options
+                            </button>
+                             <Modal show={show} onHide={handleClose}>
+                                    <div className='container'>
+                                        <form  className="row bookAppointMentForm">
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Select Options</Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body>
+                            {data.options.map((option, index) => (
+                                <div key={option.attribute_id}>
+                                    <div className=''>
+                                        <label className='text-capitalize my-2'>{option.attribute}</label>
+                                        <select
+                                        className='form-select w-80'
+                                        onChange={(e) =>
+                                            setSelectedPreferences(prev => ({
+                                            ...prev,
+                                            [option.attribute_id]: e.target.value
+                                            }))
+                                        }
+                                        value={selectedPreferences[option.attribute_id] || ''}
+                                        >
+                                        <option value="" disabled>Select one option</option>
+                                        {option.values.map(val => (
+                                            <option key={val.id} value={val.id}>
+                                            {val.name}
+                                            </option>
+                                        ))}
+                                        </select>
                                     </div>
-                                ))}
-                            </>
+                                    
+                                </div>
+                            ))}
+                                            </Modal.Body>
+                                            <Modal.Footer className='d-flex justify-content-center'>
+                                                <Button variant="outline-danger" className='py-2' onClick={handleClose}>
+                                                    Cancel
+                                                </Button>
+                                                <button
+                                                    type="button"
+                                                    className='contactCompany__form-submitBtn m-auto w-auto fs-5 fw-light px-2 py-1'
+                                                    onClick={handleModalSubmit}
+                                                >
+                                                    Submit
+                                                </button>
+                                            </Modal.Footer>
+                                        </form>
+                                    </div>
+                            </Modal>
+                            </>)
                         }
                         { showMoreDetails === true && 
                             <h4 style={{fontSize:'18px', color:'#412794', textTransform:'capitalize'}}>
@@ -121,7 +171,7 @@ console.log(productCompanySlug);
                         <span className={`pageMainBtnStyle d-flex justify-content-center ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}
                         </span>
-                         {renderdublicate &&
+                         {renderdublicate && data?.options?.length > 0 &&
                             <button type='button' className={`pageMainBtnStyle d-flex justify-content-center mt-3`} onClick={onDublicateItem}>
                             Add More 
                         </button>
