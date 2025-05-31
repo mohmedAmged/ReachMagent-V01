@@ -26,11 +26,13 @@ export default function LastMinuteCard({
     selectedPreferences, 
     onDublicateItem,
     renderdublicate,
-    renderOptionData = false
+    renderOptionData = false,
+    showOption,
+    setShowOption,
+    handleCloseOption,
+    handleShowOption
+
 }) {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
             onKnowMoreClick();
@@ -50,9 +52,9 @@ export default function LastMinuteCard({
         }
 
         toast.success('options added successufully')
-    console.log('Selected preferences:', selectedPreferences);
+        console.log('Selected preferences:', selectedPreferences);
 
-        handleClose();
+        handleCloseOption();
     };
 
     const cardStyles = {
@@ -62,7 +64,7 @@ export default function LastMinuteCard({
         border: `2px solid ${borderColor}`
     };
     const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
-console.log(productCompanySlug);
+console.log(data);
     return (
         <>
             <div className='lastMinuteCard__handler' style={cardStyles} >
@@ -101,12 +103,12 @@ console.log(productCompanySlug);
                             
                                 <button
                                 type='button'
-                                onClick={handleShow}
-                                className='btnColoredBlue terquase mt-3'
+                                onClick={handleShowOption}
+                                className='btnColoredBlue addMoreOptionsBtn terquase mt-3'
                             >
                                Choose options
                             </button>
-                             <Modal show={show} onHide={handleClose}>
+                             <Modal show={showOption} onHide={handleCloseOption}>
                                     <div className='container'>
                                         <form  className="row bookAppointMentForm">
                                             <Modal.Header closeButton>
@@ -140,7 +142,7 @@ console.log(productCompanySlug);
                             ))}
                                             </Modal.Body>
                                             <Modal.Footer className='d-flex justify-content-center'>
-                                                <Button variant="outline-danger" className='py-2' onClick={handleClose}>
+                                                <Button variant="outline-danger" className='py-2' onClick={handleCloseOption}>
                                                     Cancel
                                                 </Button>
                                                 <button

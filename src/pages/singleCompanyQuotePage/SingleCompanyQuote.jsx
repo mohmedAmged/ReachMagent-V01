@@ -33,6 +33,13 @@ export default function SingleCompanyQuote({ token }) {
     const [currCurrency, setCurrCurrency] = useState('');
     const [companyCurrency, setCompanyCurrency] = useState('')
     const fileInputRef = useRef(null);
+    const [showOption, setShowOption] = useState(false);
+    const [activeOptionCard, setActiveOptionCard] = useState(null);
+    // const handleCloseOption = () => setShowOption(false);
+    // const handleShowOption = () => setShowOption(true);
+    const handleShowOption = (el) => setActiveOptionCard(el?.id);
+    const handleCloseOption = () => setActiveOptionCard(null);
+
     const typesOfQuotations = [
         { id: 1, name: 'catalog' }, { id: 2, name: 'service' }
     ];
@@ -188,52 +195,13 @@ export default function SingleCompanyQuote({ token }) {
         })();
     };
 
-    // const handleAddProduct = (product) => {
-    //     const addedProduct = {
-    //         type: requestIntries?.type || product?.type,
-    //         item_id: `${product?.id}`,
-    //         preference: product?.options[0]?.values[0]?.id || ''
-    //     };
-    //     (async () => {
-    //         const toastId = toast.loading('Loading...');
-    //         await axios.post(`${baseURL}/user/add-to-quotation-cart/${companyIdWantedToHaveQuoteWith}?t=${new Date().getTime()}`,
-    //             addedProduct
-    //             , {
-    //                 headers: {
-    //                     'Content-type': 'application/json',
-    //                     'Accept': 'application/json',
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             })
-    //             .then((response) => {
-    //                 setCart(response?.data?.data?.cart);
-    //                 toast.success(`${response?.data?.message || 'Added Successfully!'}`, {
-    //                     id: toastId,
-    //                     duration: 1000
-    //                 });
-    //             })
-    //             .catch(error => {
-    //                 toast.error(`${error?.response?.data?.message || 'Error!'}`, {
-    //                     id: toastId,
-    //                     duration: 1000
-    //                 });
-    //             })
-    //     })();
-    // };
-
     const handleAddProduct = (product) => {
         const selectedIds = Object.values(selectedPreferences);
-
-        // Optional: validate all option groups were selected
-        // if (selectedIds.length !== product.options.length) {
-        //     toast.error('Please select a value for each option');
-        //     return;
-        // }
 
         const addedProduct = {
             type: requestIntries?.type || product?.type,
             item_id: `${product?.id}`,
-            preferences: selectedIds // assuming backend supports array of ids
+            preferences: selectedIds 
         };
 
         (async () => {
@@ -261,8 +229,12 @@ export default function SingleCompanyQuote({ token }) {
             } catch (error) {
                 const backendErrors = error?.response?.data?.errors;
                 const preferenceError = backendErrors?.preferences?.[0];
+                 if (preferenceError) {
+                    // Open modal for this product
+                    setActiveOptionCard(product.id);
+                }
                 toast.error(preferenceError || error?.response?.data?.message || 'Error!', {
-                    duration: 4000, // 4 seconds
+                    duration: 5000,
                     id: toastId,
                 });
             }
@@ -578,11 +550,11 @@ console.log(cart);
             <Swiper
                 className='mySwiper'
                 modules={[Autoplay]}
-                autoplay={{
-                    delay: 4500,
-                    pauseOnMouseEnter: true,
-                    disableOnInteraction: true
-                }}
+                // autoplay={{
+                //     delay: 4500,
+                //     pauseOnMouseEnter: true,
+                //     disableOnInteraction: true
+                // }}
                 breakpoints={{
                     300: {
                         slidesPerView: 1.1,
@@ -638,6 +610,10 @@ console.log(cart);
                                         data={el}
                                         setSelectedPreferences={setSelectedPreferences}
                                         selectedPreferences={selectedPreferences}
+                                        setShowOption={setShowOption}
+                                        showOption={activeOptionCard === el.id} 
+                                        handleShowOption={() => handleShowOption(el)}
+                                        handleCloseOption={handleCloseOption}
                                     />
                                 </div>
                                 

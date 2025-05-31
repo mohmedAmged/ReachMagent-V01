@@ -66,6 +66,18 @@
 .pageMainBtnStyle {
     cursor: pointer !important;
 }
+.addMoreOptionsBtn{
+    background-color: #999999 !important;
+    color: #fff !important;
+    border-color: #999999 !important;
+    width: fit-content;
+    padding: 12px;
+    height: auto;
+}
+.addMoreOptionsBtn:hover{
+    background-color: transparent !important;
+    color: #999999 !important;
+}
 @media screen and (max-width: 600px) {
     .product__info{
         padding: 5px 0;
