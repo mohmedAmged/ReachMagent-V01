@@ -1,0 +1,81 @@
+{
+  "lang": "En",
+  "src": "../../assets/icons/america.svg",
+  "navLinks": {
+    "home": "home",
+    "aboutUs": "About Us",
+    "companies":"Companies",
+    "contactUs":"Contact Us",
+    "signIn":"sign in",
+    "signUp":"sign up"
+  },
+   "homeHeroSec":{
+    "header":"Search for your next opportunity",
+    "subHeader":"Unlock full potential by finding exactly what you need"
+  },
+  "searchbarHomeCategs":{
+    "All":"all",
+    "companies":"Companies",
+    "products":"products",
+    "services":"services",
+    "selectCountry":"select country",
+    "placeHolder":"Search by Companies, Products and Services"
+  },
+    "browseByIndustryHome":{
+    "header":"Browse By Industry",
+    "iconOther":"Other"
+  },
+  "trendingCompanies":{
+    "header":"Trending Companies",
+    "subHeader":"Explore a wide array of trending companies making headlines in the industry",
+    "btnAllCompanies":"All Companies",
+    "productCountName":"products",
+    "serviceCountName":"services",
+    "btnFollowCompany":"+ follow",
+    "btnUnFollowCompany":"unFollow"
+  },
+  "oneClickQuotationHome":{
+    "header":"One-click Quotation",
+    "subHeader":"Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer",
+    "btnStart":"Start Now"
+  },
+  "growBuisnessHome":{
+    "header":"grow your business",
+    "subHeader":"More Than 5000 Partner",
+    "btnGrow":"Be a Partner"
+  },
+  "downloadHome":{
+    "header":"Download our New Application",
+    "subHeader":"Enhance your experience: Download the app to stay notified and up-to-date on industries important to you, plus access many other features"
+  },
+  "footerSec":{
+    "footerInfo":"ReachMagnet is a cutting-edge platform designed to redefine interactions between businesses and individuals in the digital age.",
+    "footerMainTit":"Pages",
+    "footerAboutLink":"About Us",
+    "footerPrivacy":"Privacy Policy",
+    "footerTerms":"Terms & Conditions"
+  },
+  "AllIndustriesPage":{
+    "heroSecHeader":"All Industries"
+  },
+  "AllCompaniesPage":{
+    "header":"Companies",
+    "filterServiceInput":"Filter by Service",
+    "filterServicePlaceholder":"Enter your text",
+    "filterCompanyInput":"Filter by Company",
+    "filterCompanyPlaceholder":"Select a company",
+    "filterCategoryInput":"Filter by Category",
+    "filterCategoryPlaceholder":"Select Category",
+    "filterSub_CategoryInput":"Filter by Sub-Category",
+    "filterSub_Categoryplaceholder":"Select Sub-Category",
+    "filterTypesInput":"filter by Company Types",
+    "filterTypesPlaceholder":"Select Sorting Type",
+    "btnClear":"Clear",
+    "noCompanyText":"no company with this filter",
+    "moreInfoBtn":"More Info"
+  },
+  "AboutUsPage":{
+    "header":"About Us",
+    "aboutInfo":"ReachMagnet is a cutting-edge platform designed to redefine interactions between businesses and individuals in the digital age. It operates as a dynamic hub where companies can build comprehensive profiles to showcase their services and product catalogs to international buyers, while also providing e-commerce solutions for local customers. Following a careful verification process, businesses gain access to advanced profile features that facilitate smooth in-platform messaging, efficient request"
+  }
+}

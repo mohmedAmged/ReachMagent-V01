@@ -6,8 +6,10 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrentFollowedCompanies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId, companySlug }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [expandedDesc, setExpandedDesc] = useState(false);
@@ -78,7 +80,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                 {productsCount}
                             </h3>
                             <p>
-                                products
+                                {t('trendingCompanies.productCountName')}
                             </p>
                         </div>
                         <div className="company__deals compDataStyle">
@@ -86,7 +88,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                 {dealsCount}
                             </h3>
                             <p>
-                                services
+                                {t('trendingCompanies.serviceCountName')}
                             </p>
                         </div>
                         {/* <div className="company__owner compDataStyle">
@@ -116,7 +118,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                             }, 1000);
                                         }}
                                     >
-                                        + follow
+                                    {t('trendingCompanies.btnFollowCompany')}
                                     </button>
                                 ) : (
                                     currentFollowedCompanies ? (
@@ -125,14 +127,14 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                                 className='pageMainBtnStyle unFollowCompanyBtn'
                                                 onClick={() => handleToggleFollowCompany(companyId)}
                                             >
-                                                unFollow
+                                            {t('trendingCompanies.btnUnFollowCompany')}
                                             </button>
                                         ) : (
                                             <button
                                                 className='pageMainBtnStyle followCompanyBtn'
                                                 onClick={() => handleToggleFollowCompany(companyId)}
                                             >
-                                                + follow
+                                                {t('trendingCompanies.btnFollowCompany')}
                                             </button>
                                         )
                                     ) : ''
@@ -150,7 +152,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                                         }
                                     }}
                                 >
-                                    + follow
+                                    {t('trendingCompanies.btnFollowCompany')}
                                 </button>
                             )
                         }

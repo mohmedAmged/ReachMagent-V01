@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 
 export const GetAllCompaniesStore = create((set) => ({
     companies: [],
@@ -13,7 +13,16 @@ export const GetAllCompaniesStore = create((set) => ({
 
         try {
             const response = await axios.get(`${baseURL}/companies?t=${new Date().getTime()}`, {
-                headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+                headers: Token ? 
+                { 
+                    Authorization: `Bearer ${Token}`,
+                    "Locale": Lang 
+                } 
+                :
+                {
+                        Accept: "application/json",
+                        "Locale": Lang
+                }
             });
 
             set({

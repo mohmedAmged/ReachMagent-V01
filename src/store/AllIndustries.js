@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 
 export const GetAllIndustriesStore = create((set, get) => ({
     industries: [],
@@ -18,7 +18,16 @@ export const GetAllIndustriesStore = create((set, get) => ({
         }
         set({ industriesLoading: true });
         await axios.get(`${baseURL}/industries?t=${now}`, {
-            headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+            headers: Token ? 
+            { 
+                Authorization: `Bearer ${Token}`,
+                "Locale": Lang 
+            } 
+            :
+            {
+                    Accept: "application/json",
+                    "Locale": Lang
+            }
         })
             .then(res => set(() => (
                 {
@@ -45,8 +54,17 @@ export const GetAllIndustriesStore = create((set, get) => ({
             return;
         }
         set({ countriesLoading: true });
-        await axios.get(`${baseURL}/selected-industries`, {
-            headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+        await axios.get(`${baseURL}/selected-industries?t=${now}`, {
+            headers: Token ? 
+             { 
+                Authorization: `Bearer ${Token}`,
+                "Locale": Lang 
+            } 
+            :
+            {
+                    Accept: "application/json",
+                    "Locale": Lang
+            }
         })
             .then(res => set(() => (
                 {

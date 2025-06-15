@@ -8,8 +8,11 @@ import MyLoader from "../../components/myLoaderSec/MyLoader";
 import { useCompaniesStore } from "../../store/FIlterCompanies";
 import CustomDropdown from "../../components/customeDropdownSelectSec/CustomeDropdownSelect";
 import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
+import { useTranslation } from "react-i18next";
+import { Lang } from "../../functions/Token";
 
 export default function MyAllCompanies() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
@@ -148,7 +151,7 @@ console.log(categories);
             ) : (
     <div className="MyAllCompanies__handler">
         <div className="container">
-            <h1 className="mb-4">Companies</h1>
+            <h1 className="mb-4">{t('AllCompaniesPage.header')}</h1>
             <div className="row">
                 <div className="col-lg-3 col-md-4">
                     <div className="sidebarForItemsFilter__handler">
@@ -171,14 +174,14 @@ console.log(categories);
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationServ">
-                                    Filter by Service
+                                    {t('AllCompaniesPage.filterServiceInput')}
                                 </label>
                                 <input
                                     type="text"
                                     name="service_name"
                                     id="shopFilterationServ"
                                     className="form-control"
-                                    placeholder={`Enter your text`}
+                                    placeholder={t('AllCompaniesPage.filterServicePlaceholder')}
                                     value={formData?.service_name}
                                     onChange={handleInputChange}
                                 />
@@ -206,14 +209,14 @@ console.log(categories);
                                     ))}
                                 </select> */}
                                 <label htmlFor="shopFilterationcompany">
-                                    Filter by Company
+                                   {t('AllCompaniesPage.filterCompanyInput')}
                                 </label>
                                 <CustomDropdown
                                     optionsData={uniqueAllowedCompNames}
                                     handleInputChange={handleInputChange}
                                     inputName="name" 
                                     value={formData?.name}
-                                    placeholder="Select a company"
+                                    placeholder=                                   {t('AllCompaniesPage.filterCompanyPlaceholder')}
                                     isFlagDropdown={false}
                                 />
                             </div>
@@ -221,17 +224,18 @@ console.log(categories);
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationcategory">
-                                    Filter by Category
+                                    {t('AllCompaniesPage.filterCategoryInput')}
                                 </label>
                                 <select
                                     name="category_id"
                                     id="shopFilterationcategory"
-                                    className="form-control custom-select"
+                                    className={`form-control custom-select ${Lang === 'ar' ? "formSelect_RTL" : ""}`}
                                     value={formData?.category_id}
                                     onChange={handleCategoryChange}
                                 >
                                     <option value="" disabled>
-                                        Select Category
+                                    {t('AllCompaniesPage.filterCategoryPlaceholder')}
+                                        
                                     </option>
                                     {categories?.map((category, index) => (
                                         <option key={index} value={category.categoryId}>
@@ -244,17 +248,17 @@ console.log(categories);
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationsubcategory">
-                                    Filter by Sub-Category
+                                    {t('AllCompaniesPage.filterSub_CategoryInput')}
                                 </label>
                                 <select
                                     name="sub_category_id"
                                     id="shopFilterationsubcategory"
-                                    className="form-control custom-select"
+                                    className={`form-control custom-select ${Lang === 'ar' ? "formSelect_RTL" : ""}`}
                                     value={formData?.sub_category_id}
                                     onChange={handleInputChange}
                                 >
                                     <option value="" disabled>
-                                        Select Sub-Category
+                                        {t('AllCompaniesPage.filterSub_Categoryplaceholder')}
                                     </option>
                                     {formData.category_id && subCategories.length > 0 &&
                                     subCategories.map((subCategory, index) => (
@@ -269,17 +273,17 @@ console.log(categories);
                         <div className="sidebarItemFilter">
                             <div className="catalog__new__input">
                                 <label htmlFor="shopFilterationSorting">
-                                    <span>filter by Company Types</span>
+                                    <span>{t('AllCompaniesPage.filterTypesInput')}</span>
                                 </label>
                                 <select
                                     id="shopFilterationSorting"
                                     name="main_type"
-                                    className="form-control custom-select"
+                                    className={`form-control custom-select ${Lang === 'ar' ? "formSelect_RTL" : ""}`}
                                     value={formData.main_type[0] || ""}
                                     onChange={handleSelectChange}
                                 >
                                     <option value="" disabled>
-                                        Select Sorting Type
+                                        {t('AllCompaniesPage.filterTypesPlaceholder')}
                                     </option>
                                     {uniqueAllowedCompTypes?.map((type, index) => (
                                         <option key={index} value={type}>
@@ -291,7 +295,7 @@ console.log(categories);
                         </div>
                         <div className="sidebarItemFilter">
                             <button className="clearFilterBtn" onClick={clearFilters}>
-                                Clear
+                                {t('AllCompaniesPage.btnClear')}
                             </button>
                         </div>
                     </div>
@@ -302,7 +306,7 @@ console.log(categories);
                             <div className="row">
                                 <div className="col-12">
                                     <h1 className="text-danger fs-3 text-capitalize text-center mt-4">
-                                        no company with this filter
+                                        {t('AllCompaniesPage.noCompanyText')}
                                     </h1>
                                 </div>
                             </div>
@@ -358,7 +362,9 @@ console.log(categories);
                                                     target="_blank"
                                                     to={`/${el?.companySlug}`}
                                                 >
-                                                    <button className="pageMainBtnStyle">more info</button>
+                                                    <button className="pageMainBtnStyle">
+                                                        {t('AllCompaniesPage.moreInfoBtn')}
+                                                    </button>
                                                 </NavLink>
                                             </div>
                                         </div>

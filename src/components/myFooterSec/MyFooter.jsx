@@ -1,7 +1,9 @@
 import React from 'react';
 import './myFooter.css';
+import { useTranslation } from 'react-i18next';
 
 export default function MyFooter() {
+    const { t } = useTranslation();
   const listFooterData = [
     // {
     //   title: "Resources",
@@ -16,8 +18,8 @@ export default function MyFooter() {
     //   items: ["Travelling", "About Locato", "Success", "Information"]
     // },
     {
-      title: "Pages",
-      items: ["About Us", "Privacy Policy", "Terms & Conditions"]
+      title: `${t('footerSec.footerMainTit')}`,
+      items: [`${t('footerSec.footerAboutLink')}`, `${t('footerSec.footerPrivacy')}`, `${t('footerSec.footerTerms')}`]
     },
   ];
   return (
@@ -27,7 +29,7 @@ export default function MyFooter() {
           <div className="col-lg-6 col-md-6 col-sm-12 adjustFlexDir">
             <div className="footer__desc">
               <p>
-              ReachMagnet is a cutting-edge platform designed to redefine interactions between businesses and individuals in the digital age.
+              {t('footerSec.footerInfo')}
               </p>
             </div>
             <ul className='footer__icons'>

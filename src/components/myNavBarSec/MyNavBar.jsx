@@ -21,7 +21,11 @@ import { GetAllRegionsStore } from '../../store/AllResions';
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships';
 import { useActivePackageStore } from '../../store/ActivePackageStore';
 import webLogo from '../../assets/logos/weblogo4.png'
+import LanguageSelector from '../languageSelectorSec/LanguageSelector';
+import { useTranslation } from 'react-i18next';
+
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, fireMessage, setFireNotification, fireNotification }) {
+      const { t } = useTranslation();
     const navigate = useNavigate()
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
@@ -209,7 +213,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 aria-label="Close"
                                 className={`nav-link nav__link__style`}
                                 to={`/`}>
-                                home
+                                {t('navLinks.home')}
                             </NavLink>
                             <NavLink
                                 onClick={() => {
@@ -219,7 +223,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 className={`nav-link nav__link__style`}
                                 to={`/About-ReachMagnet`}
                             >
-                                About us
+                                 {t('navLinks.aboutUs')}
                             </NavLink>
                             {/* <NavLink
                                 onClick={() => {
@@ -239,7 +243,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 className={`nav-link nav__link__style`}
                                 to={`/all-companies`}
                             >
-                                Companies
+                                 {t('navLinks.companies')}
                             </NavLink>
                             <NavLink
                                 onClick={() => {
@@ -249,10 +253,13 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                 className={`nav-link nav__link__style`}
                                 to={`/contact-us`}
                             >
-                                contact us
+                                 {t('navLinks.contactUs')}
                             </NavLink>
                         </Nav>
                         <Nav>
+                            <NavLink className='nav-link nav__link__style'>
+                                <LanguageSelector />
+                            </NavLink>
                             {
                                 token ?
                                     <>
@@ -411,7 +418,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             className={`nav-link nav__link__style sign__up__btn`}
                                             to={`/personalSignUp`}
                                         >
-                                            sign up
+                                            {t('navLinks.signUp')}
                                         </NavLink>
                                         <NavLink
                                             onClick={() => {
@@ -421,7 +428,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                             className={`nav-link nav__link__style sign__in__btn`}
                                             to={`/Login`}
                                         >
-                                            sign in
+                                            {t('navLinks.signIn')}
                                         </NavLink>
                                     </>
                             }
@@ -435,10 +442,12 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title className='offCanvas__head' id="offcanvasNavbarLabel">
                                 <NavLink className='logo__text' to={`/`}>
-                                    <>
+                                    {/* <>
                                         ReachMag<span className='letter__color'>n</span>et
-                                    </>
+                                    </> */}
+                                     <img style={{width:'160px'}} src={webLogo} alt="" />
                                 </NavLink>
+                                
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body className="OffcanvasBody__Scrollable">
@@ -489,7 +498,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     aria-label="Close"
                                     className={`nav-link nav__link__style`}
                                     to={`/`}>
-                                    home
+                                   {t('navLinks.home')}
                                 </NavLink>
 
                                 <NavLink
@@ -500,7 +509,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     aria-label="Close"
                                     className={`nav-link nav__link__style`}
                                     to={`/About-ReachMagnet`}>
-                                    About us
+                                    {t('navLinks.aboutUs')}
                                 </NavLink>
                                 {/* <NavLink
                                     onClick={() => {
@@ -521,7 +530,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     className={`nav-link nav__link__style`}
                                     to={`/all-companies`}
                                 >
-                                    Companies
+                                    {t('navLinks.companies')}
                                 </NavLink>
                                 <NavLink
                                     onClick={() => {
@@ -531,7 +540,10 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     aria-label="Close"
                                     className={`nav-link nav__link__style`}
                                     to={`/contact-us`}>
-                                    contact us
+                                    {t('navLinks.contactUs')}
+                                </NavLink>
+                                <NavLink className='nav-link nav__link__style'>
+                                <LanguageSelector />
                                 </NavLink>
                                 {
                                     token ?
@@ -547,7 +559,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 className={`nav-link nav__link__style sign__up__btn`}
                                                 to={`/personalSignUp`}
                                             >
-                                                sign up
+                                                {t('navLinks.signUp')}
                                             </NavLink>
                                             <NavLink
                                                 onClick={() => {
@@ -558,7 +570,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                                 className={`nav-link nav__link__style sign__in__btn`}
                                                 to={`/Login`}
                                             >
-                                                sign in
+                                                {t('navLinks.signIn')}
                                             </NavLink>
                                         </>
                                 }

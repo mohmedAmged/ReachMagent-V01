@@ -5,7 +5,9 @@ import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import Cookies from 'js-cookie'
 import { NavLink } from 'react-router-dom'
 import { scrollToTop } from '../../functions/scrollToTop'
+import { useTranslation } from 'react-i18next'
 export default function TrendingCompanySec({ companies, token }) {
+    const { t } = useTranslation();
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
@@ -26,8 +28,8 @@ console.log(companies);
         <div className='trendingCompany__handler'>
             <div className="container">
                 <HeaderOfSec
-                    secHead='Trending Companies'
-                    secText='Explore a wide array of trending companies making headlines in the industry' />
+                    secHead={t('trendingCompanies.header')}
+                    secText={t('trendingCompanies.subHeader')} />
 
                 <div className="trendingCompany__cards mb-5">
                     <div className="row">
@@ -65,7 +67,7 @@ console.log(companies);
                             scrollToTop();
                         }}
                         >
-                            All Companies 
+                           {t('trendingCompanies.btnAllCompanies')}
                             <i className="bi bi-arrow-bar-right"></i>
                         </NavLink>
                     </div>

@@ -81,6 +81,21 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+/* rtl styles */
+.formSelect_RTL{
+        background-position: left .75rem center !important;
+}
+.select_category_part_RTL{
+    padding-right: 0 !important;
+    border-right: none !important;
+    border-left: 1px solid rgba(229, 229, 229, 1);
+}
+.downloadAppSec__handler .header_ofSec_RTL{
+    text-align: right !important;
+}
+.downloadAppSec__handler .header_ofSec_LTR{
+    text-align: left !important;
+}
 
 
   

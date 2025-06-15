@@ -12,29 +12,31 @@ import { GetAllCountriesStore } from '../../store/AllCountries';
 import { GetAllIndustriesStore } from '../../store/AllIndustries';
 import { GetAllCompaniesStore } from '../../store/AllCompanies';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 
 export default function Home({ token }) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const arrOfCateg = [
     {
       value: 'all',
-      name: 'All',
+      name: `${t('searchbarHomeCategs.All')}`,
       id: 1,
     },
     {
       value: 'company',
-      name: 'Companies',
+      name: `${t('searchbarHomeCategs.companies')}`,
       id: 2
     },
     {
       value: 'catalog',
-      name: 'Products',
+      name:`${t('searchbarHomeCategs.products')}`,
       id: 3
     },
     {
       value: 'service',
-      name: 'Services',
+      name: `${t('searchbarHomeCategs.services')}`,
       id: 4
     },
   ];
@@ -66,8 +68,8 @@ export default function Home({ token }) {
           <div className='myHomeSec__handler'>
             <MyMainHeroSec
               heroSecContainerType='heroSec__container'
-              headText='Search for your next opportunity'
-              paraPartOne='Unlock full potential by finding exactly what you need'
+              headText={`${t('homeHeroSec.header')}`}
+              paraPartOne={`${t('homeHeroSec.subHeader')}`}
               categoryArr={arrOfCateg}
               countries={allowedCountries}
             />
@@ -85,9 +87,9 @@ export default function Home({ token }) {
                 <FranchiseSec
                   token={token}
                   pageName='discover'
-                  headText='One-click Quotation'
-                  paraText='Submit your request with ReachMagnets one-click tool and receive multiple quotations from companies, allowing you to compare and choose the best offer'
-                  btnOneText='Start Now'
+                  headText={t('oneClickQuotationHome.header')}
+                  paraText={t('oneClickQuotationHome.subHeader')}
+                  btnOneText={t('oneClickQuotationHome.btnStart')}
                   btnOnelink='/one-click-quotation'
                 />
               </div>

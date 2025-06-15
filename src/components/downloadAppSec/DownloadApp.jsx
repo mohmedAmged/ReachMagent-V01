@@ -4,13 +4,17 @@ import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec'
 import googlePlayBtn from '../../assets/logos/googleplayBtn.png'
 import appStoreBtn from '../../assets/logos/appStoreBtn.png'
 import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Lang } from '../../functions/Token'
 export default function DownloadApp() {
+      const { t } = useTranslation();
     return (
         <div className='downloadAppSec__handler'>
             <div className="container">
                 <HeaderOfSec
-                    secHead='Download our New Application'
-                    secText='Enhance your experience: Download the app to stay notified and up-to-date on industries important to you, plus access many other features'
+                    classNameRTL={Lang === 'ar' ? "header_ofSec_RTL" : "header_ofSec_LTR"}
+                    secHead={t('downloadHome.header')}
+                    secText={t('downloadHome.subHeader')}
                 />
                 <div className="downloadAppSec__btnss">
                     <div className='d-flex downloadAppSec__btnss__div  gap-5'>

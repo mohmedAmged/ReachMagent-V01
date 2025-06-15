@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import './myMainHeroSec.css';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyMainHeroSec({ countries, handleChangeFilterInputs, heroSecContainerType, currentPage, headText, paraPartOne, paraPartTwo, categoryArr, currentCompanyChosen }) {
+      const { t } = useTranslation();
+    
     const [submitSearchData, setSubmitSearchData] = useState({
         name: '',
         country_id: ''
@@ -58,8 +62,8 @@ console.log(countries);
                                         <>
                                             {
                                                 categoryArr ?
-                                                    <div className="form__part select__category__part ">
-                                                        <select className='form-select' name='type' onChange={handleChangeSearchData}>
+                                                    <div className={`form__part select__category__part ${Lang === 'ar' ? 'select_category_part_RTL':''}`}>
+                                                        <select className={`form-select ${Lang === 'ar' ? 'formSelect_RTL':''}`} name='type' onChange={handleChangeSearchData}>
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (
@@ -75,17 +79,19 @@ console.log(countries);
                                             }
                                             <div className="form__part input__search__part">
                                                 <i className="bi bi-search"></i>
-                                                <input id='searchByNameHomePage' name='name' type="text" defaultValue={''} onChange={handleChangeSearchData} placeholder='Search by Companies, Products and Services' />
+                                                <input id='searchByNameHomePage' name='name' type="text" defaultValue={''} onChange={handleChangeSearchData} placeholder={t('searchbarHomeCategs.placeHolder')} />
                                             </div>
-                                            <div className="form__part select__area__part ">
+                                            <div className={`form__part select__area__part ${Lang === 'ar' ? 'select_category_part_RTL':''}`}>
                                                 <select
                                                     defaultValue={''}
                                                     name="country_id"
                                                     onChange={handleChangeSearchData}
-                                                    className='form-select'
+                                                    className={`form-select ${Lang === 'ar' ? 'formSelect_RTL':''}`}
                                                     id="homeSearchForCountryId"
                                                 >
-                                                    <option value="" disabled>Select Country</option>
+                                                    <option value="" disabled>
+                                                        {t('searchbarHomeCategs.selectCountry')}
+                                                    </option>
                                                     {countries?.map(country => (
                                                         <option value={country?.id} key={country?.id}>
                                                             {country?.name}
@@ -101,7 +107,9 @@ console.log(countries);
                                                     <div className="form__part select__category__part">
                                                         <i className="bi bi-blockquote-right"></i>
                                                         <select defaultValue={currentCompanyChosen} name='company' onChange={handleChangeFilterInputs}>
-                                                            {currentPage === 'shop' && <option disabled value="">Select Country</option>}
+                                                            {currentPage === 'shop' && <option disabled value="">
+                                                            {t('searchbarHomeCategs.selectCountry')}    
+                                                            </option>}
                                                             {
                                                                 categoryArr?.map(el => {
                                                                     return (

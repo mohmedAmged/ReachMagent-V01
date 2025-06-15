@@ -222,7 +222,7 @@ const handleCatalogCategoryClick = (name) => {
     }, [showCompaniesQuery?.data?.company]);
     console.log(showCompaniesQuery?.data?.company);
 
-    console.log(secondCatalogItemsToFilter);
+    console.log(showCompaniesQuery?.data?.company);
 
     return (
         <>

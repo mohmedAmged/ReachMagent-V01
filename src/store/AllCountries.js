@@ -1,7 +1,8 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import {  Lang, Token } from "../functions/Token";
+// import Cookies from "js-cookie";
 
 export const GetAllCountriesStore = create((set, get) => ({
     countries: [],
@@ -16,9 +17,20 @@ export const GetAllCountriesStore = create((set, get) => ({
             set({ countriesLoading: false });
             return;
         };
+        // const Lang = Cookies.get("i18next");
+        // console.log(Lang);
         set({ countriesLoading: true });
-        await axios.get(`${baseURL}/countries`, {
-            headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+        await axios.get(`${baseURL}/countries?t=${now}`, {
+            headers: Token ? 
+                { 
+                    Authorization: `Bearer ${Token}`,
+                    "Locale": Lang 
+                } 
+                :
+                {
+                        Accept: "application/json",
+                        "Locale": Lang
+                }
         })
             .then(res => set(() => (
                 {
@@ -46,7 +58,16 @@ export const GetAllCountriesStore = create((set, get) => ({
         }
         set({ countriesLoading: true });
         await axios.get(`${baseURL}/company-countries?t=${now}`, {
-            headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+            headers: Token ? 
+            { 
+                Authorization: `Bearer ${Token}`,
+                "Locale": Lang 
+            } 
+            :
+            {
+                    Accept: "application/json",
+                    "Locale": Lang
+            }
         })
             .then(res => set(() => (
                 {

@@ -1,0 +1,82 @@
+{
+  
+  "lang": "العريية",
+  "src": "../../assets/icons/egypt.svg",
+  "navLinks": {
+    "home": "الرئيسية",
+    "aboutUs": "عننا",
+    "companies":"الشركات",
+    "contactUs":"تواصل معنا",
+    "signIn": "تسجيل الدخول",
+    "signUp":"التسجيل"
+  },
+  "homeHeroSec":{
+    "header":"ابحث عن فرصتك القادمة",
+    "subHeader":"أطلق العنان لإمكاناتك الكاملة من خلال العثور على ما تحتاجه بالضبط"
+  },
+  "searchbarHomeCategs":{
+    "All":"الجميع",
+    "companies":"الشركات",
+    "products":"المنتجات",
+    "services":"الخدمات",
+    "selectCountry": "اختر دولة",
+    "placeHolder":"البحث حسب الشركات والمنتجات والخدمات"
+  },
+  "browseByIndustryHome":{
+    "header":"ابحث حسب الصناعة",
+    "iconOther":"آخر"
+  },
+  "trendingCompanies":{
+    "header":"الشركات الرائجة",
+    "subHeader":"استكشف مجموعة واسعة من الشركات الرائجة التي تتصدر عناوين الأخبار في الصناعة",
+    "btnAllCompanies":"جميع الشركات",
+    "productCountName":"منتجات",
+    "serviceCountName":"خدمات",
+    "btnFollowCompany":"+ متابعة",
+    "btnUnFollowCompany":"إلغاء المتابعة"
+  },
+    "oneClickQuotationHome":{
+    "header":"عرض أسعار بنقرة واحدة",
+    "subHeader":"قم بإرسال طلبك باستخدام أداة النقرة الواحدة على موقعنا الإلكتروني واحصل على عروض أسعار متعددة من الشركات، مما يسمح لك بالمقارنة واختيار أفضل عرض",
+    "btnStart":"ابدأ الآن"
+  },
+    "growBuisnessHome":{
+    "header":"تنمية أعمالك معنا",
+    "subHeader":"أكثر من 5000 شريك",
+    "btnGrow":"كن شريكا"
+  },
+    "downloadHome":{
+    "header":"قم بتنزيل تطبيقنا الجديد",
+    "subHeader":"حسّن تجربتك: قم بتنزيل التطبيق للبقاء على اطلاع دائم بأحدث التطورات في الصناعات المهمة بالنسبة لك، بالإضافة إلى الوصول إلى العديد من الميزات الأخرى"
+  },
+    "footerSec":{
+    "footerInfo":"ريتش ماجنيت عبارة عن منصة متطورة مصممة لإعادة تعريف التفاعلات بين الشركات والأفراد في العصر الرقمي.",
+    "footerMainTit":"الصفحات",
+    "footerAboutLink":"معلومات عنا",
+    "footerPrivacy":"سياسة الخصوصية",
+    "footerTerms":"الشروط والأحكام"
+  },
+    "AllIndustriesPage":{
+    "heroSecHeader":"جميع الصناعات"
+  },
+   "AllCompaniesPage":{
+    "header":"الشركات",
+    "filterServiceInput":"التصفية حسب الخدمة",
+    "filterServicePlaceholder":"أدخل النص الخاص بك",
+    "filterCompanyInput":"تصفية حسب الشركة",
+    "filterCompanyPlaceholder":"اختر شركة",
+    "filterCategoryInput":"تصفية حسب الفئة",
+    "filterCategoryPlaceholder":"حدد الفئة",
+    "filterSub_CategoryInput":"تصفية حسب الفئة الفرعية",
+    "filterSub_Categoryplaceholder":"حدد الفئة الفرعية",
+    "filterTypesInput":"تصفية حسب أنواع الشركات",
+    "filterTypesPlaceholder":"حدد نوع الفرز",
+    "btnClear":"حذف",
+    "noCompanyText":"لا توجد شركة بهذا الفلتر",
+    "moreInfoBtn":"المزيد"
+  },
+    "AboutUsPage":{
+    "header":"معلومات عنا",
+    "aboutInfo":"ريتش ماجنيت منصة متطورة مصممة لإعادة تعريف التفاعلات بين الشركات والأفراد في العصر الرقمي. تعمل كمركز ديناميكي يتيح للشركات إنشاء ملفات تعريف شاملة لعرض خدماتها وكتالوجات منتجاتها للمشترين الدوليين، مع توفير حلول التجارة الإلكترونية للعملاء المحليين. بعد عملية تحقق دقيقة، تتمكن الشركات من الوصول إلى ميزات متقدمة للملفات التعريفية تُسهّل المراسلة السلسة داخل المنصة، والطلبات الفعّالة."
+  }
+}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 import debounce from "lodash/debounce";
 
 export const useCompaniesStore = create((set) => {
@@ -25,6 +25,7 @@ export const useCompaniesStore = create((set) => {
                 },
                 headers: {
                     Authorization: `Bearer ${Token}`,
+                    "Locale": Lang
                 },
             });
 

@@ -10,7 +10,7 @@
     cursor: pointer;
 }
 .downloadAppSec__handler .header_ofSec{
-    text-align: left !important;
+    text-align: left ;
 }
 .downloadAppSec__handler .header_ofSec p{
     margin: 0;

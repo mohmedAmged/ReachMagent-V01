@@ -6,8 +6,11 @@ import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import CategoryOctagonShape from '../../components/categoryOctagonShapeSec/CategoryOctagonShape'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
+import { Lang } from '../../functions/Token'
+import { useTranslation } from 'react-i18next'
 
 export default function OtherCategories() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +19,12 @@ export default function OtherCategories() {
 
     const fetchAllIndustries = async () => {
         try {
-            const response = await axios.get(`${baseURL}/show-all-industries?page=${currentPage}?t=${new Date().getTime()}`);
+            const response = await axios.get(`${baseURL}/show-all-industries?page=${currentPage}?t=${new Date().getTime()}`,{
+                headers:{
+                    Accept: "application/json",
+                    "Locale": Lang
+                }
+            });
             setNewdata(response?.data?.data?.industries);
             setTotalPages(response?.data?.data?.meta?.last_page);
         } catch (error) {
@@ -39,6 +47,7 @@ export default function OtherCategories() {
             setCurrentPage(newPage);
         };
     };
+console.log(newData);
 
     return (
         <>
@@ -49,7 +58,7 @@ export default function OtherCategories() {
                     <div className='otherCategory__handler singleCompanyQuote__handler'>
                         <MyMainHeroSec
                             heroSecContainerType='singleCompany__quote'
-                            headText='All Industries'
+                            headText={t('AllIndustriesPage.heroSecHeader')}
                         />
                         {/* <div className="otherCategory__display__handler position-relative d-flex mb-4">
                             <div>
