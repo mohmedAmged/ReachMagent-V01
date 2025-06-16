@@ -5,8 +5,10 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import FranchiseSec from '../franchiseSecc/FranchiseSec';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyContact({ token, companyId, company }) {
+  const { t } = useTranslation();
   const convertToUnderscore = (str) => {
     return str.replace(/\s+/g, '_');
   };
@@ -317,9 +319,9 @@ export default function CompanyContact({ token, companyId, company }) {
               <div className="col-12">
                 <FranchiseSec
                   pageName='discover'
-                  headText='Contact Form'
-                  paraText='From general Inqueries to booking appointements'
-                  btnOneText='Login To Continue'
+                  headText={t('SingleCompanyPage.companyContactSecHead')}
+                  paraText={t('SingleCompanyPage.companyContactSecSubHead')}
+                  btnOneText={t('SingleCompanyPage.companyContactSecBtn')}
                   btnOnelink='/login'
                 />
               </div>

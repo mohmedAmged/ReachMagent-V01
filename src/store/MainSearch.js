@@ -50,7 +50,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
 import toast from "react-hot-toast";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 
 export const SearchStore = create((set, get) => ({
     currentData: {
@@ -77,6 +77,7 @@ export const SearchStore = create((set, get) => ({
                     "Content-Type": "application/json",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token ? Token : ""}`,
+                    "Locale": Lang
                 },
             });
 
@@ -135,6 +136,7 @@ export const SearchStore = create((set, get) => ({
                     "Content-Type": "application/json",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token ? Token : ""}`,
+                    "Locale": Lang
                 },
             });
 

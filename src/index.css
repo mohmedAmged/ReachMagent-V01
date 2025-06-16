@@ -96,6 +96,7 @@ input[type=number] {
 .downloadAppSec__handler .header_ofSec_LTR{
     text-align: left !important;
 }
-
-
+.headOfNews__card-leftPart_RTL::after{
+    right: 0 !important;
+}
   

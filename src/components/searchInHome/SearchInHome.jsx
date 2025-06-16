@@ -10,8 +10,10 @@ import { GetAllCountriesStore } from '../../store/AllCountries';
 import { SearchStore } from '../../store/MainSearch';
 import LastMinuteCard from '../lastMinuteCardSec/LastMinuteCard';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function SearchInHome() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { search } = useLocation();
     // const [currentData, setCurrentData] = useState([]);
@@ -129,14 +131,15 @@ export default function SearchInHome() {
                         <div className="container">
                             <div className="row">
                                 <h1 className="col-12 mb-5">
-                                    General Search
+                                    {t('GeneralSearchPage.generalSearchHead')}
                                 </h1>
                                 <div className="col-lg-3 col-md-4">
                                     <div className="sidebarForItemsFilter__handler">
                                         <div className="sidebarItemFilter">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="shopFilterationtitle">
-                                                    Filter For
+                                                    {t('GeneralSearchPage.generalSearchFilterForLabel')}
+                                                    
                                                 </label>
                                                 <select
                                                     name="type"
@@ -145,24 +148,24 @@ export default function SearchInHome() {
                                                     value={filteration.type}
                                                     onChange={handleChange}
                                                 >
-                                                    <option value="">All</option>
-                                                    <option value="company">Companies</option>
-                                                    <option value="catalog">Products</option>
-                                                    <option value="service">Services</option>
+                                                    <option value="">{t('GeneralSearchPage.generalSearchFilterForAll')}</option>
+                                                    <option value="company">{t('GeneralSearchPage.generalSearchFilterForCompanies')}</option>
+                                                    <option value="catalog">{t('GeneralSearchPage.generalSearchFilterForProducts')}</option>
+                                                    <option value="service">{t('GeneralSearchPage.generalSearchFilterForServices')}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="sidebarItemFilter">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="shopFilterationServ">
-                                                    Filter by Name
+                                                   {t('GeneralSearchPage.generalSearchFilterByNameLabel')}
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="name"
                                                     id="shopFilterationServ"
                                                     className="form-control"
-                                                    placeholder={`Enter your text`}
+                                                    placeholder={t('GeneralSearchPage.generalSearchFilterByNamePlaceholder')}
                                                     value={filteration?.name}
                                                     onChange={handleChange}
                                                 />
@@ -171,7 +174,7 @@ export default function SearchInHome() {
                                         <div className="sidebarItemFilter">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="shopFilterationServ">
-                                                    Filter by Country
+                                                    {t('GeneralSearchPage.generalSearchFilterByCountryLabel')}
                                                 </label>
                                                 <select
                                                     name="country_id"
@@ -180,7 +183,7 @@ export default function SearchInHome() {
                                                     value={filteration?.country_id}
                                                     onChange={handleChange}
                                                 >
-                                                    <option value="" disabled>Choose a Country</option>
+                                                    <option value="" disabled>{t('GeneralSearchPage.generalSearchFilterByCountryPlaceholder')}</option>
                                                     {
                                                         allowedCountries?.map(country => (
                                                             <option key={country?.id} value={country?.id}>{country?.name}</option>
@@ -191,7 +194,7 @@ export default function SearchInHome() {
                                         </div>
                                         <div className="sidebarItemFilter">
                                             <button className="clearFilterBtn" onClick={clearFilteration}>
-                                                Clear
+                                                {t('GeneralSearchPage.generalSearchClearBtn')}
                                             </button>
                                         </div>
                                     </div>
@@ -200,7 +203,7 @@ export default function SearchInHome() {
                                     {
                                         currentData?.companies?.length === 0 && currentData?.catalogs?.length === 0 && currentData?.services?.length === 0 ?
                                             (
-                                                <h3 className='text-danger text-capitalize text-center'>sorry, no data with this filter</h3>
+                                                <h3 className='text-danger text-capitalize text-center'>{t('GeneralSearchPage.generalSearchNoData')}</h3>
                                             )
                                             :
         <div className="mainContentAllCompanies__handler">
@@ -208,7 +211,7 @@ export default function SearchInHome() {
                 (
                     <div className="row gap-3">
                         <h2>
-                            Companies
+                            {t('GeneralSearchPage.generalSearchFilterForCompanies')}
                         </h2>
                         {
                             currentData?.companies?.map((el) => {
@@ -282,7 +285,7 @@ export default function SearchInHome() {
                                                     to={`/${el?.companySlug}`}
                                                 >
                                                     <button className="pageMainBtnStyle">
-                                                        more info
+                                                       {t('GeneralSearchPage.generalSearchMoreInfo')}
                                                     </button>
                                                 </NavLink>
                                             </div>
@@ -293,7 +296,7 @@ export default function SearchInHome() {
                         {pagination.companies?.current_page <
                             pagination.companies?.last_page && (
                                 <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('companies')}>
-                                    Load More Companies
+                                   {t('GeneralSearchPage.generalSearchLoadMorCompany')}
                                 </button>
                             )}
                     </div>
@@ -303,7 +306,7 @@ export default function SearchInHome() {
                 (
                     <div className="row my-5">
                         <h2>
-                            Catalogs
+                            {t('GeneralSearchPage.generalSearchCatalogTit')}
                         </h2>
                         {
                             currentData?.catalogs?.map((cata) => (
@@ -328,7 +331,7 @@ export default function SearchInHome() {
                         {pagination.catalogs?.current_page <
                             pagination.catalogs?.last_page && (
                                 <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('catalogs')}>
-                                    Load More Catalogs
+                                    {t('GeneralSearchPage.generalSearchLoadMorCatalog')}
                                 </button>
                             )}
                     </div>
@@ -339,7 +342,7 @@ export default function SearchInHome() {
                 (
                     <div className="row  my-5">
                         <h2>
-                            Services
+                            {t('GeneralSearchPage.generalSearchServicesTit')}
                         </h2>
                         {
                             currentData?.services?.map((serv) => (
@@ -362,7 +365,7 @@ export default function SearchInHome() {
                         {pagination.services?.current_page <
                             pagination.services?.last_page && (
                                 <button className='pageMainBtnStyle py-2' onClick={() => loadMoreData('services')}>
-                                    Load More services
+                                   {t('GeneralSearchPage.generalSearchLoadMorService')}
                                 </button>
                             )}
 

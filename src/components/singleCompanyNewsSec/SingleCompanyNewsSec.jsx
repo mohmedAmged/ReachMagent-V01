@@ -12,8 +12,11 @@ import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import toast from 'react-hot-toast';
 import HeaderOfSec from '../myHeaderOfSec/HeaderOfSec';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function SingleCompanyNewsSec({ token, companyId, newData }) {
+    const { t } = useTranslation();
   // const [newData, setNewdata] = useState([])
   // const fetchCompanyPosts = async () => {
   //   try {
@@ -42,8 +45,8 @@ console.log(newData);
         newData?.length > 0 && (
           <>
             <HeaderOfSec
-              secHead='Companies Insights'
-              secText='Stay informed with the latest updates, announcements, and specials from our company'
+              secHead={t('SingleCompanyPage.companyNewsHeader')}
+              secText={t('SingleCompanyPage.companyNewsSubHead')}
             />
             <Container className='my-5'>
               <Row className='justify-content-center'>
@@ -86,7 +89,7 @@ console.log(newData);
                           <SwiperSlide key={el?.postId} className=''>
                             <div className="news__card p-3">
                               <div className="headOfNews__card d-flex justify-content-between align-items-start">
-                                <div className="headOfNews__card-leftPart">
+                                <div className={`headOfNews__card-leftPart ${Lang === 'ar' ? "headOfNews__card-leftPart_RTL" : ""}`}>
                                   <div className="image">
                                     <NavLink
                                       onClick={() => {
@@ -117,7 +120,7 @@ console.log(newData);
                   </Swiper>
                   <div className="showAllBtn d-flex justify-content-end align-items-center">
                     <NavLink className={'nav-link'} to={'/all-insights'}>
-                      All Insights
+                      {t('SingleCompanyPage.companyNewsAllInsights')}
                       <i className="bi bi-arrow-bar-right"></i>
                     </NavLink>
                   </div>

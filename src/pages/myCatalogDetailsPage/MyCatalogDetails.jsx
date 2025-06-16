@@ -15,9 +15,12 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyCatalogDetails({ token }) {
     const { catalogId } = useParams();
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate()
     const { currentCatalog, loading, fetchCatalog } = useCatalogStore();
@@ -31,10 +34,10 @@ export default function MyCatalogDetails({ token }) {
         fetchCatalog(catalogId, token);
     }, [catalogId, token, loginType, fetchCatalog]);
 
-    const [activeItem, setActiveItem] = useState('About');
+    const [activeItem, setActiveItem] = useState(`${t('singleCatalogPage.filterbarAbout')}`);
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
-        if (itemName === 'Options' && optionsRef.current) {
+        if (itemName === `${t('singleCatalogPage.filterbarOptions')}` && optionsRef.current) {
             optionsRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
@@ -105,9 +108,9 @@ export default function MyCatalogDetails({ token }) {
     };
 
     const items = [
-        { name: 'About', active: activeItem === 'About' },
-        { name: 'Options', active: activeItem === 'Options' },
-        { name: 'Details', active: activeItem === 'Details' },
+        { name: `${t('singleCatalogPage.filterbarAbout')}`, active: activeItem === `${t('singleCatalogPage.filterbarAbout')}` },
+        { name: `${t('singleCatalogPage.filterbarOptions')}`, active: activeItem === `${t('singleCatalogPage.filterbarOptions')}` },
+        { name: `${t('singleCatalogPage.filterbarDetails')}`, active: activeItem === `${t('singleCatalogPage.filterbarDetails')}` },
     ];
     console.log(currentCatalog);
 
@@ -202,7 +205,7 @@ export default function MyCatalogDetails({ token }) {
                                     {
                                         currentCatalog?.price_after_tax !== 'N/A' &&
                                         <p className="productDetails__price">
-                                            <span style={{ color: 'gray', fontWeight: 'normal', fontSize: '18px', textTransform: 'capitalize' }}>starting from</span> <br />
+                                            <span style={{ color: 'gray', fontWeight: 'normal', fontSize: '18px', textTransform: 'capitalize' }}>{t('singleCatalogPage.catalogPriceStartFrom')}</span> <br />
                                             {currentCatalog?.price_after_tax} {currentCatalog?.currency}
                                         </p>
                                     }
@@ -210,7 +213,7 @@ export default function MyCatalogDetails({ token }) {
                                         {currentCatalog?.catalogTypes?.map((prod, index) => (
                                             <div className="col-lg-12" key={index}>
                                                 <p className='fw-bold fs-5 text-capitalize mb-2 d-flex align-items-center'>
-                                                    <i className="bi bi-check-circle"></i>                                             <span className='fw-medium ms-2 fs-6'>{prod?.type}</span>
+                                                    <i className="bi bi-check-circle"></i>                                             <span className={`fw-medium fs-6 ${Lang === "ar" ? "me-2" : "ms-2"}`}>{prod?.type}</span>
                                                 </p>
                                             </div>
                                         ))}
@@ -223,21 +226,21 @@ export default function MyCatalogDetails({ token }) {
                                                     {localStorage.getItem('loginType') === 'user' && Cookies.get('verified') === 'false' ? (
                                                         <button
                                                             onClick={() => {
-                                                                toast.error('You need to verify your account first!');
+                                                                toast.error(`${t('SingleCompanyPage.infoCardVerfiyAccToast')}`);
                                                                 setTimeout(() => {
                                                                     navigate('/user-verification');
                                                                 }, 1000);
                                                             }}
                                                             className='btnColoredBlue'
                                                         >
-                                                            Add to Quotation
+                                                            {t('singleCatalogPage.catalogAddToQuote')}
                                                         </button>
                                                     ) : currentCatalog?.in_cart === false ? (
                                                         <button
                                                             onClick={() => handleAddProduct(currentCatalog)}
                                                             className='btnColoredBlue'
                                                         >
-                                                            Add to Quotation
+                                                           {t('singleCatalogPage.catalogAddToQuote')}
                                                         </button>
                                                     ) : (
                                                         <NavLink
@@ -248,14 +251,14 @@ export default function MyCatalogDetails({ token }) {
                                                             className={'nav-link'}
                                                         >
                                                             <p className='text-capitalize' style={{ color: 'rgb(63, 215, 86)' }}>
-                                                                view in Quotation cart <i className="bi bi-box-arrow-up-right"></i>
+                                                                {t('singleCatalogPage.catalogViewInCart')}<i className="bi bi-box-arrow-up-right"></i>
                                                             </p>
                                                         </NavLink>
                                                     )}
                                                 </>
                                             ) : (
                                                 <NavLink to={'/login'} className={'nav-link'}>
-                                                    <button className='btnColoredBlue'>Add to Quotation</button>
+                                                    <button className='btnColoredBlue'>{t('singleCatalogPage.catalogAddToQuote')}</button>
                                                 </NavLink>
                                             )
                                         }
@@ -263,7 +266,7 @@ export default function MyCatalogDetails({ token }) {
                                     }
                                     <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                        <NavLink target='_blanck' to={`/${currentCatalog?.company_slug}`}>
-                                        <span style={{textDecoration:'underline', color:'#000'}}>View Company Profile</span>
+                                        <span style={{textDecoration:'underline', color:'#000'}}>{t('singleCatalogPage.catalogViewCompanyProfile')}</span>
                                        </NavLink>
                                     </p>
                                 </div>
@@ -275,47 +278,47 @@ export default function MyCatalogDetails({ token }) {
                                     <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
                                 </div>
                                 {
-                                    activeItem === 'About' &&
+                                    activeItem === `${t('singleCatalogPage.filterbarAbout')}` &&
                                     <>
                                         <div className='productDetails__content mb-5 ms-5 mt-4'>
-                                            <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>Description</h4>
+                                            <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>{t('singleCatalogPage.catalogDescription')}</h4>
                                             <p className='mt-3 mb-4 fs-5'>{currentCatalog?.description}</p>
                                             <div style={{borderTop: '1px solid gray'}} className="row prodDetailsChangeColorSpan">
-                                                <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize mb-4'>product information</h4>
+                                                <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize mb-4'>{t('singleCatalogPage.catalogInformation')}</h4>
                                                 <div className="col-lg-6 mb-3">
                                                 
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        price before tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price} {currentCatalog?.currency}</span>
+                                                        {t('singleCatalogPage.catalogPriceBeforeTax')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.tax} {currentCatalog?.currency}</span>
+                                                        {t('singleCatalogPage.catalogTax')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.tax} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        price after tax: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price_after_tax} {currentCatalog?.currency}</span>
+                                                        {t('singleCatalogPage.catalogPriceAfterTax')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.price_after_tax} {currentCatalog?.currency}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        item code: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.code}</span>
+                                                        {t('singleCatalogPage.catalogItemCode')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.code}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        category: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.category}</span>
+                                                        {t('singleCatalogPage.CatalogCategory')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.category}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-6 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        sub category: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.subCategory}</span>
+                                                        {t('singleCatalogPage.CatalogSubCategory')}: <span className='fw-medium ms-2 fs-5'>{currentCatalog?.subCategory}</span>
                                                     </p>
                                                 </div>
                                                 <div className="col-lg-12 mb-3">
                                                     <p className='fw-medium text-capitalize fs-5'>
-                                                        unit of measure: <span className='fw-medium limitedP ms-2 fs-5'>{currentCatalog?.unit_of_measure}</span>
+                                                        {t('singleCatalogPage.CatalogUnitOfMeasure')}: <span className='fw-medium limitedP ms-2 fs-5'>{currentCatalog?.unit_of_measure}</span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -323,7 +326,7 @@ export default function MyCatalogDetails({ token }) {
                                     </>
                                 }
                                 {
-                                    activeItem === 'Options' &&
+                                    activeItem === `${t('singleCatalogPage.filterbarOptions')}` &&
                                     
                                         <div ref={optionsRef} className='productDetails__content mb-5 mt-4 ms-5'>
                                             {
@@ -357,7 +360,7 @@ export default function MyCatalogDetails({ token }) {
                                     color: 'gray',
                                     fontSize: '18px'
                                 }} className='ms-2 d-block'>
-                                    <span>additional price: </span>
+                                    <span>{t('singleCatalogPage.CatalogOptionAdditionalPrice')}: </span>
                                     {value?.price}  {currentCatalog?.currency}
                                 </p>
                             </div>
@@ -371,9 +374,9 @@ export default function MyCatalogDetails({ token }) {
                                     
                                 }
                                 {
-                                    activeItem === 'Details' && currentCatalog?.details?.length !== 0 &&
+                                    activeItem === `${t('singleCatalogPage.filterbarDetails')}` && currentCatalog?.details?.length !== 0 &&
                                     <div className='productDetails__content ms-5' style={{ maxWidth: '500px' }}>
-                                        <h3 className='fw-semibold'>More product details</h3>
+                                        <h3 className='fw-semibold'>{t('singleCatalogPage.catalogMoreDetails')}</h3>
                                         <table className="table table-bordered mt-3">
                                             <tbody>
                                                 {

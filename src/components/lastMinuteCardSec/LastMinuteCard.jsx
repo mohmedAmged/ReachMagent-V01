@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { Button, Modal } from 'react-bootstrap';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 export default function LastMinuteCard({
     productImage,
     productName,
@@ -33,6 +34,7 @@ export default function LastMinuteCard({
     handleShowOption
 
 }) {
+    const { t } = useTranslation();
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
             onKnowMoreClick();
@@ -84,7 +86,7 @@ console.log(data);
                         </NavLink>
                         {showCustomContent ? (
                             <>
-                                <p>Price on Request</p>
+                                <p>{t('SingleCompanyPage.filterCardsPriceOnReq')}</p>
                             </>
                             
                             
@@ -168,7 +170,7 @@ console.log(data);
                     </div>
                     <div className="sub__info">
                         {/* <p>{dealQuantity}</p> */}
-                        <NavLink target="_blank" to={productLink ? productLink : ''} className="pageMainBtnStyle terquase mb-2">More Info <i class="bi bi-box-arrow-up-right"></i>
+                        <NavLink target="_blank" to={productLink ? productLink : ''} className="pageMainBtnStyle terquase mb-2">{t('GeneralSearchPage.generalSearchMoreInfo')} <i class="bi bi-box-arrow-up-right"></i>
                         </NavLink>
                         <span className={`pageMainBtnStyle d-flex justify-content-center ${buttonClass}`} onClick={handleButtonClick}>
                             {buttonLabel}

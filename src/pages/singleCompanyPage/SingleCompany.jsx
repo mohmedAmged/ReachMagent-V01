@@ -25,8 +25,11 @@ import { usePrevWorkStore } from '../../store/AllPrevWorkStore'
 import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
+import { Lang } from '../../functions/Token'
+import { useTranslation } from 'react-i18next'
 
 export default function SingleCompany({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
     const [show, setShow] = useState(false);
@@ -35,36 +38,13 @@ export default function SingleCompany({ token }) {
 
 
     const loginType = localStorage.getItem('loginType');
-    const companyData = {
-        aboutMark: aboutMarkImage,
-        briefDescription: 'Homzmart is a one stop shop where you purchase everything from furniture to household items and more!',
-        details: [
-            'We inject confidence into the online home shopping experience by solving for brands, manufacturers, and customers.',
-            'We combine the power of technology and logistics to provide a seamless experience for the customer; therefore, delivering value to all our stakeholders.',
-            'We are continuously solving for ‘home’ – Homzmart has the largest selection to design, style and brighten your home all with a single click. Convenience, predictive-tech and customer centric approach.'
-        ],
-        faq: [
-            { title: 'How It Works', description: 'Unbeatable Selection over thousands of items waiting for you' },
-            { title: 'Payment Method', description: 'You can choose from a variety of payment methods including cash on delivery' },
-            { title: 'Fast Delivery', description: 'Order delivered to your doorstep' },
-            { title: 'Expert Service', description: 'We are there to support you anytime' }
-        ],
-        workHourImage: workHourImg,
-        workingHours: [
-            { day: 'Sunday', from: '10 AM', to: '11 PM' },
-            { day: 'Monday', from: '10 AM', to: '11 PM' },
-            { day: 'Tuesday', from: '10 AM', to: '11 PM' },
-            { day: 'Wednesday', from: '10 AM', to: '11 PM' },
-            { day: 'Thursday', from: '10 AM', to: '11 PM' },
-        ],
-        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2823585.1606278117!2d39.30088302422216!3d31.207963192810116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006f476664de99%3A0x8d285b0751264e99!2z2KfZhNij2LHYr9mG!5e0!3m2!1sar!2seg!4v1717936559294!5m2!1sar!2seg'
-    };
 
     const showCompaniesQuery = useQuery({
         queryKey: ['show-company'],
         queryFn: () => getDataFromAPI(`show-company/${companyId}?t=${new Date().getTime()}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Locale": Lang
             }
         }),
         cacheTime: 1000 * 60 * 15,
@@ -76,7 +56,8 @@ export default function SingleCompany({ token }) {
         queryKey: ['company-networks'],
         queryFn: () => getDataFromAPI(`company-networks/${companyId}?t=${new Date().getTime()}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Locale": Lang
             }
         }),
         cacheTime: 1000 * 60 * 15,
@@ -87,7 +68,8 @@ export default function SingleCompany({ token }) {
         queryKey: ['company-prevWork'],
         queryFn: () => getDataFromAPI(`company-pervious-works/${companyId}?t=${new Date().getTime()}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Locale": Lang
             }
         }),
         cacheTime: 1000 * 60 * 15,
@@ -96,7 +78,7 @@ export default function SingleCompany({ token }) {
     });
     const prevWorksArr = companyPrevWorks?.data?.pervious_works?.pervious_works
     
-    const [activeItem, setActiveItem] = useState('Overview');
+    const [activeItem, setActiveItem] = useState(`${t('SingleCompanyPage.filterbarOverview')}`);
 
     // const items = [
     //     { name: 'Overview', active: activeItem === 'Overview' },
@@ -110,7 +92,7 @@ export default function SingleCompany({ token }) {
     // const [selectedServiceCategory, setSelectedServiceCategory] = useState(secondItemsToFilter?.[0]);
     const [selectedServiceCategory, setSelectedServiceCategory] = useState(null);
     useEffect(() => {
-            if (activeItem === 'Services' && secondItemsToFilter?.length > 0 && !selectedServiceCategory) {
+            if (activeItem === `${t('SingleCompanyPage.filterbarServices')}` && secondItemsToFilter?.length > 0 && !selectedServiceCategory) {
                 setSelectedServiceCategory(secondItemsToFilter[0]);
             }
     }, [activeItem, secondItemsToFilter, selectedServiceCategory]);
@@ -118,7 +100,7 @@ export default function SingleCompany({ token }) {
     const secondCatalogItemsToFilter = showCompaniesQuery?.data?.company?.companyCatalogs?.map((ele)=>(ele?.categoryName))
     const [selectedCatalogCategory, setSelectedCatalogCategory] = useState(null);   
     useEffect(() => {
-            if (activeItem === 'Product Catalog' && secondCatalogItemsToFilter?.length > 0 && !selectedCatalogCategory) {
+            if (activeItem === `${t('SingleCompanyPage.filterbarProductCatalog')}` && secondCatalogItemsToFilter?.length > 0 && !selectedCatalogCategory) {
                 setSelectedCatalogCategory(secondCatalogItemsToFilter[0]);
             }
     }, [activeItem, secondCatalogItemsToFilter, selectedCatalogCategory]);
@@ -129,7 +111,8 @@ export default function SingleCompany({ token }) {
         if (companyId) {
             const response = await axios.get(`${baseURL}/company-posts/${companyId}?t=${new Date().getTime()}`, {
               headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Locale": Lang
               }
             });
             setNewdata(response?.data?.data?.posts);
@@ -146,42 +129,42 @@ export default function SingleCompany({ token }) {
     
     const items = [
         {
-            name: 'Overview',
-            active: activeItem === 'Overview'
+            name: `${t('SingleCompanyPage.filterbarOverview')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarOverview')}`
         },
         {
-            name: 'Services',
-            active: activeItem === 'Services',
+            name: `${t('SingleCompanyPage.filterbarServices')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarServices')}`,
             render: showCompaniesQuery?.data?.company?.companyServices?.length > 0
         },
         {
-            name: 'Product Catalog',
-            active: activeItem === 'Product Catalog',
+            name: `${t('SingleCompanyPage.filterbarProductCatalog')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarProductCatalog')}`,
             render: showCompaniesQuery?.data?.company?.companyCatalogs?.length > 0
         },
         {
-            name: 'Media',
-            active: activeItem === 'Media',
+            name: `${t('SingleCompanyPage.filterbarMedia')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarMedia')}`,
             render: showCompaniesQuery?.data?.company?.companyPortfolio?.length > 0
         },
         {
-            name: 'Clients',
-            active: activeItem === 'Clients',
-            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === 'Client')
+            name: `${t('SingleCompanyPage.filterbarClients')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarClients')}`,
+            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === `${t('SingleCompanyPage.filterbarClientsLabel')}`)
         },
         {
-            name: 'Partners',
-            active: activeItem === 'Partners',
-            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === 'Partener')
+            name: `${t('SingleCompanyPage.filterbarPartners')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarPartners')}`,
+            render: companyNetworks?.data?.networks?.networks?.some(el => el.label === `${t('SingleCompanyPage.filterbarPartnersLabel')}`)
         },
         {
-            name: 'Previous Work',
-            active: activeItem === 'Previous Work',
+            name: `${t('SingleCompanyPage.filterbarPreviousWork')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbarPreviousWork')}`,
             render: companyPrevWorks?.data?.pervious_works?.pervious_works?.length > 0
         },
         {
-            name: 'Insights',
-            active: activeItem === 'Insights',
+            name: `${t('SingleCompanyPage.filterbaInsights')}`,
+            active: activeItem === `${t('SingleCompanyPage.filterbaInsights')}`,
             render: newData?.length > 0
         },
         
@@ -239,11 +222,11 @@ const handleCatalogCategoryClick = (name) => {
                         {!showCompaniesQuery?.isLoading &&
                             <div className='container showCompany__Service'>
                                 {
-                                    activeItem === 'Overview' &&
-                                    <AboutCompany showCompaniesQuery={showCompaniesQuery?.data?.company} company={companyData} />
+                                    activeItem === `${t('SingleCompanyPage.filterbarOverview')}` &&
+                                    <AboutCompany showCompaniesQuery={showCompaniesQuery?.data?.company} />
                                 }
                                 {
-                                    activeItem === 'Services' &&
+                                    activeItem === `${t('SingleCompanyPage.filterbarServices')}` &&
                                     <div className='ms-4'>
                                     <div className="contactCompany-type">
                                         <ul  className='d-flex flex-wrap mb-3'>
@@ -323,7 +306,7 @@ const handleCatalogCategoryClick = (name) => {
                                     </div>
                                 }
                                 {
-                                    activeItem === 'Product Catalog' &&
+                                    activeItem === `${t('SingleCompanyPage.filterbarProductCatalog')}` &&
                                     <div className='ms-4'>
                                     {/* <ProductDetailsFilterationBar items={catalogCategoryItems} onItemClick={handleCatalogCategoryClick} secondFilter={true}/> */}
                                     <div className="contactCompany-type">
@@ -453,7 +436,7 @@ const handleCatalogCategoryClick = (name) => {
                                     </>
                                 }
                                 {
-                                    activeItem === 'Media' &&
+                                    activeItem === `${t('SingleCompanyPage.filterbarMedia')}` &&
                                     <>
                                         {
                                             <Swiper
@@ -502,13 +485,13 @@ const handleCatalogCategoryClick = (name) => {
                                     </>
                                 }
             {
-                activeItem === 'Clients' &&
+                activeItem === `${t('SingleCompanyPage.filterbarClients')}` &&
                 <>
                     {
                         companyNetworks?.data?.networks?.networks ?
                             (() => {
                                 const clientNetwork = companyNetworks.data.networks.networks.find(
-                                    (el) => el.label === 'Client'
+                                    (el) => el.label === `${t('SingleCompanyPage.filterbarClientsLabel')}`
                                 );
                                 return clientNetwork ? (
                                     <Swiper
@@ -543,7 +526,7 @@ const handleCatalogCategoryClick = (name) => {
                                         }}
                                     >
                                         {companyNetworks.data.networks.networks
-                                            .filter((el) => el.label === 'Client')
+                                            .filter((el) => el.label === `${t('SingleCompanyPage.filterbarClientsLabel')}`)
                                             .map((el) => (
                                                 <SwiperSlide className="my-3" key={el?.id}>
                                                     <CompanyMediaCard
@@ -559,25 +542,25 @@ const handleCatalogCategoryClick = (name) => {
                                     </Swiper>
                                 ) : (
                                     <h5 className="text-center text-danger text-capitalize mb-4">
-                                        No added client type for this company
+                                        {t('SingleCompanyPage.filterbarNoAddedClients')}
                                     </h5>
                                 );
                             })()
                             :
                             <h5 className="text-center text-danger text-capitalize mb-4">
-                                No added network for this company
+                                {t('SingleCompanyPage.filterbarNoAddedNetworks')}
                             </h5>
                     }
                 </>
             }
     {
-        activeItem === 'Partners' &&
+        activeItem === `${t('SingleCompanyPage.filterbarPartners')}` &&
         <>
             {
                 companyNetworks?.data?.networks?.networks ?
                     (() => {
                         const clientNetwork = companyNetworks.data.networks.networks.find(
-                            (el) => el.label === 'Partener'
+                            (el) => el.label === `${t('SingleCompanyPage.filterbarPartnersLabel')}`
                         );
                         return clientNetwork ? (
                             <Swiper
@@ -612,7 +595,7 @@ const handleCatalogCategoryClick = (name) => {
                                 }}
                             >
                                 {companyNetworks.data.networks.networks
-                                    .filter((el) => el.label === "Partener")
+                                    .filter((el) => el.label === `${t('SingleCompanyPage.filterbarPartnersLabel')}`)
                                     .map((el) => (
                                         <SwiperSlide className="my-3" key={el?.id}>
                                             <CompanyMediaCard
@@ -628,19 +611,20 @@ const handleCatalogCategoryClick = (name) => {
                             </Swiper>
                         ) : (
                             <h5 className="text-center text-danger text-capitalize mb-4">
-                                No added client type for this company
+                                {t('SingleCompanyPage.filterbarNoAddedClients')}
                             </h5>
                         );
                     })()
                     :
                     <h5 className="text-center text-danger text-capitalize mb-4">
-                        No added network for this company
+                    {t('SingleCompanyPage.filterbarNoAddedNetworks')}
+
                     </h5>
             }
         </>
     }
                                 {
-                                    activeItem === 'Previous Work' &&
+                                    activeItem === `${t('SingleCompanyPage.filterbarPreviousWork')}` &&
                                     <>
                                         {
                                             <Swiper

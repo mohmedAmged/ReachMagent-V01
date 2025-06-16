@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const useCatalogStore = create((set) => ({
     currentCatalog: {},
@@ -11,7 +12,8 @@ export const useCatalogStore = create((set) => ({
         try {
             const response = await axios.get(`${baseURL}/show-catalog/${catalogId}?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             set({ currentCatalog: response?.data?.data?.catalog, loading: false });

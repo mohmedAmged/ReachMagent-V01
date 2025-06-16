@@ -9,8 +9,10 @@ import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next'
 
 export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token }) {
+    const { t } = useTranslation();
     const [error, setError] = useState(null);
     const loginType = localStorage.getItem('loginType')
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
@@ -158,7 +160,7 @@ console.log(showCompaniesQuery);
                                         </p>
                                     </div> */}
                                     <div className={`company__boxInfo ${expandedText.address === true ? 'isExpendedMarginB' : ''}`}>
-                                        <p className='companyinfo__Tit'>Address:</p>
+                                        <p className='companyinfo__Tit'>{t('SingleCompanyPage.infoCardAddress')}:</p>
                                         <p className={`companyinfo__subTit cursorPointer `} title={`
                                         ${showCompaniesQuery?.companyBranches[0]?.branchCity},
                                         ${showCompaniesQuery?.companyBranches[0]?.branchCountry}
@@ -181,7 +183,7 @@ console.log(showCompaniesQuery);
                                     </div>
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
-                                            Verification Status:
+                                            {t('SingleCompanyPage.infoCardVerifyStatus')}:
                                         </p>
                                         <p className='companyinfo__subTit'>
                                             {showCompaniesQuery?.companyRegisterationStatus}
@@ -217,7 +219,7 @@ console.log(showCompaniesQuery);
                                 <div className="companyBoxItem">
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
-                                            industry:
+                                            {t('SingleCompanyPage.infoCardIndustry')}:
                                         </p>
                                         <p className='companyinfo__subTit'>
                                             {showCompaniesQuery?.companyIndustries[0]?.industryName}
@@ -225,7 +227,7 @@ console.log(showCompaniesQuery);
                                     </div>
                                     <div className="company__boxInfo">
                                         <p className='companyinfo__Tit'>
-                                            founded:
+                                            {t('SingleCompanyPage.infoCardFounded')}:
                                         </p>
                                         <p className='companyinfo__subTit'>
                                             {showCompaniesQuery?.companyFounded}
@@ -238,7 +240,7 @@ console.log(showCompaniesQuery);
                                 <div className="companyBoxItem">
                                     <div className={`company__boxInfo ${expandedText.type === true ? 'isExpendedMarginB' : ''}`}>
                                         <p className='companyinfo__Tit'>
-                                            type:
+                                            {t('SingleCompanyPage.infoCardType')}:
                                         </p>
                                         <p className='companyinfo__subTit cursorPointer' title={showCompaniesQuery?.companyTypes[0]?.type}>
                                             {expandedText.type || showCompaniesQuery?.companyTypes[0]?.type?.length <= 15
@@ -246,7 +248,7 @@ console.log(showCompaniesQuery);
                                                 : showCompaniesQuery?.companyTypes[0]?.type?.slice(0, 15) + '...'}
                                             {showCompaniesQuery?.companyTypes[0]?.type?.length > 15 && (
                                                 <span className="read-more-btn" onClick={() => toggleText('type')}>
-                                                    {expandedText.type ? 'Read Less' : 'Read More'}
+                                                    {expandedText.type ? `${t('SingleCompanyPage.infoCardReadLess')}` : `${t('SingleCompanyPage.infoCardReadMore')}`}
                                                 </span>
                                             )}
                                         </p>
@@ -296,14 +298,14 @@ console.log(showCompaniesQuery);
                                                         <button
                                                             className='pageMainBtnStyle followCompanyBtn'
                                                             onClick={() => {
-                                                                toast.error('You need to verify your account first!');
+                                                                toast.error(`${t('SingleCompanyPage.infoCardVerfiyAccToast')}`);
                                                                 setTimeout(() => {
                                                                     navigate('/user-verification');
                                                                     scrollToTop();
                                                                 }, 1000);
                                                             }}
                                                         >
-                                                            + follow
+                                                            {t('SingleCompanyPage.infoCardFollowBtn')}
                                                         </button>
                                                     ) : (
                                                         currentFollowedCompanies ? (
@@ -312,14 +314,14 @@ console.log(showCompaniesQuery);
                                                                     className='pageMainBtnStyle unFollowCompanyBtn'
                                                                     onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
                                                                 >
-                                                                    unFollow
+                                                                    {t('SingleCompanyPage.infoCardUnFollowBtn')}
                                                                 </button>
                                                             ) : (
                                                                 <button
                                                                     className='pageMainBtnStyle followCompanyBtn'
                                                                     onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}
                                                                 >
-                                                                    + follow
+                                                                    {t('SingleCompanyPage.infoCardFollowBtn')}
                                                                 </button>
                                                             )
                                                         ) : ''
@@ -328,14 +330,14 @@ console.log(showCompaniesQuery);
                                                     <button
                                                         className='pageMainBtnStyle followCompanyBtn'
                                                         onClick={() => {
-                                                            toast.error('You should log in first!');
+                                                            toast.error(`${t('SingleCompanyPage.infoCardLoginFirstToast')}`);
                                                             setTimeout(() => {
                                                                 navigate('/login');
                                                                 scrollToTop();
                                                             }, 1000);
                                                         }}
                                                     >
-                                                        + follow
+                                                        {t('SingleCompanyPage.infoCardFollowBtn')}
                                                     </button>
                                                 )
                                             }
@@ -356,14 +358,14 @@ console.log(showCompaniesQuery);
                                                 <button
                                                     className='btnColoredBlue'
                                                     onClick={() => {
-                                                        toast.error('You need to verify your account first!');
+                                                        toast.error(`${t('SingleCompanyPage.infoCardVerfiyAccToast')}`);
                                                         setTimeout(() => {
                                                             navigate('/user-verification');
                                                             scrollToTop();
                                                         }, 1000);
                                                     }}
                                                 >
-                                                    Request Quotation
+                                                    {t('SingleCompanyPage.infoCardRequestQuoteBtn')}
                                                 </button>
                                             ) : (
                                                 <NavLink
@@ -375,21 +377,21 @@ console.log(showCompaniesQuery);
                                                     to={`/${showCompaniesQuery?.companyName}/request-quote`}
                                                 >
                                                     <button className='btnColoredBlue'>
-                                                        Request Quotation
+                                                        {t('SingleCompanyPage.infoCardRequestQuoteBtn')}
                                                     </button>
                                                 </NavLink>
                                             )
                                         ) : (
                                             <NavLink
                                                 onClick={() => {
-                                                    toast.error('You Should Login First!');
+                                                    toast.error(`${t('SingleCompanyPage.infoCardLoginFirstToast')}`);
                                                     scrollToTop();
                                                 }}
                                                 className='nav-link'
                                                 to={`/login`}
                                             >
                                                 <button className='btnColoredBlue'>
-                                                    Request Quotation
+                                                    {t('SingleCompanyPage.infoCardRequestQuoteBtn')}
                                                 </button>
                                             </NavLink>
                                         )
@@ -404,34 +406,34 @@ console.log(showCompaniesQuery);
                                                 <button
                                                     className='btnColoredBlue terquase mt-3'
                                                     onClick={() => {
-                                                        toast.error('You need to verify your account first!');
+                                                        toast.error(`${t('SingleCompanyPage.infoCardVerfiyAccToast')}`);
                                                         setTimeout(() => {
                                                             navigate('/user-verification');
                                                             scrollToTop();
                                                         }, 1000);
                                                     }}
                                                 >
-                                                    Book Appointment
+                                                    {t('SingleCompanyPage.infoCardBookAppointementBtn')}
                                                 </button>
                                             ) : (
                                                 <button
                                                     onClick={handleShow}
                                                     className='btnColoredBlue terquase mt-3'
                                                 >
-                                                    Book Appointment
+                                                    {t('SingleCompanyPage.infoCardBookAppointementBtn')}
                                                 </button>
                                             )
                                         ) : (
                                             <NavLink
                                                 onClick={() => {
-                                                    toast.error('You Should Login First!');
+                                                    toast.error(`${t('SingleCompanyPage.infoCardLoginFirstToast')}`);
                                                     scrollToTop();
                                                 }}
                                                 className='nav-link'
                                                 to={`/login`}
                                             >
                                                 <button className='btnColoredBlue terquase mt-3'>
-                                                    Book Appointment
+                                                    {t('SingleCompanyPage.infoCardBookAppointementBtn')}
                                                 </button>
                                             </NavLink>
                                         )

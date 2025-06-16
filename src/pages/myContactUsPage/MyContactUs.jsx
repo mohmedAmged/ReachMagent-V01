@@ -7,8 +7,10 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { scrollToTop } from '../../functions/scrollToTop';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyContactUs({token}) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     //     const cookiesData = Cookies.get('currentLoginedData');
@@ -98,7 +100,7 @@ export default function MyContactUs({token}) {
             <div className='myContactUs__handler singleCompanyQuote__handler'>
                 <MyMainHeroSec
                     heroSecContainerType='singleCompany__quote'
-                    headText='Contact Us'
+                    headText={t('ContactUsPage.header')}
                 />
                 <div className="myContactUs_form_handler container">
                     <div className="row justify-content-start">
@@ -107,55 +109,55 @@ export default function MyContactUs({token}) {
                                 <form onSubmit={handleFormSubmit} className='p-3'>
                                     <div className="mb-4">
                                         <label htmlFor="name">
-                                            Full Name
+                                            {t('ContactUsPage.contactNameInput')}
                                         </label>
                                         <input name='name' type="text" className='w-100' 
-                                        placeholder='Full Name' 
+                                        placeholder={t('ContactUsPage.contactNamePlaceholder')} 
                                         value={formData?.name}
                                         onChange={handleInputChange} 
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="phone">
-                                            Phone Number
+                                            {t('ContactUsPage.contactPhoneInput')}
                                         </label>
                                         <input 
                                         name='phone'
                                         type="text" 
                                         className='w-100' 
-                                        placeholder='Phone Number'
+                                        placeholder={t('ContactUsPage.contactPhonePlaceholder')}
                                         value={formData?.phone}
                                         onChange={handleInputChange} 
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="email">
-                                            Email Address
+                                            {t('ContactUsPage.contactEmailInput')}
                                         </label>
                                         <input 
                                         name='email'
                                         type="text" 
                                         className='w-100' 
-                                        placeholder='Email Address'
+                                        placeholder={t('ContactUsPage.contactEmailPlaceholder')}
                                         value={formData?.email}
                                         onChange={handleInputChange} 
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="message">
-                                            Your Message
+                                            {t('ContactUsPage.contactMessageInput')}
                                         </label>
                                         <textarea 
                                         name="message"
                                         className='w-100' 
-                                        placeholder='Your Message'
+                                        placeholder={t('ContactUsPage.contactMessagePlaceholder')}
                                         value={formData?.message}
                                         onChange={handleInputChange}
                                         ></textarea>
                                     </div>
                                     <div className="form__submit__button">
                                             <button type="submit" className="contactCompany__form-submitBtn">
-                                                {'Contact Us'}
+                                                {t('ContactUsPage.contactBtn')}
                                             </button>
                                         </div>
                                 </form>

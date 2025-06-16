@@ -5,6 +5,9 @@ import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-lea
 import aboutIcon from '../../assets/companyImages/enterprise.png'
 import mapIcon from '../../assets/companyImages/map.png'
 import timeIcon from '../../assets/companyImages/working-time.png'
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
+
 const customIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -22,6 +25,8 @@ L.Icon.Default.mergeOptions({
 });
 
 const LocationMarker = ({ setLocation, initialPosition }) => {
+     const { t } = useTranslation();
+   
     const [position, setPosition] = useState(initialPosition);
     const map = useMap();
 
@@ -59,7 +64,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                 <div className="aboutCompany__content">
                     <div className='aboutCompany__title'>
                         <img src={aboutIcon} alt="mark" />
-                        <h1>About Us</h1>
+                        <h1>{t('SingleCompanyPage.overViewAboutUs')}</h1>
                     </div>
                     <div className="aboutCompany__content__info my-3">
                         <p className='fixed__desc'>{showCompaniesQuery?.companyAboutUs}</p>
@@ -84,7 +89,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                     <div className="aboutCompany__workHour">
                     <div className='aboutCompany__title'>
                         <img src={timeIcon} alt="hour" />
-                        <h1>Working hours</h1>
+                        <h1>{t('SingleCompanyPage.overViewWorkingHours')}</h1>
                     </div>
                     <div className="working__hour__table">
                         {showCompaniesQuery?.workingHours?.map((el, index) => (
@@ -92,10 +97,10 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                                 <div className="working__hour__day">{el?.day_of_week}</div>
                                 <div className="colored__bg">
 
-                                    from {el?.opening_time}
+                                    {t('SingleCompanyPage.overViewWorkingHoursFrom')} {el?.opening_time}
                                 </div>
                                 <div className="colored__bg">
-                                    to {el?.closing_time}
+                                    {t('SingleCompanyPage.overViewWorkingHoursTo')} {el?.closing_time}
                                 </div>
                             </div>
                         ))}
@@ -107,7 +112,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                 <div className="aboutCompany__location">
                     <div className='aboutCompany__title'>
                         <img src={mapIcon} alt="mark" />
-                        <h1>company location</h1>
+                        <h1>{t('SingleCompanyPage.overViewCompanyLocation')}</h1>
                     </div>
                     <div className="aboutCompany__content__info my-3">
                         <p className='fixed__desc my-3'>{showCompaniesQuery?.companyFullAddress}</p>
