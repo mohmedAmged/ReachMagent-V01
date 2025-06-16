@@ -9,9 +9,12 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import ProductDetailsFilterationBar from '../../components/productDetailsFilterationBarSec/ProductDetailsFilterationBar';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyServiceDetails({ token }) {
     const { servId } = useParams();
+    const { t } = useTranslation();
     console.log(servId);
     
     const loginType = localStorage.getItem('loginType');
@@ -27,13 +30,13 @@ console.log(currentService);
     }, [servId, token, loginType, fetchService]);
 
 
-    const [activeItem, setActiveItem] = useState('About');
+    const [activeItem, setActiveItem] = useState(`${t('singleCatalogPage.filterbarAbout')}`);
     
     
     
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
-        if (itemName === 'Options' && optionsRef.current) {
+        if (itemName === `${t('singleCatalogPage.filterbarOptions')}` && optionsRef.current) {
             optionsRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
@@ -136,8 +139,8 @@ console.log(currentService);
     };
      
     const items = [
-        { name: 'About', active: activeItem === 'About' },
-        { name: 'Options', active: activeItem === 'Options' },
+        { name: `${t('singleCatalogPage.filterbarAbout')}`, active: activeItem === `${t('singleCatalogPage.filterbarAbout')}` },
+        { name: `${t('singleCatalogPage.filterbarOptions')}`, active: activeItem === `${t('singleCatalogPage.filterbarOptions')}` },
         ];
 
     console.log(currentService);
@@ -188,14 +191,14 @@ console.log(currentService);
                                                 // Unverified user
                                                 <button
                                                     onClick={() => {
-                                                        toast.error('You need to verify your account first!');
+                                                        toast.error(`${t('SingleCompanyPage.infoCardVerfiyAccToast')}`);
                                                         setTimeout(() => {
                                                             navigate('/user-verification');
                                                         }, 1000);
                                                     }}
                                                     className='btnColoredBlue'
                                                 >
-                                                    Add to Quotation
+                                                   {t('singleCatalogPage.catalogAddToQuote')}
                                                 </button>
                                             ) : currentService?.in_cart === false ? (
                                                 // Verified user or other login types
@@ -203,7 +206,7 @@ console.log(currentService);
                                                     onClick={() => handleAddProduct(currentService)}
                                                     className='btnColoredBlue'
                                                 >
-                                                    Add to Quotation
+                                                    {t('singleCatalogPage.catalogAddToQuote')}
                                                 </button>
                                             ) : (
                                                 <NavLink
@@ -214,7 +217,7 @@ console.log(currentService);
                                                     className={'nav-link'}
                                                 >
                                                     <p className='text-capitalize' style={{ color: 'rgb(63, 215, 86)' }}>
-                                                        view in Quotation cart <i className="bi bi-box-arrow-up-right"></i>
+                                                        {t('singleCatalogPage.catalogViewInCart')}<i className="bi bi-box-arrow-up-right"></i>
                                                     </p>
                                                 </NavLink>
                                             )}
@@ -222,7 +225,7 @@ console.log(currentService);
                                     ) : (
                                         // Unauthenticated user
                                         <NavLink to={'/login'} className={'nav-link'}>
-                                            <button className='btnColoredBlue'>Add to Quotation</button>
+                                            <button className='btnColoredBlue'> {t('singleCatalogPage.catalogAddToQuote')}</button>
                                         </NavLink>
                                     )
                                     }
@@ -230,7 +233,7 @@ console.log(currentService);
                                     }
                                      <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
                                         <NavLink target='_blanck' to={`/${currentService?.company_slug}`}>
-                                        <span style={{textDecoration:'underline', color:'#000'}}>View Company Profile</span>
+                                        <span style={{textDecoration:'underline', color:'#000'}}>{t('singleCatalogPage.catalogViewCompanyProfile')}</span>
                                         </NavLink>
                                     </p>
                                     {/* <p className='productDetails__soldBy d-flex gap-2 align-items-center my-4 '>
@@ -247,30 +250,30 @@ console.log(currentService);
                                     <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} />
                                 </div>
                                 {
-                                    activeItem === 'About' &&
+                                    activeItem === `${t('singleCatalogPage.filterbarAbout')}` &&
                                     <>
                                     <div className='productDetails__content mb-5 mt-4 ms-4'>
                                     <h4 className='productDetails__contentHead mt-4 fs-3 fw-bold text-capitalize'>
-                                        Description
+                                        {t('singleCatalogPage.catalogDescription')}:
                                     </h4>
                                     <p className='mt-3 mb-4 fs-5'>{currentService?.description}</p>
                                     <div className="row prodDetailsChangeColorSpan">
                                         <div className="col-lg-6 mb-3">
                                             <p className='fw-medium text-capitalize fs-4'>
-                                                category:
-                                                <span className='fw-medium ms-2 fs-5'>{currentService?.category}</span>
+                                                {t('singleCatalogPage.CatalogCategory')}:
+                                                <span className={`fw-medium fs-5 ${Lang === 'ar' ? 'me-2' : 'ms-2'}`}>{currentService?.category}</span>
                                             </p>
                                         </div>
                                         <div className="col-lg-6 mb-3">
                                             <p className='fw-medium text-capitalize fs-4'>
-                                                sub category:
-                                                <span className='fw-medium ms-2 fs-5'>{currentService?.subCategory}</span>
+                                                {t('singleCatalogPage.CatalogSubCategory')}:
+                                                <span className={`fw-medium fs-5 ${Lang === 'ar' ? 'me-2' : 'ms-2'}`}>{currentService?.subCategory}</span>
                                             </p>
                                         </div>
                                         <div className="col-lg-12 mb-3">
                                             <p className='fw-medium text-capitalize fs-4'>
-                                                item code:
-                                                <span className='fw-medium ms-2 fs-5'>{currentService?.code}</span>
+                                                {t('singleCatalogPage.catalogItemCode')}:
+                                                <span className={`fw-medium fs-5 ${Lang === 'ar' ? 'me-2' : 'ms-2'}`}>{currentService?.code}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -278,7 +281,7 @@ console.log(currentService);
                                     </>
                                 }
                                 {
-                                    activeItem === 'Options' && 
+                                    activeItem === `${t('singleCatalogPage.filterbarOptions')}` && 
                                     
                                     <div ref={optionsRef} className='productDetails__content mb-5 mt-4 ms-4'>
                                      {

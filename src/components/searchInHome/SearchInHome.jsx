@@ -11,6 +11,7 @@ import { SearchStore } from '../../store/MainSearch';
 import LastMinuteCard from '../lastMinuteCardSec/LastMinuteCard';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function SearchInHome() {
     const { t } = useTranslation();
@@ -144,7 +145,7 @@ export default function SearchInHome() {
                                                 <select
                                                     name="type"
                                                     id="shopFilterationtitle"
-                                                    className="form-select"
+                                                    className={`form-select ${Lang === 'ar' ? "formSelect_RTL" : ""}`}
                                                     value={filteration.type}
                                                     onChange={handleChange}
                                                 >
@@ -179,7 +180,7 @@ export default function SearchInHome() {
                                                 <select
                                                     name="country_id"
                                                     id="shopFilterationServ"
-                                                    className="form-select"
+                                                    className={`form-select ${Lang === 'ar' ? "formSelect_RTL" : ""}`}
                                                     value={filteration?.country_id}
                                                     onChange={handleChange}
                                                 >
