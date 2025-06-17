@@ -37,7 +37,6 @@
 }
 .notficationBody__handler{
     position: absolute;
-    right: 0;
     padding: 20px;
     border-radius: 12px;
     background: rgba(6, 126, 173, 0.909);
@@ -51,6 +50,9 @@
     box-shadow: 0 0 10px #0003;
     z-index: 200;
     pointer-events: auto;
+}
+.notficationBody__handler_position_LTR{
+    right: 0;
 }
 .notficationBody__handler.show{
     visibility: visible;

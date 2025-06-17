@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function CartProduct({
     title,
@@ -20,6 +21,7 @@ export default function CartProduct({
     token,
     options
 }) {
+    const { t } = useTranslation();
     const [counter, setCounter] = useState(quantity);
     const [note, setNote] = useState('');
     const [currNotes, setCurrNotes] = useState(notes === 'N/A' ? '' : notes);
@@ -336,7 +338,7 @@ console.log(options);
                                 textTransform: 'capitalize',
                                 marginTop: '10px',
                             }} className="file__attachments">
-                                <h5>Attached Files:</h5>
+                                <h5>{t('CartProduct.attachFilesHeader')}:</h5>
                                 <ul>
                                     {fileList.map((file, index) => (
                                         <li key={index}>
@@ -365,14 +367,14 @@ console.log(options);
                         }}
                         className="d-flex align-items-center file__attachments"
                     >
-                        <p>No Attachments Added</p>
+                        <p>{t('CartProduct.noAttachFiles')}</p>
                     </div>
                 )}
                 <div className="prod__text">
                     <h3>{title}</h3>
                     {description && (
                         <div>
-                            <strong>Description:</strong>
+                            <strong>{t('CartProduct.filesDesc')}:</strong>
                             <p>{description}</p>
                         </div>
                     )}
@@ -386,7 +388,7 @@ console.log(options);
                             <>
                                 <div className='addNotes mt-2'>
                                     <textarea
-                                        placeholder='Add Note...'
+                                        placeholder={t('CartProduct.inputAddNotePlaceholder')}
                                         name=""
                                         value={note}
                                         id='companyQuotationNote'
@@ -396,20 +398,20 @@ console.log(options);
                                     >
                                     </textarea>
                                 </div>
-                                <span onClick={() => handleAddNoteToQuotation(cartId)} className='pageMainBtnStyle'>Add Note</span>
+                                <span onClick={() => handleAddNoteToQuotation(cartId)} className='pageMainBtnStyle'>{t('CartProduct.addNoteBtn')}</span>
                             </>
                     }
                     {
                         companyIdWantedToHaveQuoteWith && options?.length !== 0 && options !== undefined &&
                         <>
                             <strong className='d-block mt-3 mb-2 text-capitalize'>
-                                options:
+                                {t('CartProduct.optionsHeader')}:
                             </strong>
                             {
                                 options?.map((option, index) => (
                                     <div key={index} className='mb-3'>
                                         <p className=' text-capitalize'>
-                                           choosen {option?.attribute} attribute
+                                            {option?.attribute} 
                                         </p>
                                         <div className='d-flex align-items-center gap-2'>
                                             {

@@ -16,8 +16,11 @@ import axios from 'axios';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { GetAllCountriesStore } from '../../store/AllCountries';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function SingleCompanyQuote({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { companyName } = useParams();
     const [companyId, setCompanyId] = useState(0)
@@ -41,7 +44,8 @@ export default function SingleCompanyQuote({ token }) {
     const handleCloseOption = () => setActiveOptionCard(null);
 
     const typesOfQuotations = [
-        { id: 1, name: 'catalog' }, { id: 2, name: 'service' }
+        { id: 1, name: 'catalog', renderName:`${t('SingleQuotePage.renderTypeCatalogName')}` },
+         { id: 2, name: 'service', renderName:`${t('SingleQuotePage.renderTypeServiceName')}` }
     ];
     const loginType = localStorage.getItem(`loginType`);
     const [customProduct, setCustomProduct] = useState({
@@ -125,7 +129,8 @@ export default function SingleCompanyQuote({ token }) {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        "Locale": Lang
                     },
                 }).then(res => {
                     setCart(res?.data?.data?.cart);
@@ -214,7 +219,8 @@ export default function SingleCompanyQuote({ token }) {
                 headers: {
                     'Content-type': 'application/json',
                     'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
                 }
             );
@@ -377,7 +383,8 @@ export default function SingleCompanyQuote({ token }) {
                     headers: {
                         'Content-type': 'multipart/form-data',
                         'Accept': 'application/json',
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                 .then((response) => {
@@ -429,48 +436,48 @@ console.log(cart);
                     <div className='singleCompanyQuote__handler'>
                         <MyMainHeroSec
                             heroSecContainerType='singleCompany__quote'
-                            headText='Request an official Quote'
-                            paraPartOne='Save  thousands to millions of bucks by using tool great skills, be a cool React Developer'
+                            headText={t('SingleQuotePage.heroSecHeader')}
+                            paraPartOne={t('SingleQuotePage.heroSecSubHeader')}
                         />
                         <>
                 <div className="singleCompanyQuote__contents">
                     <div className="container">
                         <div className="singleCompanyQuote__headText">
                             <h1>
-                                Get a Quote from <span>{companyName}</span>
+                                {t('SingleQuotePage.pageMainHeader')} <span>{companyName}</span>
                             </h1>
                         </div>
                         <div className="singleCompanyQuote__mainFrom">
                             <form action="" onSubmit={handleFormSubmit} className='row'>
                                 <div className="col-12 d-flex justify-content-end align-items-center mb-5">
-                                    <span onClick={handleResetCurrentQuotation} className='deleteRuleBtn mt-3 me-5'>Reset Quote</span>
+                                    <span onClick={handleResetCurrentQuotation} className='deleteRuleBtn mt-3 me-5'>{t('SingleQuotePage.resetQuoteBtn')}</span>
                                 </div>
                                 <div className="col-12">
                                     <div className="row">
                                         <div className="col-12 singleQuote__searchInput">
                                             <h3>
-                                                Filter Items By
+                                                {t('SingleQuotePage.quoteFilterTit')}
                                             </h3>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="singleQuoteInput">
                                                 <label htmlFor="qoutationSelectTheType" className='position-relative'>
-                                                    Type
-                                                    <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {t('SingleQuotePage.quoteFilteInputType')}
+                                                    <i title={t('SingleQuotePage.quoteFilteInputTypeTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                 </label>
                                                 <select
-                                                    className='form-select w-100'
+                                                    className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                     id="qoutationSelectTheType"
                                                     value={requestIntries?.type}
                                                     onChange={(event) => {
                                                         setRequestIntries({ ...requestIntries, type: event?.target?.value })
                                                     }}
                                                 >
-                                                    <option value={''} disabled>Select Type</option>
+                                                    <option value={''} disabled>{t('SingleQuotePage.quoteFilteInputTypePlaceholder')}</option>
                                                     {
                                                         typesOfQuotations?.map(type => (
                                                             <option className='text-capitalize' value={type?.name} key={type?.id}>
-                                                                {type?.name}
+                                                                {type?.renderName}
                                                             </option>
                                                         ))
                                                     }
@@ -482,16 +489,16 @@ console.log(cart);
                                                 <label htmlFor="quotationSelectMainCategory"
                                                     className='position-relative'
                                                 >
-                                                    Category
-                                                    <i title='select category of item' className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {t('SingleQuotePage.quoteFilteInputCategory')}
+                                                    <i title={t('SingleQuotePage.quoteFilteInputCategoryTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                 </label>
                                                 <select
-                                                    className='form-select w-100'
+                                                    className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                     id="quotationSelectMainCategory"
                                                     value={requestIntries?.category_id}
                                                     onChange={handleGettingCurrentSubCategories}
                                                 >
-                                                    <option value={''} disabled>Select Category</option>
+                                                    <option value={''} disabled>{t('SingleQuotePage.quoteFilteInputCategoryPlaceholder')}</option>
                                                     {currentCategories?.map(cat => (
                                                         <option
                                                             value={cat?.id}
@@ -506,18 +513,18 @@ console.log(cart);
                                                 <label htmlFor="qouteSelectSubCategory"
                                                     className='position-relative'
                                                 >
-                                                    Sub-category
-                                                    <i title='select sub-category of item' className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {t('SingleQuotePage.quoteFilteInputSubCategory')}
+                                                    <i title={t('SingleQuotePage.quoteFilteInputSubCategoryTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                 </label>
                                                 <select
                                                     value={requestIntries?.sub_category_id}
-                                                    className='form-select w-100'
+                                                    className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                     id="qouteSelectSubCategory"
                                                     onChange={(event) => {
                                                         setRequestIntries({ ...requestIntries, sub_category_id: event?.target?.value })
                                                     }}
                                                 >
-                                                    <option value="" disabled>Select Sub-Category</option>
+                                                    <option value="" disabled>{t('SingleQuotePage.quoteFilteInputSubCategoryPlaceholder')}</option>
                                                     {
                                                         currentSubCategories?.map(subCat => (
                                                             <option value={subCat?.id} key={subCat?.id}>{subCat?.name}</option>
@@ -533,10 +540,10 @@ console.log(cart);
                                         <div className="col-lg-6">
                                             <div className="singleQuote__searchInput mt-3">
                                                 <h3 className='fs-4 position-relative'>
-                                                    Or Search For a Specific Item
-                                                    <i title='Search For a Specific Item' className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {t('SingleQuotePage.quoteFilteInputSearch')}
+                                                    <i title={t('SingleQuotePage.quoteFilteInputSearchTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                 </h3>
-                                                <input className='form-control' type="text" placeholder='Search here' value={requestIntries?.title} onChange={(event) => setRequestIntries({ ...requestIntries, title: event?.target?.value })} />
+                                                <input className='form-control' type="text" placeholder={t('SingleQuotePage.quoteFilteInputSearchPlaceholder')} value={requestIntries?.title} onChange={(event) => setRequestIntries({ ...requestIntries, title: event?.target?.value })} />
                                             </div>
                                         </div>
                                     </div>
@@ -599,7 +606,7 @@ console.log(cart);
                                             }/${el?.slug}`}
                                         dealQuantity={el?.dealQuantity}
                                         showCustomContent={true}
-                                        buttonLabel={isAdded ? "Added" : "Add"}
+                                        buttonLabel={isAdded ? `${t('SelectedProducts.addedBtn')}` : `${t('SelectedProducts.addBtn')}`}
                                         onAddClick={() => handleAddProduct(el)}
                                         renderdublicate={isAdded ? true : false}
                                         renderOptionData={true}
@@ -630,10 +637,10 @@ console.log(cart);
                                         <div className="col-lg-8">
                                             <div className="selectedProducts__handler">
                                                 <h3>
-                                                    Selected Items
+                                                    {t('SingleQuotePage.quoteSelectedItemsHeader')}
                                                 </h3>
                                                 {(cart?.length === 0) ? (
-                                                    <p>No products selected</p>
+                                                    <p>{t('SingleQuotePage.quoteNoSelectedItemsText')}</p>
                                                 ) : (
                                                     cart?.map((el) => {
                                                         const hasImage = el?.item?.image || el?.item?.medias?.some((media) => media.type === 'image');
@@ -665,9 +672,9 @@ console.log(cart);
                                     <div className="col-12">
                                         <div className="customizationQuote__handler">
                                             <h3 className='text-capitalize customizationHead'>
-                                                Can’t find what you’re looking for?
+                                                {t('SingleQuotePage.quoteCustomizeProductHeader')}
                                                 <br />
-                                                <span>{companyName}</span> tailors solutions to fit your unique needs
+                                                <span>{companyName}</span> {t('SingleQuotePage.quoteCustomizeProductSubHeader')}
                                             </h3>
                                             <div className="customization__form row">
                                                 <div className="col-lg-7">
@@ -675,21 +682,21 @@ console.log(cart);
                                                         <label htmlFor="qoutationSelectTheType"
                                                             className='position-relative'
                                                         >
-                                                            Type
-                                                            <i title='select type of Quotaion you want' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {t('SingleQuotePage.quoteFilteInputType')}
+                                                            <i title={t('SingleQuotePage.quoteFilteInputTypeTit')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
                                                         <select
-                                                            className='form-select w-100'
+                                                            className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                             id="qoutationSelectTheType"
                                                             name='type'
                                                             value={customProduct?.type}
                                                             onChange={handleCustomProductChange}
                                                         >
-                                                            <option value={''} disabled>Select Type</option>
+                                                            <option value={''} disabled>{t('SingleQuotePage.quoteFilteInputTypePlaceholder')}</option>
                                                             {
                                                                 typesOfQuotations?.map(type => (
                                                                     <option className='text-capitalize' value={type?.name} key={type?.id}>
-                                                                        {type?.name}
+                                                                        {type?.renderName}
                                                                     </option>
                                                                 ))
                                                             }
@@ -701,15 +708,15 @@ console.log(cart);
                                                         <label htmlFor="customProductTitle"
                                                             className='position-relative'
                                                         >
-                                                            Title
-                                                            <i title='name what you want from company' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {t('SingleQuotePage.quoteCustomizeProductTilteInput')}
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductTilteInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
                                                         <input
                                                             id="customProductTitle"
                                                             name="title"
                                                             className='form-control customizedInput'
                                                             type="text"
-                                                            placeholder='Ex: L-Shape Sofa-Grey'
+                                                            placeholder={t('SingleQuotePage.quoteCustomizeProductTilteInputOlaceholder')}
                                                             value={customProduct?.title}
                                                             onChange={handleCustomProductChange}
                                                         />
@@ -720,8 +727,8 @@ console.log(cart);
                                                         <label htmlFor="customProductQuantity"
                                                             className='position-relative'
                                                         >
-                                                            Quantity
-                                                            <i title='select quantity of what you want' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {t('SingleQuotePage.quoteCustomizeProductQuantityInput')}
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductQuantityInputTit')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
                                                         <input
                                                             id="customProductQuantity"
@@ -740,15 +747,15 @@ console.log(cart);
                                                         <label htmlFor="customProductDescription"
                                                             className='position-relative'
                                                         >
-                                                            Description
-                                                            <i title='descripe how you want your thing' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {t('SingleQuotePage.quoteCustomizeProductDescriptionInput')}
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductDescriptionInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
                                                         <textarea
                                                             id="customProductDescription"
                                                             name="description"
                                                             className="form-control customizedInput"
                                                             rows="3"
-                                                            placeholder='Ex: The L-shaped sofa is the relax version of the long sofa. Its main feature is the extended terminal seat, which can be placed on the left or right side, on the basis of the living room design and the personal needs.'
+                                                            placeholder={t('SingleQuotePage.quoteCustomizeProductDescriptionInputPlacholder')}
                                                             value={customProduct?.description}
                                                             onChange={handleCustomProductChange}
                                                         />
@@ -756,14 +763,14 @@ console.log(cart);
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="customizationQuote__actions singleQuoteInput">
-                                                        <label className=' position-relative'>Upload A Reference <span className='optional'>
-                                                            (max 3 files)
+                                                        <label className=' position-relative'>{t('SingleQuotePage.quoteCustomizeProductUploadInput')} <span className='optional'>
+                                                            ({t('SingleQuotePage.quoteCustomizeProductSubUploadInput')})
                                                         </span>
-                                                            <i title='upload images or files descripe what you want' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductUploadInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                         </label>
                                                         <p style={{
                                                             fontSize:'14px'
-                                                        }} className='fw-light mb-2 ps-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
+                                                        }} className='fw-light mb-2 ps-2'>{t('SingleQuotePage.quoteCustomizeProductUploadInputPlaceholder')} </p>
                                                         <input
                                                             
                                                             type='file'
@@ -775,10 +782,10 @@ console.log(cart);
                                                         />
                                                         {
                                                             customProduct.file.length > 0 &&
-                                                            <small className="hintForAddedFiles d-block">Attachments has been added</small>
+                                                            <small className="hintForAddedFiles d-block">{t('SingleQuotePage.quoteCustomizeProductAttachAdded')}</small>
                                                         }
                                                         <span className='pageMainBtnStyle addItemToQuoteBtn mt-4' onClick={handleAddCustomProduct}>
-                                                            Add Item to Quotation
+                                                            {t('SingleQuotePage.quoteCustomizeProductAddItemBtn')}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -800,12 +807,12 @@ console.log(cart);
                                             <label className="form-check-label position-relative" htmlFor="flexCheckDefault"
 
                                             >
-                                                Include Shipping Cost In The Quotation
-                                                <i title='want Shipping to your place' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                {t('SingleQuotePage.quoteIncludeShippingInput')}
+                                                <i title={t('SingleQuotePage.quoteIncludeShippingInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                             </label>
                                         </div>
                                         <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
-                                            Enable this option to include shipping cost only for shippable products (not services).
+                                            {t('SingleQuotePage.quoteIncludeShippingInputPlaceholder')}
                                         </p>
                                         {
                                             distinationData?.include_shipping &&
@@ -819,12 +826,12 @@ console.log(cart);
                                                         onChange={handleCheckboxChange}
                                                         id="flexCheckDefault2" />
                                                     <label className="form-check-label position-relative" htmlFor="flexCheckDefault2">
-                                                        Include Insurance
-                                                        <i title='Include Insurance' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {t('SingleQuotePage.quoteIncludeInsuranceInput')}
+                                                        <i title={t('SingleQuotePage.quoteIncludeInsuranceInput')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                     </label>
                                                 </div>
                                                 <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
-                                                    Enable this option if you want to insure the shipment.
+                                                    {t('SingleQuotePage.quoteIncludeInsuranceInputPlaceholder')}
                                                 </p>
                                             </>
                                         }
@@ -846,8 +853,8 @@ console.log(cart);
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="currency" className='position-relative'>
-                                                        Preferred Currency
-                                                        <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {t('SingleQuotePage.QuotepreferredCurrInput')}
+                                                        <i title={t('SingleQuotePage.QuotepreferredCurrInput')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                     </label>
                                                     <select
                             defaultValue={''}
@@ -856,17 +863,17 @@ console.log(cart);
                             name={ 'currency'}
                             onChange={handleCurrencyChange}
                         >
-                            <option value='' disabled>Choose your currency</option>
-                            <option value="default">USD</option>
-                            <option value="local">{companyCurrency} (Seller's local currency)</option>
+                            <option value='' disabled>{t('SingleQuotePage.QuotepreferredCurrInputPlaceholder')}</option>
+                            <option value="default">{t('SingleQuotePage.QuotepreferredUsdCurrInput')}</option>
+                            <option value="local">{companyCurrency} ({t('SingleQuotePage.QuotepreferredSellerCurrInput')})</option>
                         </select>
                                                 </div>
                                             </div>
                                             <div className="col-lg-12">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="quotationNote" className='position-relative'>
-                                                        Add Note To Quotation
-                                                        <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {t('SingleQuotePage.QuotepreferredNoteInput')}
+                                                        <i title= {t('SingleQuotePage.QuotepreferredNoteInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                     </label>
                                                     <textarea
                                                         id="quotationNote"
@@ -874,7 +881,7 @@ console.log(cart);
                                                         className="form-control customizedInput"
                                                         rows="3"
                                                         defaultValue={distinationData?.request_by_notes}
-                                                        placeholder='Ex: Add any notes or specific terms and conditions for your request in this section.'
+                                                        placeholder={t('SingleQuotePage.QuotepreferredNoteInputPlaceholder')}
                                                         onChange={(e) => {
                                                             setDistinationData({ ...distinationData, [e.target.name]: e.target.value })
                                                         }}
@@ -886,7 +893,7 @@ console.log(cart);
                                 </div>
                                 <div className="col-12">
                                     <button type='submit' disabled={loadingSubmit} className='addedButtonStyle btnSubmitQuote mt-5'>
-                                        Submit quotation
+                                        {t('SingleQuotePage.quoteSubmitBtn')}
                                     </button>
                                 </div>
                             </form>

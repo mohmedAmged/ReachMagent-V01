@@ -5,6 +5,7 @@ import axios from 'axios'
 import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import { handleApiError, rateLimiter } from '../../functions/requestUtils'
+import { Lang } from '../../functions/Token'
 export default function NotificationIcon({ token, fireNotification, setFireNotification }) {
     const loginType = localStorage.getItem('loginType');
     const [showNotifications, setShowNotifications] = useState(false);
@@ -139,7 +140,7 @@ console.log(notsItems);
             </div>
             <div
                 ref={notificationRef}
-                className={`notficationBody__handler ${showNotifications ? 'show' : 'hide'}`}
+                className={`notficationBody__handler ${Lang === 'ar' ? "notficationBody__handler_position_RTL":"notficationBody__handler_position_LTR"} ${showNotifications ? 'show' : 'hide'}`}
             >
                 <div className="notHeaderBox">
                     <h3>

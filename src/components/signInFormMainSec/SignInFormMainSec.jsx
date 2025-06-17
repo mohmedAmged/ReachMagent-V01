@@ -8,8 +8,11 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useNavigate, NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function SignInFormMainSec({ loginType, setLoginType }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const {
@@ -109,21 +112,21 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                     <div className="col-12">
                         <ul className='row loginToggler'>
                             <li className={`col-md-3 cursorPointer ${loginType === 'user' && 'active'}`} onClick={() => handleChangeLoginType('user')}>
-                                User
+                                {t('LoginPage.loginTypeUser')}
                             </li>
                             <li className={`col-md-3 cursorPointer ${loginType === 'employee' && 'active'}`} onClick={() => handleChangeLoginType('employee')}>
-                                Business
+                                {t('LoginPage.loginTypeBusiness')}
                             </li>
                         </ul>
                         <div className="signUpForm__mainContent">
                             <div className="row">
                                 <h3 className="col-12 text-center pt-5 signUpForm__head">
-                                    {loginType === 'user' ? 'User Login' : 'Login as a Business'}
+                                    {loginType === 'user' ? `${t('LoginPage.loginAsUser')}` : `${t('LoginPage.loginAsBusiness')}`}
                                 </h3>
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center mt-3'>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInEmailAddress">
-                                            E-mail Address <span className="requiredStar">*</span>
+                                            {t('LoginPage.loginEmailInput')} <span className="requiredStar">*</span>
                                         </label>
                                         <input
                                             type='text'
@@ -140,17 +143,17 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                                     </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInPassword">
-                                            Password <span className="requiredStar">*</span>
+                                            {t('LoginPage.loginPasswordInput')} <span className="requiredStar">*</span>
                                         </label>
                                         <div className="position-relative">
                                             <input
                                                 type={`${showPassword ? 'text' : 'password'}`}
                                                 id='signInPassword'
-                                                placeholder='Enter your password'
+                                                placeholder={t('LoginPage.loginPasswordInputPlaceholder')}
                                                 {...register('password')}
                                                 className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
                                             />
-                                            <div className="leftShowPasssord" onClick={() => setShowPassword(!showPassword)}>
+                                            <div className={` ${Lang === 'ar' ? "leftShowPasssord_RTL" : "leftShowPasssord"}`} onClick={() => setShowPassword(!showPassword)}>
                                                 {
                                                     showPassword ?
                                                         <i className="bi bi-eye-slash"></i>
@@ -169,20 +172,20 @@ export default function SignInFormMainSec({ loginType, setLoginType }) {
                                         <input
                                             disabled={isSubmitting}
                                             type="submit"
-                                            value={'Login'}
+                                            value={t('LoginPage.loginBtn')}
                                         />
                                         {
                                             // loginType === 'user' &&
                                             <div className="resetPasswordNavigatinoLink text-end">
-                                                <NavLink className='gotoLoginLink' to='/forget-password'>Forget Password ?</NavLink>
+                                                <NavLink className='gotoLoginLink' to='/forget-password'>{t('LoginPage.forgetPassword')}</NavLink>
                                             </div>
                                         }
                                     </div>
 
                                     <div className="col-12 text-dark text-center mt-3">
-                                        <span>Don't Have and account?</span>
+                                        <span>{t('LoginPage.DontHaveAcc')}</span>
                                         <NavLink className="gotoLoginLink ms-2" to="/personalsignUp">
-                                            Create New Account
+                                            {t('LoginPage.createNewAcc')}
                                         </NavLink>
                                     </div>
                                 </form>

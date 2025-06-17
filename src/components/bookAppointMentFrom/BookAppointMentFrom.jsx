@@ -7,8 +7,11 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { Button, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function BookAppointMentFrom({ show, handleClose, companyId, company, token }) {
+    const { t } = useTranslation();
     const [selectedAppointMent, setSelectedAppointMent] = useState({});
     const {
         register,
@@ -63,15 +66,15 @@ console.log(company?.company?.companyId);
             <div className='container'>
                 <form onSubmit={handleSubmit(submitHandler)} className="row bookAppointMentForm">
                     <Modal.Header closeButton>
-                        <Modal.Title>Book AppointMent</Modal.Title>
+                        <Modal.Title>{t('BookAppointmentModal.bookHeader')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className=' col-md-12 mb-4'>
                             <label htmlFor={`BookAppointMentDate`}>
-                                Date - Day
+                                {t('BookAppointmentModal.bookDateDayInput')}
                             </label>
                             <select
-                                className={`form-select mt-2 w-100 ${errors?.date && 'inputError'}`}
+                                className={`form-select mt-2 w-100 ${Lang === "ar" ? "formSelect_RTL" : ""} ${errors?.date && 'inputError'}`}
                                 id={`BookAppointMentDate`}
                                 defaultValue={''}
                                 onChange={(e) => {
@@ -80,7 +83,7 @@ console.log(company?.company?.companyId);
                                     setValue('date', selectedElement?.date);
                                 }}
                             >
-                                <option disabled value="">Date - Day</option>
+                                <option disabled value="">{t('BookAppointmentModal.bookDateDayInput')}</option>
                                 {
                                     company?.company?.appointments?.map((appointment, idx) => (
                                         <option key={idx} value={idx}>({appointment?.date}) - ({appointment?.day}) </option>
@@ -94,10 +97,10 @@ console.log(company?.company?.companyId);
                         </div>
                         <div className=' col-md-12 mb-4'>
                             <label htmlFor={`BookAppointMentDataAndTime`}>
-                                Time
+                                {t('BookAppointmentModal.bookTimeInput')}
                             </label>
                             <select
-                                className={`form-select mt-2 w-100 ${errors?.time && 'inputError'}`}
+                                className={`form-select mt-2 w-100 ${Lang === "ar" ? "formSelect_RTL" : ""} ${errors?.time && 'inputError'}`}
                                 id={`BookAppointMentDataAndTime`}
                                 defaultValue={''}
                                 onChange={(e) => {
@@ -105,7 +108,7 @@ console.log(company?.company?.companyId);
                                     setValue('time', selectedSlot?.time);
                                 }}
                             >
-                                <option disabled value="">Time</option>
+                                <option disabled value="">{t('BookAppointmentModal.bookTimeInput')}</option>
                                 {
                                     selectedAppointMent?.slots?.map((slot, idx) => (
                                         (slot?.booked === false) &&
@@ -119,11 +122,11 @@ console.log(company?.company?.companyId);
                             }
                         </div>
                         <div className="col-md-12 mb-4">
-                            <label htmlFor="reasonForAppointMent">Reason</label>
+                            <label htmlFor="reasonForAppointMent">{t('BookAppointmentModal.bookReasonInput')}</label>
                             <textarea
                                 className={`form-control ${errors?.reason?.message ? 'inputError' : ''}`}
                                 id="reasonForAppointMent"
-                                placeholder='Type Your Reason'
+                                placeholder={t('BookAppointmentModal.bookReasonInputPlaceholder')}
                                 {...register('reason')}
                             ></textarea>
                             {
@@ -134,7 +137,7 @@ console.log(company?.company?.companyId);
                     </Modal.Body>
                     <Modal.Footer className='d-flex justify-content-center'>
                         <Button variant="outline-danger" className='py-2' onClick={handleClose}>
-                            Cancel
+                            {t('BookAppointmentModal.bookCancelBtn')}
                         </Button>
                         <div className='d-inline'>
                             <input
@@ -142,7 +145,7 @@ console.log(company?.company?.companyId);
                                 type='submit'
                                 id="submitCompanyFormBtn"
                                 name='submitCompanyFormBtn'
-                                value={isSubmitting ? 'Sending ...' : 'Submit'}
+                                value={isSubmitting ? `${t('BookAppointmentModal.bookSending')}` : `${t('BookAppointmentModal.bookSubmit')}`}
                                 disabled={isSubmitting}
                             />
                         </div>

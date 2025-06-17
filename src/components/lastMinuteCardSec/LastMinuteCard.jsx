@@ -6,6 +6,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import { Button, Modal } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 export default function LastMinuteCard({
     productImage,
     productName,
@@ -38,7 +39,7 @@ export default function LastMinuteCard({
     const handleButtonClick = () => {
         if (buttonLabel === 'Know more' && onKnowMoreClick) {
             onKnowMoreClick();
-        } else if (buttonLabel === 'Add' && onAddClick) {
+        } else if (buttonLabel === `${t('SelectedProducts.addBtn')}` && onAddClick) {
             onAddClick();
         };
     };
@@ -65,7 +66,7 @@ export default function LastMinuteCard({
         borderRadius: '20px',
         border: `2px solid ${borderColor}`
     };
-    const buttonClass = buttonLabel === 'Added' ? 'addedButtonStyle' : 'addButtonStyle';
+    const buttonClass = buttonLabel === `${t('SelectedProducts.addedBtn')}` ? 'addedButtonStyle' : 'addButtonStyle';
 console.log(data);
     return (
         <>
@@ -108,13 +109,13 @@ console.log(data);
                                 onClick={handleShowOption}
                                 className='btnColoredBlue addMoreOptionsBtn terquase mt-3'
                             >
-                               Choose options
+                               {t('SelectedProducts.chooseOptionBtn')}
                             </button>
                              <Modal show={showOption} onHide={handleCloseOption}>
                                     <div className='container'>
                                         <form  className="row bookAppointMentForm">
                                             <Modal.Header closeButton>
-                                                <Modal.Title>Select Options</Modal.Title>
+                                                <Modal.Title>{t('SelectedProducts.modalHeader')}</Modal.Title>
                                             </Modal.Header>
                                             <Modal.Body>
                             {data.options.map((option, index) => (
@@ -122,7 +123,7 @@ console.log(data);
                                     <div className=''>
                                         <label className='text-capitalize my-2'>{option.attribute}</label>
                                         <select
-                                        className='form-select w-80'
+                                        className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                         onChange={(e) =>
                                             setSelectedPreferences(prev => ({
                                             ...prev,
@@ -131,7 +132,7 @@ console.log(data);
                                         }
                                         value={selectedPreferences[option.attribute_id] || ''}
                                         >
-                                        <option value="" disabled>Select one option</option>
+                                        <option value="" disabled>{t('SelectedProducts.modalSelectDisable')}</option>
                                         {option.values.map(val => (
                                             <option key={val.id} value={val.id}>
                                             {val.name}
@@ -145,14 +146,14 @@ console.log(data);
                                             </Modal.Body>
                                             <Modal.Footer className='d-flex justify-content-center'>
                                                 <Button variant="outline-danger" className='py-2' onClick={handleCloseOption}>
-                                                    Cancel
+                                                    {t('SelectedProducts.modalCancelBtn')}
                                                 </Button>
                                                 <button
                                                     type="button"
                                                     className='contactCompany__form-submitBtn m-auto w-auto fs-5 fw-light px-2 py-1'
                                                     onClick={handleModalSubmit}
                                                 >
-                                                    Submit
+                                                    {t('SelectedProducts.modalSubmitBtn')}
                                                 </button>
                                             </Modal.Footer>
                                         </form>
@@ -177,7 +178,7 @@ console.log(data);
                         </span>
                          {renderdublicate && data?.options?.length > 0 &&
                             <button type='button' className={`pageMainBtnStyle d-flex justify-content-center mt-3`} onClick={onDublicateItem}>
-                            Add More 
+                           {t('SelectedProducts.addMoreBtn')}
                         </button>
                         }
                     </div>

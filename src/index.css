@@ -99,4 +99,19 @@ input[type=number] {
 .headOfNews__card-leftPart_RTL::after{
     right: 0 !important;
 }
+.leftShowPasssord_RTL {
+    position: absolute;
+    left: 15px;
+    top: 52%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+}
+.notficationBody__handler_position_RTL{
+    left: 0 !important;
+}
   
