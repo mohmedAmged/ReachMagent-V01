@@ -158,7 +158,7 @@ function App() {
   useMessaging(token, loginType, loginnedUserId, setFireMessage);
 
   return (
-    <>
+    <div className='minHightScreen d-flex flex-column'>
 
       {
         (location.pathname.includes('profile')) ? <></> : <MyNavBar fireMessage={fireMessage} fireNotification={fireNotification} setFireNotification={setFireNotification} loginType={loginType} token={token} scrollToggle={scrollToggle} />
@@ -356,7 +356,7 @@ function App() {
         !(location.pathname.includes('profile') || location.pathname.includes('your-messages')) && <MyFooter />
       }
 
-    </>
+    </div>
   );
 };
 export default App;

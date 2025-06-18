@@ -3,6 +3,7 @@
     background: var(--main-blue-color);
     padding: 60px 0;
     color: var(--primary-white);
+    margin-top: auto;
 }
 .myFooterSec__handler .footer__icons{
     display: flex;

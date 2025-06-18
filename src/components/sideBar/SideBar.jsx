@@ -4,8 +4,10 @@ import { Menu, MenuItem, Sidebar, SubMenu } from 'react-pro-sidebar';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './sideBar.css';
 import styles from './sideBar.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const activePath = location.pathname;
@@ -51,7 +53,7 @@ export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
                     ${item.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''}
                     ${ collapsed && 'displayListNoneForSettings d-flex justify-content-between align-items-center '}
                     `}
-                      label="Settings"
+                      label={t('DashboardSidebar.settingsItem')}
                       icon={<FaCog />}
                     >
                       {
@@ -62,7 +64,7 @@ export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
                             className={`d-flex justify-content-between align-items-center 
                             ${item.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''}`}
                           >
-                            {subEl.title}
+                            {subEl.renderName}
                           </MenuItem>
                         ))
                       }
@@ -78,7 +80,7 @@ export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
                         `}
                       >
                         <img src={item?.icon} alt={item?.title} />
-                        {item.title}
+                        {item.renderName}
                       </MenuItem >
                     )
                 }

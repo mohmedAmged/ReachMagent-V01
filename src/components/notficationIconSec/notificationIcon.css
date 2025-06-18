@@ -169,7 +169,7 @@
     .addResponsive{
         display: block !important;
        }
-       .notficationBody__handler{
+       .notficationBody__handler_position_LTR{
         right: -20px;
        }
        .notificationIcon__handler i{

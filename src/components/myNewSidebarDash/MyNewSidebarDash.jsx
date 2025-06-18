@@ -16,8 +16,10 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { useSidebarStatus } from '../../store/SidebarStatusStore';
 import webLogo from '../../assets/logos/weblogo4.png'
+import { useTranslation } from 'react-i18next';
 
 export default function MyNewSidebarDash({ token }) {
+    const { t } = useTranslation();
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
@@ -73,59 +75,60 @@ export default function MyNewSidebarDash({ token }) {
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },
         ShowStatus === 'all' && 
-        { title: "Followers", link: "/profile/followers", icon: icon11 },
+        { title: "Followers", link: "/profile/followers", icon: icon11, renderName:`${t('DashboardSidebar.followersItem')}` },
         ShowStatus === 'all' && 
-        { title: "Product Catalog", link: "/profile/catalog", icon: icon2 },
+        { title: "Product Catalog", link: "/profile/catalog", icon: icon2, renderName:`${t('DashboardSidebar.productCatalogItem')}` },
         ShowStatus === 'all' && 
-        { title: "Services", link: "/profile/service", icon: icon2 },
+        { title: "Services", link: "/profile/service", icon: icon2, renderName:`${t('DashboardSidebar.serviceItem')}` },
         ShowStatus === 'all' && 
         features?.portfolios === 'yes' && 
-        { title: "Media", link: "/profile/media", icon: icon2 },
+        { title: "Media", link: "/profile/media", icon: icon2, renderName:`${t('DashboardSidebar.mediaItem')}` },
         // ShowStatus === 'all' && 
         // { title: "E-commerce Products", link: "/profile/products", icon: icon4 },
         ShowStatus === 'all' && 
         features?.networks === 'yes' && 
-        { title: "Network", link: "/profile/network", icon: icon4 },
+        { title: "Network", link: "/profile/network", icon: icon4, renderName:`${t('DashboardSidebar.networkItem')}` },
         ShowStatus === 'all' && 
         features?.pervious_work === 'yes' && 
-        { title: "Previous Work", link: "/profile/previous-work", icon: icon4 },
+        { title: "Previous Work", link: "/profile/previous-work", icon: icon4, renderName:`${t('DashboardSidebar.previousWorkItem')}` },
         // ShowStatus === 'all' && 
         // { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
         // ShowStatus === 'all' && 
         // { title: "Collections", link: "/profile/product-order", icon: icon4 },
         ShowStatus === 'all' && 
-        { title: "FAQS", link: "/profile/faqs", icon: icon5 },
+        { title: "FAQS", link: "/profile/faqs", icon: icon5, renderName:`${t('DashboardSidebar.FAQSItem')}` },
         ShowStatus === 'all' && 
         features?.insights === 'yes' && 
-        { title: "Posts", link: "/profile/posts", icon: icon5 },
+        { title: "Posts", link: "/profile/posts", icon: icon5, renderName:`${t('DashboardSidebar.postsItem')}` },
         // { title: "Shipping Costs", link: "/profile/shipping-costs", icon: currencyIcon },
         ShowStatus === 'all' && 
         features?.quotations === 'yes' && 
-        { title: "Quotations", link: "/profile/quotations", icon: icon3 },
+        { title: "Quotations", link: "/profile/quotations", icon: icon3, renderName:`${t('DashboardSidebar.quotationsItem')}` },
         ShowStatus === 'all' && 
         features?.one_click_quotations === 'yes' && 
-        { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
+        { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3, renderName:`${t('DashboardSidebar.oneClickQuotationsItem')}` },
         ShowStatus === 'all' && 
         (features?.one_click_quotations === 'yes' ||  features?.quotations) &&
-        { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
+        { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4, renderName:`${t('DashboardSidebar.quotationOrdersItem')}` },
         ShowStatus === 'all' && 
         features?.appointments === 'yes' && 
-        { title: "Appointments", link: "/profile/appointments", icon: icon3 },
+        { title: "Appointments", link: "/profile/appointments", icon: icon3, renderName:`${t('DashboardSidebar.appointmentsItem')}` },
         ShowStatus === 'all' && 
-        { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
+        { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3, renderName:`${t('DashboardSidebar.bookedAppointmentsItem')}` },
         ShowStatus === 'all' && 
-        { title: "Contact Form", link: "/profile/contact-form", icon: icon3 },
+        { title: "Contact Form", link: "/profile/contact-form", icon: icon3, renderName:`${t('DashboardSidebar.contactFormItem')}` },
         ShowStatus === 'all' && 
         features?.messaging === 'yes' && 
-        { title: "Messages", link: "/your-messages", icon: icon6 },
+        { title: "Messages", link: "/your-messages", icon: icon6, renderName:`${t('DashboardSidebar.messagesItem')}` },
         ShowStatus === 'all' && 
-        { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+        { title: "Notifications", link: "/profile/notifications", icon: icon7, renderName:`${t('DashboardSidebar.notificationsItem')}` },
         (ShowStatus === 'all' || ShowStatus === 'package_settings_and_transactions') &&
-        { title: "Package Settings", link: "/profile/packages-settings", icon: icon6 },
+        { title: "Package Settings", link: "/profile/packages-settings", icon: icon6, renderName:`${t('DashboardSidebar.packageSettingsItem')}` },
         {
             title: "Settings",
             link: "/profile/profile-settings",
             icon: icon9,
+            renderName:`${t('DashboardSidebar.settingsItem')}`
             // submenu: [
             //     { title: "Profile Settings", link: "/profile/profile-settings" },
             //     { title: "Business Settings", link: "/profile/business-settings" },
@@ -136,29 +139,30 @@ export default function MyNewSidebarDash({ token }) {
     if (loginType === 'user') {
         sidebarItems = [
             // { title: "Profile", link: "/profile", icon: icon1 },
-            { title: "following", link: "/profile/followers", icon: icon11 },
+            { title: "following", link: "/profile/followers", icon: icon11, renderName:`${t('DashboardSidebar.followingItem')}` },
             // { title: "Catalog", link: "/profile/catalog", icon: icon2 },
             // { title: "Services", link: "/profile/service", icon: icon2 },
-            { title: "Quotations", link: "/profile/quotations", icon: icon3 },
-            { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3 },
+            { title: "Quotations", link: "/profile/quotations", icon: icon3,  renderName:`${t('DashboardSidebar.quotationsItem')}`},
+            { title: "One-Click Quotations", link: "/profile/oneclick-quotations", icon: icon3, renderName:`${t('DashboardSidebar.oneClickQuotationsItem')}` },
             // { title: "Products", link: "/profile/products", icon: icon4 },
-            { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4 },
+            { title: "Quotation Orders", link: "/profile/quotation-orders", icon: icon4, renderName:`${t('DashboardSidebar.quotationOrdersItem')}` },
             // { title: "E-commerce Orders", link: "/profile/product-order", icon: icon4 },
-            { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3 },
+            { title: "Booked Appointments", link: "/profile/booked-Appointments", icon: icon3, renderName:`${t('DashboardSidebar.bookedAppointmentsItem')}` },
             // { title: "Insights", link: "/profile/insights", icon: icon5 },
-            { title: "Messages", link: "/your-messages", icon: icon6 },
-            { title: "Notifications", link: "/profile/notifications", icon: icon7 },
+            { title: "Messages", link: "/your-messages", icon: icon6, renderName:`${t('DashboardSidebar.messagesItem')}` },
+            { title: "Notifications", link: "/profile/notifications", icon: icon7, renderName:`${t('DashboardSidebar.notificationsItem')}` },
             // { title: "Requests", link: "/profile/requests", icon: icon8 },
             {
                 title: "Settings",
                 link: "/profile/profile-settings",
                 icon: icon9,
+                renderName:`${t('DashboardSidebar.settingsItem')}`,
                 subminue: (localStorage.getItem('loginType') === 'user') ? [
-                    { title: "Profile Settings", link: "/profile/profile-settings" }
+                    { title: "Profile Settings", link: "/profile/profile-settings",  }
                 ] : [
-                    { title: "Profile Settings", link: "/profile/profile-settings" },
-                    { title: "Business Settings", link: "/profile/business-settings" },
-                    { title: "Employees Management", link: "/profile/users-management" }
+                    { title: "Profile Settings", link: "/profile/profile-settings", renderName:`${t('DashboardSidebar.profileSettingsSubItem')}` },
+                    { title: "Business Settings", link: "/profile/business-settings", renderName:`${t('DashboardSidebar.businessSettingsSubItem')}` },
+                    { title: "Employees Management", link: "/profile/users-management", renderName:`${t('DashboardSidebar.employeesManagementSubItem')}` }
                 ]
             }
         ];
@@ -168,11 +172,11 @@ export default function MyNewSidebarDash({ token }) {
     //     { title: "Help", link: "/business-profile/help", icon: icon10 }
     // ];
     const userSubmenu = (localStorage.getItem('loginType') === 'user') ? [
-        { title: "Profile Settings", link: "/profile/profile-settings" }
+        { title: "Profile Settings", link: "/profile/profile-settings", renderName:`${t('DashboardSidebar.profileSettingsSubItem')}` }
     ] : [
-        { title: "Profile Settings", link: "/profile/profile-settings" },
-        { title: "Business Settings", link: "/profile/business-settings" },
-        features?.employees === 'yes' && { title: "Employees Management", link: "/profile/users-management" }
+        { title: "Profile Settings", link: "/profile/profile-settings", renderName:`${t('DashboardSidebar.profileSettingsSubItem')}` },
+        { title: "Business Settings", link: "/profile/business-settings", renderName:`${t('DashboardSidebar.businessSettingsSubItem')}` },
+        features?.employees === 'yes' && { title: "Employees Management", link: "/profile/users-management",  renderName:`${t('DashboardSidebar.employeesManagementSubItem')}`}
     ];
     const settingsIndex = sidebarItems.findIndex(item => item?.title === "Settings");
     if (settingsIndex !== -1) {
@@ -202,7 +206,7 @@ export default function MyNewSidebarDash({ token }) {
                     >
                         <Link onClick={isMobile ? handleClose : undefined}>
                             <img src={el.icon} alt={el.title} />
-                            <span>{el.title}</span>
+                            <span>{el.renderName}</span>
                         </Link>
                         {el.submenu ? <i className={`bi ${showSettingsSubmenu ? 'bi-chevron-down' : 'bi-chevron-right'}`}></i> : <i className="bi bi-chevron-right"></i>}
                     </li>
@@ -216,7 +220,7 @@ export default function MyNewSidebarDash({ token }) {
                         style={{ paddingLeft: '15px' }}
                     >
                         <Link to={subEl.link} onClick={isMobile ? handleClose : undefined}>
-                            <span>{subEl.title}</span>
+                            <span>{subEl.renderName}</span>
                         </Link>
                     </li>
                 ))}

@@ -858,7 +858,7 @@ console.log(cart);
                                                     </label>
                                                     <select
                             defaultValue={''}
-                            className='form-select w-100'
+                            className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                             id="currency"
                             name={ 'currency'}
                             onChange={handleCurrencyChange}

@@ -282,5 +282,59 @@
     "bookCancelBtn":"Cancel",
     "bookSending":"Sending ...",
     "bookSubmit":"Submit"
+  },
+  "OneClickQuotationPage":{
+    "heroSecHeader":"Explore all options",
+    "heroSecSubHeader":"Save  thousands to millions of bucks by using tool great skills, be a cool React Developer",
+    "oneClickHeader":"One-click quotation",
+    "oneClickSubHeader":"Get an Instant Quote with One Click",
+    "oneClickIndustryInput":"Industry",
+    "oneClickIndustryInputPlaceholder":"Select Industry",
+    "oneClickSubIndustryInput":"Sub-Industry",
+    "oneClickSubIndustryInputPlaceholder":"Select Sub-Industry",
+    "oneClickRegionInput":"Choose your region",
+    "oneClickCountryInput":"Choose your Country",
+    "oneClickCityInput":"Choose your City",
+    "oneClickNumOfCompanies":"Number Of Companies",
+    "oneClickPreferedCurrencyInput":"Prefered Currency",
+    "oneClickPreferedCurrencyInputPlaceholder":"Choose your currency",
+    "oneClickTargetBudgetInput":"Add Target Budget",
+    "oneClickExpectedDeliveryTimeInput":"Expected Delivery Time",
+    "oneClickPreferredDeliveryTermsInput":"Preferred Delivery Terms",
+    "oneClickPreferredDeliveryTermsInputPlaceholder":"Add Your Terms",
+    "oneClickSubmit":"Submit quotation"
+  },
+  "NotificationIconBox":{
+    "notificationHeader":"Notifications",
+    "noNewNotification":"there no new notifications!",
+    "viewMoreBtn":"view more"
+  },
+  "DashboardSidebar":{
+    "followersItem":"Followers",
+    "productCatalogItem":"Product Catalog",
+    "serviceItem":"Services",
+    "mediaItem":"Media",
+    "networkItem":"Network",
+    "previousWorkItem":"Previous Work",
+    "FAQSItem":"FAQS",
+    "postsItem":"Posts",
+    "quotationsItem":"Quotations",
+    "oneClickQuotationsItem":"One-Click Quotations",
+    "quotationOrdersItem":"Quotation Orders",
+    "appointmentsItem":"Appointments",
+    "bookedAppointmentsItem":"Booked Appointments",
+    "contactFormItem":"Contact Form",
+    "messagesItem":"Messages",
+    "notificationsItem":"Notifications",
+    "packageSettingsItem":"Package Settings",
+    "followingItem":"following",
+    "settingsItem":"Settings",
+    "profileSettingsSubItem":"Profile Settings",
+    "businessSettingsSubItem":"Business Settings",
+    "employeesManagementSubItem":"Employees Management"
+  },
+  "DashboardMainHeader":{
+    "helloHeader":"Hello",
+    "backToHomeBtn":"Back To Home"
   }
 }

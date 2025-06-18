@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
-import { Token } from '../functions/Token';
+import { Lang, Token } from '../functions/Token';
 
 export const useActivePackageStore = create((set, get) => ({
     loading: true,
@@ -14,7 +14,15 @@ export const useActivePackageStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/active-company-package?t=${new Date().getTime()}`, {
-               headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+               headers: Token 
+               ? 
+                {    Authorization: `Bearer ${Token}`,
+                    "Locale":Lang
+                }
+                :
+                {
+                    "Locale":Lang
+                }
             });
 
             set({

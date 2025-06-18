@@ -54,7 +54,9 @@ i18n
     root.render(
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
+          <>
           <App />
+          </>
         </QueryClientProvider>
       </BrowserRouter>
     );

@@ -283,5 +283,59 @@
     "bookCancelBtn":"إلغاء",
     "bookSending":"جارٍ الإرسال...",
     "bookSubmit":"قدم"
+  },
+   "OneClickQuotationPage":{
+    "heroSecHeader":"استكشاف جميع الخيارات",
+    "heroSecSubHeader":"وفر آلافًا إلى ملايين الدولارات باستخدام مهارات الأداة الرائعة.",
+    "oneClickHeader":"عرض أسعار بنقرة واحدة",
+    "oneClickSubHeader":"احصل على عرض أسعار فوري بنقرة واحدة",
+    "oneClickIndustryInput":"الصناعة",
+    "oneClickIndustryInputPlaceholder":"اختر الصناعة",
+    "oneClickSubIndustryInput":"الصناعة الفرعية",
+    "oneClickSubIndustryInputPlaceholder":"اختر الصناعة الفرعية",
+    "oneClickRegionInput":"اختر منطقتك",
+    "oneClickCountryInput":"اختر دولتك",
+    "oneClickCityInput":"اختر مدينتك",
+    "oneClickNumOfCompanies":"عدد الشركات",
+    "oneClickPreferedCurrencyInput":"العملة المفضلة",
+    "oneClickPreferedCurrencyInputPlaceholder":"اختر عملتك",
+    "oneClickTargetBudgetInput":"أضف الميزانية المستهدفة",
+    "oneClickExpectedDeliveryTimeInput":"وقت التسليم المتوقع",
+    "oneClickPreferredDeliveryTermsInput":"شروط التسليم المفضلة",
+    "oneClickPreferredDeliveryTermsInputPlaceholder":"أضف شروطك",
+    "oneClickSubmit":"تقديم"
+  },
+    "NotificationIconBox":{
+    "notificationHeader":"الإشعارات",
+    "noNewNotification":"لا يوجد اشعارات جديدة!",
+    "viewMoreBtn":"عرض المزيد"
+  },
+    "DashboardSidebar":{
+    "followersItem":"المُتابِعون",
+    "productCatalogItem":"كتالوج المنتجات",
+    "serviceItem":"الخدمات",
+    "mediaItem":"الوسائط",
+    "networkItem":"الشبكة",
+    "previousWorkItem":"الأعمال السابقة",
+    "FAQSItem":"الأسئلة الشائعة",
+    "postsItem":"المنشورات",
+    "quotationsItem":"عروض الاسعار",
+    "oneClickQuotationsItem":"عروض الأسعار بنقرة واحدة",
+    "quotationOrdersItem":"طلبات عروض الاسعار",
+    "appointmentsItem":"المواعيد",
+    "bookedAppointmentsItem":"المواعيد المحجوزة",
+    "contactFormItem":"نموذج التواصل",
+    "messagesItem":"الرسائل",
+    "notificationsItem":"الإشعارات",
+    "packageSettingsItem":"إعدادات الاشتراكات",
+    "followingItem":"المُتابَعون",
+    "settingsItem":"الإعدادات",
+    "profileSettingsSubItem":"إعدادات الملف الشخصي",
+    "businessSettingsSubItem":"إعدادات الشركة",
+    "employeesManagementSubItem":"إدارة الموظفين"
+  },
+    "DashboardMainHeader":{
+    "helloHeader":"مرحبًا",
+    "backToHomeBtn":"العودة إلى الرئيسية"
   }
 }

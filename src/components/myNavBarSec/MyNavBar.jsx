@@ -23,6 +23,7 @@ import { useActivePackageStore } from '../../store/ActivePackageStore';
 import webLogo from '../../assets/logos/weblogo4.png'
 import LanguageSelector from '../languageSelectorSec/LanguageSelector';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, fireMessage, setFireNotification, fireNotification }) {
       const { t } = useTranslation();
@@ -438,7 +439,7 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                         id="offcanvasNavbar" className='Navbar__offCanvas__none__on__lg' aria-labelledby="offcanvasNavbarLabel"
                         show={showOffcanvas}
                         onHide={handleOffcanvasToggle}
-                        placement="start">
+                        placement={Lang === 'ar' ? "end" : "start"}>
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title className='offCanvas__head' id="offcanvasNavbarLabel">
                                 <NavLink className='logo__text' to={`/`}>

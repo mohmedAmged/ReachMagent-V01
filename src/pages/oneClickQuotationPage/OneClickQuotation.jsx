@@ -11,7 +11,10 @@ import { GetAllCountriesStore } from '../../store/AllCountries';
 import { GetAllRegionsStore } from '../../store/AllResions';
 import { GetQutationsAllIndustriesStore } from '../../store/QutationsAllIndustries';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 export default function OneClickQuotation({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [requestIntries, setRequestIntries] = useState({
         industry_id: '',
@@ -77,7 +80,8 @@ export default function OneClickQuotation({ token }) {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${token}`,
+                            "Locale": Lang
                         },
                     });
                     if (!response.ok) {
@@ -165,7 +169,8 @@ export default function OneClickQuotation({ token }) {
             (async () => {
                 await axios.get(`${baseURL}/show-industry-sub-industries/${currentCategoryChosed?.id}`, {
                     headers: {
-                        Accept: 'application/json'
+                        Accept: 'application/json',
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -193,7 +198,8 @@ export default function OneClickQuotation({ token }) {
         (async () => {
             await axios.get(`${baseURL}/regions/${event?.target?.value}?t=${new Date().getTime()}`, {
                 headers: {
-                    Accept: 'application/json'
+                    Accept: 'application/json',
+                    "Locale": Lang
                 }
             })
                 .then(response => {
@@ -220,7 +226,8 @@ export default function OneClickQuotation({ token }) {
             (async () => {
                 await axios.get(`${baseURL}/countries/${currentCountryChosen?.code}?t=${new Date().getTime()}`, {
                     headers: {
-                        Accept: 'application/json'
+                        Accept: 'application/json',
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -252,7 +259,8 @@ export default function OneClickQuotation({ token }) {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
-                                Authorization: `Bearer ${token}`
+                                Authorization: `Bearer ${token}`,
+                                "Locale": Lang
                             },
                             body: JSON.stringify(requestIntries),
                         },
@@ -327,7 +335,8 @@ export default function OneClickQuotation({ token }) {
                     headers: {
                         'Content-type': 'multipart/form-data',
                         'Accept': 'application/json',
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                 .then((response) => {
@@ -445,39 +454,39 @@ console.log(distinationData);
                     <div className='oneClickQuotation__handler'>
                         <MyMainHeroSec
                             heroSecContainerType='singleCompany__quote'
-                            headText='Explore all options'
-                            paraPartOne='Save  thousands to millions of bucks by using tool great skills, be a cool React Developer'
+                            headText={t('OneClickQuotationPage.heroSecHeader')}
+                            paraPartOne={t('OneClickQuotationPage.heroSecSubHeader')}
                         />
                         <>
                             <div className="singleCompanyQuote__contents">
                                 <div className="container">
                                     <div className="singleCompanyQuote__headText">
                                         <h1>
-                                            One-click quotation
+                                            {t('OneClickQuotationPage.oneClickHeader')}
                                         </h1>
                                         <p>
-                                            Get an Instant Quote with One Click
+                                            {t('OneClickQuotationPage.oneClickSubHeader')}
                                         </p>
                                     </div>
                                     <div className="singleCompanyQuote__mainFrom">
                                         <form onSubmit={handleFormSubmit} className='row'>
                                             <div className="col-12 d-flex justify-content-end align-items-center mb-5">
-                                                <span onClick={handleResetCurrentQuotation} className='deleteRuleBtn mt-3 me-5'>Reset Quote</span>
+                                                <span onClick={handleResetCurrentQuotation} className='deleteRuleBtn mt-3 me-5'>{t('SingleQuotePage.resetQuoteBtn')}</span>
                                             </div>
                                             <div className="col-12">
                                                 <div className="row">
                                                     <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickquotationSelectMainIndustry">
-                                                                Industry
+                                                                {t('OneClickQuotationPage.oneClickIndustryInput')}
                                                             </label>
                                                             <select
-                                                                className='form-select'
+                                                                className={`form-select ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                                 id="oneclickquotationSelectMainIndustry"
                                                                 value={requestIntries?.industry_id}
                                                                 onChange={handleGettingCurrentSubIndustries}
                                                             >
-                                                                <option value={''} disabled>Select Industry</option>
+                                                                <option value={''} disabled>{t('OneClickQuotationPage.oneClickIndustryInputPlaceholder')}</option>
                                                                 {industriesQ?.map(cat => (
                                                                     <option
                                                                         value={cat?.id}
@@ -490,17 +499,17 @@ console.log(distinationData);
                                                     <div className="col-lg-6">
                                                         <div className="singleQuoteInput">
                                                             <label htmlFor="oneclickqouteSelectSubIndustry">
-                                                                Sub-Industry
+                                                                {t('OneClickQuotationPage.oneClickSubIndustryInput')}
                                                             </label>
                                                             <select
                                                                 value={requestIntries?.sub_industry_id}
-                                                                className='form-select'
+                                                                className={`form-select ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                                 id="oneclickqouteSelectSubIndustry"
                                                                 onChange={(event) => {
                                                                     setRequestIntries({ ...requestIntries, sub_industry_id: event?.target?.value })
                                                                 }}
                                                             >
-                                                                <option value="" disabled>Select Sub-Industry</option>
+                                                                <option value="" disabled>{t('OneClickQuotationPage.oneClickSubIndustryInputPlaceholder')}</option>
                                                                 {
                                                                     currentSubIndustries?.map(subCat => (
                                                                         <option value={subCat?.id} key={subCat?.id}>{subCat?.name}</option>
@@ -536,16 +545,17 @@ console.log(distinationData);
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="oneclickQuotationRegionSelect">
-                                                        Choose your region
+                                                        {t('OneClickQuotationPage.oneClickRegionInput')}
                                                     </label>
                                                     <select
-                                                        className='form-select'
+                                                        className={`form-select ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                         name="region_id"
                                                         id="oneclickQuotationRegionSelect"
                                                         value={requestIntries?.region_id}
                                                         onChange={handleChangeRegion}
                                                     >
-                                                        <option value="" disabled>Choose Your Region</option>
+                                                        <option value="" disabled>{t('OneClickQuotationPage.oneClickRegionInput')}
+                                                        </option>
                                                         {regions?.map((reg) => (
                                                             <option key={reg?.id} value={reg?.id}>{reg?.name}</option>
                                                         ))}
@@ -555,16 +565,16 @@ console.log(distinationData);
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="oneclickQuotationCountriesnSelect">
-                                                        Choose your Country
+                                                        {t('OneClickQuotationPage.oneClickCountryInput')}
                                                     </label>
                                                     <select
-                                                        className='form-select'
+                                                        className={`form-select ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                         name="country_id"
                                                         id="oneclickQuotationCountriesSelect"
                                                         value={requestIntries?.country_id}
                                                         onChange={handleChangeCountry}
                                                     >
-                                                        <option value="" disabled>Choose Your Country</option>
+                                                        <option value="" disabled>{t('OneClickQuotationPage.oneClickCountryInput')}</option>
                                                         {currentCountries?.map((country) => (
                                                             <option key={country?.id} value={country?.id}>{country?.name}</option>
                                                         ))}
@@ -574,10 +584,10 @@ console.log(distinationData);
                                             <div className="col-lg-6">
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="oneclickQuotationCountrCitiesnSelect">
-                                                        Choose your City
+                                                        {t('OneClickQuotationPage.oneClickCityInput')}
                                                     </label>
                                                     <select
-                                                        className='form-select'
+                                                        className={`form-select ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                         name="city_id"
                                                         id="oneclickQuotationCitiesSelect"
                                                         value={requestIntries?.city_id}
@@ -585,7 +595,7 @@ console.log(distinationData);
                                                             setRequestIntries({ ...requestIntries, city_id: event?.target?.value })
                                                         }}
                                                     >
-                                                        <option value="" disabled>Choose Your City</option>
+                                                        <option value="" disabled>{t('OneClickQuotationPage.oneClickCityInput')}</option>
                                                         {currentCities?.map((city) => (
                                                             <option key={city?.cityId} value={city?.cityId}>{city?.cityName}</option>
                                                         ))}
@@ -597,11 +607,11 @@ console.log(distinationData);
                                                     <div className="col-lg-6">
                                                         <div className="selectedProducts__handler">
                                                             <h3>
-                                                                Selected Products
+                                                                {t('SingleQuotePage.quoteSelectedItemsHeader')}
                                                             </h3>
-                                                            <h4 className={'mt-3 fw-bold fs-5 mb-3'}>Number Of Companies: {cartCompanies || 0}</h4>
+                                                            <h4 className={'mt-3 fw-bold fs-5 mb-3'}>{t('OneClickQuotationPage.oneClickNumOfCompanies')}: {cartCompanies || 0}</h4>
                                 {(cart?.one_click_quotation_cart?.length === 0) ? (
-                                    <p>No products selected</p>
+                                    <p>{t('SingleQuotePage.quoteNoSelectedItemsText')}</p>
                                 ) : (
                                     cart?.one_click_quotation_cart?.map((el) => {
                                         return <CartProduct
@@ -628,14 +638,14 @@ console.log(distinationData);
                                                         <div className="col-lg-6">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="customProductTitle">
-                                                                    Title
+                                                                    {t('SingleQuotePage.quoteCustomizeProductTilteInput')}
                                                                 </label>
                                                                 <input
                                                                     id="customProductTitle"
                                                                     name="title"
                                                                     className='form-control'
                                                                     type="text"
-                                                                    placeholder='L-Shape Sofa-Grey'
+                                                                    placeholder={t('SingleQuotePage.quoteCustomizeProductTilteInputOlaceholder')}
                                                                     value={customProduct?.title}
                                                                     onChange={handleCustomProductChange}
                                                                 />
@@ -644,7 +654,7 @@ console.log(distinationData);
                                                         <div className="col-lg-6">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="customProductQuantity">
-                                                                    Quantity
+                                                                    {t('SingleQuotePage.quoteCustomizeProductQuantityInput')}
                                                                 </label>
                                                                 <input
                                                                     id="customProductQuantity"
@@ -661,14 +671,14 @@ console.log(distinationData);
                                                         <div className="col-lg-12">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="customProductDescription">
-                                                                    Description
+                                                                    {t('SingleQuotePage.quoteCustomizeProductDescriptionInput')}
                                                                 </label>
                                                                 <textarea
                                                                     id="customProductDescription"
                                                                     name="description"
                                                                     className="form-control"
                                                                     rows="3"
-                                                                    placeholder='The L-shaped sofa is the relax version of the long sofa. Its main feature is the extended terminal seat, which can be placed on the left or right side, on the basis of the living room design and the personal needs.'
+                                                                    placeholder={t('SingleQuotePage.quoteCustomizeProductDescriptionInputPlacholder')}
                                                                     value={customProduct?.description}
                                                                     onChange={handleCustomProductChange}
                                                                 />
@@ -676,8 +686,8 @@ console.log(distinationData);
                                                         </div>
                                                         <div className="col-lg-6">
                                                             <div className="customizationQuote__actions singleQuoteInput">
-                                                                <label>Upload A Reference</label>
-                                                                <p className='fw-light mb-2'>It’s recommended to upload a photo or file as a reference for better clarity on your request</p>
+                                                                <label>{t('SingleQuotePage.quoteCustomizeProductUploadInput')}</label>
+                                                                <p className='fw-light mb-2'>{t('SingleQuotePage.quoteCustomizeProductUploadInputPlaceholder')}</p>
                                                                 <input
                                                                     type='file'
                                                                     id='customProductImageOneClickQuotation'
@@ -686,7 +696,7 @@ console.log(distinationData);
                                                                     className={`form-control`}
                                                                 />
                                                                 <span className='pageMainBtnStyle mt-4' onClick={handleAddCustomProduct}>
-                                                                    Add Item to Quotation
+                                                                    {t('SingleQuotePage.quoteCustomizeProductAddItemBtn')}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -702,7 +712,7 @@ console.log(distinationData);
                                                             onChange={handleCheckboxChange}
                                                             id="flexCheckDefault" />
                                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                                            Include Shipping
+                                                            {t('SingleQuotePage.quoteIncludeShippingInput')}
                                                         </label>
                                                     </div>
                                                     <div className="form-check">
@@ -712,7 +722,7 @@ console.log(distinationData);
                                                             onChange={handleCheckboxChange}
                                                             id="flexCheckDefault2" />
                                                         <label className="form-check-label" htmlFor="flexCheckDefault2">
-                                                            Include Insurance
+                                                            {t('SingleQuotePage.quoteIncludeInsuranceInput')}
                                                         </label>
                                                     </div>
                                                 </div>
@@ -731,17 +741,17 @@ console.log(distinationData);
                                                         <div className="col-lg-6">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="currency" className='position-relative'>
-                                                                    Prefered Currency
-                                                                    <i title='write a note for your full quote that very important to you' className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                                    {t('SingleQuotePage.QuotepreferredCurrInput')}
+                                                                    <i title={t('SingleQuotePage.QuotepreferredCurrInput')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
                                                                 </label>
                                                                 <select
                                                                     defaultValue={''}
-                                                                    className='form-select w-100'
+                                                                    className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
                                                                     id="currency"
                                                                     name={'currency'}
                                                                     onChange={handleCurrencyChange}
                                                                 >
-                                                                    <option value='' disabled>Choose your currency</option>
+                                                                    <option value='' disabled>{t('SingleQuotePage.QuotepreferredCurrInputPlaceholder')}</option>
                                                                     {
                                                                         currCurrencies?.map((curr) => (
                                                                             <option key={curr} value={curr}>{curr}</option>
@@ -753,7 +763,7 @@ console.log(distinationData);
                                                         <div className="col-lg-12">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="oneClickQuotationTargetBudget">
-                                                                    Add Target Budget
+                                                                    {t('OneClickQuotationPage.oneClickTargetBudgetInput')}
                                                                 </label>
                                                                 <input
                                                                     id="oneClickQuotationTargetBudget"
@@ -771,7 +781,7 @@ console.log(distinationData);
                                                         <div className="col-lg-12">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="oneClickQuotationTargetDeliveryTime">
-                                                                    Expected Delivery Time
+                                                                    {t('OneClickQuotationPage.oneClickExpectedDeliveryTimeInput')}
                                                                 </label>
                                                                 <input
                                                                     id="oneClickQuotationTargetDeliveryTime"
@@ -788,7 +798,7 @@ console.log(distinationData);
                                                         <div className="col-lg-12">
                                                             <div className="singleQuoteInput">
                                                                 <label htmlFor="oneClickQuotationDeliveryTerms">
-                                                                    Preferred Delivery Terms
+                                                                    {t('OneClickQuotationPage.oneClickPreferredDeliveryTermsInput')}
                                                                 </label>
                                                                 <textarea
                                                                     id="oneClickQuotationDeliveryTerms"
@@ -796,7 +806,7 @@ console.log(distinationData);
                                                                     className="form-control customizedInput"
                                                                     rows="3"
                                                                     defaultValue={distinationData.preferred_delivery_terms}
-                                                                    placeholder='Add Your Terms'
+                                                                    placeholder={t('OneClickQuotationPage.oneClickPreferredDeliveryTermsInputPlaceholder')}
                                                                     onChange={(e) => {
                                                                         setDistinationData({ ...distinationData, [e.target.name]: e.target.value });
                                                                     }}
@@ -826,7 +836,7 @@ console.log(distinationData);
                                             </div>
                                             <div className="col-12">
                                                 <button disabled={loadingSubmit || cart?.on_click_quotation_cart?.length === 0} className='addedButtonStyle btnSubmitQuote mt-5'>
-                                                    Submit quotation
+                                                    {t('OneClickQuotationPage.oneClickSubmit')}
                                                 </button>
                                             </div>
                                         </form>

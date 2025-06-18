@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
+import { Lang } from "../functions/Token";
 
 export const GetQutationsAllIndustriesStore = create((set, get) => ({
   industriesQ: [],
@@ -15,7 +16,12 @@ export const GetQutationsAllIndustriesStore = create((set, get) => ({
     }
     set({ industriesQLoading: true });
     await axios
-      .get(`${baseURL}/all-industries?t=${now}`)
+      .get(`${baseURL}/all-industries?t=${now}`, {
+            headers: {
+                Accept: 'application/json',
+                "Locale": Lang
+            }
+        })
       .then((res) => {
         set(() => ({
           industriesQ: res?.data?.data?.industries,

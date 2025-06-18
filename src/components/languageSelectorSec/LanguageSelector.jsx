@@ -10,6 +10,7 @@ export default function LanguageSelector() {
     const changeLanguage = (lang, dir) => {
         i18next.changeLanguage(lang);
         document.documentElement.dir = dir;
+        window.location.reload();
     };
   const { t } = useTranslation();
   return (

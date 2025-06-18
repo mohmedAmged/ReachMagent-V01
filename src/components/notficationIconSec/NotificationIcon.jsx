@@ -6,7 +6,9 @@ import { baseURL } from '../../functions/baseUrl'
 import toast from 'react-hot-toast'
 import { handleApiError, rateLimiter } from '../../functions/requestUtils'
 import { Lang } from '../../functions/Token'
+import { useTranslation } from 'react-i18next'
 export default function NotificationIcon({ token, fireNotification, setFireNotification }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [showNotifications, setShowNotifications] = useState(false);
     const [unAuth, setUnAuth] = useState(false);
@@ -71,7 +73,8 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
                 try {
                     const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token}`,
+                            "Locale": Lang
                         }
                     });
                     setNotsItems(response?.data?.data?.notifications);
@@ -97,7 +100,10 @@ export default function NotificationIcon({ token, fireNotification, setFireNotif
         const slug = loginType === 'user' ? `${loginType}/mark-latest-read` : `${loginType}/company-mark-latest-read`;
         try {
             await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                     Authorization: `Bearer ${token}`,
+                     "Locale": Lang
+                    }
             });
             setNotsCount(0);
         } catch (error) {
@@ -144,7 +150,7 @@ console.log(notsItems);
             >
                 <div className="notHeaderBox">
                     <h3>
-                        Notifications
+                        {t('NotificationIconBox.notificationHeader')}
                     </h3>
                 </div>
                 <div className="NotsItems_Box">
@@ -181,12 +187,12 @@ console.log(notsItems);
                         </>
                         :
                         <p className='mt-4'>
-                            there no new notifications!
+                            {t('NotificationIconBox.noNewNotification')}
                         </p>
                     }
                     <NavLink to={'/profile/notifications'} className={'nav-link'}>
                         <button className='viewMoreNotfiBtn' >
-                            view more
+                            {t('NotificationIconBox.viewMoreBtn')}
                         </button>
                     </NavLink>
                 </div>
