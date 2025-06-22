@@ -60,6 +60,7 @@ console.log(company?.company?.companyId);
                 });
             });
     };
+console.log(company);
 
     return (
         <Modal show={show} onHide={handleClose}>

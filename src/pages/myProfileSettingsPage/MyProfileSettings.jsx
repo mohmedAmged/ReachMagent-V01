@@ -14,10 +14,12 @@ import CompanyFollowIndustryFrom from '../../components/companyFollowIndustryFor
 import CompanyTimezoneForm from '../../components/companyTimezoneFormItem/CompanyTimezoneForm'
 import EmployeeTimezoneForm from '../../components/employeeTimezoneFormItem/EmployeeTimezoneForm'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
+import { useTranslation } from 'react-i18next'
 
 localStorage.setItem('updatingProfile', 'notUpdating');
 
 export default function MyProfileSettings({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [profileUpdateStatus, setProfileUpdateStatus] = useState(localStorage.getItem('updatingProfile'));
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -42,22 +44,22 @@ export default function MyProfileSettings({ token }) {
 
     const [activeItem, setActiveItem] = useState('Account Settings');
     let items = [
-        { name: 'Account Settings', active: activeItem === 'Account Settings' },
-        { name: 'Password Settings', active: activeItem === 'Password Settings' },
+        { name: 'Account Settings', active: activeItem === 'Account Settings', rendeName: `${t('DashboardProileSettingsPage.accountSettingsFilterItem')}` },
+        { name: 'Password Settings', active: activeItem === 'Password Settings', rendeName: `${t('DashboardProileSettingsPage.passwordSettingsfilterItem')}` },
     ];
     if (loginType === 'user') {
         items = [
-            { name: 'Account Settings', active: activeItem === 'Account Settings' },
-            { name: 'User Industries', active: activeItem === 'User Industries' },
-            { name: 'User Timezone', active: activeItem === 'User Timezone' },
-            { name: 'Password Settings', active: activeItem === 'Password Settings' },
+            { name: 'Account Settings', active: activeItem === 'Account Settings', rendeName: `${t('DashboardProileSettingsPage.accountSettingsFilterItem')}` },
+            { name: 'User Industries', active: activeItem === 'User Industries', rendeName: `${t('DashboardProileSettingsPage.userIndustriesFilterItem')}` },
+            { name: 'User Timezone', active: activeItem === 'User Timezone', rendeName: `${t('DashboardProileSettingsPage.userTimezoneFilterItem')}` },
+            { name: 'Password Settings', active: activeItem === 'Password Settings', rendeName: `${t('DashboardProileSettingsPage.passwordSettingsfilterItem')}` },
         ];
     }
     if (loginType === 'employee') {
         items = [
-            { name: 'Account Settings', active: activeItem === 'Account Settings' },
-            { name: 'Employee Timezone', active: activeItem === 'Employee Timezone' },
-            { name: 'Password Settings', active: activeItem === 'Password Settings' },
+            { name: 'Account Settings', active: activeItem === 'Account Settings', rendeName: `${t('DashboardProileSettingsPage.accountSettingsFilterItem')}` },
+            { name: 'Employee Timezone', active: activeItem === 'Employee Timezone', rendeName: `${t('DashboardProileSettingsPage.employeeTimezoneFilterItem')}` },
+            { name: 'Password Settings', active: activeItem === 'Password Settings', rendeName: `${t('DashboardProileSettingsPage.passwordSettingsfilterItem')}` },
         ];
     }
     const handleItemClick = (itemName) => {

@@ -8,6 +8,7 @@ import { baseURL } from '../../functions/baseUrl';
 import Cookies from 'js-cookie';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { UpdateCompanyDataSchema } from '../../validation/UpdateCompanyDataSchema';
+import { useTranslation } from 'react-i18next';
 
 const allTypes =  [
   {
@@ -52,6 +53,7 @@ export default function CompanySettingsForm(
 )
 
 {
+  const { t } = useTranslation();
   const loginType =localStorage.getItem('loginType');
   const [subCategories,setSubCategories] = useState([]);
   const linkedInLink = company?.linkedin_link === 'N/A' ? '' : company?.linkedin_link;
@@ -257,7 +259,7 @@ console.log(watch('about_us'));
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4'>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanyEmail">Company E-Mail</label>
+        <label htmlFor="dashboardCompanyEmail">{t('DashboardBussinessSettingsPage.companyEmailFormInput')}</label>
         <input
           id='dashboardCompanyEmail'
           className={`form-control signUpInput mt-2 ${errors?.email ? 'inputError' : ''}`}
@@ -272,7 +274,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanywebsite_link">Company Link</label>
+        <label htmlFor="dashboardCompanywebsite_link">{t('DashboardBussinessSettingsPage.companyLinkFormInput')}</label>
         <input
           id='dashboardCompanywebsite_link'
           className={`form-control signUpInput mt-2 ${errors?.website_link ? 'inputError' : ''}`}
@@ -287,7 +289,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanylinkedin_link">LinkedIn Link</label>
+        <label htmlFor="dashboardCompanylinkedin_link">{t('DashboardBussinessSettingsPage.linkedinFormInput')}</label>
         <input
           id='dashboardCompanylinkedin_link'
           className={`form-control signUpInput mt-2 ${errors?.linkedin_link ? 'inputError' : ''}`}
@@ -302,7 +304,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanyfounded">Founded</label>
+        <label htmlFor="dashboardCompanyfounded">{t('DashboardBussinessSettingsPage.foundedFormInput')}</label>
         <input
           id='dashboardCompanyfounded'
           className={`form-control signUpInput mt-2 ${errors?.founded ? 'inputError' : ''}`}
@@ -317,7 +319,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanyMainCategory">Main Activity</label>
+        <label htmlFor="dashboardCompanyMainCategory">{t('DashboardBussinessSettingsPage.mainActivityFormInput')}</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
               <input
@@ -334,7 +336,7 @@ console.log(watch('about_us'));
                 {...register('category_id')}
                 id="dashboardCompanyMainCategory"
               >
-                <option disabled value="">Select Activity</option>
+                <option disabled value="">{t('DashboardBussinessSettingsPage.mainActivityFormInputPlaceholder')}</option>
                 {
                   mainCategories?.map(cat => (
                       <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>{cat?.mainCategoryName}</option>
@@ -350,7 +352,7 @@ console.log(watch('about_us'));
             }
       </div>
       <div className="mt-2 ms-2 profileFormInputItem cityContainerProfileForm">
-        <label htmlFor="dashboardCompanySubCategory">Sub-Activity</label>
+        <label htmlFor="dashboardCompanySubCategory">{t('DashboardBussinessSettingsPage.subActivityFormInput')}</label>
         {
           (profileUpdateStatus === 'notUpdating') ?
               <input
@@ -367,7 +369,7 @@ console.log(watch('about_us'));
                 {...register('sub_category_id')}
                 id="dashboardCompanySubCategory"
               >
-                <option disabled value="">Select Sub-Activity</option>
+                <option disabled value="">{t('DashboardBussinessSettingsPage.subActivityFormInputPlaceholder')}</option>
                 {
                   subCategories?.map(cat => (
                       <option key={cat?.subCategoryId} value={cat?.subCategoryId}>{cat?.subCategoryName}</option>
@@ -383,7 +385,7 @@ console.log(watch('about_us'));
             }
       </div>
       <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
-        <label htmlFor="dashboardCompanyFullAddress">Company FullAddress</label>
+        <label htmlFor="dashboardCompanyFullAddress">{t('DashboardBussinessSettingsPage.companyFullAddressFormInput')}</label>
         <textarea
           id='dashboardCompanyFullAddress'
           className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
@@ -398,7 +400,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
-        <label htmlFor="dashboardCompanyabout_us">About Company</label>
+        <label htmlFor="dashboardCompanyabout_us">{t('DashboardBussinessSettingsPage.aboutCompanyFormInput')}</label>
         <textarea
           id='dashboardCompanyabout_us'
           className={`form-control signUpInput mt-2 ${errors?.about_us ? 'inputError' : ''}`}
@@ -414,7 +416,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className={`mt-2 profileFormInputItem w-100 pe-4 ms-2 ${profileUpdateStatus === 'notUpdating' && 'ps-3'}`}>
-        <label htmlFor="dashboardCompanymainType">Company Types</label>
+        <label htmlFor="dashboardCompanymainType">{t('DashboardBussinessSettingsPage.companyTypesFormInput')}</label>
         {(profileUpdateStatus === 'notUpdating') ?
           <div >
             {currentBusinessTypes?.map((el) => (
@@ -432,7 +434,7 @@ console.log(watch('about_us'));
             // {...register('main_type')}
             id="dashboardCompanymainType"
           >
-          <option disabled value="">Select Company Types</option>
+          <option disabled value="">{t('DashboardBussinessSettingsPage.companyTypesFormInputPlaceholder')}</option>
           {
             filteredTypes?.map(type => (
               <option key={type?.id} value={type?.id}>{type?.name}</option>
@@ -465,9 +467,9 @@ console.log(watch('about_us'));
               scrollToTop();
               localStorage.setItem('updatingProfile', 'updating');
               setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
-          }}>Update</span>
+          }}>{t('DashboardProileSettingsPage.updateBtnFormInput')}</span>
           :
-          <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn mt-0' />
+          <input type="submit" disabled={isSubmitting} value={t('DashboardProileSettingsPage.confirmBtnFormInput')}className='updateBtn mt-0' />
         }
       </div>
     </form>

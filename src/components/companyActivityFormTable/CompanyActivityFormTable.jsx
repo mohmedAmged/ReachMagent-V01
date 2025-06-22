@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyActivityFormTable({
   index,
@@ -10,6 +12,7 @@ export default function CompanyActivityFormTable({
   currsubActivity,
   activitiesFinalShape,
 }) {
+  const { t } = useTranslation();
   const [mainAct, setMainAct] = useState(currMainActivity || '');
   const [subAct, setSubAct] = useState([]);
   const [selectedSubAct, setSelectedSubAct] = useState(currsubActivity || '');
@@ -24,7 +27,12 @@ export default function CompanyActivityFormTable({
 
           if (chosenActivity?.mainActivitySlug) {
             const response = await axios.get(
-              `${baseURL}/main-activities/${chosenActivity.mainActivitySlug}`
+              `${baseURL}/main-activities/${chosenActivity.mainActivitySlug}`,
+              {
+                          headers:{
+                            "Locale": Lang
+                          }
+              }
             );
             setSubAct(response?.data?.data?.subActivities || []);
           }
@@ -72,7 +80,7 @@ export default function CompanyActivityFormTable({
           id="dashboardCompanymainType"
         >
           <option disabled value="">
-            Select Main Activity
+           {t('DashboardBussinessSettingsPage.mainActivityFormInputPlaceholder')}
           </option>
           {allActivities?.map((act) => (
             <option key={act.mainActivityId} value={act.mainActivityId}>
@@ -91,7 +99,7 @@ export default function CompanyActivityFormTable({
           disabled={!subAct.length}
         >
           <option disabled value="">
-            Select Sub Activity
+            {t('DashboardBussinessSettingsPage.subActivityFormInputPlaceholder')}
           </option>
           {subAct?.map((sub) => (
             <option key={sub.subActivityId} value={sub.subActivityId}>

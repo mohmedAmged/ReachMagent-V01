@@ -3,8 +3,11 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import CompanyWorkHourFormTable from '../companyWorkHourFormTableItem/CompanyWorkHourFormTable';
 import toast from 'react-hot-toast';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyWorkHourForm({ token ,setUnAuth }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType')
     const [newData, setNewdata] = useState([])
     const [editMode, setEditMode] = useState(false);
@@ -13,7 +16,8 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             setNewdata(response?.data?.data?.workingHours);
@@ -31,14 +35,14 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
     return (
         <div className='companyWorkHourTable__handler'>
             <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
-                {editMode ? 'Cancel Update' : 'Update Work Hours'}
+                {editMode ? `${t('DashboardBussinessSettingsPage.cancelUpdateActivityBtn')}` : `${t('DashboardBussinessSettingsPage.updateWorkHourBtn')}`}
             </button>
             {!editMode ? (
                 <form>
                     {newData?.map((el, index) => (
                         <div key={index} className="w-100 WorkHourTables__box">
                             <div className="mt-2 profileFormInputItem">
-                                <label>Day of Week</label>
+                                <label>{t('DashboardBussinessSettingsPage.dayOfWeekFormInput')}</label>
                                 <input
                                     className="form-control signUpInput mt-2"
                                     value={el?.day_of_week}
@@ -47,7 +51,7 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
                                 />
                             </div>
                             <div className="mt-2 profileFormInputItem">
-                                <label>Opening Time</label>
+                                <label>{t('DashboardBussinessSettingsPage.openingTimeFormInput')}</label>
                                 <input
                                     className="form-control signUpInput mt-2"
                                     value={el?.opening_time}
@@ -56,7 +60,7 @@ export default function CompanyWorkHourForm({ token ,setUnAuth }) {
                                 />
                             </div>
                             <div className="mt-2 profileFormInputItem">
-                                <label>Closing Time</label>
+                                <label>{t('DashboardBussinessSettingsPage.closingTimeFormInput')}</label>
                                 <input
                                     className="form-control signUpInput mt-2"
                                     value={el?.closing_time}

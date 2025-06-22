@@ -1,12 +1,13 @@
-.mySideBarNew .css-1t8x7v1 > .ps-menu-button:hover {
+.mySideBarNew .ps-menu-button:hover {
   background-color: var(--main-blue-color) !important;
+  color: #fff !important;
 }
 .mySideBarNew .css-1wvake5.ps-collapsed {
   width: 60px !important;
   min-width: 60px !important;
 }
-.mySideBarNew .css-16jesut > .ps-menu-button:hover,
-.mySideBarNew .css-1tqrhto > .ps-menu-button:hover {
+.mySideBarNew .ps-menu-button:hover,
+.mySideBarNew .ps-menu-button:hover {
   background-color: var(--main-blue-color) !important;
 }
 .mySideBarNew .css-18unl23 {

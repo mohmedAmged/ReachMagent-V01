@@ -9,8 +9,11 @@ import ContentViewHeader from '../../components/contentViewHeaderSec/ContentView
 import { useDashBoardBookedAppointmentsStore } from '../../store/DashBoardBookedAppointMents';
 import { NavLink } from 'react-router-dom';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyBookedAppointments({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const cookiesData = Cookies.get('currentLoginedData');
@@ -107,14 +110,14 @@ export default function MyBookedAppointments({ token }) {
                             filteration={filteration}
                             setFilteration={handleFilterChange}
                             name='date'
-                            placeholder='Filter by Date'
+                            placeholder={t('DashboardBookedAppointementsPage.filterInputHeaderPlaceholder')}
                             inputType='date'
                         />
                         {unAuth ? (
                             <UnAuthSec />
                         ) : (
                             <div className='content__view__handler'>
-                                <ContentViewHeader title={loginType !== 'user' ? 'Company Booked Appointments' : 'User Booked Appointments'} />
+                                <ContentViewHeader title={loginType !== 'user' ? `${t('DashboardBookedAppointementsPage.mainHeaderCompany')}` : `${t('DashboardBookedAppointementsPage.mainHeaderUser')}`} />
                                 {/* {loginType === 'employee' && (
                                     <div className="my__roles__actions my-4 ps-0 ms-0">
                                         <button className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn' : ''}`}
@@ -142,7 +145,7 @@ export default function MyBookedAppointments({ token }) {
                                                 setActiveRole('All', token, loginType)
                                             }}
                                         >
-                                            All
+                                            {t('DashboardBookedAppointementsPage.filterCompanyItemAll')}
                                         </button>
                                         <button
                                             className={`def__btn meddle_btn px-5 ${activeRole === 'reservedByOthers' ? 'rolesActiveBtn' : ''}`}
@@ -152,7 +155,7 @@ export default function MyBookedAppointments({ token }) {
                                                 setActiveRole('reservedByOthers', token, loginType)
                                             }}
                                         >
-                                            Reserved By Others
+                                            {t('DashboardBookedAppointementsPage.filterCompanyItemReservedOther')}
                                         </button>
                                         <button
                                             className={`cust__btn px-5 ${activeRole === 'reservedByUs' ? 'rolesActiveBtn' : ''}`}
@@ -161,7 +164,7 @@ export default function MyBookedAppointments({ token }) {
                                                 setActiveRole('reservedByUs', token, loginType)
                                             }}
                                         >
-                                            Reserved By Us
+                                            {t('DashboardBookedAppointementsPage.filterCompanyItemReservedUs')}
                                         </button>
                                     </div>
                                 }
@@ -172,14 +175,14 @@ export default function MyBookedAppointments({ token }) {
     <Table responsive>
         <thead>
             <tr className='table__default__header'>
-                <th>From</th>
-                <th>To</th>
-                <th className='text-center'>Reason</th>
-                <th className='text-center'>Date</th>
-                <th className='text-center'>Time</th>
-                <th className='text-center'>Link</th>
-                <th className='text-center'>Status</th>
-                {loginType === 'employee' && <th className='text-center'>Actions</th>}
+                <th>{t('DashboardBookedAppointementsPage.tableHeadItemFrom')}</th>
+                <th>{t('DashboardBookedAppointementsPage.tableHeadItemTo')}</th>
+                <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemReason')}</th>
+                <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemDate')}</th>
+                <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemTime')}</th>
+                <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemLink')}</th>
+                <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemStatus')}</th>
+                {loginType === 'employee' && <th className='text-center'>{t('DashboardBookedAppointementsPage.tableHeadItemActions')}</th>}
             </tr>
         </thead>
         <tbody>
@@ -217,21 +220,21 @@ export default function MyBookedAppointments({ token }) {
                             </i>
                         </td>
                         :
-                        <td>No Link Added</td>
+                        <td>{t('DashboardBookedAppointementsPage.tableBodyNoLink')}</td>
                     }
                     <Modal show={showViewLinkModal} onHide={() => setShowViewLinkModal(false)}>
                         <div ref={viewLinkModalRef}>
                             <Modal.Header closeButton>
-                                <Modal.Title>View Meeting Link</Modal.Title>
+                                <Modal.Title>{t('DashboardBookedAppointementsPage.tableModalUserHead')}</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <NavLink to={modalLink} target="_blank">
-                                    Open Meeting Link
+                                    {t('DashboardBookedAppointementsPage.tableModalUserOpenBtn')}
                                 </NavLink>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={() => setShowViewLinkModal(false)}>
-                                    Close
+                                    {t('DashboardBookedAppointementsPage.tableModalUserCloseBtn')}
                                 </Button>
                             </Modal.Footer>
                         </div>
@@ -244,7 +247,7 @@ export default function MyBookedAppointments({ token }) {
                                 row?.type === 'reservedByOthers' ?
                                     <div className='position-relative actions'>
                                         <i className="bi bi-trash-fill" onClick={() => handleDeleteAppointment(row?.id)}></i>
-                                        <i style={{ cursor: 'pointer' }} className="bi bi-three-dots-vertical ms-2" onClick={() => toggleOptions(row?.id)}></i>
+                                        <i style={{ cursor: 'pointer' }} className={`bi bi-three-dots-vertical ${Lang === 'ar' ? 'me-2' : 'ms-2'}`} onClick={() => toggleOptions(row?.id)}></i>
                                         {visibleRowId === row?.id && (
                                             <div className="options-box" ref={optionsRef}>
                                                 <p className="option mb-1 text-danger" 
@@ -253,7 +256,7 @@ export default function MyBookedAppointments({ token }) {
                                                     setVisibleRowId(null);
                                                 }}
                                                 >
-                                                    Reject</p>
+                                                    {t('DashboardBookedAppointementsPage.tableBodyRejectAction')}</p>
                                                 <p className=" option mb-0 text-success" 
                                                 onClick={() =>
                                                     handleAcceptAppointment(
@@ -261,32 +264,32 @@ export default function MyBookedAppointments({ token }) {
                                                     )
                                                 }
                                                 >
-                                                    Accept
+                                                    {t('DashboardBookedAppointementsPage.tableBodyAcceptAction')}
                                                 </p>
                                                 <Modal show={showModal} onHide={() => setShowModal(false)}>
     <div ref={modalRef}>
         <Modal.Header closeButton>
-            <Modal.Title>Add Meeting Link</Modal.Title>
+            <Modal.Title>{t('DashboardBookedAppointementsPage.tableModalEmployeeHead')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form>
                 <Form.Group className="mb-3">
-                    <Form.Label>Meeting Link</Form.Label>
+                    <Form.Label>{t('DashboardBookedAppointementsPage.tableModalEmployeeLabel')}</Form.Label>
                     <Form.Control
                         type="text"
                         value={meetingLink}
                         onChange={(e) => setMeetingLink(e.target.value)}
-                        placeholder="Enter meeting link"
+                        placeholder={t('DashboardBookedAppointementsPage.tableModalEmployeeinputPlaceholder')}
                     />
                 </Form.Group>
             </Form>
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Cancel
+                {t('DashboardBookedAppointementsPage.tableModalEmployeeCancelBtn')}
             </Button>
             <Button variant="primary" onClick={handleSubmitMeetingLink}>
-                Submit
+                {t('DashboardBookedAppointementsPage.tableModalEmployeeSubmitBtn')}
             </Button>
         </Modal.Footer>
     </div>
@@ -295,7 +298,7 @@ export default function MyBookedAppointments({ token }) {
                                         )}
                                     </div>
                                     :
-                                    'No Action'
+                                    `${t('DashboardBookedAppointementsPage.tableBodyNoActionText')}`
                             }
 
                         </td>
@@ -321,7 +324,7 @@ export default function MyBookedAppointments({ token }) {
                                 ) : (
                                     <div className='row'>
                                         <div className="col-12 my-5 text-danger fs-5">
-                                            No Booked Appointments Yet
+                                            {t('DashboardBookedAppointementsPage.tableBodyNoBookedText')}
                                         </div>
                                     </div>
                                 )}

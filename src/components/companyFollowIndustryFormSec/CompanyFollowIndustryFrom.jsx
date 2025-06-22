@@ -2,8 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType')
     const [currIndustries, setCurrIndustries] = useState([]);
     const [allIndustries, setAllIndustries] = useState([]);
@@ -19,7 +22,8 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
         try {
             const response = await axios.get(apiURL, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             const industries =
@@ -38,7 +42,11 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
 
     const fetchAllIndustries = async () => {
         try {
-            const response = await axios.get(`${baseURL}/industries?t=${new Date().getTime()}`);
+            const response = await axios.get(`${baseURL}/industries?t=${new Date().getTime()}`,{
+                headers: {
+                    "Locale": Lang
+                }
+            });
             setAllIndustries(response?.data?.data?.industries || []);
         } catch (error) {
             toast.error(error?.response?.data.message || 'Something Went Wrong!');
@@ -161,7 +169,7 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
     return (
         <form className='profileForm__handler my-4'>
             <div className={`mt-2 profileFormInputItem w-100 pe-4 ms-2 'ps-3'}`}>
-                <label htmlFor="dashboardCompanymainType">{loginType ==='user' ? 'User Industries' : 'Company Industries' }</label>
+                <label htmlFor="dashboardCompanymainType">{loginType ==='user' ? `${t('DashboardProileSettingsPage.userIndustriesFilterItem')}` : `${t('DashboardProileSettingsPage.companyIndustriesFilterItem')}` }</label>
                 {!isEditing ? (
                     <>
                         <div>
@@ -180,7 +188,7 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
                                 }}
                                 className="btn btn-primary"
                             >
-                                Update
+                                {t('DashboardProileSettingsPage.updateBtnFormInput')}
                             </button>
                         </div>
                     </>
@@ -189,10 +197,10 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
                         <select
                             defaultValue=""
                             onChange={(e) => handleAddIndustry(Number(e.target.value))}
-                            className={`form-select signUpInput mt-2`}
+                            className={`form-select signUpInput mt-2 ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                             id="dashboardCompanymainType"
                         >
-                            <option disabled value="">Select Industry</option>
+                            <option disabled value="">{t('DashboardProileSettingsPage.selectIndusFormInputPlaceholder')}</option>
                             {allIndustries.map((indus) => (
                                 <option key={indus?.id} value={indus?.id}>
                                     {indus?.name}
@@ -241,7 +249,7 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
                                         onChange={(e) => handleAddSubIndustry(el.id, Number(e.target.value))}
                                         className="form-select signUpInput mt-2"
                                     >
-                                        <option disabled value="">Select Sub-Industry</option>
+                                        <option disabled value="">{t('DashboardProileSettingsPage.selectSubIndusFormInputPlaceholder')}</option>
                                         {el?.sub_industries?.map((sub) => (
                                             <option key={sub?.id} value={sub?.id}>{sub?.name}</option>
                                         ))}
@@ -281,14 +289,14 @@ export default function CompanyFollowIndustryFrom({ token, setUnAuth }) {
                                 onClick={handleConfirmChanges}
                                 className="btn btn-success me-3"
                             >
-                                Confirm Changes
+                                {t('DashboardProileSettingsPage.confirmBtnFormInput')}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setIsEditing(false)}
                                 className="btn btn-secondary"
                             >
-                                Cancel
+                                {t('DashboardProileSettingsPage.cancelBtnFormInput')}
                             </button>
                         </div>
                     </>

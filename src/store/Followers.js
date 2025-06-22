@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import { baseURL } from "../functions/baseUrl";
 import toast from "react-hot-toast";
+import { Lang } from "../functions/Token";
 
 export const useFollowersStore = create((set, get) => ({
     loading: true,
@@ -33,6 +34,7 @@ export const useFollowersStore = create((set, get) => ({
                     headers: {
                         Accept: "application/json",
                         Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     },
                 });
                 followersData = response?.data?.data?.followedCompanies;
@@ -42,12 +44,14 @@ export const useFollowersStore = create((set, get) => ({
                         headers: {
                             Accept: "application/json",
                             Authorization: `Bearer ${token}`,
+                            "Locale": Lang
                         },
                     }),
                     axios.get(`${baseURL}/employee/followed-companies?page=${currentPage}&t=${now}`, {
                         headers: {
                             Accept: "application/json",
                             Authorization: `Bearer ${token}`,
+                            "Locale": Lang
                         },
                     }),
                 ]);

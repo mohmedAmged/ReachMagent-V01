@@ -3,8 +3,11 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanySlugForm({ token, setUnAuth }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [currCompanySlug, setCurrCompanySlug] = useState('');
     const [editMode, setEditMode] = useState(false);
@@ -29,7 +32,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                     const response = await axios.get(
                         `${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`,
                         {
-                            headers: { Authorization: `Bearer ${token}` },
+                            headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
                         }
                     );
                     const slug = response?.data?.data?.slug;
@@ -81,7 +84,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
     return (
         <form>
         <div className="mb-3">
-            <label htmlFor="slug" className="form-label">Company Slug</label>
+            <label htmlFor="slug" className="form-label">{t('DashboardBussinessSettingsPage.companySlugFilterItem')}</label>
             <input
                 type="text"
                 id="slug"
@@ -89,7 +92,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                 {...register('slug', { required: true })}
                 disabled={!editMode} // Disable input if not in edit mode
             />
-            {errors.slug && <small className="text-danger">Slug is required</small>}
+            {errors.slug && <small className="text-danger">{t('DashboardBussinessSettingsPage.slugRequiredText')}</small>}
         </div>
         <div className="d-flex justify-content-between">
             {!editMode ? (
@@ -98,7 +101,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                     className="btn btn-primary"
                     onClick={() => setEditMode(true)}
                 >
-                    Edit
+                    {t('DashboardProileSettingsPage.editBtnFormInput')}
                 </button>
             ) : (
                 <>
@@ -108,7 +111,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                         onClick={handleCustomSubmit} // Attach custom submission handler
                         disabled={isSubmitting}
                     >
-                        Submit
+                        {t('DashboardBussinessSettingsPage.submitChangesBtn')}
                     </button>
                     <button
                         type="button" // Prevent triggering form submission
@@ -118,7 +121,7 @@ export default function CompanySlugForm({ token, setUnAuth }) {
                             setValue('slug', currCompanySlug); // Reset input value to current slug
                         }}
                     >
-                        Cancel
+                        {t('DashboardProileSettingsPage.cancelBtnFormInput')}
                     </button>
                 </>
             )}

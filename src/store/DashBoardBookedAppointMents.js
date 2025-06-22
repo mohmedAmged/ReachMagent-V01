@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardBookedAppointmentsStore = create((set, get) => ({
     // State
@@ -24,7 +25,11 @@ export const useDashBoardBookedAppointmentsStore = create((set, get) => ({
             const response = await axios.get(
                 `${baseURL}/${loginType}/${slug}?page=${page}&t=${Date.now()}`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: 
+                    {
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang 
+                    },
                 }
             );
             set({
@@ -51,7 +56,11 @@ export const useDashBoardBookedAppointmentsStore = create((set, get) => ({
                 const response = await axios.get(
                     `${baseURL}/${loginType}/filter-booked-appointments?${queryParams}&page=${page}&t=${Date.now()}`,
                     {
-                        headers: { Authorization: `Bearer ${token}` },
+                        headers: 
+                        {
+                            Authorization: `Bearer ${token}`,
+                            "Locale": Lang
+                        },
                     }
                 );
                 set({

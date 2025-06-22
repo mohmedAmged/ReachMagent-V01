@@ -1,5 +1,6 @@
 import React from 'react'
 import './profilefilterBar.css'
+import { Lang } from '../../functions/Token';
 export default function ProfileFilterBar({ items, onItemClick }) {
     const handleSelectChange = (event) => {
         onItemClick(event.target.value);
@@ -11,7 +12,7 @@ export default function ProfileFilterBar({ items, onItemClick }) {
                     <div className="catalog__new__input">
                         <select
                             name="filterItems"
-                            className="form-control custom-select"
+                            className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                             value={items.find(item => item.active)?.name || ''}
                             onChange={handleSelectChange}
                         >
@@ -21,7 +22,7 @@ export default function ProfileFilterBar({ items, onItemClick }) {
                                     className={item.active ? 'active' : ''}
                                     value={item.name}
                                 >
-                                    {item.name}
+                                    {item.rendeName}
                                 </option>
                             ))}
 

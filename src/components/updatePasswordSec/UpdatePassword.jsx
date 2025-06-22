@@ -5,8 +5,11 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function UpdatePassword({token}) {
+  const { t } = useTranslation();
   const [showCurrentPassword,setShowCurrentPassword] = useState(false);
   const [showPassword,setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
@@ -58,17 +61,17 @@ export default function UpdatePassword({token}) {
     <form onSubmit={handleSubmit(onSubmit)} className='row my-5'>
       <div className="col-lg-8 mb-4 m-auto">
         <label htmlFor="profilecurrent_password">
-            Current Password
+            {t('DashboardProileSettingsPage.currPasswordFormInput')}
         </label>
         <div className="position-relative">
             <input 
                 type={`${showCurrentPassword ? 'text' : 'password'}`}
                 id='profilecurrent_password'
-                placeholder='Enter Your Current Password'
+                placeholder={t('DashboardProileSettingsPage.currPasswordFormInputPlaceholder')}
                 {...register('current_password')}
                 className={`form-control signUpInput ${errors.current_password ? 'inputError' : ''}`}
             />
-            <div className="leftShowPasssord" onClick={()=>setShowCurrentPassword(!showCurrentPassword)}>
+            <div className={` ${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={()=>setShowCurrentPassword(!showCurrentPassword)}>
             {
                 showCurrentPassword ?
                 <i className="bi bi-eye-slash"></i>
@@ -85,17 +88,17 @@ export default function UpdatePassword({token}) {
       </div>
       <div className="col-lg-8 mb-4 m-auto">
         <label htmlFor="profilenew_password">
-            New Password 
+            {t('DashboardProileSettingsPage.newPasswordFormInput')}
         </label>
         <div className="position-relative">
             <input 
                 type={`${showPassword ? 'text' : 'password'}`}
                 id='profilenew_password'
-                placeholder='Enter New Password'
+                placeholder={t('DashboardProileSettingsPage.newPasswordFormInputPlaceholder')}
                 {...register('new_password')}
                 className={`form-control signUpInput ${errors.new_password ? 'inputError' : ''}`}
             />
-            <div className="leftShowPasssord" onClick={()=>setShowPassword(!showPassword)}>
+            <div className={` ${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={()=>setShowPassword(!showPassword)}>
             {
                 showPassword ?
                 <i className="bi bi-eye-slash"></i>
@@ -112,17 +115,17 @@ export default function UpdatePassword({token}) {
       </div>
       <div className="col-lg-8 mb-4 m-auto">
         <label htmlFor="profilenew_password_confirmation">
-            Password <span className="requiredStar">*</span>
+            {t('DashboardProileSettingsPage.passwordFormInput')} <span className="requiredStar">*</span>
         </label>
         <div className="position-relative">
             <input 
                 type={`${showConfirmPassword ? 'text' : 'password'}`}
                 id='profilenew_password_confirmation'
-                placeholder='Enter 8-digit password'
+                placeholder={t('DashboardProileSettingsPage.passwordFormInputPlaceholder')}
                 {...register('new_password_confirmation')}
                 className={`form-control signUpInput ${errors.new_password_confirmation ? 'inputError' : ''}`}
             />
-            <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
+            <div className={` ${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
             {
                 showConfirmPassword ?
                 <i className="bi bi-eye-slash"></i>
@@ -138,7 +141,7 @@ export default function UpdatePassword({token}) {
             }
       </div>
       <div className="col-lg-12 text-center">
-        <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn' />
+        <input type="submit" disabled={isSubmitting} value={t('DashboardProileSettingsPage.confirmBtnFormInput')} className='updateBtn' />
       </div>
     </form>
   )

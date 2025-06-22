@@ -59,8 +59,14 @@
   -ms-border-radius: 24px;
   -o-border-radius: 24px;
 }
-.mySidebar__handler li a img {
+/* .mySidebar__handler li a img {
   margin-right: 15px !important;
+} */
+.imgMarginRTL {
+    margin-left: 40px !important;
+}
+.imgMarginLTR {
+      margin-right: 15px !important;
 }
 .mySidebar__handler .logo__text {
   font-size: 26px;
@@ -94,7 +100,7 @@
 .mySidebar__handler li a img {
   width: 24px;
   height: 24px;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   transition: all 0.2s;
 }
 
@@ -117,12 +123,12 @@
 .mySidebar__handler li:hover,
 .mySidebar__handler li.active,
 .mySidebar__handler li.active a {
-  background-color: var(--main-blue-color);
+  background-color: var(--main-blue-color) !important;
   border-radius: 8px;
 }
 
-.mySidebar__handler li:hover a,
-.mySidebar__handler li:hover i,
+/* .mySidebar__handler li:hover a, */
+/* .mySidebar__handler li:hover i, */
 .mySidebar__handler li.active i,
 .mySidebar__handler li.active a {
   color: var(--primary-white);
@@ -437,13 +443,19 @@ td {
 
 .markBtnHandler .button__icon {
   position: absolute;
-  transform: translateX(143px);
+  /* transform: translateX(143px); */
   height: 100%;
   width: 39px;
   background-color: #34974d;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.markBtnHandler .button__icon_RTL{
+  transform: translateX(-184px);
+}
+.markBtnHandler .button__icon_LTR{
+    transform: translateX(143px);
 }
 
 .markBtnHandler .bi-check-lg {

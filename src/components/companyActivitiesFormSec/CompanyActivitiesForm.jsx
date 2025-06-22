@@ -5,10 +5,13 @@ import toast from 'react-hot-toast';
 import CompanyActivityFormTable from '../companyActivityFormTable/CompanyActivityFormTable';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 // const activitiesFinalShape = { activity_id: [], sub_activity_id: [] };
 
 export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) {
+  const { t } = useTranslation();
   const [companyActivities, setCompanyActivities] = useState([]);
   const [activitiesFinalShape, setActivitiesFinalShape] = useState({ activity_id: [], sub_activity_id: [] });
   const [allActivities, setAllActivities] = useState([]);
@@ -44,7 +47,8 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
         (async()=>{
           axios.get(`${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`,{
             headers:{
-              Authorization: `Bearer ${token.token}`
+              Authorization: `Bearer ${token.token}`,
+              "Locale": Lang
             }
           })
           .then(res => {
@@ -203,7 +207,11 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
       setValue('sub_activity_id', '');
       const toastId = toast.loading('Loading , Please Wait !');
       const subActInsideCurrentMainAct = async () => {
-        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`);
+        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`,{
+            headers:{
+              "Locale": Lang
+            }
+          });
         if (response?.status === 200) {
           setcurrentSubActivitiesInsideMainActivity(response?.data?.data?.subActivities);
           toast.success(`( ${response?.data?.data?.mainActivityName} )Activity Added Successfully.`, {
@@ -224,7 +232,7 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4'>
       <button type='button' className='editModeBtn' onClick={() => setEditMode(!editMode)}>
-        {editMode ? 'Cancel Update' : 'Update Activities'}
+        {editMode ? `${t('DashboardBussinessSettingsPage.cancelUpdateActivityBtn')}` : `${t('DashboardBussinessSettingsPage.updateActivityBtn')}`}
       </button>
       {!editMode ?
         companyActivities?.map((el, idx) => {
@@ -232,7 +240,7 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
           
             <div key={idx} className='w-100 row'>
               <div className='col-6 mt-2 profileFormInputItem'>
-                <label htmlFor="dashboardCompanyMainActivity">Main Activity</label>
+                <label htmlFor="dashboardCompanyMainActivity">{t('DashboardBussinessSettingsPage.mainActivityFormInput')}</label>
                 <input
                   id='dashboardCompanyMainActivity'
                   className='form-control signUpInput w-100 mt-2'
@@ -242,7 +250,7 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
                 />
               </div>
               <div className='col-6 mt-2 profileFormInputItem'>
-                <label htmlFor="dashboardCompanySubActivity">Sub Activity</label>
+                <label htmlFor="dashboardCompanySubActivity">{t('DashboardBussinessSettingsPage.subActivityFormInput')}</label>
                 <input
                   id='dashboardCompanySubActivity'
                   className='form-control signUpInput w-100 mt-2'
@@ -277,7 +285,7 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
           
             <div className="profileFormInputItem text-center flex-1">
               <button onClick={() => handleDeleteThisTable(el?.id)} type='button' className='deleteBtn'>
-                delete <i className="bi bi-trash3"></i>
+                {t('DashboardBussinessSettingsPage.deleteActivityBtn')} <i className="bi bi-trash3"></i>
               </button>
             </div>
           
@@ -289,10 +297,10 @@ export default function CompanyActivitiesForm(token, setUnAuth, mainActivities) 
         editMode &&
         <div className="formActions text-center">
           <button type="button" className="btn btn-secondary my-3 w-100" onClick={handleAddMoreActivities}>
-            + Add More Company Activities
+            {t('DashboardBussinessSettingsPage.addMoreActivityBtn')}
           </button>
           <button type="submit" className="updateBtn mt-3">
-            Submit Changes
+            {t('DashboardBussinessSettingsPage.submitChangesBtn')}
           </button>
         </div>
       }

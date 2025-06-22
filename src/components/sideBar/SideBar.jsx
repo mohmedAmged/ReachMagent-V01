@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './sideBar.css';
 import styles from './sideBar.module.css';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
 
   return (
     <div className='mySideBarNew'>
-      <Sidebar collapsed={collapsed} className={`${styles.sideBarContainer}`}>
+      <Sidebar  collapsed={collapsed} className={`${styles.sideBarContainer}`}>
         <div className='d-flex justify-content-center my-2'>
           {
             collapsed ? (
@@ -79,7 +80,7 @@ export default function SideBar({ collapsed, setCollapsed, sidebarItems }) {
                         ${item.link.endsWith(handleGettingLastRouteInPathName()) ? 'active' : ''}
                         `}
                       >
-                        <img src={item?.icon} alt={item?.title} />
+                        <img className={`${Lang === 'ar' && collapsed ? "imgMarginRTL" : "mx-2"}`} src={item?.icon} alt={item?.title} />
                         {item.renderName}
                       </MenuItem >
                     )

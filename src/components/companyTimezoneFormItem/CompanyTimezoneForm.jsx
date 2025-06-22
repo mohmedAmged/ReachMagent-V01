@@ -3,8 +3,11 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import CompanyTimezoneFormTable from '../companyTimezoneFormTableSec/CompanyTimezoneFormTable';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyTimezoneForm({ token ,setUnAuth }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType')
     const [newData, setNewdata] = useState([])
     const [editMode, setEditMode] = useState(false);
@@ -14,7 +17,8 @@ export default function CompanyTimezoneForm({ token ,setUnAuth }) {
             const slug = loginType === 'user' ? 'user/profile' : 'employee/show-company'
             const response = await axios.get(`${baseURL}/${slug}?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale":Lang
                 }
             });
             if (loginType === 'user') {
@@ -36,14 +40,14 @@ export default function CompanyTimezoneForm({ token ,setUnAuth }) {
   return (
     <div className='companyWorkHourTable__handler'>
     <button className='editModeBtn' onClick={() => setEditMode(!editMode)}>
-        {editMode ? 'Cancel Update' : 'Update Timezone'}
+        {editMode ? `${t('DashboardProileSettingsPage.cancelBtnFormInput')}` : `${t('DashboardProileSettingsPage.updateTimeBtnFormInput')}`}
     </button>
     {!editMode ? (
         <form>
 
                 <div className="w-100 WorkHourTables__box">
                     <div className="mt-2 profileFormInputItem">
-                        <label>Time zone</label>
+                        <label>{t('DashboardProileSettingsPage.timeZoneFormInput')}</label>
                         <input
                             className="form-control signUpInput mt-2"
                             value={newData}

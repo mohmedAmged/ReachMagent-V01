@@ -17,6 +17,7 @@ import { baseURL } from '../../functions/baseUrl';
 import { useSidebarStatus } from '../../store/SidebarStatusStore';
 import webLogo from '../../assets/logos/weblogo4.png'
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyNewSidebarDash({ token }) {
     const { t } = useTranslation();
@@ -205,7 +206,7 @@ export default function MyNewSidebarDash({ token }) {
                         }}
                     >
                         <Link onClick={isMobile ? handleClose : undefined}>
-                            <img src={el.icon} alt={el.title} />
+                            <img className={`me-2`} src={el.icon} alt={el.title} />
                             <span>{el.renderName}</span>
                         </Link>
                         {el.submenu ? <i className={`bi ${showSettingsSubmenu ? 'bi-chevron-down' : 'bi-chevron-right'}`}></i> : <i className="bi bi-chevron-right"></i>}
@@ -239,14 +240,14 @@ export default function MyNewSidebarDash({ token }) {
                     </li>
                 ))}
             </ul> */}
-            <div className="pro__banner__handler text-center">
+            {/* <div className="pro__banner__handler text-center">
                 <div className="pro__banner__content">
                     <h3>Upgrade to PRO to get access to all Features!</h3>
                     <NavLink className='nav-link'>
                         Get Pro Now!
                     </NavLink>
                 </div>
-            </div>
+            </div> */}
         </>
     );
     return (
@@ -262,7 +263,7 @@ export default function MyNewSidebarDash({ token }) {
                                 {sidebarItems.map((el, index) => (
                                     <li key={index} className={`d-flex justify-content-center align-items-center ${activePath === el.link ? 'active' : ''}`}>
                                         <Link to={el.link} onClick={isMobile ? handleClose : undefined}>
-                                            <img src={el.icon} alt={el.title} />
+                                            <img className={`me-2`} src={el.icon} alt={el.title} />
                                         </Link>
                                     </li>
                                 ))}
@@ -302,7 +303,7 @@ export default function MyNewSidebarDash({ token }) {
                             !collapsed &&
                             <h1 className="logo__text mb-3 cursorPointer">
                                 <NavLink className={'nav-link'} to={'/'}>
-                                    <img style={{width:'160px'}} src={webLogo} alt="" />
+                                    <img className={`me-2`} style={{width:'160px'}} src={webLogo} alt="" />
                                 </NavLink>
                             </h1>
                         }

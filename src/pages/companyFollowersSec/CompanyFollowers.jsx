@@ -9,8 +9,10 @@ import Cookies from "js-cookie";
 import { useFollowersStore } from "../../store/Followers";
 import { NavLink } from "react-router-dom";
 import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
+import { useTranslation } from "react-i18next";
 
 export default function CompanyFollowers({ loginType, token }) {
+    const { t } = useTranslation();
     const cookiesData = Cookies.get("currentLoginedData");
     const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
 
@@ -57,7 +59,7 @@ console.log(filteredFollowers);
                             <UnAuthSec />
                         ) : (
                             <div className="content__view__handler company__follower__sec">
-                                <ContentViewHeader title={`${loginType === "user" ? "All Following" : "All Followers"}`} />
+                                <ContentViewHeader title={`${loginType === "user" ? `${t('DashboardFollowerPage.mainHeaderFollowing')}` : `${t('DashboardFollowerPage.mainHeaderFollowers')}`}`} />
                                 <div className="follower__filter__search">
                                     <div className="followerInfo__handler row">
                                         {loginType !== "user" && (
@@ -67,13 +69,13 @@ console.log(filteredFollowers);
                                                         className={`def__btn ${activeRole === "Followers" ? "rolesActiveBtn" : ""}`}
                                                         onClick={() => setActiveRole("Followers")}
                                                     >
-                                                        Followers
+                                                        {t('DashboardFollowerPage.followersName')}
                                                     </button>
                                                     <button
                                                         className={`cust__btn ${activeRole === "Followed Companies" ? "rolesActiveBtn" : ""}`}
                                                         onClick={() => setActiveRole("Followed Companies")}
                                                     >
-                                                        Followed Companies
+                                                         {t('DashboardFollowerPage.followedCompanies')}
                                                     </button>
                                                 </div>
                                             </div>
@@ -91,7 +93,7 @@ console.log(filteredFollowers);
                                                         <h1>{el?.companyName}</h1>
                                                         </NavLink>
                                                         <div className="follower__status">
-                                                            <p className="isUsersfollowed text-light">following</p>
+                                                            <p className="isUsersfollowed text-light">{t('DashboardFollowerPage.followingName')}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -115,7 +117,7 @@ console.log(filteredFollowers);
                                                         
                                                         <div className="follower__status">
                                                             {/* <p>{el?.followableEmail || ""}</p> */}
-                                                            <p className="isUsersfollowed text-light">follows you</p>
+                                                            <p className="isUsersfollowed text-light">{t('DashboardFollowerPage.followsYouSpan')}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,7 +136,7 @@ console.log(filteredFollowers);
                                                         
                                                         <div className="follower__status">
                                                             <p>{el?.followableEmail || ""}</p>
-                                                            <p className="isUsersfollowed">following</p>
+                                                            <p className="isUsersfollowed">{t('DashboardFollowerPage.youFollowSpan')}</p>
                                                         </div>
                                                     </div>
                                                 </div>

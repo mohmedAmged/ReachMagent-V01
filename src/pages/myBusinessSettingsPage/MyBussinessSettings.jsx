@@ -22,11 +22,14 @@ import CompanySlugForm from '../../components/companySlugFormSec/CompanySlugForm
 import CompanyDocumentForm from '../../components/comapnyDocumentsFormSec/CompanyDocumentForm';
 import CompanyAddNewIndustry from '../../components/companyAddNewIndustrySec/CompanyAddNewIndustry';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 localStorage.setItem('updatingCompany', 'notUpdating');
 localStorage.setItem('updatingCompanyActivities', 'notUpdating');
 
 export default function MyBussinessSettings({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const [company, setCompany] = useState({});
@@ -77,7 +80,8 @@ export default function MyBussinessSettings({ token }) {
                         const response = await axios.get(`${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
-                                Accept: 'application/json'
+                                Accept: 'application/json',
+                                "Locale": Lang
                             },
                         });
                         setCompany(response?.data?.data);
@@ -104,13 +108,13 @@ export default function MyBussinessSettings({ token }) {
 
     const [activeItem, setActiveItem] = useState('Company Settings');
     const items = [
-        { name: 'Company Settings', active: activeItem === 'Company Settings' },
-        { name: 'Company Documents', active: activeItem === 'Company Documents' },
-        { name: 'Company Activities', active: activeItem === 'Company Activities' },
-        { name: 'Company Industries', active: activeItem === 'Company Industries' },
-        { name: 'Company Timezone', active: activeItem === 'Company Timezone' },
-        { name: 'Company Work Hours', active: activeItem === 'Company Work Hours' },
-        { name: 'Company Slug', active: activeItem === 'Company Slug' },
+        { name: 'Company Settings', active: activeItem === 'Company Settings', rendeName: `${t('DashboardBussinessSettingsPage.companySettingsFilterItem')}` },
+        { name: 'Company Documents', active: activeItem === 'Company Documents', rendeName: `${t('DashboardBussinessSettingsPage.companyDocumentsFilterItem')}` },
+        { name: 'Company Activities', active: activeItem === 'Company Activities', rendeName: `${t('DashboardBussinessSettingsPage.companyActivitiesFilterItem')}` },
+        { name: 'Company Industries', active: activeItem === 'Company Industries', rendeName: `${t('DashboardBussinessSettingsPage.companyIndustriesFilterItem')}` },
+        { name: 'Company Timezone', active: activeItem === 'Company Timezone', rendeName: `${t('DashboardBussinessSettingsPage.companyTimezoneFilterItem')}` },
+        { name: 'Company Work Hours', active: activeItem === 'Company Work Hours', rendeName: `${t('DashboardBussinessSettingsPage.companyWorkHoursFilterItem')}` },
+        { name: 'Company Slug', active: activeItem === 'Company Slug', rendeName: `${t('DashboardBussinessSettingsPage.companySlugFilterItem')}` },
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
@@ -180,7 +184,7 @@ console.log(company);
                                                     <input type="file" className='invisibleInput' ref={fileCoverRef} onChange={hangleChangeCover} />
                                                     <span onClick={handleCoverClick}>
                                                         
-                                                        Edit cover (Recomended Size 1920 × 720 px) <i className="bi bi-pencil-square"></i>
+                                                        {t('DashboardBussinessSettingsPage.editCoverBtn')} <i className="bi bi-pencil-square"></i>
                                                     </span>
                                                 </>
                                             }
@@ -218,7 +222,7 @@ console.log(company);
                                                 <div className="view__profile__btn">
                                                     <NavLink to={`/show-company/${company?.id}`} target='_blank' className={'nav-link'}>
                                                     <button>
-                                                        View company's public profile
+                                                       {t('DashboardBussinessSettingsPage.viewCompanyProfile')}
                                                     </button>
                                                     </NavLink>
                                                 </div>

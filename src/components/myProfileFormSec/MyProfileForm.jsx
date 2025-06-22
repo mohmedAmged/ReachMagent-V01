@@ -9,8 +9,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateEmployeeProfileSchema } from '../../validation/UpdateEmployeeProfile';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function MyProfileForm({ token, imgChanged, currnetImageUpdateFile, setCurrentImageUpdateError, setCurrentImage, currentUserLogin, setProfileUpdateStatus, profileUpdateStatus, countries }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [currentCities, setCurrentCities] = useState([]);
     const [defaultChosenCity, setDefaultChosenCity] = useState(null);
@@ -45,7 +48,12 @@ console.log(currentUserLogin);
 
     const citiesInsideCurrentCountry = async (chosenCountry) => {
         try {
-            const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}`);
+            const response = await axios.get(`${baseURL}/countries/${chosenCountry?.code}`, {
+                        headers: 
+                            { 
+                                "Locale": Lang 
+                            } 
+                        });
             const cities = response?.data?.data?.cities || [];
             setCurrentCities(cities);
 
@@ -171,7 +179,7 @@ console.log(currentUserLogin);
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='profileForm__handler my-4' >
             <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                <label htmlFor="dashboardEmployeeName">First Name</label>
+                <label htmlFor="dashboardEmployeeName">{t('DashboardProileSettingsPage.firstNameFormInput')}</label>
                 <input
                     id='dashboardEmployeeName'
                     className={`form-control signUpInput mt-2 ${errors?.name ? 'inputError' : ''}`}
@@ -186,7 +194,7 @@ console.log(currentUserLogin);
                 }
             </div>
             <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                <label htmlFor="dashboardEmployeePhone">Phone Number</label>
+                <label htmlFor="dashboardEmployeePhone">{t('DashboardProileSettingsPage.phoneNumberFormInput')}</label>
                 <input
                     id='dashboardEmployeePhone'
                     className={`form-control signUpInput mt-2 ${errors?.phone ? 'inputError' : ''}`}
@@ -201,7 +209,7 @@ console.log(currentUserLogin);
                 }
             </div>
             <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                <label htmlFor="dashboardEmployeeEmail">Email Address</label>
+                <label htmlFor="dashboardEmployeeEmail">{t('DashboardProileSettingsPage.emailAddressFormInput')}</label>
                 <input
                     id='dashboardEmployeeEmail'
                     className={`form-control signUpInput mt-2 ${errors?.email ? 'inputError' : ''}`}
@@ -216,7 +224,7 @@ console.log(currentUserLogin);
                 }
             </div>
             <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                <label htmlFor="dashboardEmployeeCountry">Country</label>
+                <label htmlFor="dashboardEmployeeCountry">{t('DashboardProileSettingsPage.countryFormInput')}</label>
                 {
                     (profileUpdateStatus === 'notUpdating') ?
                         <input
@@ -229,12 +237,12 @@ console.log(currentUserLogin);
                         :
                         <>
                             <select
-                                className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 defaultValue={currentChosenCountry?.id || ''}
                                 {...register('country_id')}
                                 id="dashboardEmployeeCountry"
                             >
-                                <option disabled value="">Select Your Country</option>
+                                <option disabled value="">{t('DashboardProileSettingsPage.countryFormInputPlaceholder')}</option>
                                 {
                                     countries?.map(country => (
                                         <option key={country?.id} value={country?.id}>{country?.name}</option>
@@ -250,7 +258,7 @@ console.log(currentUserLogin);
                 }
             </div>
             <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                <label htmlFor="dashboardEmployeeCity">City</label>
+                <label htmlFor="dashboardEmployeeCity">{t('DashboardProileSettingsPage.cityFormInput')}</label>
                 {
                     (profileUpdateStatus === 'notUpdating') ?
                         <input
@@ -263,12 +271,12 @@ console.log(currentUserLogin);
                         :
                         <>
                             <select
-                                className={`form-select signUpInput mt-2 ${errors?.city_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput mt-2 ${errors?.city_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 // defaultValue={currentUserLogin?.city}
                                 {...register('city_id')}
                                 id="dashboardEmployeeCity"
                             >
-                                <option disabled value="">Select Your city</option>
+                                <option disabled value="">{t('DashboardProileSettingsPage.cityFormInputPlaceholder')}</option>
                                 {
                                     currentCities?.map(city => (
                                         <option key={city?.cityId} value={city?.cityId}>{city?.cityName}</option>
@@ -287,7 +295,7 @@ console.log(currentUserLogin);
                 (localStorage.getItem('loginType') === 'user') ?
                     <>
                         <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                            <label htmlFor="dashboardAddress_one">Address One</label>
+                            <label htmlFor="dashboardAddress_one">{t('DashboardProileSettingsPage.addressOneFormInput')}</label>
                             <input
                                 id='dashboardAddress_one'
                                 className={`form-control signUpInput mt-2 ${errors?.address_one ? 'inputError' : ''}`}
@@ -302,7 +310,7 @@ console.log(currentUserLogin);
                             }
                         </div>
                         <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                            <label htmlFor="dashboardAddress_two">Address Two</label>
+                            <label htmlFor="dashboardAddress_two">{t('DashboardProileSettingsPage.addressTwoFormInput')}</label>
                             <input
                                 id='dashboardAddress_two'
                                 className={`form-control signUpInput mt-2 ${errors?.address_two ? 'inputError' : ''}`}
@@ -319,7 +327,7 @@ console.log(currentUserLogin);
                     </>
                     :
                     <div className="mt-2 profileFormInputItem cityContainerProfileForm">
-                        <label htmlFor="dashboardFullAddress">Full Address</label>
+                        <label htmlFor="dashboardFullAddress">{t('DashboardProileSettingsPage.fullAddressFormInput')}</label>
                         <input
                             id='dashboardFullAddress'
                             className={`form-control signUpInput mt-2 ${errors?.full_address ? 'inputError' : ''}`}
@@ -343,9 +351,9 @@ console.log(currentUserLogin);
                             scrollToTop();
                             localStorage.setItem('updatingProfile', 'updating');
                             setProfileUpdateStatus(localStorage.getItem('updatingProfile'));
-                        }}>Edit</span>
+                        }}>{t('DashboardProileSettingsPage.editBtnFormInput')}</span>
                         :
-                        <input type="submit" disabled={isSubmitting} value="Confirm Changes" className='updateBtn mt-0' />
+                        <input type="submit" disabled={isSubmitting} value={t('DashboardProileSettingsPage.confirmBtnFormInput')} className='updateBtn mt-0' />
                 }
             </div>
         </form>

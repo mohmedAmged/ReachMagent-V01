@@ -3,7 +3,9 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import './companyWorkHourFormTable.css'
+import { useTranslation } from 'react-i18next';
 export default function CompanyWorkHourFormTable({ token, workingHours,  setEditMode, fetchShowCompany }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType')
 
     const convertTo24HourFormat = (time) => {
@@ -106,7 +108,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                 <div key={index} className="w-100 WorkHourTables__box">
 
                     <div className="mt-2 profileFormInputItem">
-                        <label>Day of Week</label>
+                        <label>{t('DashboardBussinessSettingsPage.dayOfWeekFormInput')}</label>
                         <select
                             className="form-control custom-select signUpInput mt-2"
                             name="day_of_week"
@@ -115,18 +117,18 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                                 handleInputChange(index, 'day_of_week', e.target.value)
                             }
                         >
-                            <option value="" disabled>day</option>
-                            <option value="Sunday">Sunday</option>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
-                            <option value="Saturday">Saturday</option>
+                            <option value="" disabled>{t('DashboardBussinessSettingsPage.dayFormInput')}</option>
+                            <option value="Sunday">{t('DashboardBussinessSettingsPage.SundayFormInput')}</option>
+                            <option value="Monday">{t('DashboardBussinessSettingsPage.MondayFormInput')}</option>
+                            <option value="Tuesday">{t('DashboardBussinessSettingsPage.TuesdayFormInput')}</option>
+                            <option value="Wednesday">{t('DashboardBussinessSettingsPage.WednesdayFormInput')}</option>
+                            <option value="Thursday">{t('DashboardBussinessSettingsPage.ThursdayFormInput')}</option>
+                            <option value="Friday">{t('DashboardBussinessSettingsPage.FridayFormInput')}</option>
+                            <option value="Saturday">{t('DashboardBussinessSettingsPage.SaturdayFormInput')}</option>
                         </select>
                     </div>
                     <div className="mt-2 profileFormInputItem">
-                        <label>Opening Time</label>
+                        <label>{t('DashboardBussinessSettingsPage.openingTimeFormInput')}</label>
                         <input
                             className="form-control signUpInput mt-2"
                             name="opening_time"
@@ -138,7 +140,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                         />
                     </div>
                     <div className="mt-2 profileFormInputItem">
-                        <label>Closing Time</label>
+                        <label>{t('DashboardBussinessSettingsPage.closingTimeFormInput')}</label>
                         <input
                             className="form-control signUpInput mt-2"
                             name="closing_time"
@@ -151,17 +153,17 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                     </div>
                     <div className="profileFormInputItem text-center mt-2">
                         <button onClick={() => handleDeleteWorkingHour(index)} type='button' className='deleteBtn'>
-                            delete <i className="bi bi-trash3"></i>
+                            {t('DashboardBussinessSettingsPage.deleteActivityBtn')} <i className="bi bi-trash3"></i>
                         </button>
                     </div>
                 </div>
             ))}
             <div className="formActions">
                 <button type="button" className="btn btn-secondary mt-3" onClick={handleAddWorkingHour}>
-                    + Add More Working Hours 
+                    {t('DashboardBussinessSettingsPage.addMoreWorkingHoursBtn')}
                 </button>
                 <button type="submit" className="updateBtn mt-3">
-                    Submit Changes
+                    {t('DashboardBussinessSettingsPage.submitChangesBtn')}
                 </button>
             </div>
         </form>

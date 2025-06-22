@@ -9,7 +9,10 @@ import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { handleApiError, rateLimiter } from '../../functions/requestUtils';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 export default function MyNotfications({ token, fireNotification, setFireNotification }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -26,7 +29,11 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
         const slug = loginType === 'user' ? `${loginType}/all-notifications` : `${loginType}/company-all-notifications`;
         try {
             const response = await axios.get(`${baseURL}/${slug}${params ? `${params}&` : '?'}page=${currentPage}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: 
+                {
+                    Authorization: `Bearer ${token}`,
+                    'Locale': Lang 
+                }
             });
             setAllNotifications(response?.data?.data?.notifications);
             setTotalPages(response?.data?.data?.meta?.last_page);
@@ -101,7 +108,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
         const slug = loginType === 'user' ? `${loginType}/mark-all-as-read` : `${loginType}/company-mark-all-as-read`;
         try {
             const response = await axios.get(`${baseURL}/${slug}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang }
             });
             toast.success(response?.data?.message);
             await getAllNotifications();
@@ -176,8 +183,8 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                             <button type="button" className="markBtnHandler"
                                                 onClick={() => handleMarkAllRead()}
                                                 >
-                                                <span className="button__text">Mark all as read</span>
-                                                <span className="button__icon">
+                                                <span className="button__text">{t('DashboardNotificationPage.markAllReadBtn')}</span>
+                                                <span className={`button__icon ${Lang === 'ar' ? 'button__icon_RTL' : 'button__icon_LTR'}`}>
                                                     <i className="bi bi-check-lg"></i>
                                                 </span>
                                             </button>
@@ -192,13 +199,13 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                             <thead>
                                                 <tr className='table__default__header'>
                                                     <th>
-                                                        Sender
+                                                        {t('DashboardNotificationPage.tableHeadSender')}
                                                     </th>
-                                                    <th className='text-center'>Type</th>
-                                                    <th className='text-center'>time</th>
-                                                    <th className='text-center'>Message</th>
+                                                    <th className='text-center'>{t('DashboardNotificationPage.tableHeadType')}</th>
+                                                    <th className='text-center'>{t('DashboardNotificationPage.tableHeadTime')}</th>
+                                                    <th className='text-center'>{t('DashboardNotificationPage.tableHeadMessage')}</th>
                                                     <th>
-                                                        view
+                                                        {t('DashboardNotificationPage.tableHeadView')}
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -209,7 +216,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                 <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
                                     <div className='product__breif__detail d-flex '>
                                         <i className="bi bi-trash-fill" onClick={() => handleDeleteThisProduct(el?.id)}></i>
-                                        <div className="product__img">
+                                        <div className={`product__img ${Lang === 'ar' ? "mx-3" :''}`}>
                                             <img src={el?.image} alt="sender-img" />
                                         </div>
                                         <div className="product__info">
@@ -266,7 +273,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                     :
                                     <div className='row'>
                                         <div className="col-12 text-danger fs-5">
-                                            No Notifications Yet
+                                            {t('DashboardNotificationPage.noNotificationText')}
                                         </div>
                                     </div>
                             }

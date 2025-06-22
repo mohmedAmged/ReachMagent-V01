@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function CompanyDocumentForm({ token, setUnAuth }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [currCompanyDocument, setCurrCompanyDocument] = useState([]);
     const [editMode, setEditMode] = useState({}); // Store edit mode per document ID
@@ -23,7 +26,7 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
                     const response = await axios.get(
                         `${baseURL}/${loginType}/show-company?t=${new Date().getTime()}`,
                         {
-                            headers: { Authorization: `Bearer ${token}` },
+                            headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
                         }
                     );
                     setCurrCompanyDocument(response?.data?.data?.companyDocuments || []);
@@ -90,7 +93,7 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
     };
     return (
         <div>
-            <h3 className='mb-4 fs-4'>Company Documents</h3>
+            <h3 className='mb-4 fs-4'>{t('DashboardBussinessSettingsPage.companyDocumentsFilterItem')}</h3>
             {currCompanyDocument.map((doc) => (
                 <div key={doc.id} className="mb-4">
                     <div className="d-flex align-items-center">
@@ -102,7 +105,7 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
                             />
                         ) : (
                             <a href={doc?.document} target="_blank" rel="noopener noreferrer">
-                                <i className="bi bi-file-earmark"></i> View File
+                                <i className="bi bi-file-earmark"></i> {t('DashboardNotificationPage.tableHeadView')}
                             </a>
                         )}
                         {!editMode[doc.id] ? (
@@ -110,14 +113,14 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
                                 className="btn btn-primary ms-3"
                                 onClick={() => setEditMode((prev) => ({ ...prev, [doc.id]: true }))}
                             >
-                                Edit
+                                {t('DashboardProileSettingsPage.editBtnFormInput')}
                             </button>
                         ) : (
                             <button
                                 className="btn btn-secondary ms-3"
                                 onClick={() => setEditMode((prev) => ({ ...prev, [doc.id]: false }))}
                             >
-                                Cancel
+                                {t('DashboardProileSettingsPage.cancelBtnFormInput')}
                             </button>
                         )}
                     </div>
@@ -133,14 +136,14 @@ export default function CompanyDocumentForm({ token, setUnAuth }) {
                                 accept=".pdf, .jpg, .jpeg, .png, .webp"
                             />
                             {errors.document && (
-                                <small className="text-danger">Please select a valid file.</small>
+                                <small className="text-danger">{t('DashboardBussinessSettingsPage.selectValidateFileText')}</small>
                             )}
                             <button
                                 type="submit"
                                 className="btn btn-success mt-2"
                                 disabled={isSubmitting}
                             >
-                                Submit
+                                {t('DashboardBussinessSettingsPage.submitChangesBtn')}
                             </button>
                         </form>
                     )}
