@@ -111,7 +111,7 @@ export default function CompanyAddNewIndustry({ token, setUnAuth }) {
                                 <select
                                     value={selection.industry_id}
                                     onChange={(e) => handleIndustryChange(index, e.target.value)}
-                                    className="form-select"
+                                    className={`form-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 >
                                     <option value="">{t('DashboardProileSettingsPage.selectIndusFormInputPlaceholder')}</option>
                                     {allIndustries.map(indus => (
@@ -122,7 +122,7 @@ export default function CompanyAddNewIndustry({ token, setUnAuth }) {
                                 <select
                                     value={selection.sub_industry_id}
                                     onChange={(e) => handleSubIndustryChange(index, e.target.value)}
-                                    className="form-select"
+                                    className={`form-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                     disabled={!selection.industry_id}
                                 >
                                     <option value="">{t('DashboardProileSettingsPage.selectSubIndusFormInputPlaceholder')}</option>

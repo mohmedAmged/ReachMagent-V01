@@ -4,6 +4,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import './companyWorkHourFormTable.css'
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 export default function CompanyWorkHourFormTable({ token, workingHours,  setEditMode, fetchShowCompany }) {
     const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType')
@@ -110,7 +111,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                     <div className="mt-2 profileFormInputItem">
                         <label>{t('DashboardBussinessSettingsPage.dayOfWeekFormInput')}</label>
                         <select
-                            className="form-control custom-select signUpInput mt-2"
+                            className={`form-control custom-select signUpInput mt-2 ${Lang === 'ar' ? 'formSelect_RTL' :""}`}
                             name="day_of_week"
                             value={day?.day_of_week || ""}
                             onChange={(e) =>
@@ -151,7 +152,7 @@ export default function CompanyWorkHourFormTable({ token, workingHours,  setEdit
                             }
                         />
                     </div>
-                    <div className="profileFormInputItem text-center mt-2">
+                    <div className="profileFormInputItem text-center mt-4">
                         <button onClick={() => handleDeleteWorkingHour(index)} type='button' className='deleteBtn'>
                             {t('DashboardBussinessSettingsPage.deleteActivityBtn')} <i className="bi bi-trash3"></i>
                         </button>

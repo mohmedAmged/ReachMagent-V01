@@ -3,7 +3,10 @@ import './myAllRoles.css';
 import MyDefaultRoles from '../myDefaultRolesSec/MyDefaultRoles';
 import AddRole from '../addRoleSec/AddRole';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 export default function MyAllRoles({ token }) {
+    const { t } = useTranslation();
     const [unAuth, setUnAuth] = useState(false);
     const [activeRole, setActiveRole] = useState('default');
     return (
@@ -11,16 +14,16 @@ export default function MyAllRoles({ token }) {
             <div className="col-12">
                 <div className="my__roles__actions">
                     <button
-                        className={`def__btn ${activeRole === 'default' ? 'rolesActiveBtn' : ''}`}
+                        className={`${Lang === 'ar' ? 'def__btn_RTL' : 'def__btn'} ${activeRole === 'default' ? 'rolesActiveBtn' : ''}`}
                         onClick={() => setActiveRole('default')}
                     >
-                        Default Roles
+                        {t('DashboardBussinessUserManagementPage.defaultRolesFilterItem')}
                     </button>
                     <button
-                        className={`cust__btn ${activeRole === 'addRule' ? 'rolesActiveBtn' : ''}`}
+                        className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} ${activeRole === 'addRule' ? 'rolesActiveBtn' : ''}`}
                         onClick={() => setActiveRole('addRule')}
                     >
-                        Add Role
+                        {t('DashboardBussinessUserManagementPage.addRoleFilterItem')}
                     </button>
                 </div>
             </div>

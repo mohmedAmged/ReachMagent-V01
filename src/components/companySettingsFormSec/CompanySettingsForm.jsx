@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { UpdateCompanyDataSchema } from '../../validation/UpdateCompanyDataSchema';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 const allTypes =  [
   {
@@ -332,7 +333,8 @@ console.log(watch('about_us'));
               :
               <>
               <select
-                className={`form-select signUpInput mt-2 ${errors?.category_id ? 'inputError' : ''}`}
+               defaultValue={''}
+                className={`form-select signUpInput mt-2 ${errors?.category_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                 {...register('category_id')}
                 id="dashboardCompanyMainCategory"
               >
@@ -365,7 +367,8 @@ console.log(watch('about_us'));
               :
               <>
               <select
-                className={`form-select signUpInput mt-2 ${errors?.sub_category_id ? 'inputError' : ''}`}
+                defaultValue={''}
+                className={`form-select signUpInput mt-2 ${errors?.sub_category_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                 {...register('sub_category_id')}
                 id="dashboardCompanySubCategory"
               >
@@ -384,7 +387,7 @@ console.log(watch('about_us'));
               </>
             }
       </div>
-      <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
+      <div className="mt-2 w-100 ms-2 profileFormInputItem">
         <label htmlFor="dashboardCompanyFullAddress">{t('DashboardBussinessSettingsPage.companyFullAddressFormInput')}</label>
         <textarea
           id='dashboardCompanyFullAddress'
@@ -430,7 +433,7 @@ console.log(watch('about_us'));
           <select
             defaultValue={''}
             onChange={handleChangeBusinessType}
-            className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''}`}
+            className={`form-select signUpInput mt-2 ${errors?.country_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
             // {...register('main_type')}
             id="dashboardCompanymainType"
           >

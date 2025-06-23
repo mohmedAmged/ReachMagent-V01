@@ -4,8 +4,10 @@ import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import { Table } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useDashBoardQuotationStore } from '../../store/DashBoardQuotations';
+import { useTranslation } from 'react-i18next';
 
 export default function QuotationTableSec({ fetchAllQuotations, quotations, setCurrentPage, currentPage, totalPages }) {
+    const { t } = useTranslation();
     const { activeRole, setActiveRole, filteration } = useDashBoardQuotationStore(); // Use activeRole from store
     const loginType = localStorage.getItem('loginType');
 
@@ -24,33 +26,33 @@ console.log(quotations);
                         className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn' : ''}`}
                         onClick={() => setActiveRole('All')}
                     >
-                        All
+                        {t('DashboardQutationsTablePage.allFilterItem')}
                     </button>
                     <button
                         className={`def__btn meddle_btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
                         onClick={() => setActiveRole('Sell')}
                     >
-                        Sell
+                        {t('DashboardQutationsTablePage.sellFilterItem')}
                     </button>
                     <button
                         className={`cust__btn px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
                         onClick={() => setActiveRole('Buy')}
                     >
-                        Buy
+                        {t('DashboardQutationsTablePage.buyFilterItem')}
                     </button>
                 </div>
             )}
-            <ContentViewHeader title="All Quotations" />
+            <ContentViewHeader title={t('DashboardQutationsTablePage.headerPageText')} />
             <div className="quotationTable__content">
                 <Table responsive>
                     <thead>
                         <tr className="table__default__header">
-                            <th>ID</th>
-                            <th>Subm-Date</th>
-                            <th>Expi-Date</th>
-                            <th>{loginType === 'user' ? 'Requested From' : 'Requested By'}</th>
-                            <th>Destination</th>
-                            <th>Status</th>
+                            <th>{t('DashboardQutationsTablePage.tableHeadID')}</th>
+                            <th>{t('DashboardQutationsTablePage.tableHeadsubmDate')}</th>
+                            <th>{t('DashboardQutationsTablePage.tableHeadExpiDate')}</th>
+                            <th>{loginType === 'user' ? `${t('DashboardQutationsTablePage.tableHeadRequestedFrom')}` : `${t('DashboardQutationsTablePage.tableHeadRequestedBy')}`}</th>
+                            <th>{t('DashboardQutationsTablePage.tableHeadDestination')}</th>
+                            <th>{t('DashboardQutationsTablePage.tableHeadStatus')}</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -12,8 +12,10 @@ import AllEmployeesSection from '../../components/allEmployeesSection/AllEmploye
 import { GetAllCountriesStore } from '../../store/AllCountries'
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
+import { useTranslation } from 'react-i18next'
 
 export default function MyUsersManagement({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const countries = GetAllCountriesStore((state) => state.countries);
@@ -32,9 +34,9 @@ export default function MyUsersManagement({ token }) {
     const [activeItem, setActiveItem] = useState('Roles');
     const items = [
         // { name: 'Profiles', active: activeItem === 'Profiles' },
-        { name: 'Roles', active: activeItem === 'Roles' },
-        { name: 'All Employees', active: activeItem === 'All Employees' },
-        { name: 'Add Employee', active: activeItem === 'Add Employee' },
+        { name: 'Roles', active: activeItem === 'Roles', rendeName: `${t('DashboardBussinessUserManagementPage.rolesFilterItem')}` },
+        { name: 'All Employees', active: activeItem === 'All Employees', rendeName: `${t('DashboardBussinessUserManagementPage.allEmployeesFilterItem')}` },
+        { name: 'Add Employee', active: activeItem === 'Add Employee', rendeName: `${t('DashboardBussinessUserManagementPage.addEmployeeFilterItem')}` },
     ];
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);

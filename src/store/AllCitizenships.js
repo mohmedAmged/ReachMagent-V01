@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 
 export const GetAllCitizenshipsStore = create((set, get) => ({
     citizenships: [],
@@ -18,7 +18,8 @@ export const GetAllCitizenshipsStore = create((set, get) => ({
         set({ citizenshipsLoading: true });
         await axios.get(`${baseURL}/citizenships`, {
             headers: {
-                Authorization: `Bearer ${Token}`
+                Authorization: `Bearer ${Token}`,
+                "Locale" : Lang
             }
         })
             .then(res => set(() => (

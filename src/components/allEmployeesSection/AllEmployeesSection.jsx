@@ -4,8 +4,11 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import { Table } from 'react-bootstrap';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function AllEmployeesSection({ token }) {
+  const { t } = useTranslation();
   const [unAuth, setUnAuth] = useState(false);
   const loginType = localStorage.getItem('loginType');
   const [allEmployees, setAllEmployees] = useState([]);
@@ -16,6 +19,7 @@ export default function AllEmployeesSection({ token }) {
     await axios.get(`${baseURL}/${loginType}/all-employees?page=${page}?t=${new Date().getTime()}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Locale": Lang
       }
     })
       .then(response => {
@@ -69,11 +73,11 @@ export default function AllEmployeesSection({ token }) {
                       <thead>
                         <tr className='table__default__header'>
                           <th className='ps-5'>
-                            Employee
+                            {t('DashboardBussinessUserManagementPage.tableHeadEmployee')}
                           </th>
-                          <th className='text-center'>Role</th>
-                          <th className='text-center'>Phone</th>
-                          <th className='text-center'>Address</th>
+                          <th className='text-center'>{t('DashboardBussinessUserManagementPage.tableHeadRole')}</th>
+                          <th className='text-center'>{t('DashboardBussinessUserManagementPage.tableHeadPhone')}</th>
+                          <th className='text-center'>{t('DashboardBussinessUserManagementPage.tableHeadAddress')}</th>
                           {/* <th className='text-center'>Show</th> */}
                         </tr>
                       </thead>
@@ -142,7 +146,7 @@ export default function AllEmployeesSection({ token }) {
                   :
                   <div className='row'>
                     <div className="col-12 text-danger fs-5">
-                      No Employees Yet
+                      {t('DashboardBussinessUserManagementPage.noEmployeeText')}
                     </div>
                   </div>
               }

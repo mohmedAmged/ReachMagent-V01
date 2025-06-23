@@ -6,8 +6,11 @@ import { baseURL } from '../../functions/baseUrl';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { scrollToTop } from '../../functions/scrollToTop';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function AddRole({ token, setUnAuth }) {
+  const { t } = useTranslation();
   const loginType = localStorage.getItem('loginType');
   const [permissions, setPermissions] = useState([]);
   const [accepetedPermissions, setAcceptedPermissions] = useState([]);
@@ -15,11 +18,12 @@ export default function AddRole({ token, setUnAuth }) {
   const [totalPages, setTotalPages] = useState(1);
 
   const gettingAllPermissions = async (page = 1) => {
-    await axios.get(`${baseURL}/${loginType}/permissions?page=${page}`, {
+    await axios.get(`${baseURL}/${loginType}/permissions?page=${page}&t=${new Date().getTime()}`, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         Authorization: `Bearer ${token}`,
+        "Locale" : Lang
       },
     })
       .then((response) => {
@@ -64,7 +68,7 @@ export default function AddRole({ token, setUnAuth }) {
         .then((response) => {
           scrollToTop();
           window.location.reload();
-          toast.success(response?.data?.message || 'Role Added Successfully!', {
+          toast.success(response?.data?.message || `${t('DashboardBussinessUserManagementPage.RoleAddedToast')}`, {
             id: toastId,
             duration: 1000,
           });
@@ -84,7 +88,7 @@ export default function AddRole({ token, setUnAuth }) {
           });
         });
     } else {
-      toast.error('You Should Add at least One Permission!', {
+      toast.error(`${t('DashboardBussinessUserManagementPage.atLeastOnePermissionToast')}`, {
         id: toastId,
         duration: 2000,
       });
@@ -99,7 +103,7 @@ export default function AddRole({ token, setUnAuth }) {
     };
   };
 
-  const handlePageChange = (newPage) => {
+ const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     };
@@ -108,10 +112,10 @@ export default function AddRole({ token, setUnAuth }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mt-2 ms-2 profileFormInputItem mb-3">
-        <label htmlFor="dashboardCompanyAddRoleName">Role Name</label>
+        <label htmlFor="dashboardCompanyAddRoleName">{t('DashboardBussinessUserManagementPage.roleNAmeFormInput')}</label>
         <input
           id="dashboardCompanyAddRoleName"
-          placeholder="New Role Name"
+          placeholder={t('DashboardBussinessUserManagementPage.roleNAmeFormInputPlaceholder')}
           className={`form-control signUpInput mt-2 ${errors?.name ? 'inputError' : ''}`}
           {...register('name')}
           type="text"
@@ -157,7 +161,7 @@ export default function AddRole({ token, setUnAuth }) {
       </div>
 
       <div className="submitAddRole text-center my-4">
-        <input type="submit" disabled={isSubmitting} value="Confirm Changes" className="updateBtn mt-0" />
+        <input type="submit" disabled={isSubmitting} value={t('DashboardBussinessUserManagementPage.confirmChangesBtn')} className="updateBtn mt-0" />
       </div>
     </form>
   );

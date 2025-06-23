@@ -8,8 +8,10 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import { useDashBoardQuotationStore } from '../../store/DashBoardQuotations';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyQuotations({ token }) {
+  const { t } = useTranslation();
   const {
     loading,
     quotations,
@@ -47,7 +49,7 @@ export default function MyQuotations({ token }) {
             <MainContentHeader
               currentUserLogin={currentUserLogin}
               search={true}
-              placeholder={'Quotation Code'}
+              placeholder={t('DashboardQutationsTablePage.headerInputPlaceholder')}
               filteration={filteration}
               name={'code'}
               setFilteration={setFilteration}

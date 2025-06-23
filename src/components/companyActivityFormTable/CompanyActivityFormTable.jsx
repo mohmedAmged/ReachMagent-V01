@@ -76,7 +76,7 @@ export default function CompanyActivityFormTable({
         <select
           value={mainAct}
           onChange={handleChangeMainActivity}
-          className="form-select signUpInput mt-2"
+          className={`form-select signUpInput mt-2 ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
           id="dashboardCompanymainType"
         >
           <option disabled value="">
@@ -94,7 +94,7 @@ export default function CompanyActivityFormTable({
           ref={fileInputRef}
           value={selectedSubAct}
           onChange={handleChangeSubActivity}
-          className="form-select signUpInput mt-2"
+          className={`form-select signUpInput mt-2 ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
           id="dashboardCompanySubType"
           disabled={!subAct.length}
         >

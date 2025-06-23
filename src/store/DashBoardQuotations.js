@@ -3,6 +3,7 @@ import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
 import debounce from 'lodash/debounce';
+import { Lang } from '../functions/Token';
 
 let cache = {
     data: null,
@@ -32,7 +33,7 @@ export const useDashBoardQuotationStore = create((set) => ({
 
         try {
             const response = await axios.get(`${baseURL}/${slug}?page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             const quotations = response?.data?.data?.quotations;
             set({
@@ -55,7 +56,7 @@ export const useDashBoardQuotationStore = create((set) => ({
         const params = new URLSearchParams(filterParams).toString();
         try {
             const response = await axios.get(`${baseURL}/${loginType}/filter-quotations?${params}&page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 quotations: response?.data?.data?.quotations,

@@ -44,11 +44,23 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+.my__roles__actions button.def__btn_RTL {
+    background-color: #fff;
+    color: var(--main-blue-color);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 .my__roles__actions button.cust__btn {
     background-color: #fff;
     color: var(--main-blue-color);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+.my__roles__actions button.cust__btn_RTL {
+    background-color: #fff;
+    color: var(--main-blue-color);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 .my__roles__actions button.rolesActiveBtn {
     background-color: var(--main-blue-color);

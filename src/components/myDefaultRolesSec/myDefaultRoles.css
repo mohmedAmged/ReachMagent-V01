@@ -122,7 +122,7 @@
 }
 
 .toggle-text {
-    margin-left: 10px;
+    margin-inline-start: 10px;
 }
 
 .deleteRuleBtn ,

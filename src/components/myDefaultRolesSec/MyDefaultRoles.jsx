@@ -3,8 +3,11 @@ import './myDefaultRoles.css'
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function MyDefaultRoles({token,setUnAuth}) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [permissions, setPermissions] = useState([]);
     const [allRoles,setAllRoles] = useState([]);
@@ -16,7 +19,8 @@ export default function MyDefaultRoles({token,setUnAuth}) {
             headers: {
                 'content-type': 'application/json',
                 'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Locale": Lang
             }
         }).then((response) => {
             setAllRoles(prevRoles => {
@@ -46,7 +50,8 @@ console.log(allRoles);
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             }).then((response) => {
                 setPermissions(response?.data?.data?.permissions);
@@ -98,7 +103,7 @@ console.log(allRoles);
                             <span>{role?.name}</span>
                         </h3>
                         <div>
-                            <button className="deleteRuleBtn" onClick={() => handleDeleteThisRule(role?.id)}>Remove Role</button>
+                            <button className="deleteRuleBtn" onClick={() => handleDeleteThisRule(role?.id)}>{t('DashboardBussinessUserManagementPage.removeRoleBtn')}</button>
                         </div>
                     </div>
                     {expandedRole === role?.id && (
@@ -106,11 +111,10 @@ console.log(allRoles);
                             <p className='role__desc d-flex '>
                                 <i className="bi bi-exclamation-circle"></i>
                                 <span>
-                                    Owners have view and edit access to user management by default which cannot be changed.
-                                    Every member gets basic permissions and functionality by default. You can customize settings for all members or make local adjustments for individual users in their profiles.
+                                    {t('DashboardBussinessUserManagementPage.descForDefRole')}
                                 </span>
                             </p>
-                            <h3 className='permission__header'>Permissions</h3>
+                            <h3 className='permission__header'>{t('DashboardBussinessUserManagementPage.permissionsTitle')}</h3>
                             <div className="allPermission__items">
                                 <table className="table table-responsive">
                                     <tbody>
@@ -133,7 +137,7 @@ console.log(allRoles);
                                                                 />
                                                                 <span className="slider"></span>
                                                             </label>
-                                                            <span className="toggle-text" style={getStyle(perm?.enable)}>{perm?.enable ? 'Yes' : 'No'}</span>
+                                                            <span className="toggle-text" style={getStyle(perm?.enable)}>{perm?.enable ? `${t('DashboardBussinessUserManagementPage.yesPermissionText')}` : `${t('DashboardBussinessUserManagementPage.noPermissionText')}`}</span>
                                                         </div>
                                                     </td>
                                                 </tr>

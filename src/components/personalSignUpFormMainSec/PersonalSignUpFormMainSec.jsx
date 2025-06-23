@@ -13,8 +13,11 @@ import UnAuthSec from '../unAuthSection/UnAuthSec';
 import Cookies from 'js-cookie';
 import CustomDropdown from '../customeDropdownSelectSec/CustomeDropdownSelect';
 import { GetAllCitizenshipsStore } from '../../store/AllCitizenships';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function PersonalSignUpFormMainSec({ token, countries, industries, isSignUp }) {
+  const { t } = useTranslation();
   const [unAuth, setUnAuth] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -68,7 +71,11 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
     if (currentCountry) {
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
-        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}?t=${new Date().getTime()}`);
+        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}?t=${new Date().getTime()}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         setCurrentCitiesInsideCountry(response?.data?.data?.cities);
       };
       citiesInsideCurrentCountry();
@@ -103,6 +110,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            "Locale": Lang
           }
         })
           .then(response => {
@@ -310,10 +318,10 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                     isSignUp &&
                     <ul className='row loginToggler'>
                       <li className={`col-md-3 cursorPointer active`} onClick={() => navigate('/personalsignUp')}>
-                        User
+                        {t('PersonalSignUpPage.userTitFilterItem')}
                       </li>
                       <li className={`col-md-3 cursorPointer`} onClick={() => navigate('/business-signUp')}>
-                        Business
+                        {t('PersonalSignUpPage.businessTitFilterItem')}
                       </li>
                     </ul>
                   }
@@ -325,12 +333,12 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                       <form onSubmit={handleSubmit(onSubmit)} className='row'>
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpFullName">
-                            Full Name <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.fullNameFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <input
                             type='text'
                             id='signUpFullName'
-                            placeholder='Full Name'
+                            placeholder={t('PersonalSignUpPage.fullNameFormInput')}
                             {...register('name')}
                             className={`form-control signUpInput ${errors.name ? 'inputError' : ''}`}
                           />
@@ -342,12 +350,12 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         </div>
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpEmailAddress">
-                            E-mail Address <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <input
                             type='text'
                             id='signUpEmailAddress'
-                            placeholder='ex: admin@gmail.com'
+                            placeholder={t('PersonalSignUpPage.emailAddressFormInputPlaceholder')}
                             {...register('email')}
                             className={`form-control signUpInput ${errors.email ? 'inputError' : ''}`}
                           />
@@ -362,13 +370,13 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           <>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="addEmployeetitle">
-                                Employee Title <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.employeeTitleFormInput')} <span className="requiredStar">*</span>
                               </label>
                               <div className="position-relative">
                                 <input
                                   type={`text`}
                                   id='addEmployeetitle'
-                                  placeholder='Enter Employee Title'
+                                  placeholder={t('PersonalSignUpPage.employeeTitleFormInput')}
                                   {...register('title')}
                                   className={`form-control signUpInput ${errors.title ? 'inputError' : ''}`}
                                 />
@@ -381,7 +389,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                             <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpMobileNumber">
-                            Mobile Number <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.mobileNumberFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
                             <div className="col-md-5 col-sm-12">
@@ -391,7 +399,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               value={watch("phone_code")}
                               errors={errors}
                               inputName="phone_code"
-                              placeholder="Select a country"
+                              placeholder={t('PersonalSignUpPage.countryFormInputPlaceholder')} 
                               isFlagDropdown={true}
                             />
                             </div>
@@ -399,7 +407,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               <input
                                 type='text'
                                 id='signUpMobileNumber'
-                                placeholder='Enter your phone number'
+                                placeholder={t('PersonalSignUpPage.mobileFormInputPlaceholder')} 
                                 {...register('phone')}
                                 className={`form-control signUpInput ${errors.phone ? 'inputError' : ''}`}
                               />
@@ -416,7 +424,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                        { isSignUp &&
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpMobileNumber">
-                            Mobile Number <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.mobileNumberFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <div className="row">
                             <div className="col-md-5 col-sm-12">
@@ -426,7 +434,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               value={watch("phone_code")}
                               errors={errors}
                               inputName="phone_code"
-                              placeholder="Select a country"
+                              placeholder={t('PersonalSignUpPage.countryFormInputPlaceholder')}
                               isFlagDropdown={true}
                             />
                             </div>
@@ -434,7 +442,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                               <input
                                 type='text'
                                 id='signUpMobileNumber'
-                                placeholder='Enter your phone number'
+                                placeholder={t('PersonalSignUpPage.mobileFormInputPlaceholder')}
                                 {...register('phone')}
                                 className={`form-control signUpInput ${errors.phone ? 'inputError' : ''}`}
                               />
@@ -449,15 +457,15 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         }
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpCountry">
-                            Country / Region <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.countryRegionFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <div className="position-relative">
                             <select
                               id="signUpCountry"
-                              className={`form-select signUpInput ${errors.country_id ? 'inputError' : ''}`}
+                              className={`form-select signUpInput ${errors.country_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                               {...register('country_id')} >
                               <option value="" disabled>
-                                Select a Country
+                                {t('PersonalSignUpPage.countryFormInputPlaceholder')}
                               </option>
                               {countries?.map((country) => (
                                 <option key={country.id} value={country.id}>
@@ -475,14 +483,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         </div>
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpCity">
-                            City <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <select
                             id="signUpCity"
-                            className={`form-select signUpInput ${errors.city_id ? 'inputError' : ''}`}
+                            className={`form-select signUpInput ${errors.city_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                             {...register('city_id')} >
                             <option value="" disabled>
-                              Select a City
+                             {t('PersonalSignUpPage.cityFormInputPlaceholder')}
                             </option>
                             {currentCitiesInsideCountry?.map((city) => (
                               <option key={city.cityId} value={city.cityId}>
@@ -499,15 +507,15 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           <>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="addEmployeerole_id">
-                                Employee Role <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.employeeRoleFormInput')} <span className="requiredStar">*</span>
                               </label>
                               <div className="position-relative">
                                 <select
                                   id='addEmployeerole_id'
                                   {...register('role_id')}
-                                  className={`form-select signUpInput ${errors.role_id ? 'inputError' : ''}`}
+                                  className={`form-select signUpInput ${errors.role_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 >
-                                  <option value="" disabled>Select Role</option>
+                                  <option value="" disabled>{t('PersonalSignUpPage.employeeRoleFormInputPlaceholder')}</option>
                                   {roles?.map(el => (
                                     <option key={el?.id} value={el?.id}>{el?.name}</option>
                                   ))}
@@ -540,16 +548,16 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div> */}
                              <div className="col-lg-6 mb-4">
                               <label htmlFor="addEmployeecitizenship">
-                                Citizenship <span className="requiredStar"> *</span>
+                                {t('PersonalSignUpPage.citizenshipFormInput')} <span className="requiredStar"> *</span>
                                 <i title="egyptian" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id='addEmployeecitizenship'
                                 defaultValue={''}
                                 {...register('citizenship_id')}
-                                className={`form-select signUpInput ${errors.citizenship_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${errors.citizenship_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                               >
-                                <option value='' disabled>Select Your Citizenship</option>
+                                <option value='' disabled>{t('PersonalSignUpPage.citizenshipFormInputPlaceholder')}</option>
                                 {
                                   citizenships?.map(el => (
                                     <option key={el?.id} value={el?.id}>
@@ -566,7 +574,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="addEmployeefull_address">
-                                Full Address <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.fullAddressFormInput')} <span className="requiredStar">*</span>
                               </label>
                               <div className="position-relative">
                                 <input
@@ -591,12 +599,12 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           <>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpaddress_one">
-                                Address Line 1  <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.addressLine1FormInput')}   <span className="requiredStar">*</span>
                               </label>
                               <input
                                 type='text'
                                 id='signUpaddress_one'
-                                placeholder='Street name, City , Zip Code'
+                                placeholder={t('PersonalSignUpPage.addressLine1FormInputPlaceholder')}
                                 {...register('address_one')}
                                 className={`form-control signUpInput ${errors.address_one ? 'inputError' : ''}`}
                               />
@@ -608,12 +616,12 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpaddress_two">
-                                Address Line 2  <span className="optional">( Optional )</span>
+                                {t('PersonalSignUpPage.addressLine2FormInput')}  <span className="optional">( {t('PersonalSignUpPage.optionalText')} )</span>
                               </label>
                               <input
                                 type='text'
                                 id='signUpaddress_two'
-                                placeholder='Building no. , apt no. , etc'
+                                placeholder={t('PersonalSignUpPage.addressLine2FormInputPlaceholder')}
                                 {...register('address_two')}
                                 className={`form-control signUpInput ${errors.address_two ? 'inputError' : ''}`}
                               />
@@ -625,16 +633,16 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpindustry">
-                                Industry <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.industryFormInput')} <span className="requiredStar">*</span>
                               </label>
                               <select
                                 id="signUpindustry"
                                 defaultValue={defaultValue}
-                                className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${errors.industry_id ? 'inputError' : ''} ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 onChange={(el) => handleSelectIndust(el.target.value)}
                               >
                                 <option value="" disabled>
-                                  Select an industry
+                                  {t('PersonalSignUpPage.industryFormInputPlaceholder')}
                                 </option>
                                 {industries?.map((industry) => (
                                   <option key={industry.id} value={industry.id}>
@@ -662,17 +670,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         }
                         <div className="col-lg-6 mb-4">
                           <label htmlFor="signUpPassword">
-                            Password <span className="requiredStar">*</span>
+                            {t('PersonalSignUpPage.passwordFormInput')} <span className="requiredStar">*</span>
                           </label>
                           <div className="position-relative">
                             <input
                               type={`${showPassword ? 'text' : 'password'}`}
                               id='signUpPassword'
-                              placeholder='Min 8: upper, lower, number, symbol.'
+                              placeholder={t('PersonalSignUpPage.passwordFormInputPlaceholder')}
                               {...register('password')}
                               className={`form-control signUpInput ${errors.password ? 'inputError' : ''}`}
                             />
-                            <div className="leftShowPasssord" onClick={() => setShowPassword(!showPassword)}>
+                            <div className={` ${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={() => setShowPassword(!showPassword)}>
                               {
                                 showPassword ?
                                   <i className="bi bi-eye-slash"></i>
@@ -691,17 +699,17 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           isSignUp &&
                           <div className="col-lg-6 mb-4">
                             <label htmlFor="signUpConfirmPassword">
-                              Confirm Password <span className="requiredStar">*</span>
+                              {t('PersonalSignUpPage.ConfirmPasswordFormInput')} <span className="requiredStar">*</span>
                             </label>
                             <div className="position-relative">
                               <input
                                 type={`${showConfirmPassword ? 'text' : 'password'}`}
                                 id='signUpConfirmPassword'
-                                placeholder='Confirm password'
+                                placeholder={t('PersonalSignUpPage.ConfirmPasswordFormInput')}
                                 {...register('password_confirmation')}
                                 className={`form-control signUpInput ${errors.password_confirmation ? 'inputError' : ''}`}
                               />
-                              <div className="leftShowPasssord" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                              <div className={` ${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                 {
                                   showConfirmPassword ?
                                     <i className="bi bi-eye-slash"></i>
@@ -737,7 +745,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           // </div>
                           <div className='col-lg-8'>
                           <label htmlFor="addEmployeeofficial_id_or_passport">
-                            Upload Official ID Or Passport
+                            {t('PersonalSignUpPage.uploadIDFormInput')}
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
@@ -770,7 +778,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         }
                         <div className='col-lg-6'>
                           <label htmlFor="signUpProfileImage">
-                            Upload Profile Image
+                            {t('PersonalSignUpPage.uploadProdileImgFormInput')}
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
@@ -794,7 +802,7 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                           isSignUp && 
                           <div className='col-lg-6'>
                           <label htmlFor="signUpProfileofficial_id_or_passport">
-                            Upload Official ID Or Passport
+                            {t('PersonalSignUpPage.uploadIDFormInput')}
                             <span className="requiredStar"> *</span>
                           </label>
                           <input
@@ -842,14 +850,14 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                                 <span className="checkmark"></span>
                               </p>
                               <p className="col-md-11 p-0 col-sm-10 checkBox-text">
-                                Accept Terms and Conditions
+                                 {t('PersonalSignUpPage.acceptTermFormInput')}
                               </p>
                             </label>
                             {errors.accept_terms && <p className='errorMessage'>{errors.accept_terms.message}</p>}
                           </div>
                         }
                         <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
-                          <input disabled={isSubmitting} type="submit" value={isSignUp ? 'Sign Up' : 'Add Employee'} />
+                          <input disabled={isSubmitting} type="submit" value={isSignUp ? `${t('PersonalSignUpPage.signUpBtn')}` : `${t('PersonalSignUpPage.addEmployeeBtn')}`} />
                         </div>
                       </form>
                       {
@@ -857,12 +865,12 @@ export default function PersonalSignUpFormMainSec({ token, countries, industries
                         <div className="col-lg-12 signUpOtherWays text-center pe-4">
                           <div className="serviceTerms">
                             <p>
-                              By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy.
+                              {t('PersonalSignUpPage.bycontinueBeforeBrText')}<br />  {t('PersonalSignUpPage.bycontinueAfterBrText')}
                             </p>
                           </div>
                           <div className="signInNavigation mb-5">
-                            Already have an account?
-                            <NavLink className='nav-link d-inline ms-1' to='/logIn' onClick={() => scrollToTop()}>Sign In</NavLink>
+                            {t('PersonalSignUpPage.alreadyHaveAccBtn')}
+                            <NavLink className='nav-link d-inline ms-1' to='/logIn' onClick={() => scrollToTop()}>{t('PersonalSignUpPage.signInBtn')}</NavLink>
                           </div>
                         </div>
                       }
