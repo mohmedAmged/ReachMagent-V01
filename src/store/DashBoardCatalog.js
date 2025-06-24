@@ -3,6 +3,7 @@ import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
 import debounce from "lodash/debounce";
+import { Lang } from '../functions/Token';
 
 export const useDashBoardCatalogStore = create((set, get) => ({
     loading: true,
@@ -27,7 +28,8 @@ export const useDashBoardCatalogStore = create((set, get) => ({
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-catalogs?page=${page}&t=${now}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             set({
@@ -57,7 +59,8 @@ export const useDashBoardCatalogStore = create((set, get) => ({
         try {
             const response = await axios.get(`${baseURL}/${loginType}/filter-catalogs?${params.toString()}&page=${page}&t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             set({

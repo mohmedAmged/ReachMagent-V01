@@ -13,8 +13,11 @@ import Cookies from 'js-cookie'
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function NewCatalogItemForm({ token }) {
+    const { t } = useTranslation();
     const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
@@ -26,22 +29,27 @@ export default function NewCatalogItemForm({ token }) {
         {
             id: 1,
             name: 'Company provides door-to-door shipping for this item',
+            renderName: `${t('DashboardNewCatalogItemPage.doorTodoorType')}`
         },
         {
             id: 2,
             name: 'Shippable item',
+            renderName: `${t('DashboardNewCatalogItemPage.shippableItemType')}`
         },
         {
             id: 3,
             name: 'Raw material',
+            renderName: `${t('DashboardNewCatalogItemPage.rawMaterialType')}`
         },
         {
             id: 4,
             name: 'Ready to be used',
+            renderName: `${t('DashboardNewCatalogItemPage.readyType')}`
         },
         {
             id: 5,
             name: 'Customization available',
+            renderName: `${t('DashboardNewCatalogItemPage.customizationType')}`
         },
     ];
 
@@ -127,7 +135,8 @@ export default function NewCatalogItemForm({ token }) {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/units-of-measure?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             setAllUnitsOfMeasure(response?.data?.data?.units_of_measure);
@@ -148,7 +157,8 @@ export default function NewCatalogItemForm({ token }) {
             (async () => {
                 await axios.get(`${baseURL}/${loginType}/show-catalog/${id}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -174,7 +184,11 @@ export default function NewCatalogItemForm({ token }) {
                     const slug = selectedCategory.mainCategorySlug;
                     try {
                         const timestamp = new Date().getTime();
-                        const response = await axios.get(`${baseURL}/main-categories/${slug}?t=${timestamp}`);
+                        const response = await axios.get(`${baseURL}/main-categories/${slug}?t=${timestamp}`, {
+                            headers: {
+                                "Locale": Lang
+                            }
+                        });
                         if (response.status === 200) {
                             setCurrentSubCategoriesInsideMainCategory(response.data.data.subCategories);
                         } else {
@@ -377,7 +391,7 @@ export default function NewCatalogItemForm({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={id ? 'Update Catalog Item' : 'Add Item to Catalog'} />
+                                <ContentViewHeader title={id ? `${t('DashboardNewCatalogItemPage.headerPageTextUpdate')}` : `${t('DashboardNewCatalogItemPage.headerPageTextAdd')}`} />
                                 {
                                     unAuth ?
                                         <UnAuthSec />
@@ -386,14 +400,14 @@ export default function NewCatalogItemForm({ token }) {
         <div className="row">
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span>
+                    <label htmlFor="title_en">{t('DashboardNewCatalogItemPage.titleENFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="title_en"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewCatalogItemPage.titleENFormInputPlaceholder')}
                         value={formData?.title_en}
                         onChange={handleInputChange}
                     />
@@ -401,14 +415,14 @@ export default function NewCatalogItemForm({ token }) {
             </div>
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span>
+                    <label htmlFor="title_ar">{t('DashboardNewCatalogItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="title_ar"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewCatalogItemPage.titleENFormInputPlaceholder')}
                         value={formData?.title_ar}
                         onChange={handleInputChange}
                     />
@@ -418,16 +432,16 @@ export default function NewCatalogItemForm({ token }) {
         <div className="row">
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="category_id">Category <span className="requiredStar"> *</span>
+                    <label htmlFor="category_id">{t('DashboardNewCatalogItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="category_id"
-                        className="form-control custom-select"
+                        className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                         value={formData?.category_id}
                         onChange={handleInputChange}
                     >
-                        <option value="" disabled>Select Category</option>
+                        <option value="" disabled>{t('DashboardNewCatalogItemPage.categoryFormInputPlaceholder')}</option>
                         {mainCategories?.map((cat) => (
                             <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
                                 {cat?.mainCategoryName}
@@ -438,16 +452,16 @@ export default function NewCatalogItemForm({ token }) {
             </div>
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span>
+                    <label htmlFor="sub_category_id">{t('DashboardNewCatalogItemPage.subCategoryFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="sub_category_id"
-                        className="form-control custom-select"
+                        className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                         value={formData?.sub_category_id}
                         onChange={handleInputChange}
                     >
-                        <option value="" disabled>Select Sub Category</option>
+                        <option value="" disabled>{t('DashboardNewCatalogItemPage.subCategoryFormInputPlaceholder')}</option>
                         {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                             <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
                                 {subCat?.subCategoryName}
@@ -461,16 +475,16 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="unit_of_measure_id">
-                        unit of measure <span className="requiredStar"> *</span>
+                        {t('DashboardNewCatalogItemPage.unitOfMeasureFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="unit_of_measure_id"
-                        className="form-control custom-select"
+                        className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                         value={formData?.unit_of_measure_id}
                         onChange={handleInputChange}
                     >
-                        <option value="" disabled>Select unit of measure</option>
+                        <option value="" disabled>{t('DashboardNewCatalogItemPage.unitOfMeasureFormInputPlaceholder')}</option>
                         {allUnitsOfMeasure?.map((unit) => (
                             <option key={unit?.id} value={unit?.id}>
                                 {unit?.unit}
@@ -481,14 +495,14 @@ export default function NewCatalogItemForm({ token }) {
             </div>
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="code">product code <span className='optional'>(optional)</span>
+                    <label htmlFor="code">{t('DashboardNewCatalogItemPage.productCodeFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="code"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewCatalogItemPage.titleENFormInputPlaceholder')}
                         value={formData?.code}
                         onChange={handleInputChange}
                     />
@@ -498,7 +512,7 @@ export default function NewCatalogItemForm({ token }) {
         <div className="row">
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span>
+                    <label htmlFor="description_en">{t('DashboardNewCatalogItemPage.descriptionInEnglishFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
@@ -512,7 +526,7 @@ export default function NewCatalogItemForm({ token }) {
             </div>
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span>
+                    <label htmlFor="description_ar">{t('DashboardNewCatalogItemPage.descriptionInArabicFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
@@ -528,7 +542,7 @@ export default function NewCatalogItemForm({ token }) {
         <div className="row">
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="price">Price <span className='optional'>(optional)</span>
+                    <label htmlFor="price">{t('DashboardNewCatalogItemPage.priceFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <div className="custom-input-container">
@@ -537,7 +551,7 @@ export default function NewCatalogItemForm({ token }) {
                             id="price"
                             name="price"
                             className="form-control custom-input"
-                            placeholder="Enter your text"
+                            placeholder={t('DashboardNewCatalogItemPage.titleENFormInputPlaceholder')}
                             value={formData?.price}
                             onChange={handleInputChange}
                         />
@@ -546,7 +560,7 @@ export default function NewCatalogItemForm({ token }) {
             </div>
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="tax">Tax % <span className='optional'>(optional)</span>
+                    <label htmlFor="tax">{t('DashboardNewCatalogItemPage.TaxFormInput')} % <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <div className="custom-input-container">
@@ -557,7 +571,7 @@ export default function NewCatalogItemForm({ token }) {
                             min={0}
                             max={100}
                             className="form-control custom-input"
-                            placeholder="tax between (0% -100%)"
+                            placeholder={t('DashboardNewCatalogItemPage.TaxFormInputPlaceholder')}
                             value={formData?.tax}
                             onChange={handleInputChange}
                         />
@@ -568,10 +582,10 @@ export default function NewCatalogItemForm({ token }) {
         </div>
         <div className="upload__image__btn">
             <label htmlFor="tax">
-                Add Multiple Images
+                {t('DashboardNewCatalogItemPage.AddImagesFormInput')}
                 <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                 <br />
-                <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+                <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewCatalogItemPage.AddImagesFormInputPlaceholder')})</span>
             </label>
             <input
                 type="file"
@@ -594,13 +608,13 @@ export default function NewCatalogItemForm({ token }) {
                                 } position-absolute bottom-0 start-0 cursor-pointer`}
                             style={{ fontSize: "1.5rem", transform: "translate(-50%, 50%)" }}
                             onClick={() => handleBookmarkClick(image.id)}
-                            title="Set as Main Image"
+                            title={t('DashboardNewCatalogItemPage.setMainImgFormInput')}
                         ></i>
                         <i
                             className="bi bi-x-circle text-danger position-absolute top-0 end-0 cursor-pointer"
                             style={{ fontSize: "1.5rem", transform: "translate(50%, -50%)" }}
                             onClick={() => handleImageDelete(image.id)}
-                            title="Remove Image"
+                            title={t('DashboardNewCatalogItemPage.removeImgFormInput')}
                         ></i>
                     </div>
                 ))}
@@ -619,7 +633,7 @@ export default function NewCatalogItemForm({ token }) {
                             onChange={() => handleCheckboxChange(type?.id, type?.name)}
                         />
                         <label htmlFor={`type-${type?.id}`} className="form-check-label">
-                            {type?.name}
+                            {type?.renderName}
                             <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                         </label>
                     </div>
@@ -631,27 +645,27 @@ export default function NewCatalogItemForm({ token }) {
             borderTop: "1px solid #aaa"
         }} className="catalog__new__input">
             <h4 className='my-3'>
-                Product Details
+                {t('DashboardNewCatalogItemPage.productDetailsTit')}
                 {
                     currCatalog ?
                         <>
                         </>
                         :
-                        <span className="ms-3 btn btn-link" onClick={handleAddDetails}>Add More Details</span>
+                        <span className="ms-3 btn btn-link" onClick={handleAddDetails}>{t('DashboardNewCatalogItemPage.addMoreDetailsBtn')}</span>
                 }</h4>
             {
                 currCatalog ?
                     currCatalog?.details?.map((input, idx) => (
                         <div key={idx} className="row">
                             <div className='col-md-6'>
-                                <label htmlFor="labelInput">Product Label</label>
+                                <label htmlFor="labelInput">{t('DashboardNewCatalogItemPage.productLabelFormInput')}</label>
                                 <input
                                     id='labelInput'
                                     style={{
                                         background: 'rgb(142 149 235 / 40%)'
                                     }}
                                     type="text"
-                                    placeholder="Product Label"
+                                    placeholder={t('DashboardNewCatalogItemPage.productLabelFormInput')}
                                     value={input?.label}
                                     name='label'
                                     disabled
@@ -660,7 +674,7 @@ export default function NewCatalogItemForm({ token }) {
                                 />
                             </div>
                             <div className="col-md-6">
-                                <label htmlFor="valueInput">Product Value</label>
+                                <label htmlFor="valueInput">{t('DashboardNewCatalogItemPage.productValueFormInput')}</label>
                                 <input
                                     id='valueInput'
                                     style={{
@@ -668,7 +682,7 @@ export default function NewCatalogItemForm({ token }) {
                                     }}
                                     disabled
                                     type="text"
-                                    placeholder="Product Value"
+                                    placeholder={t('DashboardNewCatalogItemPage.productValueFormInput')}
                                     value={input?.value}
                                     name='value'
                                     onChange={(e) => handleChangeDetailsInputs(e, idx)}
@@ -681,14 +695,14 @@ export default function NewCatalogItemForm({ token }) {
                     formData?.details?.map((input, idx) => (
                         <div key={idx} className="row">
                             <div className='col-md-5'>
-                                <label htmlFor="labelInput">Product Label</label>
+                                <label htmlFor="labelInput">{t('DashboardNewCatalogItemPage.productLabelFormInput')}</label>
                                 <input
                                     id='labelInput'
                                     style={{
                                         background: 'rgb(142 149 235 / 20%)'
                                     }}
                                     type="text"
-                                    placeholder="Product Label"
+                                    placeholder={t('DashboardNewCatalogItemPage.productLabelFormInput')}
                                     value={input?.label}
                                     name='label'
                                     onChange={(e) => handleChangeDetailsInputs(e, idx)}
@@ -696,14 +710,14 @@ export default function NewCatalogItemForm({ token }) {
                                 />
                             </div>
                             <div className="col-md-5">
-                                <label htmlFor="valueInput">Product Value</label>
+                                <label htmlFor="valueInput">{t('DashboardNewCatalogItemPage.productValueFormInput')}</label>
                                 <input
                                     id='valueInput'
                                     style={{
                                         background: '#f9f9f9'
                                     }}
                                     type="text"
-                                    placeholder="Product Value"
+                                    placeholder={t('DashboardNewCatalogItemPage.productValueFormInput')}
                                     value={input?.value}
                                     name='value'
                                     onChange={(e) => handleChangeDetailsInputs(e, idx)}
@@ -724,8 +738,8 @@ export default function NewCatalogItemForm({ token }) {
                         marginTop: '30px',
                         borderTop: "1px solid #aaa"
                     }} className="catalog__new__input">
-                        <label className="fw-bold my-3">Options and variations</label>
-                        <button type="button" className="btn btn-link" onClick={handleAddOption}>Add Option</button>
+                        <label className="fw-bold my-3">{t('DashboardNewCatalogItemPage.optionsAndVariationFormInput')}</label>
+                        <button type="button" className="btn btn-link" onClick={handleAddOption}>{t('DashboardNewCatalogItemPage.addOptionBtn')}</button>
                         {formData?.options?.map((option, index) => (
                             <div key={index} className="option-group my-3">
                                 <div className="row">
@@ -735,7 +749,7 @@ export default function NewCatalogItemForm({ token }) {
                                                 background: 'rgb(142 149 235 / 30%)'
                                             }}
                                             type="text"
-                                            placeholder="Attribute (e.g., Storage)"
+                                            placeholder={t('DashboardNewCatalogItemPage.optionsAndVariationFormInputPlaceholder')}
                                             value={option?.attribute}
                                             onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
                                             className="form-control"
@@ -747,7 +761,7 @@ export default function NewCatalogItemForm({ token }) {
                                         <div className="col-lg-6">
                                             <input
                                                 type="text"
-                                                placeholder="Option Name (e.g., 128 GB)"
+                                                placeholder={t('DashboardNewCatalogItemPage.optionsFormInputPlaceholder')}
                                                 value={value?.name}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -763,7 +777,7 @@ export default function NewCatalogItemForm({ token }) {
                                         <div className="col-lg-6">
                                             <input
                                                 type="text"
-                                                placeholder="Additional Price"
+                                                placeholder={t('DashboardNewCatalogItemPage.optPriceFormInputPlaceholder')}
                                                 value={value?.price}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -778,7 +792,7 @@ export default function NewCatalogItemForm({ token }) {
                                         </div>
                                     </div>
                                 ))}
-                                <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">Add Value</button>
+                                <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">{t('DashboardNewCatalogItemPage.addValueBtn')}</button>
                             </div>
                         ))}
                     </div>
@@ -793,11 +807,11 @@ export default function NewCatalogItemForm({ token }) {
                         marginTop: '30px',
                         borderTop: "1px solid #aaa"
                     }} className="catalog__new__input">
-                        <label className="fw-bold my-3">Options and variations</label>
+                        <label className="fw-bold my-3">{t('DashboardNewCatalogItemPage.optionsAndVariationFormInput')}</label>
                         <div className='text-end'>
                             <NavLink to={`/profile/catalog/edit-item/${id}/edit-option`}>
                                 <button className='btn btn-outline-primary text-capitalize'>
-                                    edit options <i className="bi bi-pencil-square"></i>
+                                    {t('DashboardNewCatalogItemPage.editOptionBtn')} <i className="bi bi-pencil-square"></i>
                                 </button>
                             </NavLink>
                         </div>
@@ -811,7 +825,7 @@ export default function NewCatalogItemForm({ token }) {
                                             }}
                                             disabled
                                             type="text"
-                                            placeholder="Attribute (e.g., Storage)"
+                                            placeholder={t('DashboardNewCatalogItemPage.optionsAndVariationFormInputPlaceholder')}
                                             value={option?.attribute}
                                             onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
                                             className="form-control"
@@ -825,7 +839,7 @@ export default function NewCatalogItemForm({ token }) {
                                             <input
                                                 disabled
                                                 type="text"
-                                                placeholder="Option Name (e.g., 128 GB)"
+                                                placeholder={t('DashboardNewCatalogItemPage.optionsFormInputPlaceholder')}
                                                 value={value?.name}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -842,7 +856,7 @@ export default function NewCatalogItemForm({ token }) {
                                             <input
                                                 disabled
                                                 type="text"
-                                                placeholder="Price Impact"
+                                                placeholder={t('DashboardNewCatalogItemPage.optPriceFormInputPlaceholder')}
                                                 value={value?.price}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -866,7 +880,7 @@ export default function NewCatalogItemForm({ token }) {
         }
         <div className="form__submit__button">
             <button type="submit" className="btn btn-primary">
-                {id ? 'Update Catalog' : 'Add Catalog'}
+                {id ? `${t('DashboardNewCatalogItemPage.updateCatalogBtn')}` : `${t('DashboardNewCatalogItemPage.addCatalogBtn')}`}
             </button>
         </div>
     </form>

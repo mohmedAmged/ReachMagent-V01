@@ -91,7 +91,17 @@ font-size: 14px;
     border: 2px solid rgba(213, 0, 18, 1);
     transition: ease-in-out .3s;
 }
-
+.card__btns button.btn__D_RTL {
+    width: 158px;
+    height: 47px;
+    top: 509px;
+    left: 398px;
+    gap: 0px;
+    border-radius: 0px 0px 20px 0px;
+    background: rgba(213, 0, 18, 1);
+    border: 2px solid rgba(213, 0, 18, 1);
+    transition: ease-in-out .3s;
+}
 .card__btns button.btn__E {
     width: 157px;
     height: 47px;
@@ -103,17 +113,33 @@ font-size: 14px;
     border: 2px solid var( --main-turquoise);
     transition: ease-in-out .3s;
 }
-
+.card__btns button.btn__E_RTL {
+    width: 157px;
+    height: 47px;
+    top: 509px;
+    left: 556px;
+    gap: 0px;
+    border-radius: 0px 0px 0px 20px;
+    background: var(--main-turquoise);
+    border: 2px solid var( --main-turquoise);
+    transition: ease-in-out .3s;
+}
 .card__btns button.btn__D:hover {
     color: rgba(213, 0, 18, 1);
     background: var(--primary-white);
 }
-
+.card__btns button.btn__D_RTL:hover {
+    color: rgba(213, 0, 18, 1);
+    background: var(--primary-white);
+}
 .card__btns button.btn__E:hover {
     color: var( --main-turquoise);
     background: var(--primary-white);
 }
-
+.card__btns button.btn__E_RTL:hover {
+    color: var( --main-turquoise);
+    background: var(--primary-white);
+}
 .addNewItem__btn {
     text-align: right;
 }

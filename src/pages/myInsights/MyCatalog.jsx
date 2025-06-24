@@ -10,8 +10,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useDashBoardCatalogStore } from '../../store/DashBoardCatalog';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyCatalog({ token }) {
+  const { t } = useTranslation();
   const loginType = localStorage.getItem('loginType');
   const cookiesData = Cookies.get("currentLoginedData");
   const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
@@ -47,6 +50,7 @@ export default function MyCatalog({ token }) {
   const handleDeleteThisCatalog = (id) => {
     deleteCatalog(token, loginType, id);
   };
+console.log(catalogs);
 
   return (
     <>
@@ -62,13 +66,13 @@ export default function MyCatalog({ token }) {
               setFilteration={setFilterCatalog}
               name="title"
               currentUserLogin={currentUserLogin}
-              placeholder="search catalog"
+              placeholder={t('DashboardAllCatalogPage.headerInputPlaceholder')}
             />
             {unAuth ? (
               <UnAuthSec />
             ) : (
               <div className="content__view__handler">
-                <ContentViewHeader title="Product Catalogs" />
+                <ContentViewHeader title={t('DashboardAllCatalogPage.headerPageText')} />
                 <AddNewItem link="/profile/catalog/addNewItem" />
                 <div className="content__card__list">
                   {catalogs.length ? (
@@ -88,11 +92,11 @@ export default function MyCatalog({ token }) {
                               </div>
                             </NavLink>
                             <div className="card__btns d-flex">
-                              <button onClick={() => handleDeleteThisCatalog(el?.id)} className="btn__D">
-                                Delete
+                              <button onClick={() => handleDeleteThisCatalog(el?.id)} className={`${Lang ===  'ar' ? 'btn__D_RTL' : 'btn__D'}`}>
+                                {t('DashboardAllCatalogPage.catalogDeleteBtn')}
                               </button>
-                              <button className="btn__E" onClick={() => navigate(`/profile/catalog/edit-item/${el?.slug}`)}>
-                                Edit
+                              <button className={`btn__E ${Lang ===  'ar' ? 'btn__E_RTL' : 'btn__E'}`} onClick={() => navigate(`/profile/catalog/edit-item/${el?.slug}`)}>
+                                {t('DashboardAllCatalogPage.catalogEditBtn')}
                               </button>
                             </div>
                           </div>
@@ -122,7 +126,7 @@ export default function MyCatalog({ token }) {
                     </div>
                   ) : (
                     <div className="row">
-                      <div className="col-12 text-danger fs-5">No Catalog Items Yet</div>
+                      <div className="col-12 text-danger fs-5">{t('DashboardAllCatalogPage.noCatalogItemsText')}</div>
                     </div>
                   )}
                 </div>

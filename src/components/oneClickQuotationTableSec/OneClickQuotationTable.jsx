@@ -2,6 +2,8 @@ import React from "react";
 import ContentViewHeader from "../contentViewHeaderSec/ContentViewHeader";
 import { Table } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Lang } from "../../functions/Token";
 
 export default function OneClickQuotationTable({
   totalPages,
@@ -11,6 +13,7 @@ export default function OneClickQuotationTable({
   filteration,
   setFilteration,
 }) {
+  const { t } = useTranslation();
   const loginType = localStorage.getItem("loginType");
 
   const handlePageChange = (newPage) => {
@@ -28,32 +31,32 @@ export default function OneClickQuotationTable({
       {loginType === "employee" && (
         <div className="my__roles__actions mb-5 ps-0 ms-0">
           <button
-            className={`def__btn px-5 ${filteration.activeRole === "All" ? "rolesActiveBtn" : ""}`}
+            className={`${Lang === 'ar' ? 'def__btn_RTL' : 'def__btn'} px-5 ${filteration.activeRole === "All" ? "rolesActiveBtn" : ""}`}
             onClick={() => handleRoleChange("All", "")}
           >
-            All
+            {t('DashboardOneClickQutationsTablePage.allFilterItem')}
           </button>
           <button
-            className={`def__btn meddle_btn px-5 ${filteration.activeRole === "Sell" ? "rolesActiveBtn" : ""}`}
+            className={`${Lang === 'ar' ? 'def__btn_RTL' : 'def__btn'} meddle_btn px-5 ${filteration.activeRole === "Sell" ? "rolesActiveBtn" : ""}`}
             onClick={() => handleRoleChange("Sell", "sell")}
           >
-            Selling
+            {t('DashboardOneClickQutationsTablePage.sellFilterItem')}
           </button>
           <button
-            className={`cust__btn px-5 ${filteration.activeRole === "Buy" ? "rolesActiveBtn" : ""}`}
+            className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} px-5 ${filteration.activeRole === "Buy" ? "rolesActiveBtn" : ""}`}
             onClick={() => handleRoleChange("Buy", "buy")}
           >
-            Buying
+                {t('DashboardOneClickQutationsTablePage.buyFilterItem')}
           </button>
         </div>
       )}
-      <ContentViewHeader title={"All One-Click Quotations"} />
+      <ContentViewHeader title={t('DashboardOneClickQutationsTablePage.headerPageText')} />
       <div className="quotationTable__content">
         <Table responsive>
           <thead>
             <tr className="table__default__header">
-              <th>ID</th>
-              <th>Submission Date</th>
+              <th>{t('DashboardOneClickQutationsTablePage.tableHeadID')}</th>
+              <th>{t('DashboardOneClickQutationsTablePage.tableHeadsubmDate')}</th>
               {/* <th>Requested {loginType === "user" ? "From" : "By"}</th>
               {loginType === "employee" && <th>Requester Phone</th>}
               <th>Country</th> */}

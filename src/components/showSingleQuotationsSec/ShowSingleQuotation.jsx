@@ -15,8 +15,11 @@ import ShowLocationOnMap from '../showLocationOnMapSec/ShowLocationOnMap';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import './showSinglequotation.css';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function ShowSingleQuotation({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const { quotationsId } = useParams();
     const [fullData, setFullData] = useState([]);
@@ -56,7 +59,8 @@ export default function ShowSingleQuotation({ token }) {
             try {
                 const response = await axios.get(`${baseURL}/${slug}/${quotationsId}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 });
                 setNewdata(response?.data?.data?.quotation);
@@ -72,7 +76,8 @@ export default function ShowSingleQuotation({ token }) {
             try {
                 const response = await axios.get(`${baseURL}/${slug}/${quotationsId}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 });
                 setFullData(response?.data?.data?.one_click_quotation);
@@ -527,29 +532,29 @@ console.log(acceptedSingleQuotations);
                                     <UnAuthSec />
                                     :
                                     <div className='content__view__handler'>
-                                        <ContentViewHeader title={`Quotation: ${newData?.code || fullData?.code} `} />
+                                        <ContentViewHeader title={`${t('DashboardSingleQuotationPage.quotationTitle')}: ${newData?.code || fullData?.code} `} />
                                         <div className="quotationTable__content quotationTable__NewStyle">
                                             <Table responsive>
                                                 <thead id='theadBg'>
                                                     <tr
                                                         className='table__default__header'>
-                                                        <th>(##) Title </th>
-                                                        <th className='text-center'>Measure</th>
-                                                        <th className='text-center'>QTY</th>
-                                                        <th className='text-center'>Unit Price</th>
-                                                        <th className='text-center'>Tax(%)</th>
-                                                        <th className='text-center'>Price</th>
-                                                        <th className='text-center'>Duration (Days)</th>
-                                                        <th className='text-center'> Status</th>
-                                                        <th className='text-center'> Notes</th>
-                                                        <th className='text-center'> Files</th>
+                                                        <th>(##) {t('DashboardSingleQuotationPage.tableHeadItemTitle')} </th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemMeasure')}</th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemQTY')}</th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemUnitPrice')}</th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemTax')}(%)</th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemPrice')}</th>
+                                                        <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemDuration')}</th>
+                                                        <th className='text-center'> {t('DashboardSingleQuotationPage.tableHeadItemStatus')}</th>
+                                                        <th className='text-center'> {t('DashboardSingleQuotationPage.tableHeadItemNotes')}</th>
+                                                        <th className='text-center'> {t('DashboardSingleQuotationPage.tableHeadItemFiles')}</th>
                                                         {
                                                             !isOneClickQuotation &&
-                                                            <th className='text-center'>Preferences</th>
+                                                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemPreferences')}</th>
                                                         }
                                                         {
                                                             ((loginType === 'employee' && newData?.quotation_type === 'sell') || (isOneClickQuotation && fullData?.quotation_type === 'sell')) &&
-                                                            <th className='text-center'>Action</th>
+                                                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemAction')}</th>
                                                         }
                                                     </tr>
                                                 </thead>
@@ -576,8 +581,8 @@ console.log(acceptedSingleQuotations);
                                                 ? row?.unit_of_measure
                                                 : ''
                                             : row?.type === 'service'
-                                                ? 'services item'
-                                                : 'Customized Product'
+                                                ? `${t('DashboardSingleQuotationPage.tableBodyItemServicesItem')}`
+                                                : `${t('DashboardSingleQuotationPage.tableBodyItemCustomizedProduct')}`
                                     }
                                 </td>
                                 <td className='text-center text-capitalize'>
@@ -676,17 +681,17 @@ console.log(acceptedSingleQuotations);
                                         row?.note !== 'N/A' ?
                                             <i onClick={() => handleViewNotes(row?.id)} className="bi bi-eye cursorPointer"></i>
                                             :
-                                            'No Notes'
+                                            `${t('DashboardSingleQuotationPage.tableBodyNoNotes')}`
                                     }
                                 </td>
                                 <Modal show={show} onHide={() => setShow(false)}>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>Notes</Modal.Title>
+                                        <Modal.Title>{t('DashboardSingleQuotationPage.tableModalNotes')}</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>{currNote}</Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={() => setShow(false)}>
-                                            Close
+                                            {t('DashboardSingleQuotationPage.tableModalCloseBtn')}
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
@@ -698,7 +703,7 @@ console.log(acceptedSingleQuotations);
                                             >
                                             </i>
                                             :
-                                            'No Files'
+                                            `${t('DashboardSingleQuotationPage.tableBodyNoFiles')}`
                                     }
 
                                 </td>
@@ -709,13 +714,13 @@ console.log(acceptedSingleQuotations);
                                                 <i onClick={() => handleViewOptions(row?.preferences)}
                                                     className="bi bi-sliders cursorPointer"></i>
                                                 :
-                                                'No Preferences'
+                                                `${t('DashboardSingleQuotationPage.tableBodyNoPreferences')}`
                                         }
                                     </td>
                                 }
                                 <Modal show={showOptions} onHide={() => setShowOptions(false)}>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>Options</Modal.Title>
+                                        <Modal.Title>{t('DashboardSingleQuotationPage.tableModalOptions')}</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body
                                     >
@@ -727,7 +732,7 @@ console.log(acceptedSingleQuotations);
                                                             {opp?.attribute} : <span>{opp?.valiue}</span>
                                                         </p>
                                                         <p className='text-capitalize'>
-                                                            price: <span>${opp?.price}</span>
+                                                            {t('DashboardSingleQuotationPage.tableModalPrice')}: <span>${opp?.price}</span>
                                                         </p>
                                                     </div>
 
@@ -737,13 +742,13 @@ console.log(acceptedSingleQuotations);
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={() => setShowOptions(false)}>
-                                            Close
+                                            {t('DashboardSingleQuotationPage.tableModalCloseBtn')}
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
                                 <Modal show={showFiles} onHide={() => setShowFiles(false)}>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>Files</Modal.Title>
+                                        <Modal.Title>{t('DashboardSingleQuotationPage.tableModalFiles')}</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body
                                         style={{
@@ -771,19 +776,19 @@ console.log(acceptedSingleQuotations);
                                                                     }}
                                                                 />
                                                             ) : (
-                                                                "View File"
+                                                                `${t('DashboardSingleQuotationPage.tableModalViewFile')}`
                                                             )}
                                                         </NavLink>
                                                     </div>
                                                 ))
                                             ) : (
-                                                <p>No files available</p>
+                                                <p>{t('DashboardSingleQuotationPage.tableModalNoFiles')}</p>
                                             )}
                                         </div>
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={() => setShowFiles(false)}>
-                                            Close
+                                            {t('DashboardSingleQuotationPage.tableModalCloseBtn')}
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
@@ -793,8 +798,8 @@ console.log(acceptedSingleQuotations);
                                             <i style={{ cursor: 'pointer' }} className="bi bi-three-dots-vertical" onClick={() => toggleOptions(row?.id)}></i>
                                             {visibleRowId === row?.id && newData?.company_status === 'Pending' && (
                                                 <div className="options-box" ref={optionsRef}>
-                                                    <p className="option mb-1 text-danger" onClick={() => handleChangeStatusSingleQuoteRow('rejected', row?.id)}>Reject</p>
-                                                    <p className=" option mb-0 text-success" onClick={() => handleChangeStatusSingleQuoteRow('accepted', row?.id)}>Accept</p>
+                                                    <p className="option mb-1 text-danger" onClick={() => handleChangeStatusSingleQuoteRow('rejected', row?.id)}>{t('DashboardSingleQuotationPage.tableBodyRejectBtn')}</p>
+                                                    <p className=" option mb-0 text-success" onClick={() => handleChangeStatusSingleQuoteRow('accepted', row?.id)}>{t('DashboardSingleQuotationPage.tableBodyAcceptBtn')}</p>
                                                 </div>
                                             )}
                                         </div>
@@ -808,31 +813,31 @@ console.log(acceptedSingleQuotations);
                                         </div>
                                         <div className="quoteTotals__handler">
                                             <h3>
-                                                Quote Totals
+                                                {t('DashboardSingleQuotationPage.quotesTotalsInfo')}
                                             </h3>
                                             <div className="row align-items-center">
                                                 <div className="col-lg-6">
                                                     <div className="totals__full__info">
                                                         <div className="totals__text">
                                                             <h5 className='mb-4 '>
-                                                                subtotal <span className="optional">(Accepted Only)</span>
+                                                                {t('DashboardSingleQuotationPage.subtotalInfo')} <span className="optional">({t('DashboardSingleQuotationPage.subtotalAcceptedOnly')})</span>
                                                             </h5>
                                                             {
                                                                 newData?.tax !== 'N/A' &&
                                                                 <h5 className='mb-4'>
-                                                                    Total Tax <span className="optional">(Accepted Only)</span>
+                                                                    {t('DashboardSingleQuotationPage.totalTaxInfo')} <span className="optional">({t('DashboardSingleQuotationPage.subtotalAcceptedOnly')})</span>
                                                                 </h5>
                                                             }
                                                             {
                                                                 (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
                                                                     <h5 className='mb-4'>
-                                                                        Shipping cost
+                                                                        {t('DashboardSingleQuotationPage.shippingCostInfo')}
                                                                     </h5>
                                                                     :
                                                                     ''
                                                             }
                                                             <h5 className='mb-4'>
-                                                                Extra
+                                                                {t('DashboardSingleQuotationPage.extraInfo')}
                                                                 <span className='optional'>
                                                                     {loginType === 'employee' ? (
                                                                         editExtrasNote ? (
@@ -852,19 +857,19 @@ console.log(acceptedSingleQuotations);
                                                                             </>
                                                                         ) : (
                                                                             <>
-                                                                                {newData?.extras_note === 'N/A' ? "(Specified in notes)" : newData?.extras_note}
+                                                                                {newData?.extras_note === 'N/A' ? `${t('DashboardSingleQuotationPage.specifiedInNotesInfo')}` : newData?.extras_note}
 
                                                                             </>
                                                                         )
                                                                     ) : (
                                                                         <>
-                                                                            {newData?.extras_note === 'N/A' ? "(Specified in notes)" : newData?.extras_note}
+                                                                            {newData?.extras_note === 'N/A' ? `${t('DashboardSingleQuotationPage.specifiedInNotesInfo')}` : newData?.extras_note}
                                                                         </>
                                                                     )}
                                                                 </span>
                                                             </h5>
                                                             <h5>
-                                                                Total Price
+                                                               {t('DashboardSingleQuotationPage.totalPriceInfo')}
                                                             </h5>
                                                         </div>
                                                         <div className="totals__prices">
@@ -927,12 +932,12 @@ console.log(acceptedSingleQuotations);
                                                 <div className="col-lg-6 adjustPositione">
                                                     <div className="totals__have__problem">
                                                         <h3>
-                                                            Having a problem?
+                                                            {t('DashboardSingleQuotationPage.havingProblemTextInfo')}
                                                         </h3>
                                                         <button onClick={handleNavigation} className='updateBtn'>
                                                             <i className="bi bi-wechat fs-4 me-2"></i>
                                                             <span>
-                                                                Chat Now!
+                                                                {t('DashboardSingleQuotationPage.chatNowTextInfo')}
                                                             </span>
                                                         </button>
                                                     </div>
@@ -941,14 +946,14 @@ console.log(acceptedSingleQuotations);
                                         </div>
                                         <div className="quoteTotals__handler">
                                             <h3 className='text-capitalize'>
-                                                Quote offer validaty
+                                                {t('DashboardSingleQuotationPage.offerValidatyTextInfo')}
                                             </h3>
                                             <div className="row align-items-center">
                                                 <div className="col-lg-6">
                                                     <div className="totals__full__info">
                                                         <div className="totals__text">
                                                             <h5 className=''>
-                                                                Offer Valid for <span className="optional">(##days)</span>
+                                                                {t('DashboardSingleQuotationPage.offerValidForTextInfo')}<span className="optional">{t('DashboardSingleQuotationPage.DaysTextInfo')}</span>
                                                             </h5>
                                                         </div>
                                                         <div className="totals__prices">
@@ -982,273 +987,273 @@ console.log(acceptedSingleQuotations);
                                                 </div>
                                             </div>
                                         </div>
-                                        {
-                                            isOneClickQuotation &&
-                                            <div className="quoteTotals__handler">
-                                                <h3 className='text-capitalize'>
-                                                    Quote Targeted Information
-                                                </h3>
-                                                <div className="row align-items-center">
-                                                    <div className="col-lg-12">
-                                                        <div className="totals__full__info">
-                                                            <div className="totals__text">
-                                                                <h5 className=''>
-                                                                    Targeted Budget
-                                                                </h5>
-                                                            </div>
-                                                            <div className="totals__prices">
-                                                                <h5 className=''>
-                                                                    <input
-                                                                        Value={
-                                                                            fullData?.target_budget
-                                                                        }
-                                                                        name='target_budget'
-                                                                        type="number"
-                                                                        id='quotationstarget_budget'
-                                                                        className='form-control text-center'
-                                                                        // min={0}
-                                                                        // maxLength={4}
-                                                                        disabled
-                                                                    // onChange={handleChangeInput}
-                                                                    />
-                                                                </h5>
-                                                            </div>
-                                                            {
-                                                                newData?.company_status === 'Pending' ?
-                                                                    <div className="actions w-100 position-relative d-flex gap-5">
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_target_budget_true">Yes</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_target_budget"
-                                                                                id="can_achieve_target_budget_true"
-                                                                                value="yes"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_target_budget_false">No</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_target_budget"
-                                                                                id="can_achieve_target_budget_false"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                                value="no"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    :
-                                                                    <div className='actions w-100 position-relative d-flex gap-5'>
-                                                                        {
-                                                                            newData?.can_achieve_target_budget === 'Yes' ?
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_target_budget_true">Yes</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_target_budget_true"
-                                                                                        name="can_achieve_target_budget"
-                                                                                        value="Yes"
-                                                                                        checked={newData?.can_achieve_target_budget === 'Yes'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                                :
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_target_budget_false">No</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_target_budget_false"
-                                                                                        name="can_achieve_target_budget"
-                                                                                        value="No"
-                                                                                        checked={newData?.can_achieve_target_budget === 'No'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                        }
-                                                                    </div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="row align-items-center">
-                                                    <div className="col-lg-12">
-                                                        <div className="totals__full__info">
-                                                            <div className="totals__text">
-                                                                <h5 className=''>
-                                                                    Targeted delivery time
-                                                                </h5>
-                                                            </div>
-                                                            <div className="totals__prices">
-                                                                <h5 className=''>
-                                                                    <input
-                                                                        Value={
-                                                                            fullData?.target_delivery_time
-                                                                        }
-                                                                        name='target_delivery_time'
-                                                                        type="text"
-                                                                        id='quotationtarget_delivery_time'
-                                                                        className='form-control text-center'
-                                                                        // min={0}
-                                                                        // maxLength={4}
-                                                                        disabled
-                                                                    // onChange={handleChangeInput}
-                                                                    />
-                                                                </h5>
-                                                            </div>
-                                                            {
-                                                                newData?.company_status === 'Pending' ?
-                                                                    <div className="actions w-100 position-relative d-flex gap-5">
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_target_delivery_time_true">Yes</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_target_delivery_time"
-                                                                                id="can_achieve_target_delivery_time_true"
-                                                                                value="yes"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_target_delivery_time_false">No</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_target_delivery_time"
-                                                                                id="can_achieve_target_delivery_time_false"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                                value="no"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    :
-                                                                    <div className='actions w-100 position-relative d-flex gap-5'>
-                                                                        {
-                                                                            newData?.can_achieve_target_delivery_time === 'Yes' ?
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_target_delivery_time_true">Yes</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_target_delivery_time_true"
-                                                                                        name="can_achieve_target_delivery_time"
-                                                                                        value="Yes"
-                                                                                        checked={newData?.can_achieve_target_delivery_time === 'Yes'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                                :
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_target_delivery_time_false">No</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_target_delivery_time_false"
-                                                                                        name="can_achieve_target_delivery_time"
-                                                                                        value="No"
-                                                                                        checked={newData?.can_achieve_target_delivery_time === 'No'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                        }
-                                                                    </div>
-                                                            }
+    {
+    isOneClickQuotation &&
+    <div className="quoteTotals__handler">
+        <h3 className='text-capitalize'>
+            {t('DashboardSingleQuotationPage.targetedInfoText')}
+        </h3>
+        <div className="row align-items-center">
+            <div className="col-lg-12">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className=''>
+                            {t('DashboardSingleQuotationPage.targetedBudgetText')}
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className=''>
+                            <input
+                                Value={
+                                    fullData?.target_budget
+                                }
+                                name='target_budget'
+                                type="number"
+                                id='quotationstarget_budget'
+                                className='form-control text-center'
+                                // min={0}
+                                // maxLength={4}
+                                disabled
+                            // onChange={handleChangeInput}
+                            />
+                        </h5>
+                    </div>
+                    {
+                        newData?.company_status === 'Pending' ?
+                            <div className="actions w-100 position-relative d-flex gap-5">
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_target_budget_true">Yes</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_target_budget"
+                                        id="can_achieve_target_budget_true"
+                                        value="yes"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                    />
+                                </div>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_target_budget_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_target_budget"
+                                        id="can_achieve_target_budget_false"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                        value="no"
+                                    />
+                                </div>
+                            </div>
+                            :
+                            <div className='actions w-100 position-relative d-flex gap-5'>
+                                {
+                                    newData?.can_achieve_target_budget === 'Yes' ?
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_target_budget_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_target_budget_true"
+                                                name="can_achieve_target_budget"
+                                                value="Yes"
+                                                checked={newData?.can_achieve_target_budget === 'Yes'}
+                                                disabled
+                                            />
+                                        </div>
+                                        :
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_target_budget_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_target_budget_false"
+                                                name="can_achieve_target_budget"
+                                                value="No"
+                                                checked={newData?.can_achieve_target_budget === 'No'}
+                                                disabled
+                                            />
+                                        </div>
+                                }
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div className="row align-items-center">
+            <div className="col-lg-12">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className=''>
+                            {t('DashboardSingleQuotationPage.targetedDeliveryText')}
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className=''>
+                            <input
+                                Value={
+                                    fullData?.target_delivery_time
+                                }
+                                name='target_delivery_time'
+                                type="text"
+                                id='quotationtarget_delivery_time'
+                                className='form-control text-center'
+                                // min={0}
+                                // maxLength={4}
+                                disabled
+                            // onChange={handleChangeInput}
+                            />
+                        </h5>
+                    </div>
+                    {
+                        newData?.company_status === 'Pending' ?
+                            <div className="actions w-100 position-relative d-flex gap-5">
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_target_delivery_time_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_target_delivery_time"
+                                        id="can_achieve_target_delivery_time_true"
+                                        value="yes"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                    />
+                                </div>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_target_delivery_time_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_target_delivery_time"
+                                        id="can_achieve_target_delivery_time_false"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                        value="no"
+                                    />
+                                </div>
+                            </div>
+                            :
+                            <div className='actions w-100 position-relative d-flex gap-5'>
+                                {
+                                    newData?.can_achieve_target_delivery_time === 'Yes' ?
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_target_delivery_time_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_target_delivery_time_true"
+                                                name="can_achieve_target_delivery_time"
+                                                value="Yes"
+                                                checked={newData?.can_achieve_target_delivery_time === 'Yes'}
+                                                disabled
+                                            />
+                                        </div>
+                                        :
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_target_delivery_time_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_target_delivery_time_false"
+                                                name="can_achieve_target_delivery_time"
+                                                value="No"
+                                                checked={newData?.can_achieve_target_delivery_time === 'No'}
+                                                disabled
+                                            />
+                                        </div>
+                                }
+                            </div>
+                    }
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="row align-items-center">
-                                                    <div className="col-lg-12">
-                                                        <div className="totals__full__info">
-                                                            <div className="totals__text">
-                                                                <h5 className=''>
-                                                                    Preferred delivery terms
-                                                                </h5>
-                                                            </div>
-                                                            <div className="totals__prices">
-                                                                <h5 className=''>
-                                                                    <textarea
-                                                                        Value={
-                                                                            fullData?.preferred_delivery_terms
-                                                                        }
-                                                                        defaultValue={fullData?.preferred_delivery_terms}
-                                                                        name='preferred_delivery_terms'
-                                                                        id='quotationpreferred_delivery_terms'
-                                                                        className='form-control text-center'
-                                                                        // min={0}
-                                                                        // maxLength={4}
-                                                                        disabled
-                                                                    // onChange={handleChangeInput}
-                                                                    />
-                                                                </h5>
-                                                            </div>
-                                                            {
-                                                                newData?.company_status === 'Pending' ?
-                                                                    <div className="actions w-100 position-relative d-flex gap-5">
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_preferred_delivery_terms_true">Yes</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_preferred_delivery_terms"
-                                                                                id="can_achieve_preferred_delivery_terms_true"
-                                                                                value="yes"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="d-flex gap-2 align-items-center">
-                                                                            <label htmlFor="can_achieve_preferred_delivery_terms_false">No</label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="can_achieve_preferred_delivery_terms"
-                                                                                id="can_achieve_preferred_delivery_terms_false"
-                                                                                onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
-                                                                                value="no"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    :
-                                                                    <div className='actions w-100 position-relative d-flex gap-5'>
-                                                                        {
-                                                                            newData?.can_achieve_preferred_delivery_terms === 'Yes' ?
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_preferred_delivery_terms_true">Yes</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_preferred_delivery_terms_true"
-                                                                                        name="can_achieve_preferred_delivery_terms"
-                                                                                        value="Yes"
-                                                                                        checked={newData?.can_achieve_preferred_delivery_terms === 'Yes'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                                :
-                                                                                <div className="d-flex gap-2 align-items-center">
-                                                                                    <label htmlFor="can_achieve_preferred_delivery_terms_false">No</label>
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id="can_achieve_preferred_delivery_terms_false"
-                                                                                        name="can_achieve_preferred_delivery_terms"
-                                                                                        value="No"
-                                                                                        checked={newData?.can_achieve_preferred_delivery_terms === 'No'}
-                                                                                        disabled
-                                                                                    />
-                                                                                </div>
-                                                                        }
-                                                                    </div>
-                                                            }
+                </div>
+            </div>
+        </div>
+        <div className="row align-items-center">
+            <div className="col-lg-12">
+                <div className="totals__full__info">
+                    <div className="totals__text">
+                        <h5 className=''>
+                            {t('DashboardSingleQuotationPage.preferredDeliveryTermsText')}
+                        </h5>
+                    </div>
+                    <div className="totals__prices">
+                        <h5 className=''>
+                            <textarea
+                                Value={
+                                    fullData?.preferred_delivery_terms
+                                }
+                                defaultValue={fullData?.preferred_delivery_terms}
+                                name='preferred_delivery_terms'
+                                id='quotationpreferred_delivery_terms'
+                                className='form-control text-center'
+                                // min={0}
+                                // maxLength={4}
+                                disabled
+                            // onChange={handleChangeInput}
+                            />
+                        </h5>
+                    </div>
+                    {
+                        newData?.company_status === 'Pending' ?
+                            <div className="actions w-100 position-relative d-flex gap-5">
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_preferred_delivery_terms_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_preferred_delivery_terms"
+                                        id="can_achieve_preferred_delivery_terms_true"
+                                        value="yes"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                    />
+                                </div>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <label htmlFor="can_achieve_preferred_delivery_terms_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                    <input
+                                        type="radio"
+                                        name="can_achieve_preferred_delivery_terms"
+                                        id="can_achieve_preferred_delivery_terms_false"
+                                        onChange={(e) => setExtraOptions({ ...extraOptions, [e?.target?.name]: e?.target?.value })}
+                                        value="no"
+                                    />
+                                </div>
+                            </div>
+                            :
+                            <div className='actions w-100 position-relative d-flex gap-5'>
+                                {
+                                    newData?.can_achieve_preferred_delivery_terms === 'Yes' ?
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_preferred_delivery_terms_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_preferred_delivery_terms_true"
+                                                name="can_achieve_preferred_delivery_terms"
+                                                value="Yes"
+                                                checked={newData?.can_achieve_preferred_delivery_terms === 'Yes'}
+                                                disabled
+                                            />
+                                        </div>
+                                        :
+                                        <div className="d-flex gap-2 align-items-center">
+                                            <label htmlFor="can_achieve_preferred_delivery_terms_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
+                                            <input
+                                                type="radio"
+                                                id="can_achieve_preferred_delivery_terms_false"
+                                                name="can_achieve_preferred_delivery_terms"
+                                                value="No"
+                                                checked={newData?.can_achieve_preferred_delivery_terms === 'No'}
+                                                disabled
+                                            />
+                                        </div>
+                                }
+                            </div>
+                    }
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
 
                                         <div className="quoteTotals__handler mt-5">
                                             <h3>
-                                                Notes on Quote
+                                                {t('DashboardSingleQuotationPage.notesOnQuoteText')}
                                             </h3>
                                             <div className="row align-items-center">
                                                 <div className="col-lg-12 allQuote__notes__handler">
                                                     <div className="allQuote__notes">
                                                         <i className="bi bi-envelope-exclamation"></i>
                                                         <p className='text-capitalize'>
-                                                            requester Notes :
+                                                           {t('DashboardSingleQuotationPage.requesterNotesText')} :
                                                         </p>
                                                         <p className='user_note'>
                                                             {!isOneClickQuotation ?
@@ -1261,7 +1266,7 @@ console.log(acceptedSingleQuotations);
                                                     <div className="replayBackForNote" >
                                                         <i className="bi bi-envelope-paper"></i>
                                                         <p>
-                                                            note from seller :
+                                                            {t('DashboardSingleQuotationPage.noteFromSellerText')} :
                                                         </p>
                                                         <div className="replayDynamicly_handler">
                                                             <div className="replyTextarea">
@@ -1291,7 +1296,7 @@ console.log(acceptedSingleQuotations);
                                             {
                                                 (loginType === 'employee' && newData?.quotation_type === 'sell') &&
                                                 <h3>
-                                                    Requester Details
+                                                    {t('DashboardSingleQuotationPage.requesterDetailsText')}
                                                 </h3>
                                             }
                                             <div className="row">
@@ -1301,17 +1306,17 @@ console.log(acceptedSingleQuotations);
                                                         <div className="requesterDetails__mainInfo">
                                                             <div className="mainInfo__title">
                                                                 <h5 className='mb-4'>
-                                                                    Full Name:
+                                                                    {t('DashboardSingleQuotationPage.fullNameFormInput')}:
                                                                 </h5>
                                                                 <h5>
-                                                                    Email:
+                                                                    {t('DashboardSingleQuotationPage.emailFormInput')}:
                                                                 </h5>
                                                                 <h5 className='mb-4'>
-                                                                    Valid To:
+                                                                    {t('DashboardSingleQuotationPage.validToFormInput')}:
                                                                 </h5>
                                                                 {!isOneClickQuotation &&
                                                                     <h5 className='mb-4'>
-                                                                        Prefered Currency:
+                                                                        {t('DashboardSingleQuotationPage.preferedCurrencyFormInput')}:
                                                                     </h5>
                                                                 }
                                                             </div>
@@ -1334,19 +1339,19 @@ console.log(acceptedSingleQuotations);
                                                         <div className="requesterDetails__subInfo">
                                                             <div className="mainInfo__title">
                                                                 <h5 className='mb-4'>
-                                                                    City:
+                                                                    {t('DashboardSingleQuotationPage.cityFormInput')}:
                                                                 </h5>
                                                                 <h5 className='mb-4'>
-                                                                    Area:
+                                                                    {t('DashboardSingleQuotationPage.areaFormInput')}:
                                                                 </h5>
                                                                 <h5 className='mb-4'>
-                                                                    Postal Code:
+                                                                    {t('DashboardSingleQuotationPage.postalCodeFormInput')}:
                                                                 </h5>
                                                                 <h5>
-                                                                    Country:
+                                                                    {t('DashboardSingleQuotationPage.countryFormInput')}:
                                                                 </h5>
                                                                 <h5>
-                                                                    Location:
+                                                                    {t('DashboardSingleQuotationPage.locationFormInput')}:
                                                                 </h5>
                                                             </div>
                                                             <div className="mainInfo__texts">
@@ -1369,54 +1374,54 @@ console.log(acceptedSingleQuotations);
                                                         </div>
                                                     </div>
                                                 }
-                                                <div className="col-lg-12 d-flex justify-content-around">
-                                                    {
-                                                        !isOneClickQuotation ?
-                                                            loginType === 'employee' ?
-                                                                (newData?.company_status === 'Pending') ?
-                                                                    newData?.quotation_type === 'sell' ?
-                                                                        <>
-                                                                            <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                                        </>
-                                                                        :
-                                                                        ''
-                                                                    :
-                                                                    (newData?.quotation_type === 'buy' && newData?.user_status === 'Pending') &&
-                                                                    <>
-                                                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('accepted')} className='updateBtn' >Accept Quotation</button>
-                                                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('rejected')} className='updateBtn reject' >Reject Quotation</button>
-                                                                    </>
-                                                                :
-                                                                (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
-                                                                <>
-                                                                    <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                    <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                                </>
-                                                            :
-                                                            loginType === 'employee' ?
-                                                                (newData?.company_status === 'Pending') ?
-                                                                    fullData?.quotation_type === 'sell' ?
-                                                                        <>
-                                                                            <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                                        </>
-                                                                        :
-                                                                        ''
-                                                                    :
-                                                                    (fullData?.quotation_type === 'buy' && fullData?.user_status === 'Pending') &&
-                                                                    <>
-                                                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('accepted')} className='updateBtn' >Accept Quotation</button>
-                                                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('rejected')} className='updateBtn reject' >Reject Quotation</button>
-                                                                    </>
-                                                                :
-                                                                (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
-                                                                <>
-                                                                    <button onClick={handleAcceptQuotation} className='updateBtn' >Accept Quotation</button>
-                                                                    <button onClick={handleRejectAllQuotation} className='updateBtn reject' >Reject Quotation</button>
-                                                                </>
-                                                    }
-                                                </div>
+                <div className="col-lg-12 d-flex justify-content-around">
+                    {
+                        !isOneClickQuotation ?
+                            loginType === 'employee' ?
+                                (newData?.company_status === 'Pending') ?
+                                    newData?.quotation_type === 'sell' ?
+                                        <>
+                                            <button onClick={handleAcceptQuotation} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                        </>
+                                        :
+                                        ''
+                                    :
+                                    (newData?.quotation_type === 'buy' && newData?.user_status === 'Pending') &&
+                                    <>
+                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('accepted')} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('rejected')} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                    </>
+                                :
+                                (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
+                                <>
+                                    <button onClick={handleAcceptQuotation} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                    <button onClick={handleRejectAllQuotation} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                </>
+                            :
+                            loginType === 'employee' ?
+                                (newData?.company_status === 'Pending') ?
+                                    fullData?.quotation_type === 'sell' ?
+                                        <>
+                                            <button onClick={handleAcceptQuotation} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                            <button onClick={handleRejectAllQuotation} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                        </>
+                                        :
+                                        ''
+                                    :
+                                    (fullData?.quotation_type === 'buy' && fullData?.user_status === 'Pending') &&
+                                    <>
+                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('accepted')} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                        <button onClick={() => handleUpdateBuyQuotationCompanyStatus('rejected')} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                    </>
+                                :
+                                (newData?.company_status === 'Accepted' && newData?.user_status !== 'Accepted') &&
+                                <>
+                                    <button onClick={handleAcceptQuotation} className='updateBtn' >{t('DashboardSingleQuotationPage.acceptQuotationBtn')}</button>
+                                    <button onClick={handleRejectAllQuotation} className='updateBtn reject' >{t('DashboardSingleQuotationPage.rejectQuotationBtn')}</button>
+                                </>
+                    }
+                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -9,8 +9,11 @@ import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useDashBoardServiceStore } from '../../store/DashBoardServices';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyService({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const cookiesData = Cookies.get("currentLoginedData");
@@ -57,12 +60,12 @@ export default function MyService({ token }) {
                 <div className="dashboard__handler d-flex">
                     <MyNewSidebarDash />
                     <div className="main__content container">
-                        <MainContentHeader currentUserLogin={currentUserLogin} search={true} filteration={filterService} setFilteration={setFilterService} name="title" placeholder="search service" />
+                        <MainContentHeader currentUserLogin={currentUserLogin} search={true} filteration={filterService} setFilteration={setFilterService} name="title" placeholder={t('DashboardAllServicePage.headerInputPlaceholder')} />
                         {unAuth ? (
                             <UnAuthSec />
                         ) : (
                             <div className="content__view__handler">
-                                <ContentViewHeader title="Services" />
+                                <ContentViewHeader title={t('DashboardAllServicePage.headerPageText')} />
                                 <AddNewItem link="/profile/service/addNewItem" />
                                 <div className="content__card__list">
                                     {services.length !== 0 ? (
@@ -83,11 +86,11 @@ export default function MyService({ token }) {
                                                             </div>
                                                         </NavLink>
                                                         <div className="card__btns d-flex">
-                                                            <button onClick={() => handleDeleteThisService(el?.id)} className="btn__D">
-                                                                Delete
+                                                            <button onClick={() => handleDeleteThisService(el?.id)} className={`${Lang === 'ar' ? 'btn__D_RTL': 'btn__D'}`}>
+                                                                {t('DashboardAllServicePage.catalogDeleteBtn')}
                                                             </button>
-                                                            <button className="btn__E" onClick={() => navigate(`/profile/service/edit-item/${el?.slug}`)}>
-                                                                Edit
+                                                            <button className={`${Lang === 'ar' ? 'btn__E_RTL': 'btn__E'}`} onClick={() => navigate(`/profile/service/edit-item/${el?.slug}`)}>
+                                                                {t('DashboardAllServicePage.catalogEditBtn')}
                                                             </button>
                                                         </div>
                                                     </div>
@@ -117,7 +120,7 @@ export default function MyService({ token }) {
                                         </div>
                                     ) : (
                                         <div className="row">
-                                            <div className="col-12 text-danger fs-5">No Service Items Yet</div>
+                                            <div className="col-12 text-danger fs-5">{t('DashboardAllServicePage.noCatalogItemsText')}</div>
                                         </div>
                                     )}
                                 </div>

@@ -10,7 +10,7 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 21px;
-    text-align: left;
+    text-align: start;
     color: rgba(181, 183, 192, 1);
 
 }
@@ -19,7 +19,7 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 21px;
-    text-align: left;
+    text-align: start;
     color: rgba(41, 45, 50, 1);
     padding: 20px 15px;
 }

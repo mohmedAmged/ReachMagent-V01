@@ -12,8 +12,11 @@ import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec'
 import { GetAllMainCategoriesStore } from '../../store/AllMainCategories'
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader'
+import { Lang } from '../../functions/Token'
+import { useTranslation } from 'react-i18next'
 
 export default function NewServiceForm({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -74,7 +77,8 @@ export default function NewServiceForm({ token }) {
             (async () => {
                 await axios.get(`${baseURL}/${loginType}/show-service/${id}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -100,7 +104,11 @@ export default function NewServiceForm({ token }) {
                     const slug = selectedCategory.mainCategorySlug;
                     try {
                         const timestamp = new Date().getTime(); // Cache-busting
-                        const response = await axios.get(`${baseURL}/main-categories/${slug}?t=${timestamp}`);
+                        const response = await axios.get(`${baseURL}/main-categories/${slug}?t=${timestamp}`, {
+                            headers: {
+                                "Locale": Lang
+                            }
+                        });
                         if (response.status === 200) {
                             setCurrentSubCategoriesInsideMainCategory(response.data.data.subCategories);
                         } else {
@@ -233,19 +241,19 @@ export default function NewServiceForm({ token }) {
                                     <UnAuthSec />
                                     :
 <div className='newCatalogItem__form__handler'>
-    <ContentViewHeader title={id ? 'Update Service Item' : 'Add Item to Service'} />
+    <ContentViewHeader title={id ? `${t('DashboardNewServiceItemPage.headerPageTextUpdate')}` : `${t('DashboardNewServiceItemPage.headerPageTextAdd')}`} />
     <form className="catalog__form__items" onSubmit={handleFormSubmit}>
         <div className="row">
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="title_en">Product Name in English <span className="requiredStar"> *</span>
+                    <label htmlFor="title_en">{t('DashboardNewServiceItemPage.titleENFormInput')}<span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="title_en"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewServiceItemPage.titleENFormInputPlaceholder')}
                         value={formData?.title_en}
                         onChange={handleInputChange}
                     />
@@ -253,14 +261,14 @@ export default function NewServiceForm({ token }) {
             </div>
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="title_ar">Product Name in Arabic <span className='optional'>(optional)</span>
+                    <label htmlFor="title_ar">{t('DashboardNewServiceItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewServiceItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="title_ar"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewServiceItemPage.titleENFormInputPlaceholder')}
                         value={formData?.title_ar}
                         onChange={handleInputChange}
                     />
@@ -270,16 +278,16 @@ export default function NewServiceForm({ token }) {
         <div className="row">
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="category_id">Category <span className="requiredStar"> *</span>
+                    <label htmlFor="category_id">{t('DashboardNewServiceItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="category_id"
-                        className="form-control custom-select"
+                        className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                         value={formData?.category_id}
                         onChange={handleInputChange}
                     >
-                        <option value="" disabled>Select Category</option>
+                        <option value="" disabled>{t('DashboardNewServiceItemPage.categoryFormInputPlaceholder')}</option>
                         {mainCategories?.map((cat) => (
                             <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
                                 {cat?.mainCategoryName}
@@ -290,16 +298,16 @@ export default function NewServiceForm({ token }) {
             </div>
             <div className="col-lg-6">
                 <div className="catalog__new__input">
-                    <label htmlFor="sub_category_id">Sub Category <span className="requiredStar"> *</span>
+                    <label htmlFor="sub_category_id">{t('DashboardNewServiceItemPage.subCategoryFormInput')}<span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="sub_category_id"
-                        className="form-control custom-select"
+                        className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                         value={formData?.sub_category_id}
                         onChange={handleInputChange}
                     >
-                        <option value="" disabled>Select Sub Category</option>
+                        <option value="" disabled>{t('DashboardNewServiceItemPage.subCategoryFormInput')}</option>
                         {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                             <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
                                 {subCat?.subCategoryName}
@@ -312,14 +320,14 @@ export default function NewServiceForm({ token }) {
         <div className="row">
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="code">service code <span className="requiredStar"> *</span>
+                    <label htmlFor="code"> {t('DashboardNewServiceItemPage.productCodeFormInput')} <span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
                         name="code"
                         className="form-control"
-                        placeholder="Enter your text"
+                        placeholder={t('DashboardNewServiceItemPage.titleENFormInputPlaceholder')}
                         value={formData?.code}
                         onChange={handleInputChange}
                     />
@@ -327,7 +335,7 @@ export default function NewServiceForm({ token }) {
             </div>
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span>
+                    <label htmlFor="description_en">{t('DashboardNewServiceItemPage.descriptionInEnglishFormInput')}<span className="requiredStar"> *</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
@@ -341,7 +349,7 @@ export default function NewServiceForm({ token }) {
             </div>
             <div className="col-lg-8">
                 <div className="catalog__new__input">
-                    <label htmlFor="description_ar">Description in Arabic <span className='optional'>(optional)</span>
+                    <label htmlFor="description_ar">{t('DashboardNewServiceItemPage.descriptionInArabicFormInput')}<span className='optional'>({t('DashboardNewServiceItemPage.optionalText')})</span>
                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
@@ -356,10 +364,10 @@ export default function NewServiceForm({ token }) {
         </div>
         <div className="upload__image__btn">
         <label htmlFor="tax">
-                Add Image
+                {t('DashboardNewServiceItemPage.AddImagesFormInput')}
                 <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                 <br />
-                <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+                <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewServiceItemPage.AddImagesFormInputPlaceholder')})</span>
             </label>
             <input
                 type="file"
@@ -375,8 +383,8 @@ export default function NewServiceForm({ token }) {
                         marginTop: '30px',
                         borderTop: "1px solid #aaa"
                     }} className="catalog__new__input">
-                        <label className="fw-bold my-3">Options and variations</label>
-                        <button type="button" className="btn btn-link" onClick={handleAddOption}>Add Option</button>
+                        <label className="fw-bold my-3">{t('DashboardNewServiceItemPage.optionsAndVariationFormInput')}</label>
+                        <button type="button" className="btn btn-link" onClick={handleAddOption}>{t('DashboardNewServiceItemPage.addOptionBtn')}</button>
                         {formData?.options?.map((option, index) => (
                             <div key={index} className="option-group my-3">
                                 <div className="row">
@@ -386,7 +394,7 @@ export default function NewServiceForm({ token }) {
                                                 background: 'rgb(142 149 235 / 30%)'
                                             }}
                                             type="text"
-                                            placeholder="Attribute (e.g., Storage)"
+                                            placeholder={t('DashboardNewServiceItemPage.optionsAndVariationFormInputPlaceholder')}
                                             value={option?.attribute}
                                             onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
                                             className="form-control"
@@ -398,7 +406,7 @@ export default function NewServiceForm({ token }) {
                                         <div className="col-lg-6">
                                             <input
                                                 type="text"
-                                                placeholder="Option Name (e.g., 128 GB)"
+                                                placeholder={t('DashboardNewServiceItemPage.optionsFormInputPlaceholder')}
                                                 value={value?.name}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -414,7 +422,7 @@ export default function NewServiceForm({ token }) {
                                         <div className="col-lg-6">
                                             <input
                                                 type="text"
-                                                placeholder="Additional Price"
+                                                placeholder={t('DashboardNewServiceItemPage.optPriceFormInputPlaceholder')}
                                                 value={value?.price}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -429,7 +437,7 @@ export default function NewServiceForm({ token }) {
                                         </div>
                                     </div>
                                 ))}
-                                <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">Add Value</button>
+                                <button type="button" onClick={() => handleAddValue(index)} className="btn btn-link">{t('DashboardNewServiceItemPage.addValueBtn')}</button>
                             </div>
                         ))}
                     </div>
@@ -444,11 +452,11 @@ export default function NewServiceForm({ token }) {
                         marginTop: '30px',
                         borderTop: "1px solid #aaa"
                     }} className="catalog__new__input">
-                        <label className="fw-bold my-3">Options and variations</label>
+                        <label className="fw-bold my-3">{t('DashboardNewServiceItemPage.optionsAndVariationFormInput')}</label>
                         <div className='text-end'>
                             <NavLink to={`/profile/service/edit-item/${id}/edit-option`}>
                                 <button className='btn btn-outline-primary text-capitalize'>
-                                    edit options <i className="bi bi-pencil-square"></i>
+                                    {t('DashboardNewServiceItemPage.editOptionBtn')} <i className="bi bi-pencil-square"></i>
                                 </button>
                             </NavLink>
                         </div>
@@ -462,7 +470,7 @@ export default function NewServiceForm({ token }) {
                                             }}
                                             disabled
                                             type="text"
-                                            placeholder="Attribute (e.g., Storage)"
+                                            placeholder={t('DashboardNewServiceItemPage.optionsAndVariationFormInputPlaceholder')}
                                             value={option?.attribute}
                                             onChange={(e) => handleOptionChange(index, 'attribute', e.target.value)}
                                             className="form-control"
@@ -476,7 +484,7 @@ export default function NewServiceForm({ token }) {
                                             <input
                                                 disabled
                                                 type="text"
-                                                placeholder="Option Name (e.g., 128 GB)"
+                                                placeholder={t('DashboardNewServiceItemPage.optionsFormInputPlaceholder')}
                                                 value={value?.name}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -493,7 +501,7 @@ export default function NewServiceForm({ token }) {
                                             <input
                                                 disabled
                                                 type="text"
-                                                placeholder="Price Impact"
+                                                placeholder={t('DashboardNewServiceItemPage.optPriceFormInputPlaceholder')}
                                                 value={value?.price}
                                                 onChange={(e) =>
                                                     handleValueChange(
@@ -579,7 +587,7 @@ export default function NewServiceForm({ token }) {
         </div> */}
         <div className="form__submit__button">
             <button type="submit" className="btn btn-primary">
-                {id ? 'Update Service' : 'Add Service'}
+                {id ? `${t('DashboardNewServiceItemPage.updateCatalogBtn')}` : `${t('DashboardNewServiceItemPage.addCatalogBtn')}`}
             </button>
         </div>
     </form>

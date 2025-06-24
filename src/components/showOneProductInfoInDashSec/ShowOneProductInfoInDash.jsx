@@ -11,9 +11,12 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function ShowOneProductInfoInDash(
     { token, show_slug }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { itemId } = useParams();
     const loginType = localStorage.getItem('loginType');
@@ -33,7 +36,8 @@ export default function ShowOneProductInfoInDash(
         try {
             const response = await axios.get(`${baseURL}/${loginType}/${show_slug}/${itemId}?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             setNewdata(response?.data?.data);
@@ -71,12 +75,12 @@ console.log(newData);
                                     <UnAuthSec />
                                     :
             <div className='content__view__handler'>
-                <ContentViewHeader title={`${newData?.title_en} main Details`} />
+                <ContentViewHeader title={`${Lang === 'ar' ? newData?.title_ar : newData?.title_en} ${t('DashboardShowSingleProdPage.mainHeaderText')}`} />
                 <div className="content__card__list">
                     <div className="row">
                         <div className="col-12 showOneProductDash__item mb-5">
                             <h5>
-                                {newData?.title_en} media
+                                {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.mediaHeaderText')}
                             </h5>
                             <div className="showProdImagesInDash__handler">
                                 {newData?.media ?
@@ -100,15 +104,16 @@ console.log(newData);
                         </div>
                         <div className="col-12 showOneProductDash__item mb-5">
                             <h5>
-                                {newData?.title_en} Description
+                                {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.descriptionHeaderText')}
                             </h5>
                             <p>
-                                {newData?.description_en}
+                                {Lang === 'ar' ? newData?.description_ar : newData?.description_en}
+                                
                             </p>
                         </div>
                         <div className="col-12 showOneProductDash__item mb-5">
                             <h5>
-                                {newData?.title_en} Code
+                                 {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.codeHeaderText')}
                             </h5>
                             <p>
                                 {newData?.code}
@@ -118,7 +123,7 @@ console.log(newData);
                             newData?.unit_of_measure &&
                             <div className="col-12 showOneProductDash__item mb-5">
                                 <h5>
-                                    {newData?.title_en} unit of measure
+                                    {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.unitOfMeasureHeaderText')}
                                 </h5>
                                 <p>
                                     {newData?.unit_of_measure}
@@ -129,7 +134,7 @@ console.log(newData);
                             newData?.catalogTypes &&
                             <div className="col-12 showOneProductDash__item mb-5">
                                 <h5>
-                                    {newData?.title_en} types
+                                    {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.typesHeaderText')}
                                 </h5>
                                 {
                                     newData?.catalogTypes?.map((type) => (
@@ -145,12 +150,12 @@ console.log(newData);
                             newData?.price &&
                             <div className="col-12 showOneProductDash__item mb-5">
                                 <h5 >
-                                    {newData?.title_en} Price Information
+                                    {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.priceInformationHeaderText')}
                                 </h5>
                                 <div className="row">
                                     <div className="col-6">
                                         <h6>
-                                            price
+                                            {t('DashboardShowSingleProdPage.priceHeaderText')}
                                         </h6>
                                         <p>
                                             {newData?.price} {newData?.currency}
@@ -160,7 +165,7 @@ console.log(newData);
                                         newData?.tax &&
                                         <div className="col-6">
                                             <h6>
-                                                tax (x%)
+                                                {t('DashboardShowSingleProdPage.taxHeaderText')} (x%)
                                             </h6>
                                             <p>
                                                 {newData?.tax}%
@@ -171,7 +176,7 @@ console.log(newData);
                                         newData?.price_after_tax &&
                                         <div className="col-6 mt-4">
                                             <h6>
-                                                price after tax
+                                                {t('DashboardShowSingleProdPage.priceAfterTaxHeaderText')}
                                             </h6>
                                             <p>
                                                 {newData?.price_after_tax} {newData?.currency}
@@ -184,12 +189,12 @@ console.log(newData);
 
                         <div className="col-12 showOneProductDash__item mb-5">
                             <h5>
-                                {newData?.title_en} Category
+                                {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.categoryHeaderText')}
                             </h5>
                             <div className="row">
                                 <div className="col-6">
                                     <h6>
-                                        Category
+                                        {t('DashboardShowSingleProdPage.categoryHeaderText')}
                                     </h6>
                                     <p>
                                         {newData?.category}
@@ -197,7 +202,7 @@ console.log(newData);
                                 </div>
                                 <div className="col-6">
                                     <h6>
-                                        Sub-Category
+                                        {t('DashboardShowSingleProdPage.subCategoryHeaderText')}
                                     </h6>
                                     <p>
                                         {newData?.subCategory}
@@ -209,7 +214,7 @@ console.log(newData);
                             newData?.details?.length !== 0 &&
                             <div className="col-12 showOneProductDash__item mb-5">
                                 <h5>
-                                    {newData?.title} Details
+                                    {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.detailsHeaderText')}
                                 </h5>
                                 <div className="row">
                                     {
@@ -217,11 +222,11 @@ console.log(newData);
                                             return (
                                                 <div key={idx} className="col-lg-6">
                                                     <p>
-                                                    Label: <span>{det?.label}</span>
+                                                    {t('DashboardShowSingleProdPage.labelHeaderText')}: <span>{det?.label}</span>
                                                     </p>
                                                     
                                                     <p>
-                                                    Value: <span>{det?.value}</span>
+                                                    {t('DashboardShowSingleProdPage.valueHeaderText')}: <span>{det?.value}</span>
                                                     </p>
                                                     
                                                 </div>
@@ -235,7 +240,7 @@ console.log(newData);
                             newData?.options?.length !== 0 &&
                             <div className="col-12 showOneProductDash__item mb-5">
                                 <h5>
-                                    {newData?.title} Options
+                                    {Lang === 'ar' ? newData?.title_ar : newData?.title_en} {t('DashboardShowSingleProdPage.optionsHeaderText')}
                                 </h5>
                                 <div className="row">
                                     {
@@ -243,18 +248,18 @@ console.log(newData);
                                             return (
                                                 <div key={att?.attribute_id} className="col-lg-6">
                                                     <p>
-                                                    Attribute: <span>{att?.attribute}</span>
+                                                    {t('DashboardShowSingleProdPage.attributeHeaderText')}: <span>{att?.attribute}</span>
                                                     </p>
                                                     {
                                                         att?.values?.map((val)=>(
                                                     <div style={{border: '1px solid #000' , padding:'3px', margin:'4px 0'}}>
                                                     <p>
-                                                        value: <span>{val?.name}</span>
+                                                        {t('DashboardShowSingleProdPage.valueHeaderText')}: <span>{val?.name}</span>
                                                     </p>
                                                     {
                                                         val?.price !== 'N/A'&&
                                                         <p>
-                                                        price: <span>{val?.price}</span>
+                                                        {t('DashboardShowSingleProdPage.priceHeaderText')}: <span>{val?.price}</span>
                                                     </p>
                                                     }
                                                     </div>

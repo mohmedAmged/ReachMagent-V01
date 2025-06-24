@@ -9,8 +9,11 @@ import MainContentHeader from '../mainContentHeaderSec/MainContentHeader'
 import MyLoader from '../myLoaderSec/MyLoader'
 import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash'
 import UnAuthSec from '../unAuthSection/UnAuthSec'
+import { Lang } from '../../functions/Token'
+import { useTranslation } from 'react-i18next'
 
 export default function CatalogOptionForm({ token, currPage }) {
+    const { t } = useTranslation();
     const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
@@ -35,7 +38,8 @@ export default function CatalogOptionForm({ token, currPage }) {
                 (async () => {
                     await axios.get(`${baseURL}/${loginType}/show-catalog/${id}?t=${new Date().getTime()}`, {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token}`,
+                            "Locale": Lang
                         }
                     })
                         .then(response => {
@@ -49,7 +53,8 @@ export default function CatalogOptionForm({ token, currPage }) {
                 (async () => {
                     await axios.get(`${baseURL}/${loginType}/show-service/${id}?t=${new Date().getTime()}`, {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token}`,
+                            "Locale": Lang
                         }
                     })
                         .then(response => {
@@ -343,147 +348,147 @@ export default function CatalogOptionForm({ token, currPage }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={`update option for ${currCatalog?.title_en || currService?.title_en}`} />
+                                <ContentViewHeader title={`${t('DashboardEditOptionsForm.headerPageText')} ${Lang === 'ar' ? currCatalog?.title_ar : currCatalog?.title_en || Lang === 'ar' ? currService?.title_ar : currService?.title_en}`} />
                                 {
                                     unAuth ?
                                         <UnAuthSec />
                                         :
-                                        <div className="catalog__form__items">
-                                            {newOptions?.map((option, index) => (
-                                                <>
-                                                    <div key={index} className="option-group my-3">
-                                                        <h5 className='fw-semibold mt-4'>
-                                                            Option #{index + 1}
-                                                        </h5>
-                                                        <div className="row my-3">
-                                                            <div className="col-lg-6">
-                                                                <input
-                                                                    style={{
-                                                                        background: 'rgb(142 149 235 / 40%)'
-                                                                    }}
-                                                                    disabled={option?.attribute_id}
-                                                                    type="text"
-                                                                    placeholder="Attribute (e.g., Storage)"
-                                                                    defaultValue={option?.attribute}
-                                                                    onChange={(e) => {
-                                                                        const value = e.target.value;
-                                                                        updateOptionAttribute(index, value)
-                                                                    }}
-                                                                    className="form-control"
-                                                                />
-                                                            </div>
-                                                            {
-                                                                option?.attribute_id &&
-                                                                <div
-                                                                    className="col-lg-6"
-                                                                    onClick={() => handleDeleteFullOption(index)}
-                                                                >
-                                                                    <button className='btn btn-outline-danger'>
-                                                                        delete full option
-                                                                    </button>
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                        {
-                                                            option?.values?.map((value, valueIndex) => (
-                                                                <div key={valueIndex} className="row mt-3">
-                                                                    <div className="col-lg-4">
-                                                                        <input
-                                                                            disabled={underUpdating === value?.id ? false : value?.id}
-                                                                            type="text"
-                                                                            placeholder="Option Name (e.g., 128 GB)"
-                                                                            defaultValue={value?.name}
-                                                                            onChange={(e) => {
-                                                                                const value = e.target.value;
-                                                                                updateOptionsValuesArray(index, valueIndex, 'name', value);
-                                                                            }}
-                                                                            className="form-control"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="col-lg-4">
-                                                                        <input
-                                                                            disabled={underUpdating === value?.id ? false : value?.id}
-                                                                            type="text"
-                                                                            placeholder="Price Impact"
-                                                                            defaultValue={value?.price}
-                                                                            onChange={(e) => {
-                                                                                const value = e.target.value;
-                                                                                updateOptionsValuesArray(index, valueIndex, 'price', value);
-                                                                            }}
-                                                                            className="form-control"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="col-3">
-                                                                        {
-                                                                            option?.attribute_id ?
-                                                                                value?.isAdded ?
-                                                                                    <button
-                                                                                        type='button' onClick={() => handleAddValueToExistedOption(index, valueIndex)}
-                                                                                        className='btn btn-outline-success'
-                                                                                    >
-                                                                                        <i className="bi bi-check-lg"></i>
-                                                                                    </button>
-                                                                                    :
-                                                                                    <>
-                                                                                        <button
-                                                                                            type='button'
-                                                                                            onClick={() => {
-                                                                                                if (underUpdating === value?.id) {
-                                                                                                    handleUpdateValueData(index, valueIndex);
-                                                                                                } else {
-                                                                                                    handleSetValueEnableToEdit(value?.id)
-                                                                                                }
-                                                                                            }}
-                                                                                            className='btn btn-outline-success'
-                                                                                        >
-                                                                                            {
-                                                                                                underUpdating === value?.id ?
-                                                                                                    <i className="bi bi-check-lg"></i>
-                                                                                                    :
-                                                                                                    <i className="bi bi-pencil-square"></i>
-                                                                                            }
-                                                                                        </button>
-                                                                                        <button
-                                                                                            type='button'
-                                                                                            onClick={() => handleDeleteOptionValueExisted(index, valueIndex)}
-                                                                                            className='btn btn-outline-danger ms-2'
-                                                                                        >
-                                                                                            <i className="bi bi-trash"></i>
-                                                                                        </button>
-                                                                                    </>
-                                                                                :
-                                                                                <>
-                                                                                </>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                        <button type='button' onClick={() => {
-                                                            handleAddValue(index)
-                                                        }} className='btn btn-outline-success mt-2'>
-                                                            add value
-                                                        </button>
-                                                    </div>
-                                                    {
-                                                        option?.newValue &&
-                                                        <button type='button' onClick={() => {
-                                                            handleAddNewOption(index);
-                                                        }} className='btn btn-secondary mt-3'>
-                                                            submit option
-                                                        </button>
-                                                    }
-                                                </>
-                                            ))}
+            <div className="catalog__form__items">
+                {newOptions?.map((option, index) => (
+                    <>
+                        <div key={index} className="option-group my-3">
+                            <h5 className='fw-semibold mt-4'>
+                                {t('DashboardEditOptionsForm.optionText')} #{index + 1}
+                            </h5>
+                            <div className="row my-3">
+                                <div className="col-lg-6">
+                                    <input
+                                        style={{
+                                            background: 'rgb(142 149 235 / 40%)'
+                                        }}
+                                        disabled={option?.attribute_id}
+                                        type="text"
+                                        placeholder={t('DashboardNewServiceItemPage.optionsAndVariationFormInputPlaceholder')}
+                                        defaultValue={option?.attribute}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            updateOptionAttribute(index, value)
+                                        }}
+                                        className="form-control"
+                                    />
+                                </div>
+                                {
+                                    option?.attribute_id &&
+                                    <div
+                                        className="col-lg-6"
+                                        onClick={() => handleDeleteFullOption(index)}
+                                    >
+                                        <button className='btn btn-outline-danger'>
+                                            {t('DashboardEditOptionsForm.deleteFullOppBtn')}
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                            {
+                                option?.values?.map((value, valueIndex) => (
+                                    <div key={valueIndex} className="row mt-3">
+                                        <div className="col-lg-4">
+                                            <input
+                                                disabled={underUpdating === value?.id ? false : value?.id}
+                                                type="text"
+                                                placeholder={t('DashboardNewServiceItemPage.optionsFormInputPlaceholder')}
+                                                defaultValue={value?.name}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    updateOptionsValuesArray(index, valueIndex, 'name', value);
+                                                }}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <input
+                                                disabled={underUpdating === value?.id ? false : value?.id}
+                                                type="text"
+                                                placeholder={t('DashboardNewServiceItemPage.optPriceFormInputPlaceholder')}
+                                                defaultValue={value?.price}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    updateOptionsValuesArray(index, valueIndex, 'price', value);
+                                                }}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="col-3">
                                             {
-                                                newOptions?.length <= (currCatalog?.options?.length > 0 ? currCatalog?.options?.length : currService?.options?.length) &&
-                                                (
-                                                    <button type="button" onClick={handleAddOptionField} className="btn btn-secondary mt-4">
-                                                        Add New Option Field
-                                                    </button>
-                                                )
+                                                option?.attribute_id ?
+                                                    value?.isAdded ?
+                                                        <button
+                                                            type='button' onClick={() => handleAddValueToExistedOption(index, valueIndex)}
+                                                            className='btn btn-outline-success'
+                                                        >
+                                                            <i className="bi bi-check-lg"></i>
+                                                        </button>
+                                                        :
+                                                        <>
+                                                            <button
+                                                                type='button'
+                                                                onClick={() => {
+                                                                    if (underUpdating === value?.id) {
+                                                                        handleUpdateValueData(index, valueIndex);
+                                                                    } else {
+                                                                        handleSetValueEnableToEdit(value?.id)
+                                                                    }
+                                                                }}
+                                                                className='btn btn-outline-success'
+                                                            >
+                                                                {
+                                                                    underUpdating === value?.id ?
+                                                                        <i className="bi bi-check-lg"></i>
+                                                                        :
+                                                                        <i className="bi bi-pencil-square"></i>
+                                                                }
+                                                            </button>
+                                                            <button
+                                                                type='button'
+                                                                onClick={() => handleDeleteOptionValueExisted(index, valueIndex)}
+                                                                className='btn btn-outline-danger ms-2'
+                                                            >
+                                                                <i className="bi bi-trash"></i>
+                                                            </button>
+                                                        </>
+                                                    :
+                                                    <>
+                                                    </>
                                             }
                                         </div>
+                                    </div>
+                                ))
+                            }
+                            <button type='button' onClick={() => {
+                                handleAddValue(index)
+                            }} className='btn btn-outline-success mt-2'>
+                                {t('DashboardNewServiceItemPage.addValueBtn')}
+                            </button>
+                        </div>
+                        {
+                            option?.newValue &&
+                            <button type='button' onClick={() => {
+                                handleAddNewOption(index);
+                            }} className='btn btn-secondary mt-3'>
+                                 {t('DashboardEditOptionsForm.submitOppBtn')}
+                            </button>
+                        }
+                    </>
+                ))}
+                {
+                    newOptions?.length <= (currCatalog?.options?.length > 0 ? currCatalog?.options?.length : currService?.options?.length) &&
+                    (
+                        <button type="button" onClick={handleAddOptionField} className="btn btn-secondary mt-4">
+                            {t('DashboardEditOptionsForm.addNewOppBtn')}
+                        </button>
+                    )
+                }
+            </div>
                                 }
                             </div>
                         </div>

@@ -8,8 +8,10 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import { useDashBoardOneClickQuotationStore } from '../../store/DashBoardOneClickQutations';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function OneClickQuotationsDashboard({ token }) {
+  const { t } = useTranslation();
   const {
     loading,
     quotations,
@@ -47,7 +49,7 @@ export default function OneClickQuotationsDashboard({ token }) {
               name='code'
               search={true}
               filteration={filteration}
-              placeholder='Quotation Code'
+              placeholder={t('DashboardOneClickQutationsTablePage.headerInputPlaceholder')}
               setFilteration={setFilteration}
             />
             <div className='myQuotations__handler '>

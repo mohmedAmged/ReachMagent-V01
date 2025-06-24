@@ -4,6 +4,7 @@ import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
 import { debounce } from 'lodash';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardOneClickQuotationStore = create((set, get) => ({
     loading: true,
@@ -20,7 +21,7 @@ export const useDashBoardOneClickQuotationStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${slug}?page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 quotations: response?.data?.data?.one_click_quotations,
@@ -41,7 +42,7 @@ export const useDashBoardOneClickQuotationStore = create((set, get) => ({
         set({ loading: true });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/filter-one-click-quotations?${params}&page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 quotations: response?.data?.data?.one_click_quotations,

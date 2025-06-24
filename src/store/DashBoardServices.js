@@ -3,6 +3,7 @@ import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
 import { debounce } from 'lodash';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardServiceStore = create((set, get) => ({
     loading: true,
@@ -23,7 +24,7 @@ export const useDashBoardServiceStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-services?page=${page}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang }
             });
             set({
                 services: response?.data?.data?.services,
@@ -49,7 +50,7 @@ export const useDashBoardServiceStore = create((set, get) => ({
         };
         try {
             const response = await axios.get(`${baseURL}/${loginType}/filter-services?${params.toString()}&page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang }
             });
             set({
                 services: response?.data?.data?.services,
