@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardMediaStore = create((set, get) => ({
     loading: true,
@@ -34,7 +35,7 @@ export const useDashBoardMediaStore = create((set, get) => ({
 
         try {
             const response = await axios.get(`${baseURL}/${loginType}/company-portfolios?page=${page}&${params.toString()}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 mediaItems: response?.data?.data?.portfolio,
@@ -61,7 +62,7 @@ export const useDashBoardMediaStore = create((set, get) => ({
         }
         try {
             const response = await axios.get(`${baseURL}/${loginType}/filter-company-portfolios?${params.toString()}&page=${page}&t=${new Date().getTime()}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 mediaItems: response?.data?.data?.portfolio,

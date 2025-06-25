@@ -10,8 +10,11 @@ import MyNewSidebarDash from "../../components/myNewSidebarDash/MyNewSidebarDash
 import MainContentHeader from "../../components/mainContentHeaderSec/MainContentHeader";
 import ContentViewHeader from "../../components/contentViewHeaderSec/ContentViewHeader";
 import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
+import { Lang } from "../../functions/Token";
+import { useTranslation } from "react-i18next";
 
 export default function AddNewPrevWork({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -29,8 +32,11 @@ export default function AddNewPrevWork({ token }) {
 
     const [formData, setFormData] = useState({
         title_en: '',
+        title_ar:'',
         description_en: '',
+        description_ar:'',
         type_en: '',
+        type_ar:'',
         image: '',
     });
 
@@ -39,7 +45,8 @@ export default function AddNewPrevWork({ token }) {
             (async () => {
                 await axios.get(`${baseURL}/${loginType}/show-pervious-work/${id}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -56,8 +63,11 @@ export default function AddNewPrevWork({ token }) {
         if (currPrevWork?.id && +currPrevWork?.id === +id) {
             setFormData({
                 title_en: currPrevWork?.title || '',
+                title_ar: currPrevWork?.title_ar || '',
                 description_en: currPrevWork?.description || '',
+                description_ar: currPrevWork?.description_ar || '',
                 type_en: currPrevWork?.type || '',
+                type_ar: currPrevWork?.type_ar || '',
                 image: currPrevWork?.image || '',
             });
 
@@ -144,21 +154,37 @@ export default function AddNewPrevWork({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={id ? 'Update Previous Work' : 'Add new Previous Work'} />
+                                <ContentViewHeader title={id ? `${t('DashboardNewPrevWorkItemPage.headerPageTextUpdate')}` : `${t('DashboardNewPrevWorkItemPage.headerPageTextAdd')}`} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="title_en">Work Title<span className="requiredStar"> *</span>
-                                                    <i title='Work Title' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="title_en">{t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="title_en"
                                                     id="title_en"
                                                     className="form-control"
-                                                    placeholder="Work Title"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')}
                                                     value={formData?.title_en}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <div className="catalog__new__input">
+                                                <label htmlFor="title_ar">{t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="title_ar"
+                                                    id="title_ar"
+                                                    className="form-control"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')}
+                                                    value={formData?.title_ar}
                                                     onChange={handleInputChange}
                                                 />
                                             </div>
@@ -167,8 +193,8 @@ export default function AddNewPrevWork({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="type_en">Type of Work<span className="requiredStar"> *</span>
-                                                    <i title='Type of Work' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="type_en">{t('DashboardNewPrevWorkItemPage.typeofWorkEnFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.typeofWorkEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 {/* <select
                                                     name="type_en"
@@ -186,8 +212,35 @@ export default function AddNewPrevWork({ token }) {
                                                     name="type_en"
                                                     id="type_en"
                                                     className="form-control"
-                                                    placeholder="Work Title"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.typeofWorkEnFormInput')}
                                                     value={formData?.type_en}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <div className="catalog__new__input">
+                                                <label htmlFor="type_ar">{t('DashboardNewPrevWorkItemPage.typeofWorkArFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.typeofWorkArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
+                                                {/* <select
+                                                    name="type_en"
+                                                    id="type_en"
+                                                    className="form-control custom-select"
+                                                    value={formData?.type_en}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="" disabled>Select Type of Work</option>
+                                                    <option value="service">Service</option>
+                                                    <option value="Catalog">Catalog</option>
+                                                </select> */}
+                                                <input
+                                                    type="text"
+                                                    name="type_ar"
+                                                    id="type_ar"
+                                                    className="form-control"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.typeofWorkArFormInput')}
+                                                    value={formData?.type_ar}
                                                     onChange={handleInputChange}
                                                 />
                                             </div>
@@ -196,16 +249,34 @@ export default function AddNewPrevWork({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="description_en">Work Description<span className="requiredStar"> *</span>
-                                                    <i title='Work Description' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="description_en">{t('DashboardNewPrevWorkItemPage.workDescriptionEnFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.workDescriptionEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <textarea
                                                     type="text"
                                                     name="description_en"
                                                     id="description_en"
                                                     className="form-control"
-                                                    placeholder="Work Description"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.workDescriptionEnFormInput')}
                                                     value={formData?.description_en}
+                                                    onChange={handleInputChange}
+                                                    cols={4}
+                                                    rows={4}
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <div className="catalog__new__input">
+                                                <label htmlFor="description_ar">{t('DashboardNewPrevWorkItemPage.workDescriptionArFormInput')}<span className="requiredStar"> *</span>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.workDescriptionArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                </label>
+                                                <textarea
+                                                    type="text"
+                                                    name="description_ar"
+                                                    id="description_ar"
+                                                    className="form-control"
+                                                    placeholder={t('DashboardNewPrevWorkItemPage.workDescriptionArFormInput')}
+                                                    value={formData?.description_ar}
                                                     onChange={handleInputChange}
                                                     cols={4}
                                                     rows={4}
@@ -214,9 +285,9 @@ export default function AddNewPrevWork({ token }) {
                                         </div>
                                     </div>
                                     <div className="upload__image__btn ">
-                                        <label htmlFor="image" className='mb-2'>Work Cover Image<span className="requiredStar"> *</span>
+                                        <label htmlFor="image" className='mb-2'>{t('DashboardNewPrevWorkItemPage.workCoverImageFormInput')}<span className="requiredStar"> *</span>
                                         <br />
-                                        <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+                                        <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewServiceItemPage.AddImagesFormInputPlaceholder')})</span>
                                         </label>
                                         <input
                                             type="file"
@@ -228,7 +299,7 @@ export default function AddNewPrevWork({ token }) {
                                     </div>
                                     <div className="form__submit__button">
                                         <button type="submit" className="btn btn-primary">
-                                            {id ? 'Update Previous Work' : 'Add Previous Work'}
+                                            {id ? `${t('DashboardNewPrevWorkItemPage.updatePrevWorkBtn')}` : `${t('DashboardNewPrevWorkItemPage.addPrevWorkBtn')}`}
                                         </button>
                                     </div>
                                 </form>

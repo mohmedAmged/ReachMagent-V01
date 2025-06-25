@@ -10,8 +10,11 @@ import MyNewSidebarDash from '../myNewSidebarDash/MyNewSidebarDash';
 import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function NewNetworkForm({token}) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -38,7 +41,8 @@ export default function NewNetworkForm({token}) {
             (async ()=> {
                 await axios.get(`${baseURL}/${loginType}/show-company-network/${id}?t=${new Date().getTime()}`,{
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                 .then(response => {
@@ -143,19 +147,19 @@ export default function NewNetworkForm({token}) {
                 <div className='main__content container'>
                     <MainContentHeader currentUserLogin={currentUserLogin} />
                     <div className='newCatalogItem__form__handler'>
-                        <ContentViewHeader title={id ? 'Update network' : 'Add new network'} />
+                        <ContentViewHeader title={id ? `${t('DashboardNewNetworkItemPage.headerPageTextUpdate')}` : `${t('DashboardNewNetworkItemPage.headerPageTextAdd')}`} />
                         <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
-                                        <label htmlFor="name">Add Company Name<span className="requiredStar"> *</span>
+                                        <label htmlFor="name">{t('DashboardNewNetworkItemPage.addCompanyNameFormInput')}<span className="requiredStar"> *</span>
                                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <input
                                             type="text"
                                             name="name"
                                             className="form-control"
-                                            placeholder="Enter your text"
+                                            placeholder={t('DashboardNewNetworkItemPage.addCompanyNameFormInputPlaceholder')}
                                             value={formData?.name}
                                             onChange={handleInputChange}
                                         />
@@ -166,27 +170,27 @@ export default function NewNetworkForm({token}) {
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
-                                        <label htmlFor="label">Type of Connection<span className="requiredStar"> *</span>
+                                        <label htmlFor="label">{t('DashboardNewNetworkItemPage.typeOfConnectionFormInput')}<span className="requiredStar"> *</span>
                                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <select
                                             name="label"
-                                            className="form-control custom-select"
+                                            className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                             value={formData?.label}
                                             onChange={handleInputChange}
                                         >
-                                            <option value="" disabled>Select Type of Connection</option>
-                                            <option value="client">Client</option>
-                                            <option value="partener">Partner</option>
+                                            <option value="" disabled>{t('DashboardNewNetworkItemPage.typeOfConnectionFormInputPlaceholder')}</option>
+                                            <option value="client">{t('DashboardNewNetworkItemPage.clientFormInput')}</option>
+                                            <option value="partener">{t('DashboardNewNetworkItemPage.partnerFormInput')}</option>
                                             {/* <option value="agent">Agent</option> */}
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div className="upload__image__btn ">
-                                <label htmlFor="label" className='mb-2'>Add Company logo<span className="requiredStar"> *</span>
+                                <label htmlFor="label" className='mb-2'>{t('DashboardNewNetworkItemPage.addLogoFormInput')}<span className="requiredStar"> *</span>
                                 <br />
-                                <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+                                <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewServiceItemPage.AddImagesFormInputPlaceholder')})</span>
                                 </label>
                                 <input
                                     type="file"
@@ -197,7 +201,7 @@ export default function NewNetworkForm({token}) {
                             </div>
                             <div className="form__submit__button">
                                 <button type="submit" className="btn btn-primary">
-                                    {id ? 'Update Network' : 'Add Network'}
+                                    {id ? `${t('DashboardNewNetworkItemPage.updateNetworkBtn')}` : `${t('DashboardNewNetworkItemPage.addNetworkBtn')}`}
                                 </button>
                             </div>
                         </form>

@@ -10,8 +10,11 @@ import { getYoutubeVideoId } from '../../functions/getYoutubeVideo';
 import { useDashBoardMediaStore } from '../../store/DashBoardMedia';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyMedia({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const cookiesData = Cookies.get("currentLoginedData");
@@ -67,38 +70,38 @@ export default function MyMedia({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className="content__view__handler">
-                                <ContentViewHeader title="Medias For Company" />
+                                <ContentViewHeader title={t('DashboardMediaPage.headerPageText')} />
                                 <AddNewItem link="/profile/media/addNewItem" />
                                 
                                 {/* Role Selection Buttons */}
                                 {loginType === 'employee' && (
                                     <div className="my__roles__actions mb-5 ps-0 ms-0">
                                         <button
-                                            className={`def__btn px-5 ${activeRole === 'All' ? 'rolesActiveBtn' : ''}`}
+                                            className={`${Lang === 'ar' ? 'def__btn_RTL' :'def__btn'} px-5 ${activeRole === 'All' ? 'rolesActiveBtn' : ''}`}
                                             onClick={() => {
                                                 setFilteration({ type: '' });
                                                 setActiveRole('All');
                                             }}
                                         >
-                                            All
+                                            {t('DashboardMediaPage.allFilterItem')}
                                         </button>
                                         <button
-                                            className={`def__btn meddle_btn px-5 ${activeRole === 'image' ? 'rolesActiveBtn' : ''}`}
+                                            className={`${Lang === 'ar' ? 'def__btn_RTL' :'def__btn'} meddle_btn px-5 ${activeRole === 'image' ? 'rolesActiveBtn' : ''}`}
                                             onClick={() => {
                                                 setFilteration({ type: 'image' });
                                                 setActiveRole('image');
                                             }}
                                         >
-                                            Image
+                                            {t('DashboardMediaPage.imageFilterItem')}
                                         </button>
                                         <button
-                                            className={`cust__btn px-5 ${activeRole === 'link' ? 'rolesActiveBtn' : ''}`}
+                                            className={`${Lang === 'ar' ? 'cust__btn_RTL' :'cust__btn'} px-5 ${activeRole === 'link' ? 'rolesActiveBtn' : ''}`}
                                             onClick={() => {
                                                 setFilteration({ type: 'link' });
                                                 setActiveRole('link');
                                             }}
                                         >
-                                            Video
+                                            {t('DashboardMediaPage.videoFilterItem')}
                                         </button>
                                     </div>
                                 )}
@@ -127,15 +130,15 @@ export default function MyMedia({ token }) {
                                                         <div className="card__btns d-flex">
                                                             <button
                                                                 onClick={() => handleDeleteMedia(el?.id)}
-                                                                className="btn__D"
+                                                                className={`${Lang === 'ar' ? 'btn__D_RTL' : 'btn__D'}`}
                                                             >
-                                                                Delete
+                                                                {t('DashboardAllServicePage.catalogDeleteBtn')}
                                                             </button>
                                                             <button
-                                                                className="btn__E"
+                                                                className={`${Lang === 'ar' ? 'btn__E_RTL' : 'btn__E'}`}
                                                                 onClick={() => navigate(`/profile/media/edit-item/${el?.id}`)}
                                                             >
-                                                                Edit
+                                                                {t('DashboardAllServicePage.catalogEditBtn')}
                                                             </button>
                                                         </div>
                                                     </div>
@@ -166,7 +169,7 @@ export default function MyMedia({ token }) {
                                         </div>
                                     ) : (
                                         <div className="row">
-                                            <div className="col-12 text-danger fs-5">No Media Items Yet</div>
+                                            <div className="col-12 text-danger fs-5">{t('DashboardMediaPage.noMediaItemsText')}</div>
                                         </div>
                                     )}
                                 </div>

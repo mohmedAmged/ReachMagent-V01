@@ -722,5 +722,82 @@
     "deleteFullOppBtn":"حذف الخيار الكامل",
     "submitOppBtn":"تأكيد",
     "addNewOppBtn":"إضافة حقل خيار جديد"
+  },
+    "DashboardMediaPage":{
+    "headerPageText":"وسائط الشركة",
+    "allFilterItem":"الجميع",
+    "imageFilterItem":"صورة",
+    "videoFilterItem":"فيديو",
+    "noMediaItemsText":"لا توجد وسائط حتى الآن"
+  },
+    "DashboardNewMediaItemPage":{
+    "headerPageTextUpdate":"تحديث عنصر الوسائط",
+    "headerPageTextAdd":"إضافة عنصر إلى الوسائط",
+    "editFormInput":"تعديل",
+    "chooseFormInput":"اختار",
+    "addFormInput":"أضف",
+    "typeOfFormInput":"نوع الوسائط",
+    "typeOfFormInputPlaceholder":"حدد النوع",
+    "linkVideoFormInput":"رابط الفيديو",
+    "linkVideoFormInputOptional":"يجب أن يكون الرابط بصيغة اليوتيوب",
+    "linkVideoFormInputPlaceholder":"أدخل الرابط الخاص بك",
+    "updateMediaBtn":"تحديث الوسائط",
+    "addMediaBtn":"أضف الوسائط"
+  },
+  "DashboardNetworkPage":{
+    "headerPageText":"شبكة الشركة",
+    "tableHeadLogo":"اللوجو",
+    "tableHeadName":"الاسم",
+    "tableHeadLabel":"النوع",
+    "tableHeadEdit":"تعديل",
+    "noNetworkItemsText":"لا توجد شبكة حتى الآن"
+  },
+  "DashboardNewNetworkItemPage":{
+    "headerPageTextUpdate":"تحديث الشبكة",
+    "headerPageTextAdd":"إضافة شبكة جديدة",
+    "addCompanyNameFormInput":"أضف اسم الشركة",
+    "addCompanyNameFormInputPlaceholder":"أدخل النص الخاص بك",
+    "typeOfConnectionFormInput":"نوع الاتصال",
+    "typeOfConnectionFormInputPlaceholder":"حدد نوع الاتصال",
+    "clientFormInput":"عميل",
+    "partnerFormInput":"شريك",
+    "addLogoFormInput":"إضافة شعار الشركة",
+    "updateNetworkBtn":"تحديث الشبكة",
+    "addNetworkBtn":"أضف الشبكة"
+  },
+    "DashboardPrevWorkPage":{
+    "headerPageText":"أعمالنا السابقة",
+    "typeFormInput":"نوع",
+    "noPrevWorkItemsText":"لا يوجد عمل سابق حتى الآن"
+  },
+  "DashboardNewPrevWorkItemPage":{
+    "headerPageTextUpdate":"تحديث العمل السابق",
+    "headerPageTextAdd":"إضافة عمل سابق جديد",
+    "newPreviousWorkEnFormInput":"أعمال سابقة جديدة باللغة الإنجليزية",
+    "newPreviousWorkArFormInput":"أعمال سابقة جديدة باللغة العربية",
+    "newPreviousWorkEnFormInputPlaceholder":"عنوان العمل",
+    "typeofWorkEnFormInput":"نوع العمل باللغة الإنجليزية",
+    "typeofWorkArFormInput":"نوع العمل باللغة العربية",
+    "addCompanyNameFormInputPlaceholder":"أدخل النص الخاص بك",
+    "workDescriptionEnFormInput":"وصف العمل باللغة الإنجليزية",
+    "workDescriptionArFormInput":"وصف العمل باللغة العربية",
+    "workCoverImageFormInput":"صورة غلاف العمل",
+    "updatePrevWorkBtn":"تحديث العمل السابق",
+    "addPrevWorkBtn":"أضف العمل السابق"
+  },
+   "DashboardFAQsPage":{
+    "headerPageText":"الأسئلة الشائعة",
+    "noFAQsItemsText":"لا توجد عناصر الأسئلة الشائعة حتى الآن"
+  },
+    "DashboardNewFAQsItemPage":{
+    "headerPageTextUpdate":"تحديث الأسئلة الشائعة",
+    "headerPageTextAdd":"إضافة أسئلة شائعة جديدة إلى الأسئلة الشائعة",
+    "faqEnFormInput":"أسئلة شائعة باللغة الإنجليزية",
+    "faqArFormInput":"أسئلة شائعة باللغة العربية",
+    "answerEnFormInput":"الإجابة باللغة الإنجليزية",
+    "answerArFormInput":"الإجابة باللغة العربية",
+    "addCompanyNameFormInputPlaceholder":"أدخل النص الخاص بك",
+    "updateFaqBtn":"تحديث الأسئلة الشائعة",
+    "addNewFaqBtn":"أضف الأسئلة الشائعة"
   }
 }

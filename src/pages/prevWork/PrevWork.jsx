@@ -9,8 +9,10 @@ import ContentViewHeader from "../../components/contentViewHeaderSec/ContentView
 import AddNewItem from "../../components/addNewItemBtn/AddNewItem";
 import PrevWorkCard from "../../components/prevWorkCard/PrevWorkCard";
 import MyNewLoader from "../../components/myNewLoaderSec/MyNewLoader";
+import { useTranslation } from "react-i18next";
 
 export default function PrevWork({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const cookiesData = Cookies.get("currentLoginedData");
     const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
@@ -53,7 +55,7 @@ export default function PrevWork({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className="myProducts__handler content__view__handler">
-                                <ContentViewHeader title="Our Previous Work" />
+                                <ContentViewHeader title={t('DashboardPrevWorkPage.headerPageText')} />
                                 <AddNewItem link="/profile/previous-work/addNewItem" />
                                 {prevWork?.length !== 0 ? (
                                     <div className="productTable__content">
@@ -91,7 +93,7 @@ export default function PrevWork({ token }) {
                                     </div>
                                 ) : (
                                     <div className="row">
-                                        <div className="col-12 text-danger fs-5">No Previous Work Yet</div>
+                                        <div className="col-12 text-danger fs-5">{t('DashboardPrevWorkPage.noPrevWorkItemsText')}</div>
                                     </div>
                                 )}
                             </div>

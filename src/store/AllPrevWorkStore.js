@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const usePrevWorkStore = create((set, get) => ({
     loading: true,
@@ -25,7 +26,7 @@ export const usePrevWorkStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-pervious-works?page=${page}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang }
             });
             set({
                 prevWork: response?.data?.data?.pervious_works,

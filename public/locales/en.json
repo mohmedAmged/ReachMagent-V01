@@ -722,5 +722,82 @@
     "deleteFullOppBtn":"delete full option",
     "submitOppBtn":"submit option",
     "addNewOppBtn":"Add New Option Field"
+  },
+  "DashboardMediaPage":{
+    "headerPageText":"Medias For Company",
+    "allFilterItem":"All",
+    "imageFilterItem":"Image",
+    "videoFilterItem":"Video",
+    "noMediaItemsText":"No Media Items Yet"
+  },
+  "DashboardNewMediaItemPage":{
+    "headerPageTextUpdate":"Update Media Item",
+    "headerPageTextAdd":"Add Item to Media",
+    "editFormInput":"Edit",
+    "chooseFormInput":"Choose",
+    "addFormInput":"Add",
+    "typeOfFormInput":"Type of Media",
+    "typeOfFormInputPlaceholder":"Select Type",
+    "linkVideoFormInput":"Link video",
+    "linkVideoFormInputOptional":"link must be youtube format",
+    "linkVideoFormInputPlaceholder":"Enter your link",
+    "updateMediaBtn":"Update Media",
+    "addMediaBtn":"Add Media"
+  },
+    "DashboardNetworkPage":{
+    "headerPageText":"Company Network",
+    "tableHeadLogo":"Logo",
+    "tableHeadName":"Name",
+    "tableHeadLabel":"Label",
+    "tableHeadEdit":"Edit",
+    "noNetworkItemsText":"No Network Yet"
+  },
+    "DashboardNewNetworkItemPage":{
+    "headerPageTextUpdate":"Update Network",
+    "headerPageTextAdd":"Add New Network",
+    "addCompanyNameFormInput":"Add Company Name",
+    "addCompanyNameFormInputPlaceholder":"Enter your text",
+    "typeOfConnectionFormInput":"Type of Connection",
+    "typeOfConnectionFormInputPlaceholder":"Select Type of Connection",
+    "clientFormInput":"Client",
+    "partnerFormInput":"Partner",
+    "addLogoFormInput":"Add Company logo",
+    "updateNetworkBtn":"Update Network",
+    "addNetworkBtn":"Add Network"
+  },
+  "DashboardPrevWorkPage":{
+    "headerPageText":"Our Previous Work",
+    "typeFormInput":"Type",
+    "noPrevWorkItemsText":"No Previous Work Yet"
+  },
+  "DashboardNewPrevWorkItemPage":{
+    "headerPageTextUpdate":"Update Previous Work",
+    "headerPageTextAdd":"Add new Previous Work",
+    "newPreviousWorkEnFormInput":"new Previous Work in english",
+    "newPreviousWorkArFormInput":"new Previous Work in arabic",
+    "newPreviousWorkEnFormInputPlaceholder":"Work Title",
+    "typeofWorkEnFormInput":"Type of Work in English",
+    "typeofWorkArFormInput":"Type of Work in Arabic",
+    "addCompanyNameFormInputPlaceholder":"Enter your text",
+    "workDescriptionEnFormInput":"Work Description in English",
+    "workDescriptionArFormInput":"Work Description in Arabic",
+    "workCoverImageFormInput":"Work Cover Image",
+    "updatePrevWorkBtn":"Update Previous Work",
+    "addPrevWorkBtn":"Add Previous Work"
+  },
+    "DashboardFAQsPage":{
+    "headerPageText":"FAQs",
+    "noFAQsItemsText":"No FAQs Items Yet"
+  },
+    "DashboardNewFAQsItemPage":{
+    "headerPageTextUpdate":"Update Faq",
+    "headerPageTextAdd":"Add New Faq to FAQS",
+    "faqEnFormInput":"Faq Question in English",
+    "faqArFormInput":"Faq Question in Arabic",
+    "answerEnFormInput":"Asnwer in English",
+    "answerArFormInput":"Asnwer in Arabic",
+    "addCompanyNameFormInputPlaceholder":"Enter your text",
+    "updateFaqBtn":"Update FAQ",
+    "addNewFaqBtn":"Add FAQ"
   }
 }

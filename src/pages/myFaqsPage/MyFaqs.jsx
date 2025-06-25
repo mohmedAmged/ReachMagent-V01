@@ -10,8 +10,10 @@ import './myFaqs.css';
 import Cookies from 'js-cookie';
 import { useDashBoardFaqsStore } from '../../store/DashBoardFaqs';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyFaqs({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -55,7 +57,7 @@ export default function MyFaqs({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className='content__view__handler'>
-                                <ContentViewHeader title={'FAQs'} />
+                                <ContentViewHeader title={t('DashboardFAQsPage.headerPageText')} />
                                 <AddNewItem link={'/profile/faqs/addNewItem'} />
                                 <div className="content__card__list">
                                     {faqs.length ? (
@@ -105,7 +107,7 @@ export default function MyFaqs({ token }) {
                                     ) : (
                                         <div className='row'>
                                             <div className="col-12 text-danger fs-5">
-                                                No FAQs Items Yet
+                                                {t('DashboardFAQsPage.noFAQsItemsText')}
                                             </div>
                                         </div>
                                     )}

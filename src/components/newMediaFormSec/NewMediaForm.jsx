@@ -11,8 +11,11 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function NewMediaForm({token}) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -40,7 +43,8 @@ export default function NewMediaForm({token}) {
             (async () => {
                 await axios.get(`${baseURL}/${loginType}/company-portfolio/${id}?t=${new Date().getTime()}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                     .then(response => {
@@ -154,33 +158,33 @@ export default function NewMediaForm({token}) {
                                     <UnAuthSec />
                                     :
                                     <div className='newCatalogItem__form__handler'>
-                                        <ContentViewHeader title={id ? 'Update Media Item' :'Add Item to Media'} />
+                                        <ContentViewHeader title={id ? `${t('DashboardNewMediaItemPage.headerPageTextUpdate')}` :`${t('DashboardNewMediaItemPage.headerPageTextAdd')}`} />
                                         <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                             <div className="row">
                                                 <div className="col-lg-8">
                                                     <div className="catalog__new__input">
                                                         <label htmlFor="category_id"> 
-                                                            {id ? 'Edit' : 'Choose'} Type of Media
+                                                            {id ? `${t('DashboardNewMediaItemPage.editFormInput')}` : `${t('DashboardNewMediaItemPage.chooseFormInput')}`} {t('DashboardNewMediaItemPage.typeOfFormInput')}
                                                             <span className="requiredStar"> *</span>
                                                             <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <select
                                                             name="type"
-                                                            className="form-control custom-select"
+                                                            className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                                             value={formData?.type}
                                                             onChange={handleInputChange}
                                                         >
-                                                            <option value="" disabled>Select Type
+                                                            <option value="" disabled>{t('DashboardNewMediaItemPage.typeOfFormInputPlaceholder')}
                                                             </option>
                                                             <option 
                                                             key="image"
                                                             value="image">
-                                                                Image
+                                                                {t('DashboardMediaPage.imageFilterItem')}
                                                             </option>
                                                             <option 
                                                             key="link"
                                                             value="link">
-                                                                Video
+                                                                {t('DashboardMediaPage.videoFilterItem')}
                                                             </option>
                                                         </select>
                                                     </div>
@@ -189,10 +193,10 @@ export default function NewMediaForm({token}) {
                                                     formData?.type === 'image' &&
                                                     <div className="col-lg-8">
                                                         <div className="upload__image__btn ">
-                                                        <label htmlFor="image" style={{marginBottom: '8px', fontSize: '16px', fontWeight: '400'}}>{id ? 'Edit' : 'Add'} Image<span className="requiredStar"> *</span>
+                                                        <label htmlFor="image" style={{marginBottom: '8px', fontSize: '16px', fontWeight: '400'}}>{id ? `${t('DashboardNewMediaItemPage.editFormInput')}` : `${t('DashboardNewMediaItemPage.addFormInput')}`} {t('DashboardMediaPage.imageFilterItem')}<span className="requiredStar"> *</span>
                                                         <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         <br />
-                <span style={{color: 'gray', fontSize: '14px'}}>(Recommended size 1000 * 1000px)</span>
+                <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewServiceItemPage.AddImagesFormInputPlaceholder')})</span>
                                                         </label>
                                                         <input
                                                             type="file"
@@ -207,8 +211,8 @@ export default function NewMediaForm({token}) {
                                                     formData?.type === 'link' &&
                                                     <div className="col-lg-8">
                                                         <div className="catalog__new__input">
-                                                            <label htmlFor="link">{id ? 'Edit' : 'Add'} Link video 
-                                                            <span className='optional'>(link must be youtube format)</span>
+                                                            <label htmlFor="link">{id ? `${t('DashboardNewMediaItemPage.editFormInput')}` : `${t('DashboardNewMediaItemPage.addFormInput')}`} {t('DashboardNewMediaItemPage.linkVideoFormInput')}
+                                                            <span className='optional'>({t('DashboardNewMediaItemPage.linkVideoFormInputOptional')})</span>
                                                             <span className="requiredStar"> *</span>
                                                             <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                             </label>
@@ -216,7 +220,7 @@ export default function NewMediaForm({token}) {
                                                                 type="text"
                                                                 name="link"
                                                                 className="form-control"
-                                                                placeholder="Enter your link"
+                                                                placeholder={t('DashboardNewMediaItemPage.linkVideoFormInputPlaceholder')}
                                                                 value={formData?.link}
                                                                 onChange={handleInputChange}
                                                             />
@@ -227,7 +231,7 @@ export default function NewMediaForm({token}) {
                                             </div>
                                             <div className="form__submit__button">
                                                 <button type="submit" className="btn btn-primary">
-                                                    {id ? 'Update Media' : 'Add Media'}
+                                                    {id ? `${t('DashboardNewMediaItemPage.updateMediaBtn')}` : `${t('DashboardNewMediaItemPage.addMediaBtn')}`}
                                                 </button>
                                             </div>
                                         </form>

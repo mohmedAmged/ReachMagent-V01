@@ -10,8 +10,10 @@ import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useNetworkStore } from '../../store/DashBoardNetwork';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyNetwork({ token }) {
+  const { t } = useTranslation();
   const loginType = localStorage.getItem('loginType');
   const cookiesData = Cookies.get("currentLoginedData");
   const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
@@ -54,17 +56,17 @@ export default function MyNetwork({ token }) {
               <UnAuthSec />
             ) : (
               <div className="myProducts__handler content__view__handler">
-                <ContentViewHeader title="Company Network" />
+                <ContentViewHeader title={t('DashboardNetworkPage.headerPageText')} />
                 <AddNewItem link="/profile/network/addNewItem" />
                 {networks.length !== 0 ? (
                   <div className="productTable__content">
                     <Table responsive>
                       <thead>
                         <tr className="table__default__header">
-                          <th>Logo</th>
-                          <th className="text-center">Name</th>
-                          <th className="text-center">Label</th>
-                          <th className="text-center">Edit</th>
+                          <th>{t('DashboardNetworkPage.tableHeadLogo')}</th>
+                          <th className="text-center">{t('DashboardNetworkPage.tableHeadName')}</th>
+                          <th className="text-center">{t('DashboardNetworkPage.tableHeadLabel')}</th>
+                          <th className="text-center">{t('DashboardNetworkPage.tableHeadEdit')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -116,7 +118,7 @@ export default function MyNetwork({ token }) {
                   </div>
                 ) : (
                   <div className="row">
-                    <div className="col-12 text-danger fs-5">No Network Yet</div>
+                    <div className="col-12 text-danger fs-5">{t('DashboardNetworkPage.noNetworkItemsText')}</div>
                   </div>
                 )}
               </div>

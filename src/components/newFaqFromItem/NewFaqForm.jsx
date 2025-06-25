@@ -10,8 +10,11 @@ import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function NewFaqForm({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -40,7 +43,8 @@ export default function NewFaqForm({ token }) {
             (async ()=> {
                 await axios.get(`${baseURL}/${loginType}/show-faq/${id}?t=${new Date().getTime()}`,{
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                 .then(response => {
@@ -137,17 +141,17 @@ export default function NewFaqForm({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={id ? 'Update Faq' :'Add New Faq to FAQS'} />
+                                <ContentViewHeader title={id ? `${t('DashboardNewFAQsItemPage.headerPageTextUpdate')}` : `${t('DashboardNewFAQsItemPage.headerPageTextAdd')}`} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="question_en">Faq Question in English <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="question_en">{t('DashboardNewFAQsItemPage.faqEnFormInput')} <span className="requiredStar"> *</span></label>
                                                 <input
                                                     type="text"
                                                     name="question_en"
                                                     className="form-control"
-                                                    placeholder="Enter your text"
+                                                    placeholder={t('DashboardNewFAQsItemPage.addCompanyNameFormInputPlaceholder')}
                                                     value={formData?.question_en}
                                                     onChange={handleInputChange}
                                                 />
@@ -155,12 +159,12 @@ export default function NewFaqForm({ token }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="question_ar">Faq Question in Arabic <span className='optional'>(optional)</span></label>
+                                                <label htmlFor="question_ar">{t('DashboardNewFAQsItemPage.faqArFormInput')} <span className='optional'>(optional)</span></label>
                                                 <input
                                                     type="text"
                                                     name="question_ar"
                                                     className="form-control"
-                                                    placeholder="Enter your text"
+                                                    placeholder={t('DashboardNewFAQsItemPage.addCompanyNameFormInputPlaceholder')}
                                                     value={formData?.question_ar}
                                                     onChange={handleInputChange}
                                                 />
@@ -170,7 +174,7 @@ export default function NewFaqForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="answer_en">Asnwer in English <span className="requiredStar"> *</span></label>
+                                                <label htmlFor="answer_en">{t('DashboardNewFAQsItemPage.answerEnFormInput')} <span className="requiredStar"> *</span></label>
                                                 <textarea
                                                     name="answer_en"
                                                     className="form-control"
@@ -182,7 +186,7 @@ export default function NewFaqForm({ token }) {
                                         </div>
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="answer_ar">Answer in Arabic <span className='optional'>(optional)</span></label>
+                                                <label htmlFor="answer_ar">{t('DashboardNewFAQsItemPage.answerArFormInput')} <span className='optional'>(optional)</span></label>
                                                 <textarea
                                                     name="answer_ar"
                                                     className="form-control"
@@ -195,7 +199,7 @@ export default function NewFaqForm({ token }) {
                                     </div>
                                     <div className="form__submit__button">
                                         <button type="submit" className="btn btn-primary">
-                                            {id? 'Update FAQ' : 'Add New FAQ'}
+                                            {id? `${t('DashboardNewFAQsItemPage.updateFaqBtn')}` : `${t('DashboardNewFAQsItemPage.addNewFaqBtn')}`}
                                         </button>
                                     </div>
                                 </form>

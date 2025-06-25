@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './prevWorkCard.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function PrevWorkCard({ page, handleDeleteThisPrevWork, img, id, title, description, type }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     return (
         <div
@@ -15,7 +17,7 @@ export default function PrevWorkCard({ page, handleDeleteThisPrevWork, img, id, 
                 <h3
                     className={styles.title}
                 >{title}</h3>
-                <p className={styles.type}><span>Type:</span> {type}</p>
+                <p className={styles.type}><span>{t('DashboardPrevWorkPage.typeFormInput')}:</span> {type}</p>
                 <p className={styles.description}>{description}</p>
             </div>
             {
