@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { Table } from 'react-bootstrap'
 import { usePackageTransactions } from '../../store/PackageCompanyTransactions';
+import { useTranslation } from 'react-i18next';
 
 export default function PackageTransactionsTable({loginType, token}) {
+      const { t } = useTranslation();
         const {
             transactions,
             fetchCompanyTransactions,
@@ -15,20 +17,20 @@ export default function PackageTransactionsTable({loginType, token}) {
   return (
     <>
       <h3 className=' text-capitalize my-3 fs-5 fw-bold'>
-                                current package Transactions:
+                                {t('DashboardPackagesPage.transactionsTitle')}:
                             </h3>
                             <Table responsive>
                                 <thead>
                                     <tr className='table__default__header'>
-                                    <th className='text-center'>Name</th>
-                                    <th className='text-center'>Package code</th>
+                                    <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadName')}</th>
+                                    <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadPackageCode')}</th>
 
-                                        <th className='text-center'>Start Date</th>
+                                        <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadStartDate')}</th>
                                         
-                                        <th className='text-center'>Paid</th>
-                                        <th className='text-center'>Payment Method</th>
-                                        <th className='text-center'>Payment Status</th>
-                                        <th className='text-center'>Added By</th>
+                                        <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadPaid')}</th>
+                                        <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadPaymentMethod')}</th>
+                                        <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadPaymentStatus')}</th>
+                                        <th className='text-center'>{t('DashboardPackagesPage.transactionstableHeadAddedBy')}</th>
                                     </tr>
                                 </thead>
                                             <tbody>

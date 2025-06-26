@@ -10,8 +10,11 @@ import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function NewPostForm({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -41,7 +44,8 @@ export default function NewPostForm({ token }) {
             (async ()=> {
                 await axios.get(`${baseURL}/${loginType}/show-post/${id}?t=${new Date().getTime()}`,{
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Locale": Lang
                     }
                 })
                 .then(response => {
@@ -146,19 +150,19 @@ export default function NewPostForm({ token }) {
                         <div className='main__content container'>
                             <MainContentHeader currentUserLogin={currentUserLogin} />
                             <div className='newCatalogItem__form__handler'>
-                                <ContentViewHeader title={id ? 'Update Post' : 'Add post to posts'} />
+                                <ContentViewHeader title={id ? `${t('DashboardNewPostsItemPage.headerPageTextUpdate')}` : `${t('DashboardNewPostsItemPage.headerPageTextAdd')}`} />
                                 <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="title_en">Post Title in English <span className="requiredStar"> *</span>
-                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="title_en">{t('DashboardNewPostsItemPage.postEnFormInput')} <span className="requiredStar"> *</span>
+                                                <i title={t('DashboardNewPostsItemPage.postEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="title_en"
                                                     className="form-control"
-                                                    placeholder="Enter your text"
+                                                    placeholder={t('DashboardNewPostsItemPage.addCompanyNameFormInputPlaceholder')}
                                                     value={formData?.title_en}
                                                     onChange={handleInputChange}
                                                 />
@@ -166,14 +170,14 @@ export default function NewPostForm({ token }) {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="title_ar">Post Title in Arabic <span className="requiredStar"> *</span>
-                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="title_ar">{t('DashboardNewPostsItemPage.postArFormInput')} <span className="requiredStar"> *</span>
+                                                <i title={t('DashboardNewPostsItemPage.postArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="title_ar"
                                                     className="form-control"
-                                                    placeholder="Enter your text"
+                                                    placeholder={t('DashboardNewPostsItemPage.addCompanyNameFormInputPlaceholder')}
                                                     value={formData?.title_ar}
                                                     onChange={handleInputChange}
                                                 />
@@ -183,8 +187,8 @@ export default function NewPostForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="description_en">Description in English <span className="requiredStar"> *</span>
-                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="description_en">{t('DashboardNewPostsItemPage.descEnFormInput')} <span className="requiredStar"> *</span>
+                                                <i title={t('DashboardNewPostsItemPage.descEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <textarea
                                                     name="description_en"
@@ -197,8 +201,8 @@ export default function NewPostForm({ token }) {
                                         </div>
                                         <div className="col-lg-8">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="description_ar">Description in Arabic <span className="requiredStar"> *</span>
-                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="description_ar">{t('DashboardNewPostsItemPage.descArFormInput')} <span className="requiredStar"> *</span>
+                                                <i title={t('DashboardNewPostsItemPage.descArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <textarea
                                                     name="description_ar"
@@ -213,26 +217,28 @@ export default function NewPostForm({ token }) {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
-                                                <label htmlFor="type">Post Type <span className="requiredStar"> *</span>
-                                                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                <label htmlFor="type">{t('DashboardNewPostsItemPage.postTypeFormInput')} <span className="requiredStar"> *</span>
+                                                <i title={t('DashboardNewPostsItemPage.postTypeFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <select
                                                     name="type"
-                                                    className="form-control custom-select"
+                                                    className={`form-control custom-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                                     value={formData?.type}
                                                     onChange={handleInputChange}
                                                 >
-                                                    <option value="" disabled>Select post type</option>
-                                                    <option value="news">News</option>
-                                                    <option value="discount">Discount</option>
-                                                    <option value="announcement">Announcement</option>
+                                                    <option value="" disabled>{t('DashboardNewPostsItemPage.postTypeFormInputPlaceholder')}</option>
+                                                    <option value="news">{t('DashboardNewPostsItemPage.newsTypeFormInput')}</option>
+                                                    <option value="discount">
+                                                        {t('DashboardNewPostsItemPage.discountTypeFormInput')}
+                                                    </option>
+                                                    <option value="announcement">{t('DashboardNewPostsItemPage.announcementTypeFormInput')}</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="form__submit__button">
                                         <button type="submit" className="btn btn-primary">
-                                            {id ? 'Update Post' : 'Add Post'}
+                                            {id ? `${t('DashboardNewPostsItemPage.updatePostBtn')}` : `${t('DashboardNewPostsItemPage.addNewPostBtn')}`}
                                         </button>
                                     </div>
                                 </form>

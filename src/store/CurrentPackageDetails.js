@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
-import { Token } from '../functions/Token';
+import { Lang, Token } from '../functions/Token';
 
 export const useCurrentPackageDetails = create((set, get) => ({
     loading: true,
@@ -17,7 +17,7 @@ export const useCurrentPackageDetails = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-company-packages?t=${now}`, {
-                headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+                headers: Token ? { Authorization: `Bearer ${Token}`, "Locale": Lang } : {"Locale": Lang}
             });
 
             set({

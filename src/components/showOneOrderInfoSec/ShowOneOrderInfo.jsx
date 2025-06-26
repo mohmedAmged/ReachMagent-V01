@@ -17,7 +17,10 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { findRenderedDOMComponentWithTag } from 'react-dom/test-utils';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 export default function ShowOneOrderInfo({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { orderId } = useParams();
     const loginType = localStorage.getItem('loginType');
@@ -38,7 +41,8 @@ export default function ShowOneOrderInfo({ token }) {
         try {
             const response = await axios.get(`${baseURL}/${loginType}/${slug}/${orderId}?t=${new Date().getTime()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Locale": Lang
                 }
             });
             setNewdata(response?.data?.data?.quotation_order);
@@ -119,14 +123,14 @@ const handleViewFiles = (files) => {
                                     <UnAuthSec />
                                     :
         <div className='content__view__handler'>
-            <ContentViewHeader title={`main order Details #${newData?.code} (${newData?.order_type})`} />
+            <ContentViewHeader title={`${t('DashboardSingleQuotationOrderPage.headerPageText')} #${newData?.code} (${newData?.order_type})`} />
             <div className="content__card__list showOrder__handler">
                 <div className="row">
                     <div className="col-12 main_header_for_order">
                         <div className="row justify-content-between">
                             <div className="col-lg-6 col-md-6 col-sm-12 ">
                                 <p>
-                                    <i className="bi bi-calendar me-2"></i>
+                                    <i className={`bi bi-calendar ${Lang === 'ar' ? 'ms-2' : 'me-2'}`}></i>
                                     {newData?.created_at}
                                 </p>
                             </div>
@@ -142,12 +146,12 @@ const handleViewFiles = (files) => {
                             onChange={(e) => handleChangeStatue(newData?.id, e.target.value)} 
                             defaultValue=""
                         >
-                            <option value="" disabled>Select Status</option> 
-                            <option value="Accepted">accepted</option>
-                            <option value="processing">Processing</option>
-                            <option value="delivering">Delivering</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled_by_admin" disabled>Cancelled by admin</option>
+                            <option value="" disabled>{t('DashboardSingleQuotationOrderPage.orderStatusFormInputPlaceholder')}</option> 
+                            <option value="Accepted">{t('DashboardSingleQuotationOrderPage.acceptedStatusFormInput')}</option>
+                            <option value="processing">{t('DashboardSingleQuotationOrderPage.processingStatusFormInput')}</option>
+                            <option value="delivering">{t('DashboardSingleQuotationOrderPage.deliveringStatusFormInput')}</option>
+                            <option value="completed">{t('DashboardSingleQuotationOrderPage.completedStatusFormInput')}</option>
+                            <option value="cancelled_by_admin" disabled>{t('DashboardSingleQuotationOrderPage.cancelledByAdminStatusFormInput')}</option>
                         </select>
                         )
                     }
@@ -165,7 +169,7 @@ const handleViewFiles = (files) => {
                                     <i className="bi bi-person-circle"></i>
                                 </div>
                                 <p className='specialP'>
-                                    Customer Information
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoCustomerInfo')}
                                 </p>
                                 <h5>
                                     {newData?.order_by_name}                              
@@ -183,13 +187,13 @@ const handleViewFiles = (files) => {
 
                                 </div>
                                 <p className='specialP'>
-                                    Destination & Payment
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoDestinationPayment')}
                                 </p>
                                 <h5>
                                     {newData?.city}, {newData?.country}
                                 </h5>
                                 <p>
-                                    Adress: {newData?.address}
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoAdress')}: {newData?.address}
                                 </p>
                             </div>
                             </div>
@@ -200,7 +204,7 @@ const handleViewFiles = (files) => {
                                         <i className="bi bi-person-circle"></i>
                                     </div>
                                     <p className='specialP text-capitalize'>
-                                        seller Information
+                                        {t('DashboardSingleQuotationOrderPage.orderInfoSellerInformation')}
                                     </p>
                                     <h5>
                                         {newData?.company_name}                              
@@ -218,7 +222,7 @@ const handleViewFiles = (files) => {
 
                                 </div>
                                 <p className='specialP'>
-                                    Destination & Payment
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoDestinationPayment')}
                                 </p>
                                 {
                                     newData?.city !== 'N/A' && newData?.country !== 'N/A' &&
@@ -228,10 +232,10 @@ const handleViewFiles = (files) => {
                                 }
                                 
                                 <p className='text-capitalize'>
-                                    Adress: {newData?.address}
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoAdress')}: {newData?.address}
                                 </p>
                                 <p className='text-capitalize'>
-                                    order type: {newData?.order_type}
+                                    {t('DashboardSingleQuotationOrderPage.orderInfoOrderType')}: {newData?.order_type}
                                 </p>
                             </div>
                             </div>
@@ -246,16 +250,16 @@ const handleViewFiles = (files) => {
                                         <thead>
             <tr className='table__default__header'>
                 <th>
-                    product
+                    {t('DashboardSingleQuotationOrderPage.tableHeadProduct')}
                 </th>
-                <th className='text-center'>Qty</th>
-                <th className='text-center'>Unit</th>
+                <th className='text-center'>{t('DashboardSingleQuotationOrderPage.tableHeadQty')}</th>
+                <th className='text-center'>{t('DashboardSingleQuotationOrderPage.tableHeadUnit')}</th>
                 
                 <th 
-                className='text-center'>Total Price</th>
-                <th className='text-center'>Notes</th>
+                className='text-center'>{t('DashboardSingleQuotationOrderPage.tableHeadTotalPrice')}</th>
+                <th className='text-center'>{t('DashboardSingleQuotationOrderPage.tableHeadNotes')}</th>
                 {/* <th className='text-center'>Preferences</th> */}
-                <th className='text-center'>Files</th>
+                <th className='text-center'>{t('DashboardSingleQuotationOrderPage.tableHeadFiles')}</th>
                 
             </tr>
                                         </thead>
@@ -304,17 +308,17 @@ const handleViewFiles = (files) => {
                                 row?.note !== 'N/A' ?
                                     <i onClick={()=>handleViewNotes(row?.id)} className="bi bi-eye cursorPointer"></i>
                                     : 
-                                    'No Notes'
+                                    `${t('DashboardSingleQuotationOrderPage.tableHeadNoNotes')}`
                                 }
                             </td>
                             <Modal show={show} onHide={() => setShow(false)}>
                                 <Modal.Header closeButton>
-                                <Modal.Title>Notes</Modal.Title>
+                                <Modal.Title>{t('DashboardSingleQuotationOrderPage.tableHeadNotes')}</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>{currNote}</Modal.Body>
                                 <Modal.Footer>
                                 <Button variant="secondary" onClick={() => setShow(false)}>
-                                    Close
+                                    {t('DashboardSingleQuotationOrderPage.ModalCloseBtn')}
                                 </Button>
                                 </Modal.Footer>
                             </Modal>
@@ -326,13 +330,13 @@ const handleViewFiles = (files) => {
                                 >
                                 </i>
                                 :
-                                'No Files'
+                                `${t('DashboardSingleQuotationOrderPage.tableHeadNoFiles')}`
                                 }
 
                             </td>
                             <Modal show={showFiles} onHide={() => setShowFiles(false)}>
                                 <Modal.Header closeButton>
-                                <Modal.Title>Files</Modal.Title>
+                                <Modal.Title>{t('DashboardSingleQuotationOrderPage.tableHeadFiles')}</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body  
                                     style={{
@@ -360,19 +364,19 @@ const handleViewFiles = (files) => {
                                                 }}
                                             />
                                         ) : (
-                                            "View File"
+                                            `${t('DashboardSingleQuotationOrderPage.ModalViewFileBtn')}`
                                         )}
                                     </NavLink>
                                 </div>
                             ))
                         ) : (
-                            <p>No files available</p>
+                            <p>{t('DashboardSingleQuotationOrderPage.NoFilesText')}</p>
                         )}
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer>
                                 <Button variant="secondary" onClick={() => setShowFiles(false)}>
-                                    Close
+                                    {t('DashboardSingleQuotationOrderPage.ModalCloseBtn')}
                                 </Button>
                                 </Modal.Footer>
                             </Modal>
@@ -382,32 +386,32 @@ const handleViewFiles = (files) => {
 </Table>
 <div className="quoteTotals__handler">
         <h3 className='text-capitalize'>
-            order Total
+            {t('DashboardSingleQuotationOrderPage.orderTotalInfo')}
         </h3>
         <div className="row align-items-center">
             <div className="col-lg-6">
                 <div className="totals__full__info">
                     <div className="totals__text">
                         <h5 className='mb-4'>
-                            Sub-Total <span className="optional">(before tax)</span>
+                            {t('DashboardSingleQuotationOrderPage.SubTotalInfo')} <span className="optional">({t('DashboardSingleQuotationOrderPage.beforeTaxInfo')})</span>
                         </h5>
                         {
                             newData?.taxes !== 'N/A' &&
                             <h5 className='mb-4'>
-                            Total Tax 
+                            {t('DashboardSingleQuotationOrderPage.totalTaxInfo')}
                             </h5>
                         }
                         {
                             
                                 <h5 className='mb-4'>
-                                    Shipping cost 
+                                    {t('DashboardSingleQuotationOrderPage.ShippingCostInfo')}
                                 </h5>
                         }
                         <h5 className='mb-4'>
-                            Extra <span className='optional'>(Specified in notes)</span>
+                            {t('DashboardSingleQuotationOrderPage.extraInfo')} <span className='optional'>({t('DashboardSingleQuotationOrderPage.specifiedInNotesInfo')})</span>
                         </h5>
                         <h5>
-                            Total Price 
+                            {t('DashboardSingleQuotationOrderPage.totalPriceInfo')}
                         </h5>
                     </div>
                     <div className="totals__prices">
@@ -440,7 +444,7 @@ const handleViewFiles = (files) => {
                                 :
                                 <div className='row'>
                                     <div className="col-12 text-danger fs-5">
-                                        No Product Items Yet
+                                        {t('DashboardSingleQuotationOrderPage.noProductItem')}
                                     </div>
                                 </div>
                         }

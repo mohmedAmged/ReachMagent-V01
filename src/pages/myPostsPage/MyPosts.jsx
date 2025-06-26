@@ -10,8 +10,11 @@ import Cookies from 'js-cookie';
 import './myPosts.css';
 import { useDashBoardPostsStore } from '../../store/DashBoardPosts';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function MyPosts({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
@@ -56,7 +59,7 @@ export default function MyPosts({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className='content__view__handler'>
-                                <ContentViewHeader title={'Posts'} />
+                                <ContentViewHeader title={t('DashboardPostsPage.headerPageText')} />
                                 <AddNewItem link={'/profile/posts/addNewItem'} />
                                 <div className="content__card__list">
                                     {posts.length ? (
@@ -69,13 +72,13 @@ export default function MyPosts({ token }) {
                                                                 <img src={el.companyLogo} alt="newImg" />
                                                             </div>
                                                             <h4>{el.postTitle}</h4>
-                                                            <p>Type: {el.postType}</p>
+                                                            <p>{t('DashboardPostsPage.typeFormInput')}: {el.postType}</p>
                                                             <p>{el.postDate}</p>
                                                         </div>
                                                         <div className="headOfNews__card-rightPart">
                                                             <i
                                                                 onClick={() => navigate(`/profile/posts/edit-item/${el?.postId}`)}
-                                                                className="bi bi-pencil-square me-2 text-primary"
+                                                                className={`bi bi-pencil-square text-primary ${Lang === 'ar' ? 'ms-2' : 'me-2'}`}
                                                             ></i>
                                                             <i
                                                                 onClick={() => handleDeletePost(el?.postId)}
@@ -112,7 +115,7 @@ export default function MyPosts({ token }) {
                                         </div>
                                     ) : (
                                         <div className='row'>
-                                            <div className="col-12 text-danger fs-5">No Posts Yet</div>
+                                            <div className="col-12 text-danger fs-5">{t('DashboardPostsPage.noPostsItemsText')}</div>
                                         </div>
                                     )}
                                 </div>

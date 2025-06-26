@@ -11,8 +11,10 @@ import MainContentHeader from '../mainContentHeaderSec/MainContentHeader';
 import UnAuthSec from '../unAuthSection/UnAuthSec';
 import ContentViewHeader from '../contentViewHeaderSec/ContentViewHeader';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function NewAppointementFrom({token}) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -113,15 +115,15 @@ export default function NewAppointementFrom({token}) {
                                     <UnAuthSec />
                                     :
                                     <div className='newCatalogItem__form__handler'>
-                                        <ContentViewHeader title={'Add Appointments'} />
+                                        <ContentViewHeader title={t('DashboardAppointementPage.AddAppointementsBtn')} />
                                         <form className="catalog__form__items" onSubmit={handleFormSubmit}>
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="catalog__new__input">
                                                         <label  htmlFor="date_from"> 
-                                                            Date From
+                                                            {t('DashboardAppointementPage.tableHeadDateFrom')}
                                                             <span className="requiredStar"> *</span>
-                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                            <i title={t('DashboardAppointementPage.tableHeadDateFrom')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="date" name="date_from" className='form-control'
                                                         value={formData?.date_from}
@@ -133,9 +135,9 @@ export default function NewAppointementFrom({token}) {
                                                     <div className="catalog__new__input">
                                                         <label 
                                                         htmlFor="date_to"> 
-                                                            Date To
+                                                            {t('DashboardAppointementPage.tableHeadDateTo')}
                                                             <span className="requiredStar"> *</span>
-                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                            <i title={t('DashboardAppointementPage.tableHeadDateTo')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="date" name="date_to" className='form-control'
                                                         value={formData?.date_to}
@@ -147,9 +149,9 @@ export default function NewAppointementFrom({token}) {
                                                     <div className="catalog__new__input">
                                                         <label 
                                                         htmlFor="available_from"> 
-                                                        Available From
+                                                        {t('DashboardAppointementPage.tableHeadAvailableFrom')}
                                                             <span className="requiredStar"> *</span>
-                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                            <i title={t('DashboardAppointementPage.tableHeadAvailableFrom')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="time" name="available_from" className='form-control'
                                                         value={formData?.available_from}
@@ -162,9 +164,9 @@ export default function NewAppointementFrom({token}) {
                                                     <div className="catalog__new__input">
                                                         <label 
                                                         htmlFor="available_to"> 
-                                                            Available To
+                                                            {t('DashboardAppointementPage.tableHeadAvailableTo')}
                                                             <span className="requiredStar"> *</span>
-                                                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                            <i title={t('DashboardAppointementPage.tableHeadAvailableTo')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                         </label>
                                                         <input type="time" name="available_to" className='form-control'
                                                         value={formData?.available_to}
@@ -176,7 +178,7 @@ export default function NewAppointementFrom({token}) {
                                             </div>
                                             <div className="form__submit__button">
                                                 <button type="submit" className="btn btn-primary">
-                                                    {'Add Appointments'}
+                                                    {t('DashboardAppointementPage.AddAppointementsBtn')}
                                                 </button>
                                             </div>
                                         </form>

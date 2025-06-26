@@ -17,8 +17,11 @@ import PackageTransactionsTable from '../packageTransactionsTableSec/PackageTran
 import MyPackagePayment from '../myPackagePaymentSec/MyPackagePayment';
 import { useSidebarStatus } from '../../store/SidebarStatusStore';
 import MyNewLoader from '../myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
-export default function MyPackagesSettings({ token }) {
+export default function MyPackagesSettings({ token }){
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const cookiesData = Cookies.get("currentLoginedData");
     const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
@@ -64,11 +67,11 @@ export default function MyPackagesSettings({ token }) {
     };
     const handleSubmit = async () => {
         if (!selectedPackageId && actionType !== 'renew') {
-            toast.error('Please select a package before proceeding.');
+            toast.error(`${t('DashboardPackagesPage.pleaseSelectPackageToast')}`);
             return;
         }
         if (!paymentMethod) {
-            toast.error('Please select a payment method.');
+            toast.error(`${t('DashboardPackagesPage.pleaseSelectPaymentToast')}`);
             return;
         }
 
@@ -132,29 +135,29 @@ export default function MyPackagesSettings({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className="content__view__handler">
-                                <ContentViewHeader title="Packages Settings" />
+                                <ContentViewHeader title={t('DashboardPackagesPage.headerPageText')} />
                                 <div className="row">
                                     <div className="col-12 ">
                                         <div className="my__roles__actions mt-4">
                                             <button
-                                                className={`def__btn ${activeRole === "package details" ? "rolesActiveBtn" : ""}`}
+                                                className={`${Lang === 'ar' ? 'def__btn_RTL' : 'def__btn'} ${activeRole === "package details" ? "rolesActiveBtn" : ""}`}
                                                 onClick={() => setActiveRole("package details")}
                                             >
-                                                package details
+                                                {t('DashboardPackagesPage.packageDetailsFilterItem')}
                                             </button>
                                             <button
-                                                className={`cust__btn ${activeRole === "transactions" ? "rolesActiveBtn" : ""}`}
+                                                className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} ${activeRole === "transactions" ? "rolesActiveBtn" : ""}`}
                                                 onClick={() => setActiveRole("transactions")}
                                             >
-                                                transactions
+                                                {t('DashboardPackagesPage.transactionsFilterItem')}
                                             </button>
                                            { 
                                            ShowStatus === 'package_settings_and_transactions' &&
                                             <button
-                                                className={`cust__btn ${activeRole === "payment methods" ? "rolesActiveBtn" : ""}`}
+                                                className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} ${activeRole === "payment methods" ? "rolesActiveBtn" : ""}`}
                                                 onClick={() => setActiveRole("payment methods")}
                                             >
-                                                payment methods
+                                                {t('DashboardPackagesPage.paymentMethodsFilterItem')}
                                             </button>}
                                         </div>
                                     </div>
@@ -165,17 +168,17 @@ export default function MyPackagesSettings({ token }) {
                                         <div className="row">
                                             <div className="col-12 mt-4">
                                                 <h3 className=' text-capitalize my-3 fs-5 fw-bold'>
-                                                    current package details:
+                                                    {t('DashboardPackagesPage.packageDetailsTitle')}:
                                                 </h3>
                                                 <Table responsive>
                                                     <thead>
                                                         <tr className='table__default__header'>
-                                                            <th className='text-center'>Start Date</th>
-                                                            <th className='text-center'>End Date</th>
-                                                            <th className='text-center'>Price</th>
-                                                            <th className='text-center'>Discount Price</th>
-                                                            <th className='text-center'>Payment Status</th>
-                                                            <th className='text-center'>Status</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadStartDate')}</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadEndDate')}</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadPrice')}</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadDiscountPrice')}</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadPaymentStatus')}</th>
+                                                            <th className='text-center'>{t('DashboardPackagesPage.packageDetailstableHeadStatus')}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -208,7 +211,7 @@ export default function MyPackagesSettings({ token }) {
                             {packages?.length !== 0 ?
                                 <div className='row business-signUp__packages'>
                                     <h3 className=' text-capitalize my-3 fs-5 fw-bold'>
-                                        upgrade or renew package:
+                                        {t('DashboardPackagesPage.packageDetailsUpgradeRenew')}:
                                     </h3>
                                     {packages.map((pack) => (
                                         <div
@@ -225,7 +228,7 @@ export default function MyPackagesSettings({ token }) {
                                                 <p className='price'>{pack.price}</p>
                                                 {pack.discountPrice && (
                                                     <p className='discount-price'>
-                                                        Discount Price: {pack.discountPrice}
+                                                       {t('DashboardPackagesPage.packageDetailstableHeadDiscountPrice')}: {pack.discountPrice}
                                                     </p>
                                                 )}
                                                 <ul>
@@ -245,7 +248,7 @@ export default function MyPackagesSettings({ token }) {
                                                             : 'notSelectedPackageBtn'
                                                         }`}
                                                 >
-                                                    {selectedPackageId === pack.id ? 'Selected' : 'Select'}
+                                                    {selectedPackageId === pack.id ? `${t('DashboardPackagesPage.selectedBtn')}` : `${t('DashboardPackagesPage.selectBtn')}`}
                                                 </div>
                                             </div>
                                         </div>
@@ -258,13 +261,13 @@ export default function MyPackagesSettings({ token }) {
                             }
                             {(packages?.length !== 0 || companyPackageStatus?.length !== 0) &&
                                 <div className="action-selector mt-4">
-                                    <h4>Choose Action</h4>
+                                    <h4>{t('DashboardPackagesPage.packageDetailsChooseAct')}</h4>
                                     <select
                                         value={actionType}
                                         onChange={(e) => setActionType(e.target.value)}
-                                        className="form-select"
+                                        className={`form-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                     >
-                                        <option value="" disabled>choose type</option>
+                                        <option value="" disabled>{t('DashboardPackagesPage.packageDetailsChooseActPlaceholder')}</option>
                                         {
                                             companyPackageStatus?.map((status) => (
                                                 <option value={status} key={status}>
@@ -277,23 +280,23 @@ export default function MyPackagesSettings({ token }) {
                             }
                             {packages?.length !== 0 && (
                             <div className="action-selector mt-4">
-                                <h4>Choose Payment Method</h4>
+                                <h4>{t('DashboardPackagesPage.packageDetailsChoosePayment')}</h4>
                                 <select
                                     value={paymentMethod}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
-                                    className="form-select"
+                                    className={`form-select ${Lang === 'ar' ? 'formSelect_RTL' : ''}`}
                                 >
                                     <option value="" disabled>
-                                        Select Payment Method
+                                        {t('DashboardPackagesPage.packageDetailsChoosePaymentPlaceholder')}
                                     </option>
-                                    <option value="cash">Cash</option>
-                                    <option value="bank_transfer">Bank Transfer</option>
-                                    <option value="payment_link">Payment Link</option>
+                                    <option value="cash">{t('DashboardPackagesPage.packageDetailsChoosePaymentCash')}</option>
+                                    <option value="bank_transfer">{t('DashboardPackagesPage.packageDetailsChoosePaymentBankTransfer')}</option>
+                                    <option value="payment_link">{t('DashboardPackagesPage.packageDetailsChoosePaymentLink')}</option>
                                 </select>
                                 <p>
                                     {}
                                 </p>
-                                <h4 className="mt-4">Attach File</h4>
+                                <h4 className="mt-4">{t('DashboardPackagesPage.packageDetailsChoosePaymentAttach')}</h4>
                                 <input
                                     type="file"
                                     className="form-control"
@@ -308,7 +311,7 @@ export default function MyPackagesSettings({ token }) {
                                                     onClick={handleSubmit}
                                                     disabled={isSubmitting}
                                                 >
-                                                    {isSubmitting ? 'Submitting...' : 'Submit Changes'}
+                                                    {isSubmitting ? `${t('DashboardPackagesPage.packageDetailsSubmitting')}` : `${t('DashboardPackagesPage.packageDetailsSubmitChanges')}`}
                                                 </button>
                                             }
                                         </div>

@@ -10,8 +10,10 @@ import UnAuthSec from '../../components/unAuthSection/UnAuthSec';
 import ContentViewHeader from '../../components/contentViewHeaderSec/ContentViewHeader';
 import { useDashBoardFormDataStore } from '../../store/DashBoardCompanyForm';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyCompanyForm({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const cookiesData = Cookies.get('currentLoginedData');
@@ -58,7 +60,7 @@ export default function MyCompanyForm({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className='content__view__handler'>
-                                <ContentViewHeader title={'Company Form Data'} />
+                                <ContentViewHeader title={t('DashboardContactFormPage.headerPageText')} />
                                 {formData.length ? (
                                     <div className="row">
                                         <div className="col-12">
@@ -67,11 +69,11 @@ export default function MyCompanyForm({ token }) {
                                                     <thead>
                                                         <tr className='table__default__header'>
                                                             <th className='text-center'></th>
-                                                            <th className='text-center'>Form Name</th>
-                                                            <th className='text-center'>Sender Type</th>
-                                                            <th className='text-center'>Sent by (Name)</th>
-                                                            <th className='text-center'>Sent by (Email)</th>
-                                                            <th className='text-center'>Data</th>
+                                                            <th className='text-center'>{t('DashboardContactFormPage.tableHeadFormName')}</th>
+                                                            <th className='text-center'>{t('DashboardContactFormPage.tableHeadSenderType')}</th>
+                                                            <th className='text-center'>{t('DashboardContactFormPage.tableHeadSentByName')}</th>
+                                                            <th className='text-center'>{t('DashboardContactFormPage.tableHeadSentByEmail')}</th>
+                                                            <th className='text-center'>{t('DashboardContactFormPage.tableHeadData')}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -117,7 +119,7 @@ export default function MyCompanyForm({ token }) {
                                     </div>
                                 ) : (
                                     <div className='row'>
-                                        <div className="col-12 text-danger fs-5">No Form Data Available</div>
+                                        <div className="col-12 text-danger fs-5">{t('DashboardContactFormPage.NoFormDataText')}</div>
                                     </div>
                                 )}
                             </div>
@@ -128,7 +130,7 @@ export default function MyCompanyForm({ token }) {
             {selectedFormId && (
                 <Modal show={showModal} onHide={closeModal} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Form Data Details</Modal.Title>
+                        <Modal.Title>{t('DashboardContactFormPage.ModalTitle')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className='row p-4'>
                         {formData
@@ -147,7 +149,7 @@ export default function MyCompanyForm({ token }) {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
-                                                View Link <i className="bi bi-arrow-up-right"></i>
+                                                {t('DashboardContactFormPage.ModalViewBtn')} <i className="bi bi-arrow-up-right"></i>
                                             </NavLink>
                                         ) : (
                                             value
@@ -157,7 +159,7 @@ export default function MyCompanyForm({ token }) {
                             ))}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={closeModal}>Close</Button>
+                        <Button variant="secondary" onClick={closeModal}>{t('DashboardContactFormPage.ModalCloseBtn')}</Button>
                     </Modal.Footer>
                 </Modal>
             )}

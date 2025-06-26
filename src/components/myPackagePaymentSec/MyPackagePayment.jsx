@@ -3,8 +3,10 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { baseURL } from '../../functions/baseUrl';
+import { useTranslation } from 'react-i18next';
 
 export default function MyPackagePayment({ token, loginType }) {
+    const { t } = useTranslation();
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
 
     const handlePaymentSubmit = async (data) => {
@@ -48,24 +50,24 @@ export default function MyPackagePayment({ token, loginType }) {
 
     return (
         <div className="container mt-4">
-            <h3>Payment Information</h3>
+            <h3>{t('DashboardPackagesPage.paymentInfoTitle')}</h3>
             <form onSubmit={handleSubmit(handlePaymentSubmit)}>
                 <div className="mb-3">
-                    <label htmlFor="payment_method" className="form-label">Payment Method</label>
+                    <label htmlFor="payment_method" className="form-label">{t('DashboardPackagesPage.transactionstableHeadPaymentMethod')}</label>
                     <select
                         id="payment_method"
                         className="form-select"
                         {...register('payment_method', { required: 'Payment method is required' })}
                     >
-                        <option value="cash">Cash</option>
-                        <option value="bank_transfer">Bank Transfer</option>
-                        <option value="payment_link">Payment Link</option>
+                        <option value="cash">{t('DashboardPackagesPage.packageDetailsChoosePaymentCash')}</option>
+                        <option value="bank_transfer">{t('DashboardPackagesPage.packageDetailsChoosePaymentBankTransfer')}</option>
+                        <option value="payment_link">{t('DashboardPackagesPage.packageDetailsChoosePaymentLink')}</option>
                     </select>
                     {errors.payment_method && <small className="text-danger">{errors.payment_method.message}</small>}
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="attachment" className="form-label">Attachment (optional)</label>
+                    <label htmlFor="attachment" className="form-label">{t('DashboardPackagesPage.paymentInfoAttachment')}</label>
                     <input
                         type="file"
                         id="attachment"
@@ -77,7 +79,7 @@ export default function MyPackagePayment({ token, loginType }) {
                 </div>
 
                 <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit Payment'}
+                    {isSubmitting ? `${t('DashboardPackagesPage.packageDetailsSubmitting')}` : `${t('DashboardPackagesPage.packageDetailsSubmitPayment')}`}
                 </button>
             </form>
         </div>

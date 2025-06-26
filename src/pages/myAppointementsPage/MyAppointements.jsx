@@ -9,8 +9,10 @@ import AddNewItem from '../../components/addNewItemBtn/AddNewItem';
 import { useDashBoardAppointmentsStore } from '../../store/DashBoardAppointMents';
 import Cookies from 'js-cookie';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function MyAppointments({ token }) {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const cookiesData = Cookies.get("currentLoginedData");
     const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
@@ -52,7 +54,7 @@ export default function MyAppointments({ token }) {
                             <UnAuthSec />
                         ) : (
                             <div className='content__view__handler'>
-                                <ContentViewHeader title={'Company Appointments'} />
+                                <ContentViewHeader title={t('DashboardAppointementPage.headerPageText')} />
                                 <AddNewItem link={'/profile/appointments/addNewAppointment'} />
                                 {appointments.length !== 0 ? (
                                     <div className="row">
@@ -62,10 +64,10 @@ export default function MyAppointments({ token }) {
                                                     <thead>
                                                         <tr className='table__default__header'>
                                                             <th className='text-center'></th>
-                                                            <th className='text-center'>Date From</th>
-                                                            <th className='text-center'>Date To</th>
-                                                            <th className='text-center'>Available From</th>
-                                                            <th className='text-center'>Available To</th>
+                                                            <th className='text-center'>{t('DashboardAppointementPage.tableHeadDateFrom')}</th>
+                                                            <th className='text-center'>{t('DashboardAppointementPage.tableHeadDateTo')}</th>
+                                                            <th className='text-center'>{t('DashboardAppointementPage.tableHeadAvailableFrom')}</th>
+                                                            <th className='text-center'>{t('DashboardAppointementPage.tableHeadAvailableTo')}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -120,7 +122,7 @@ export default function MyAppointments({ token }) {
                                 ) : (
                                     <div className='row'>
                                         <div className="col-12 text-danger fs-5">
-                                            No Appointment Items Yet
+                                            {t('DashboardAppointementPage.NoAppointmentText')}
                                         </div>
                                     </div>
                                 )}

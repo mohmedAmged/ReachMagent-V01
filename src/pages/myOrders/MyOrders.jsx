@@ -12,7 +12,10 @@ import { baseURL } from '../../functions/baseUrl';
 import toast from 'react-hot-toast';
 import './myOrderStyle.css'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 export default function MyOrders({ token }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
   
   const [activeRole, setActiveRole] = useState('Sell');
@@ -27,7 +30,8 @@ export default function MyOrders({ token }) {
     const slug = loginType === 'user' ? 'all-quotation-orders' : 'quotation-orders';
     await axios.get(`${baseURL}/${loginType}/${slug}${params ? `${params}&` : '?'}page=${currentPage}?t=${new Date().getTime()}`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "Locale": Lang
       }
     })
       .then(response => {
@@ -108,7 +112,7 @@ console.log(allOrders);
                   All
                 </button> */}
                 <button
-                  className={`def__btn px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
+                  className={`${Lang === 'ar' ? 'def__btn_RTL' : 'def__btn'} px-5 ${activeRole === 'Sell' ? 'rolesActiveBtn' : ''}`}
                   onClick={() =>{
                     setActiveRole('Sell');
                     getAllOrders('?q=sell');
@@ -117,7 +121,7 @@ console.log(allOrders);
                   Sell
                 </button>
                 <button
-                  className={`cust__btn px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
+                  className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
                   onClick={() =>{
                     setActiveRole('Buy');
                     getAllOrders('?q=buy');
@@ -127,7 +131,7 @@ console.log(allOrders);
                 </button>
               </div>
             }
-            <ContentViewHeader title={'My Orders'} />
+            <ContentViewHeader title={t('DashboardQuotationOrdersPage.headerPageText')} />
             {
               unAuth ?
                 <UnAuthSec />
@@ -142,12 +146,12 @@ console.log(allOrders);
                               <thead>
                                 <tr className='table__default__header'>
                                   <th>
-                                    Order Info
+                                    {t('DashboardQuotationOrdersPage.tableHeadOrderInfo')}
                                   </th>
-                                  <th className='text-center'>Date</th>
-                                  <th className='text-center'>rquested by</th>
-                                  <th className='text-center'>Status</th>
-                                  <th className='text-center'>Price</th>
+                                  <th className='text-center'>{t('DashboardQuotationOrdersPage.tableHeadDate')}</th>
+                                  <th className='text-center'>{t('DashboardQuotationOrdersPage.tableHeadRquestedBy')}</th>
+                                  <th className='text-center'>{t('DashboardQuotationOrdersPage.tableHeadStatus')}</th>
+                                  <th className='text-center'>{t('DashboardQuotationOrdersPage.tableHeadPrice')}</th>
                                   <th className='text-center'></th>
                                 </tr>
                               </thead>
@@ -205,7 +209,7 @@ console.log(allOrders);
                                       <div className="order_item_handler">
                                         <div className="order_item_header">
                                           <p className='card_title'>
-                                            order created at<span> ({el?.created_at})</span>
+                                            {t('DashboardQuotationOrdersPage.formInputCreatedAt')}<span> ({el?.created_at})</span>
                                           </p>
                                           {/* <i className="bi bi-trash-fill" onClick={() => handleDeleteOrder(el?.id)}></i> */}
                                         </div>
@@ -216,26 +220,26 @@ console.log(allOrders);
                                           <div className="col-lg-6 col-md-6 col-sm-12">
                                             <div className="order_details_info">
                                               <p>
-                                                order from:<span> {el?.company_name}</span>
+                                                {t('DashboardQuotationOrdersPage.formInputOrderfrom')}:<span> {el?.company_name}</span>
                                               </p>
                                               <p>
-                                                order status: <span className={`order__statue ${el?.order_status}`}> {el?.order_status}</span>
+                                                {t('DashboardQuotationOrdersPage.formInputOrderstatus')} <span className={`order__statue ${el?.order_status}`}> {el?.order_status}</span>
                                               </p>
                                               <p>
-                                                sub total: <span> {el?.currency_symbol}{el?.sub_total}</span>
+                                                {t('DashboardQuotationOrdersPage.formInputSubTotal')}: <span> {el?.currency_symbol}{el?.sub_total}</span>
                                               </p>
                                               <p>
-                                                shipping price: <span> {el?.currency_symbol}{el?.shipping_price}</span>
+                                                {t('DashboardQuotationOrdersPage.formInputShippingPrice')}: <span> {el?.currency_symbol}{el?.shipping_price}</span>
                                               </p>
                                               <p>
-                                                total: <span> {el?.currency_symbol}{el?.total_price}</span>
+                                                {t('DashboardQuotationOrdersPage.formInputTotal')}: <span> {el?.currency_symbol}{el?.total_price}</span>
                                               </p>
                                             </div>
                                           </div>
                                           <div className="col-lg-4 col-md-4 col-sm-12 orderId_handler">
                                             <NavLink className={'nav-link'} to={`/profile/quotation-orders/${el?.code}`}>
                                               <p>
-                                                order Id: <span> #{el?.code}</span> <i className="bi bi-arrow-up-right"></i>
+                                                {t('DashboardQuotationOrdersPage.formInputOrderId')}: <span> #{el?.code}</span> <i className="bi bi-arrow-up-right"></i>
                                               </p>
                                             </NavLink>
                                           </div>
@@ -274,7 +278,7 @@ console.log(allOrders);
                       :
                       <div className='row'>
                         <div className="col-12 text-danger fs-5">
-                          No Orders Yet
+                          {t('DashboardQuotationOrdersPage.noOrdersItemsText')}
                         </div>
                       </div>
                   }

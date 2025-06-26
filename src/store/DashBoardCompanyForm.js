@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardFormDataStore = create((set, get) => ({
     loading: true,
@@ -26,7 +27,7 @@ export const useDashBoardFormDataStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-form-data?page=${page}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 formData: response?.data?.data?.formData,

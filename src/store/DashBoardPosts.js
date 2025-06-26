@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
+import { Lang } from '../functions/Token';
 
 export const useDashBoardPostsStore = create((set, get) => ({
     posts: [],
@@ -24,7 +25,7 @@ export const useDashBoardPostsStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-posts?page=${page}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
             });
             set({
                 posts: response?.data?.data?.posts,

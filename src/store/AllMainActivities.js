@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { baseURL } from "../functions/baseUrl";
-import { Token } from "../functions/Token";
+import { Lang, Token } from "../functions/Token";
 
 export const GetAllMainActivitiesStore = create((set, get) => ({
     mainActivities: [],
@@ -18,7 +18,7 @@ export const GetAllMainActivitiesStore = create((set, get) => ({
         set({ mainActivitiesLoading: true });
         await axios.get(`${baseURL}/main-activities`, {
             headers: {
-                headers: Token ? { Authorization: `Bearer ${Token}` } : {}
+                headers: Token ? { Authorization: `Bearer ${Token}`, "Locale": Lang } : {"Locale": Lang}
             }
         })
             .then(res => set(() => (

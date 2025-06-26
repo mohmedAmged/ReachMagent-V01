@@ -14,33 +14,10 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import MyLoader from '../myLoaderSec/MyLoader';
 import Cookies from 'js-cookie';
 import CustomDropdown from '../customeDropdownSelectSec/CustomeDropdownSelect';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
-let allTypes = [
-  {
-    id: 1,
-    name: 'Selling Physical Products',
-  },
-  {
-    id: 2,
-    name: 'Manufacturing Products',
-  },
-  {
-    id: 3,
-    name: 'Selling Digital Products',
-  },
-  {
-    id: 4,
-    name: 'Service Provider',
-  },
-  {
-    id: 5,
-    name: 'Raw Material Supplier',
-  },
-  {
-    id: 6,
-    name: 'Company Offers Customizations',
-  },
-];
+
 
 const customIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
@@ -82,6 +59,43 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
 };
 
 export default function BusinessSignUpFormMainSec({ countries, citizenships, industries, mainCategories, mainActivities }) {
+    const { t } = useTranslation();
+  let allTypes = [
+  {
+    id: 1,
+    name: 'Selling Physical Products',
+    renderNam: `${t('BuisnessSignUpPage.typeSellingPhysical')}`
+  },
+  {
+    id: 2,
+    name: 'Manufacturing Products',
+    renderNam: `${t('BuisnessSignUpPage.typeManufacturing')}`
+  },
+  {
+    id: 3,
+    name: 'Selling Digital Products',
+    renderNam: `${t('BuisnessSignUpPage.typeSellingDigital')}`
+
+  },
+  {
+    id: 4,
+    name: 'Service Provider',
+    renderNam: `${t('BuisnessSignUpPage.typeServiceProvider')}`
+
+  },
+  {
+    id: 5,
+    name: 'Raw Material Supplier',
+    renderNam: `${t('BuisnessSignUpPage.typeRowMaterial')}`
+
+  },
+  {
+    id: 6,
+    name: 'Company Offers Customizations',
+    renderNam: `${t('BuisnessSignUpPage.typeCustomizations')}`
+
+  },
+];
   const loginType = localStorage.getItem('loginType')
   const [initialPosition, setInitialPosition] = useState([0, 0]);
   const [location, setLocation] = useState({ lat: initialPosition[0], lng: initialPosition[1] });
@@ -202,7 +216,11 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
       setValue('sub_category_id', '');
       const toastId = toast.loading('Loading , Please Wait !');
       const subCatInsideCurrentMainCat = async () => {
-        const response = await axios.get(`${baseURL}/main-categories/${currentCategory?.mainCategorySlug}`);
+        const response = await axios.get(`${baseURL}/main-categories/${currentCategory?.mainCategorySlug}`,  {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         if (response?.status === 200) {
           setCurrentSubCategoriesInsideMainCategory(response?.data?.data?.subCategories);
           toast.success(`( ${response?.data?.data?.mainCategoryName} )Activity Added Successfully.`, {
@@ -236,7 +254,11 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
       setValue('sub_activity_id', []);
       const toastId = toast.loading('Loading , Please Wait !');
       const subActInsideCurrentMainAct = async () => {
-        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`);
+        const response = await axios.get(`${baseURL}/main-activities/${currentActivity?.mainActivitySlug}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         if (response?.status === 200) {
           setcurrentSubActivitiesInsideMainActivity(response?.data?.data?.subActivities);
           toast.success(`( ${response?.data?.data?.mainActivityName} )Activity Added Successfully.`, {
@@ -325,7 +347,11 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
     // Fetch sub-activities for the selected activity slug
     const fetchSubActivities = async () => {
       try {
-        const response = await axios.get(`${baseURL}/main-activities/${activitySlug}`);
+        const response = await axios.get(`${baseURL}/main-activities/${activitySlug}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         if (response?.status === 200) {
           const newSubActivities = response?.data?.data?.subActivities;
           // Update sub-activities for the selected activity
@@ -381,7 +407,11 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
     if (currentCountry) {
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
-        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
+        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         setCurrentCitiesInsideCountry(response?.data?.data?.cities);
       };
       citiesInsideCurrentCountry();
@@ -409,7 +439,11 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
     if (currentCityId) {
       const toastId = toast.loading('Loading Areas , Please Wait !');
       const AreasInsideCurrentCities = async () => {
-        const response = await axios.get(`${baseURL}/cities/${currentCityId}`);
+        const response = await axios.get(`${baseURL}/cities/${currentCityId}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         setCurrentAreasInsideCities(response?.data?.data?.areas);
       };
       AreasInsideCurrentCities();
@@ -438,7 +472,11 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
     if (currentCountry) {
       const toastId = toast.loading('Loading Cities , Please Wait !');
       const citiesInsideCurrentCountry = async () => {
-        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`);
+        const response = await axios.get(`${baseURL}/countries/${currentCountry?.code}`, {
+                    headers: {
+                        "Locale" : Lang
+                    }
+                });
         if (response?.status === 200) {
           setCurrentEmployeeCitiesInsideCountry(response?.data?.data?.cities);
           toast.success('Cities Loaded Successfully.', {
@@ -788,10 +826,10 @@ console.log(currentSubActivitiesInsideMainActivity);
                 <div className="col-12">
                   <ul className='row loginToggler'>
                     <li className={`col-md-3 cursorPointer`} onClick={() => navigate('/personalsignUp')}>
-                      User
+                      {t('PersonalSignUpPage.userTitFilterItem')}
                     </li>
                     <li className={`col-md-3 cursorPointer active`} onClick={() => navigate('/business-signUp')}>
-                      Business
+                       {t('PersonalSignUpPage.businessTitFilterItem')}
                     </li>
                   </ul>
                   <div className="signUpForm__mainContent">
@@ -800,7 +838,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                       {
                         currentStep === 'One' &&
                         <h3 className="col-12 text-center py-5 signUpForm__head">
-                          Business Information
+                          {t('BuisnessSignUpPage.stepOneTitle')}
                         </h3>
                       }
                       <form onSubmit={handleSubmit(onSubmit)} className='row'>
@@ -815,13 +853,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                           </div> */}
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_name">
-                                Company Name <span className="requiredStar">*</span> 
-                                <i title="ReachMagnet" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('BuisnessSignUpPage.companyNameFormInput')} <span className="requiredStar">*</span> 
+                                <i title={t('BuisnessSignUpPage.companyNameFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpcompany_name'
-                                placeholder='Company’s Name'
+                                placeholder={t('BuisnessSignUpPage.companyNameFormInput')}
                                 {...register('company_name')}
                                 className={`form-control signUpInput ${errors.company_name ? 'inputError' : ''}`}
                               />
@@ -833,13 +871,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_email">
-                                E-mail Address <span className="requiredStar">*</span>
-                                <i title="user@gmail.com" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
+                                <i title={t('PersonalSignUpPage.emailAddressFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpcompany_email'
-                                placeholder='ex: admin@gmail.com'
+                                placeholder={t('PersonalSignUpPage.emailAddressFormInputPlaceholder')} 
                                 {...register('company_email')}
                                 className={`form-control signUpInput ${errors.company_email ? 'inputError' : ''}`}
                               />
@@ -851,7 +889,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpPhone_numberOne">
-                                First Phone Number
+                                {t('BuisnessSignUpPage.firstPhoneNumFormInput')} 
                                 <span className="requiredStar"> *</span>
                                 <i title="01099558877" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
@@ -863,7 +901,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   value={watch("phone_one_code")}
                                   errors={errors}
                                   inputName="phone_one_code"
-                                  placeholder="Select a country"
+                                  placeholder={t('PersonalSignUpPage.countryFormInputPlaceholder')}
                                   isFlagDropdown={true}
                                 />
                                 </div>
@@ -871,7 +909,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   <input
                                     type='number'
                                     id='signUpPhone_numberOne'
-                                    placeholder="Company's First Phone Number"
+                                    placeholder={t('BuisnessSignUpPage.firstPhoneNumFormInput')}
                                     {...register('phone_one')}
                                     className={`form-control signUpInput ${errors.phone_one ? 'inputError' : ''}`}
                                   />
@@ -885,8 +923,8 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpPhone_numberTwo">
-                                Second Phone Number
-                                <span className="optional">(Optional)</span>
+                                {t('BuisnessSignUpPage.secondPhoneNumFormInput')}
+                                <span className="optional">({t('PersonalSignUpPage.optionalText')})</span>
                                 <i title="01088998899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
@@ -897,7 +935,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   value={watch("phone_two_code")}
                                   errors={errors}
                                   inputName="phone_two_code"
-                                  placeholder="Select a country"
+                                  placeholder={t('PersonalSignUpPage.countryFormInputPlaceholder')}
                                   isFlagDropdown={true}
                                 />
                                 </div>
@@ -905,7 +943,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   <input
                                     type='number'
                                     id='signUpPhone_numberTwo'
-                                    placeholder="Company's Second Phone Number"
+                                    placeholder={t('BuisnessSignUpPage.secondPhoneNumFormInput')}
                                     {...register('phone_two')}
                                     className={`form-control signUpInput ${errors.phone_two ? 'inputError' : ''}`}
                                   />
@@ -919,14 +957,14 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpregisteration_number">
-                                Registration Number
+                                {t('BuisnessSignUpPage.registrationNumberFormInput')}
                                 <span className="requiredStar"> *</span>
                                 <i title="123456" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpregisteration_number'
-                                placeholder="Company's Registeration Number"
+                                placeholder={t('BuisnessSignUpPage.registrationNumberFormInput')}
                                 {...register('registeration_number')}
                                 className={`form-control signUpInput ${errors.registeration_number ? 'inputError' : ''}`}
                               />
@@ -938,14 +976,14 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpreferral_code">
-                                Referral Code
-                                <span className="optional"> (Optional)</span>
+                                {t('BuisnessSignUpPage.referralCodeFormInput')}
+                                <span className="optional"> ({t('PersonalSignUpPage.optionalText')})</span>
                                 <i title="abc123" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpreferral_code'
-                                placeholder="Referral Code"
+                                placeholder={t('BuisnessSignUpPage.referralCodeFormInput')}
                                 {...register('referral_code')}
                                 className={`form-control signUpInput ${errors.referral_code ? 'inputError' : ''}`}
                               />
@@ -982,30 +1020,30 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <div className="row">
                               <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpCompany_main_types">
-                                Business Types
+                                {t('BuisnessSignUpPage.businessTypesFormInput')}
                                 <span className="requiredStar"> * </span>
-                                <span className="optional">(MultiChoice)</span>
+                                <span className="optional">({t('BuisnessSignUpPage.businessTypesFormInputMulti')})</span>
                                 <i title="Company Offers Customization" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 onChange={handleChangeBusinessType}
                                 id="signUpCompany_main_types"
                                 value={selectValue}
-                                className={`form-select signUpInput ${errors.company_main_type ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.company_main_type ? 'inputError' : ''}`}
                               >
                                 <option value="" disabled>
-                                  Select Type Of Business
+                                  {t('BuisnessSignUpPage.businessTypesFormInputPlaceholder')}
                                 </option>
                                 {allTypes.map((type) => (
                                   <option key={type.id} value={type.id}>
-                                    {type.name}
+                                    {type.renderNam}
                                   </option>
                                 ))}
                               </select>
                               <div>
                                 {currentBusinessTypes.map((type) => (
                                   <span className='chosen__choice' key={type.id}>
-                                    {type.name}
+                                    {type.renderNam}
                                     <i
                                       onClick={() => handleDeleteBusinessType(type)}
                                       className="bi bi-trash chosen__choice-delete"
@@ -1024,17 +1062,17 @@ console.log(currentSubActivitiesInsideMainActivity);
                             
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcategory_id">
-                                Business Activity
+                                {t('BuisnessSignUpPage.businessActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title="business category" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessActivityFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcategory_id"
                                 defaultValue={''}
-                                className={`form-select signUpInput ${errors.category_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.category_id ? 'inputError' : ''}`}
                                 {...register('category_id')} >
                                 <option value="" disabled>
-                                  Select an Activity
+                                  {t('BuisnessSignUpPage.businessActivityFormInputPlaceholder')}
                                 </option>
                                 {mainCategories?.map((cat) => (
                                   <option key={cat?.mainCategoryId} value={cat?.mainCategoryId}>
@@ -1050,17 +1088,17 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpsub_category_id">
-                                Business Sub-Activity
+                                {t('BuisnessSignUpPage.businessSubActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title="business subcategory" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessSubActivityFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
                                   id="signUpsub_category_id"
-                                  className={`form-select signUpInput ${errors.sub_category_id ? 'inputError' : ''}`}
+                                  className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.sub_category_id ? 'inputError' : ''}`}
                                   {...register('sub_category_id')} >
                                   <option value="" disabled>
-                                    Select a Sub-Activity
+                                    {t('BuisnessSignUpPage.businessSubActivityFormInputPlaceholder')}
                                   </option>
                                   {currentSubCategoriesInsideMainCategory?.map((subCat) => (
                                     <option key={subCat?.subCategoryId} value={subCat?.subCategoryId}>
@@ -1078,7 +1116,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-12">
                               <div className=''>
                                 <button style={{background: '#412794'}} type="button" onClick={handleAddActivity} className="btn btn-primary btn__Activity my-3">
-                                    Add More Activity & Sub-Activity
+                                     {t('BuisnessSignUpPage.addMoreActsAndSubBtn')}
                                   </button>
                               </div>
                               {selectedActivities.map((_, index) => (
@@ -1086,16 +1124,16 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   
                                   <div className="col-lg-6 mb-4">
                                     <label htmlFor={`activity_id_${index}`}>
-                                      More Activity
+                                      {t('BuisnessSignUpPage.moreActsFormInput')}
                                       <span className="requiredStar"> *</span>
                                     </label>
                                     <select
                                       id={`activity_id_${index}`}
-                                      className="form-select signUpInput"
+                                      className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''}`}
                                       value={selectedActivities[index]}
                                       onChange={(e) => handleActivityChange(e, index)}
                                     >
-                                      <option value="" disabled>Select an Activity</option>
+                                      <option value="" disabled>{t('BuisnessSignUpPage.businessActivityFormInputPlaceholder')}</option>
                                       {mainActivities?.map((act) => (
                                         <option key={act?.mainActivityId} value={act?.mainActivityId}>
                                           {act?.mainActivityName}
@@ -1106,16 +1144,16 @@ console.log(currentSubActivitiesInsideMainActivity);
 
                                   <div className="col-lg-6 mb-4">
                                     <label htmlFor={`sub_activity_id_${index}`}>
-                                      More Sub-Activity
+                                      {t('BuisnessSignUpPage.moreSubActsFormInput')}
                                       <span className="requiredStar"> *</span>
                                     </label>
                                     <select
                                       id={`sub_activity_id_${index}`}
-                                      className="form-select signUpInput"
+                                      className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''}`}
                                       value={selectedSubActivities[index]}
                                       onChange={(e) => handleSubActivityChange(e, index)}
                                     >
-                                      <option value="" disabled>Select a Sub-Activity</option>
+                                      <option value="" disabled>{t('BuisnessSignUpPage.businessSubActivityFormInputPlaceholder')}</option>
                                       {subActivitiesForSelected[index]?.map((subCat) => (
                                         <option key={subCat?.subActivityId} value={subCat?.subActivityId}>
                                           {subCat?.subActivityName}
@@ -1129,7 +1167,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                     className="btn btn-danger"
                                     onClick={() => handleRemoveActivity(index)}
                                   >
-                                    Delete
+                                    {t('BuisnessSignUpPage.DeleteBtn')}
                                   </button>
                                   </div>
                                   
@@ -1138,14 +1176,14 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpwebsite_link">
-                                Website Link
+                               {t('BuisnessSignUpPage.websiteLinkFormInput')}
                                 <span className="requiredStar"> *</span>
                                 <i title="https://uiverse.io" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpwebsite_link'
-                                placeholder="Company's Website Link"
+                                placeholder={t('BuisnessSignUpPage.websiteLinkFormInput')}
                                 {...register('website_link')}
                                 className={`form-control signUpInput ${errors.website_link ? 'inputError' : ''}`}
                               />
@@ -1157,9 +1195,9 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpBusinessdocuments">
-                                Company's Documents <span className="requiredStar"> * </span>
-                                <span className="optional">(MultiChoice)</span>
-                                <i title="document.pdf" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('BuisnessSignUpPage.companyDocumentsFormInput')} <span className="requiredStar"> * </span>
+                                <span className="optional">({t('BuisnessSignUpPage.businessTypesFormInputMulti')})</span>
+                                <i title={t('BuisnessSignUpPage.companyDocumentsFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 onChange={handleGettingFile}
@@ -1190,11 +1228,11 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-12 mb-4 position-relative">
                               <label htmlFor="compnayLogo" className=''>
-                                Company's Logo <span className="requiredStar"> * </span>
+                                {t('BuisnessSignUpPage.CompanyLogoFormInput')} <span className="requiredStar"> * </span>
                                 <i title="logo.png" className="bi bi-info-circle ms-1 cursorPointer"></i>
                                 <br/>
                                 <span style={{color:'gray', fontSize:'14px'}} >
-                                  (Recommended size 512 * 512)
+                                  ({t('BuisnessSignUpPage.CompanyLogoFormInputrecomedned')})
                                 </span>
                               </label>
                               <input
@@ -1219,7 +1257,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
-                                Next Step <i className="bi bi-arrow-right-circle"></i>
+                                {t('BuisnessSignUpPage.nextStepBtn')} <i className="bi bi-arrow-right-circle"></i>
                               </button>
                             </div>
                           </>
