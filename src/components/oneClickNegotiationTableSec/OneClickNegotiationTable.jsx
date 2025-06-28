@@ -6,8 +6,11 @@ import { baseURL } from "../../functions/baseUrl";
 import { NavLink, useParams } from "react-router-dom";
 import { scrollToTop } from "../../functions/scrollToTop";
 import toast from "react-hot-toast";
+import { Lang } from "../../functions/Token";
+import { useTranslation } from "react-i18next";
 
 export default function OneClickNegotiationTable({ token, setUnAuth }) {
+    const { t } = useTranslation();
   const loginType = localStorage.getItem("loginType");
   const [newData, setNewdata] = useState([]);
   const [fullData, setFulldata] = useState([]);
@@ -28,6 +31,7 @@ export default function OneClickNegotiationTable({ token, setUnAuth }) {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Locale": Lang
           },
           params: {
             can_achieve_target_budget,
@@ -85,7 +89,7 @@ console.log(newData);
       
        <div className="row align-items-center">
         <div className="col-6">
-          <ContentViewHeader title={`All Submissions`} />
+          <ContentViewHeader title={t('DashboardOneClickNegotiate.pageHeaderTitle')} />
         </div>
         <div className="col-6">
           <div className="singleQuoteInput">
@@ -97,10 +101,10 @@ console.log(newData);
                 id="oneclickquotationFilterComapnies"
                  onChange={handleFilterChange}
             >
-                <option value=""  className="text-capitalize">Filter Companies</option>
-                <option value="budget" className="text-capitalize">can achieve target budget</option>
-                <option value="delivery_time" className="text-capitalize">can achieve target delivery time</option>
-                <option value="delivery_terms" className="text-capitalize">can achieve preferred delivery terms
+                <option value=""  className="text-capitalize">{t('DashboardOneClickNegotiate.filterCompaniesFormInput')}</option>
+                <option value="budget" className="text-capitalize">{t('DashboardOneClickNegotiate.achiveTargetBudgetFormInput')}</option>
+                <option value="delivery_time" className="text-capitalize">{t('DashboardOneClickNegotiate.achiveTargetTimeFormInput')}</option>
+                <option value="delivery_terms" className="text-capitalize">{t('DashboardOneClickNegotiate.achiveTargetTermsFormInput')}
                 </option>
                 
               
@@ -112,8 +116,8 @@ console.log(newData);
         <Table responsive>
           <thead>
             <tr className="table__default__header">
-              <th>Company</th>
-              <th>Status</th>
+              <th>{t('DashboardOneClickNegotiate.tableheadCompany')}</th>
+              <th>{t('DashboardOneClickNegotiate.tableheadStatus')}</th>
             </tr>
           </thead>
           <tbody>
@@ -136,7 +140,7 @@ console.log(newData);
                   >
                     {
                       <button className={`table__statu__btn show__btn`}>
-                        <span>show</span>
+                        <span>{t('DashboardOneClickNegotiate.tableShowBtn')}</span>
                         <i className="bi bi-eye"></i>
                       </button>
                     }
@@ -145,7 +149,7 @@ console.log(newData);
               </tr>
             ))
             : 
-            <h2 className="text-danger text-center text-capitalize my-3 fs-4">no company accecpt with this filter</h2>
+            <h2 className="text-danger text-center text-capitalize my-3 fs-4">{t('DashboardOneClickNegotiate.noCompanyWithFilter')}</h2>
           }
           </tbody>
         </Table>

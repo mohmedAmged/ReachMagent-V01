@@ -6,7 +6,9 @@ import { ResetPasswordStep1Schema } from '../../validation/ResetPasswordStep1Sch
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
+import { useTranslation } from 'react-i18next';
 export default function ForgetPasswordForm() {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const {
         register,
@@ -56,17 +58,17 @@ console.log(loginType);
                     <div className='signUpForm__mainContent'>
                         <div className='row'>
                             <h3 className="col-12 text-center pt-5 signUpForm__head">
-                                Forget your password
+                                {t('ForgetPasswordPage.pageHeaderText')}
                             </h3>
                             <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
                                 <div className="col-lg-8 my-5">
                                     <label htmlFor="forgetPasswordEmailAddress">
-                                        E-mail Address <span className="requiredStar">*</span>
+                                        {t('ForgetPasswordPage.emaiFormInput')} <span className="requiredStar">*</span>
                                     </label>
                                     <input
                                         type='text'
                                         id='forgetPasswordEmailAddress'
-                                        placeholder='Enter your existing email'
+                                        placeholder={t('ForgetPasswordPage.emaiFormInputPlaceholder')}
                                         {...register('email')}
                                         className={`form-control signUpInput ${errors?.email?.message && 'inputError'}`}
                                     />
@@ -84,9 +86,9 @@ console.log(loginType);
                                     />
                                 </div>
                                 <div className="col-12 text-dark text-center">
-                                    <span>Back To</span>
+                                    <span>{t('ForgetPasswordPage.backToBtn')}</span>
                                     <NavLink className="gotoLoginLink ms-2" to="/Login">
-                                        Login
+                                        {t('ForgetPasswordPage.loginBtn')}
                                     </NavLink>
                                 </div>
                             </form>

@@ -11,8 +11,11 @@ import MyLoader from "../myLoaderSec/MyLoader";
 import UnAuthSec from "../unAuthSection/UnAuthSec";
 import Cookies from "js-cookie";
 import MyNewLoader from "../myNewLoaderSec/MyNewLoader";
+import { Lang } from "../../functions/Token";
+import { useTranslation } from "react-i18next";
 
 export default function ShowOneClickQuotation({ token }) {
+  const { t } = useTranslation();
   const loginType = localStorage.getItem("loginType");
   const { offerId } = useParams();
   const [fullData, setFullData] = useState([]);
@@ -58,6 +61,7 @@ export default function ShowOneClickQuotation({ token }) {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Locale": Lang
           },
         }
       );
@@ -198,19 +202,19 @@ export default function ShowOneClickQuotation({ token }) {
                   <UnAuthSec />
                   :
                   <div className="content__view__handler">
-                    <ContentViewHeader title={`Quotation: ${fullData?.code}`} />
+                    <ContentViewHeader title={`${t('DashboardSingleQuotationPage.quotationTitle')}: ${fullData?.code}`} />
                     <div className="quotationTable__content">
                       <Table responsive>
                         <thead>
                           <tr className="table__default__header">
-                            <th># Title ( Code )</th>
-                            <th className='text-center'>Unit Of Measure</th>
-                            <th className='text-center'>QTY</th>
-                            <th className='text-center'>Unit Price</th>
-                            <th className='text-center'>Tax (xx%)</th>
-                            <th className='text-center'>Total Price</th>
-                            <th className='text-center'>Duration (##days)</th>
-                            <th className='text-center'>Current Status</th>
+                            <th># {t('DashboardSingleQuotationPage.tableHeadItemTitle')} ( Code )</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemMeasure')}</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemQTY')}</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemUnitPrice')}</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemTax')} (xx%)</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemPrice')}</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemDuration')}</th>
+                            <th className='text-center'>{t('DashboardSingleQuotationPage.tableHeadItemStatus')}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -228,7 +232,7 @@ export default function ShowOneClickQuotation({ token }) {
                               </td>
                               <td className='text-center text-capitalize'>
                                 {
-                                  row?.unit_of_measure ? row?.unit_of_measure !== 'N/A' ? row?.unit_of_measure : '' : 'Customized Product'
+                                  row?.unit_of_measure ? row?.unit_of_measure !== 'N/A' ? row?.unit_of_measure : '' : `${t('DashboardSingleQuotationPage.tableBodyItemCustomizedProduct')}`
                                 }
                               </td>
                               <td className='text-center text-capitalize'>
@@ -244,7 +248,7 @@ export default function ShowOneClickQuotation({ token }) {
                                 {row?.total_price !== 'N/A' ? row?.total_price : 0}
                               </td>
                               <td className='text-center text-capitalize'>
-                                {row?.duration !== 'N/A' ? +row?.duration : 0} days
+                                {row?.duration !== 'N/A' ? +row?.duration : 0} {t('DashboardSingleQuotationPage.DaysTextInfo')}
                               </td>
                               <td className='text-center text-capitalize'>
                                 <button className={`${row?.status} tableBtnSingleQuote`}>
@@ -257,17 +261,17 @@ export default function ShowOneClickQuotation({ token }) {
                       </Table>
                     </div>
                     <div className="quoteTotals__handler">
-                      <h3>Quote Totals</h3>
+                      <h3>{t('DashboardSingleQuotationPage.quotesTotalsInfo')}</h3>
                       <div className="row align-items-center">
                         <div className="col-lg-6">
                           <div className="totals__full__info">
                             <div className="totals__text">
-                              <h5 className="mb-4">Subtotal (Standard)</h5>
-                              <h5 className="mb-4">Offer Validity</h5>
-                              <h5 className="mb-4">Tax</h5>
-                              {fullData?.include_shipping === 'Yes' && <h5 className="mb-4">Shipping cost</h5>}
-                              <h5 className="mb-4">Services</h5>
-                              <h5>Total</h5>
+                              <h5 className="mb-4">{t('DashboardSingleQuotationPage.subtotalInfo')}</h5>
+                              <h5 className="mb-4">{t('DashboardSingleQuotationPage.offerValidatyTextInfo')}</h5>
+                              <h5 className="mb-4">{t('DashboardSingleQuotationPage.tableHeadItemTax')}</h5>
+                              {fullData?.include_shipping === 'Yes' && <h5 className="mb-4">{t('DashboardSingleQuotationPage.shippingCostInfo')}</h5>}
+                              <h5 className="mb-4">{t('DashboardAllServicePage.headerPageText')}</h5>
+                              <h5>{t('DashboardSingleQuotationPage.totalPriceInfo')}</h5>
                             </div>
                             <div className="totals__prices">
                               <h5 className="mb-4">${+(totalPrice - taxValue - servicesValue - shippingValue) ? (totalPrice - taxValue - servicesValue - shippingValue) : 0}</h5>
@@ -286,10 +290,10 @@ export default function ShowOneClickQuotation({ token }) {
                         </div>
                         <div className="col-lg-6 adjustPositione">
                           <div className="totals__have__problem">
-                            <h3>Having a problem?</h3>
+                            <h3>{t('DashboardSingleQuotationPage.havingProblemTextInfo')}</h3>
                             <button className="updateBtn">
                               <i className="bi bi-wechat fs-4"></i>
-                              <span>Chat with requester</span>
+                              <span>{t('DashboardSingleQuotationPage.chatNowTextInfo')}</span>
                             </button>
                           </div>
                         </div>
@@ -297,14 +301,14 @@ export default function ShowOneClickQuotation({ token }) {
                     </div>
                     <div className="quoteTotals__handler">
                       <h3 className='text-capitalize'>
-                        Quote Targeted Information
+                        {t('DashboardSingleQuotationPage.targetedInfoText')}
                       </h3>
                       <div className="row align-items-center">
                         <div className="col-lg-12">
                           <div className="totals__full__info">
                             <div className="totals__text">
                               <h5 className=''>
-                                Targeted Budget
+                                {t('DashboardSingleQuotationPage.targetedBudgetText')}
                               </h5>
                             </div>
                             <div className="totals__prices">
@@ -327,7 +331,7 @@ export default function ShowOneClickQuotation({ token }) {
                             <div className="actions w-100 position-relative d-flex gap-5">
                               {currNegotiation?.can_achieve_target_budget === 'Yes' ?
                                 <div className="d-flex gap-2 align-items-center">
-                                  <label htmlFor="can_achieve_target_budget_true">Yes</label>
+                                  <label htmlFor="can_achieve_target_budget_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
                                   <input
                                     type="radio"
                                     id="can_achieve_target_budget_true"
@@ -339,7 +343,7 @@ export default function ShowOneClickQuotation({ token }) {
                                 </div>
                                 :
                                 <div className="d-flex gap-2 align-items-center">
-                                  <label htmlFor="can_achieve_target_budget_false">No</label>
+                                  <label htmlFor="can_achieve_target_budget_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
                                   <input
                                     type="radio"
                                     id="can_achieve_target_budget_false"
@@ -359,7 +363,7 @@ export default function ShowOneClickQuotation({ token }) {
                           <div className="totals__full__info">
                             <div className="totals__text">
                               <h5 className=''>
-                                Targeted delivery time
+                                {t('DashboardSingleQuotationPage.targetedDeliveryText')}
                               </h5>
                             </div>
                             <div className="totals__prices">
@@ -382,7 +386,7 @@ export default function ShowOneClickQuotation({ token }) {
                             <div className="actions w-100 position-relative d-flex gap-5">
                               {currNegotiation?.can_achieve_target_delivery_time === 'Yes' ?
                                 <div className="d-flex gap-2 align-items-center">
-                                  <label htmlFor="can_achieve_target_delivery_time_true">Yes</label>
+                                  <label htmlFor="can_achieve_target_delivery_time_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
                                   <input
                                     type="radio"
                                     id="can_achieve_target_delivery_time_true"
@@ -394,7 +398,7 @@ export default function ShowOneClickQuotation({ token }) {
                                 </div>
                                 :
                                 <div className="d-flex gap-2 align-items-center">
-                                  <label htmlFor="can_achieve_target_delivery_time_false">No</label>
+                                  <label htmlFor="can_achieve_target_delivery_time_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
                                   <input
                                     type="radio"
                                     id="can_achieve_target_delivery_time_false"
@@ -414,7 +418,7 @@ export default function ShowOneClickQuotation({ token }) {
                           <div className="totals__full__info">
                             <div className="totals__text">
                               <h5 className=''>
-                                Preferred delivery terms
+                                {t('DashboardSingleQuotationPage.preferredDeliveryTermsText')}
                               </h5>
                             </div>
                             <div className="totals__prices">
@@ -438,7 +442,7 @@ export default function ShowOneClickQuotation({ token }) {
                               {
                                 currNegotiation?.can_achieve_preferred_delivery_terms === 'Yes' ?
                                   <div className="d-flex gap-2 align-items-center">
-                                    <label htmlFor="can_achieve_preferred_delivery_terms_true">Yes</label>
+                                    <label htmlFor="can_achieve_preferred_delivery_terms_true">{t('DashboardSingleQuotationPage.targetedInfoTextYes')}</label>
                                     <input
                                       type="radio"
                                       id="can_achieve_preferred_delivery_terms_true"
@@ -450,7 +454,7 @@ export default function ShowOneClickQuotation({ token }) {
                                   </div>
                                   :
                                   <div className="d-flex gap-2 align-items-center">
-                                    <label htmlFor="can_achieve_preferred_delivery_terms_false">No</label>
+                                    <label htmlFor="can_achieve_preferred_delivery_terms_false">{t('DashboardSingleQuotationPage.targetedInfoTextNo')}</label>
                                     <input
                                       type="radio"
                                       id="can_achieve_preferred_delivery_terms_false"
@@ -473,13 +477,13 @@ export default function ShowOneClickQuotation({ token }) {
                           currNegotiation?.company_status === 'Accepted' &&
                           <div className="col-lg-12 d-flex justify-content-around">
                             <span onClick={handleAcceptQuotation} className="updateBtn">
-                              Accept Quotation
+                              {t('DashboardSingleQuotationPage.acceptQuotationBtn')}
                             </span>
                             <span
                               onClick={handleRejectAllQuotation}
                               className="updateBtn reject"
                             >
-                              Reject Quotation
+                              {t('DashboardSingleQuotationPage.rejectQuotationBtn')}
                             </span>
                           </div>
                         }

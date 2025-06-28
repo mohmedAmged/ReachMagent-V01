@@ -608,7 +608,7 @@
   "DashboardSingleQuotationPage":{
     "quotationTitle":"Quotation",
     "tableHeadItemTitle":"Title",
-    "tableHeadItemMeasure":"Measure",
+    "tableHeadItemMeasure":"Unit of Measure",
     "tableHeadItemQTY":"QTY",
     "tableHeadItemUnitPrice":"Unit Price",
     "tableHeadItemTax":"Tax",
@@ -995,5 +995,37 @@
     "pleaseSelectPaymentToast":"Please select a payment method.",
     "selectedBtn":"Selected",
     "selectBtn":"Select"
+  },
+  "DashboardOneClickNegotiate":{
+    "pageHeaderTitle":"All Submissions",
+    "filterCompaniesFormInput":"Filter Companies",
+    "achiveTargetBudgetFormInput":"can achieve target budget",
+    "achiveTargetTimeFormInput":"can achieve target delivery time",
+    "achiveTargetTermsFormInput":"can achieve preferred delivery terms",
+    "tableheadCompany":"Company",
+    "tableheadStatus":"Status",
+    "tableShowBtn":"Show",
+    "noCompanyWithFilter":"no company accecpt with this filter"
+  },
+  "ForgetPasswordPage":{
+    "pageHeaderText":"Forget your password",
+    "emaiFormInput":"E-mail Address",
+    "emaiFormInputPlaceholder":"Enter your existing email",
+    "backToBtn":"Back To",
+    "loginBtn":"Login"
+  },
+    "ResetPasswordPage":{
+    "pageHeaderText":"Reset your password",
+    "otpFormInput":"OTP",
+    "otpFormInputPlaceholder":"Enter OTP",
+    "newPassFormInput":"New Password",
+    "senMessageAgainBtn":"Send Message Again",
+    "confirmChangesBtn":"Confirm Changes"
+  },
+  "verifyAccountPage":{
+    "pageHeaderText":"Verify Account",
+    "verifyCodeFormInput":"Verification Code",
+    "verifyBtn":"Verify",
+    "resendCodeBtn":"Resend Code"
   }
 }

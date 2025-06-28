@@ -6,8 +6,11 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { ResetPasswordStep2Schema } from '../../validation/ResetPasswordStep2Schema';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function ResetPasswordForm() {
+    const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const [showPassword,setShowPassword] = useState(false);
     const [showConfirmPassword,setShowConfirmPassword] = useState(false);
@@ -61,17 +64,17 @@ export default function ResetPasswordForm() {
                         <div className='signUpForm__mainContent'>
                             <div className='row'>
                                 <h3 className="col-12 text-center pt-5 signUpForm__head">
-                                    Reset your password
+                                    {t('ResetPasswordPage.pageHeaderText')}
                                 </h3>
                                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="resetPasswordStep2Email">
-                                            E-mail Address <span className="requiredStar">*</span>
+                                            {t('ForgetPasswordPage.emaiFormInput')} <span className="requiredStar">*</span>
                                         </label>
                                         <input
                                             type='text'
                                             id='resetPasswordStep2Email'
-                                            placeholder='Enter your existing email'
+                                            placeholder={t('ForgetPasswordPage.emaiFormInputPlaceholder')} 
                                             {...register('email')}
                                             className={`form-control signUpInput ${errors.email && 'inputError'}`}
                                         />
@@ -83,12 +86,12 @@ export default function ResetPasswordForm() {
                                     </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="resetPasswordOTP">
-                                            OTP <span className="requiredStar">*</span>
+                                            {t('ResetPasswordPage.otpFormInput')}  <span className="requiredStar">*</span>
                                         </label>
                                         <input
                                             type='text'
                                             id='resetPasswordOTP'
-                                            placeholder='Enter OTP'
+                                            placeholder={t('ResetPasswordPage.otpFormInputPlaceholder')}
                                             {...register('otp')}
                                             className={`form-control signUpInput ${errors.otp && 'inputError'}`}
                                         />
@@ -100,17 +103,17 @@ export default function ResetPasswordForm() {
                                     </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="resetPasswordNewPassword">
-                                            New Password <span className="requiredStar">*</span>
+                                            {t('ResetPasswordPage.newPassFormInput')} <span className="requiredStar">*</span>
                                         </label>
                                         <div className="position-relative">
                                             <input
                                                 type={`${showPassword ? 'text' : 'password'}`}
                                                 id='resetPasswordNewPassword'
-                                                placeholder='Enter 8-digit password'
+                                                placeholder={t('PersonalSignUpPage.passwordFormInputPlaceholder')}
                                                 {...register(loginType === 'employee' ? 'password' : 'new_password')}
                                                 className={`form-control signUpInput ${errors?.new_password && 'inputError'}`}
                                             />
-                                            <div className="leftShowPasssord" onClick={()=>setShowPassword(!showPassword)}>
+                                            <div className={`${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={()=>setShowPassword(!showPassword)}>
                                             {
                                                 showPassword ?
                                                 <i className="bi bi-eye-slash"></i>
@@ -127,17 +130,17 @@ export default function ResetPasswordForm() {
                                     </div>
                                     <div className="col-lg-8 mb-4">
                                         <label htmlFor="signInPassword">
-                                            Confirm Password <span className="requiredStar">*</span>
+                                            {t('PersonalSignUpPage.ConfirmPasswordFormInput')} <span className="requiredStar">*</span>
                                         </label>
                                         <div className="position-relative">
                                             <input
                                                 type={`${showConfirmPassword ? 'text' : 'password'}`}
                                                 id='signInPassword'
-                                                placeholder='Enter 8-digit password'
+                                                placeholder={t('PersonalSignUpPage.ConfirmPasswordFormInput')}
                                                 {...register(loginType === 'employee' ? 'password_confirmation' : 'new_password_confirmation')}
                                                 className={`form-control signUpInput ${errors?.new_password_confirmation && 'inputError'}`}
                                             />
-                                            <div className="leftShowPasssord" onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
+                                            <div className={`${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
                                             {
                                                 showConfirmPassword ?
                                                 <i className="bi bi-eye-slash"></i>
@@ -156,12 +159,12 @@ export default function ResetPasswordForm() {
                                         <input
                                             disabled={isSubmitting}
                                             type="submit"
-                                            value={'Confirm Changes'}
+                                            value={t('ResetPasswordPage.confirmChangesBtn')}
                                         />
                                     </div>
                                     <div className="col-12 text-dark text-center">
                                         <NavLink className="gotoLoginLink ms-2" to="/forget-password">
-                                            Send Message Again
+                                            {t('ResetPasswordPage.senMessageAgainBtn')}
                                         </NavLink>
                                     </div>
                                 </form>

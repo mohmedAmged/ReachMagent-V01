@@ -7,8 +7,10 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 export default function UserVirificationFormSec({ token }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [timer, setTimer] = useState(0); // State to store timer value
@@ -141,12 +143,12 @@ export default function UserVirificationFormSec({ token }) {
             <div className="signUpForm__mainContent">
               <div className="row">
                 <h3 className="col-12 text-center py-5 signUpForm__head">
-                  Verify Account
+                  {t('verifyAccountPage.pageHeaderText')}
                 </h3>
                 <form onSubmit={handleSubmit(onSubmit)} className='row justify-content-center'>
                   <div className="col-lg-8 mb-4">
                     <label htmlFor="userVerificationInput">
-                      Verification Code <span className="requiredStar">*</span>
+                      {t('verifyAccountPage.verifyCodeFormInput')} <span className="requiredStar">*</span>
                     </label>
                     <input
                       type='text'
@@ -163,7 +165,7 @@ export default function UserVirificationFormSec({ token }) {
                     <input
                       disabled={isSubmitting}
                       type="submit"
-                      value={'Verify'}
+                      value={t('verifyAccountPage.verifyBtn')} 
                     />
                     <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                       <button
@@ -172,7 +174,7 @@ export default function UserVirificationFormSec({ token }) {
                         className={`prevStep__btn ${isButtonDisabled && 'disabledBtn'}`}
                         disabled={isButtonDisabled}
                       >
-                        {isButtonDisabled ? `Resend Code (${timer}s)` : 'Resend Code'}
+                        {isButtonDisabled ? `${t('verifyAccountPage.resendCodeBtn')} (${timer}s)` : `${t('verifyAccountPage.resendCodeBtn')}`}
                       </button>
                     </div>
                   </div>

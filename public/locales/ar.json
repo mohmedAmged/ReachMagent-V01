@@ -990,5 +990,37 @@
     "pleaseSelectPaymentToast":"الرجاء اختيار طريقة الدفع.",
     "selectedBtn":"مختارة",
     "selectBtn":"اختار"  
+  },
+    "DashboardOneClickNegotiate":{
+    "pageHeaderTitle":"جميع التقديمات",
+    "filterCompaniesFormInput":"تصفية الشركات",
+    "achiveTargetBudgetFormInput":"يمكن تحقيق الميزانية المستهدفة",
+    "achiveTargetTimeFormInput":"يمكن تحقيق وقت التسليم المستهدف",
+    "achiveTargetTermsFormInput":"يمكن تحقيق شروط التسليم المفضلة",
+    "tableheadCompany":"الشركة",
+    "tableheadStatus":"الحالة",
+    "tableShowBtn":"عرض",
+    "noCompanyWithFilter":"لا توجد أي شركة بهذا الفلتر"
+  },
+    "ForgetPasswordPage":{
+    "pageHeaderText":"نسيت كلمة المرور الخاصة بك",
+    "emaiFormInput":"عنوان البريد الإلكتروني",
+    "emaiFormInputPlaceholder":"أدخل بريدك الإلكتروني الحالي",
+    "backToBtn":"العودة إلى",
+    "loginBtn":"تسجيل الدخول"
+  },
+  "ResetPasswordPage":{
+    "pageHeaderText":"إعادة تعيين كلمة المرور الخاصة بك",
+    "otpFormInput":"OTP",
+    "otpFormInputPlaceholder":"Enter OTP",
+    "newPassFormInput":"كلمة المرور الجديدة",
+    "senMessageAgainBtn":"إرسال رسالة مرة أخرى",
+    "confirmChangesBtn":"تأكيد التغييرات"
+  },
+    "verifyAccountPage":{
+    "pageHeaderText":"التحقق من الحساب",
+    "verifyCodeFormInput":"رمز التحقق",
+    "verifyBtn":"تحقق",
+    "resendCodeBtn":"إعادة إرسال الرمز"
   }
 }
