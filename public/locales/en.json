@@ -551,7 +551,43 @@
     "companyDocumentsFormInput":"Company's Documents",
     "CompanyLogoFormInput":"Company's Logo",
     "CompanyLogoFormInputrecomedned":"Recommended size 512 * 512 px",
-    "nextStepBtn":"Next Step"
+    "nextStepBtn":"Next Step",
+    "stepTwoTitle":"Business Registered Address",
+    "areaFormInput":"Area",
+    "areaFormInputPlaceholder":"Select an Area",
+    "companyFullAddressFormInput":"Company Full Address",
+    "companyFullAddressFormInputPlaceholder":"Street name, City , Zip Code ...",
+    "latitudeFormInput":"Latitude",
+    "longitudeFormInput":"Longitude",
+    "prevStepBtn":"Prev Step",
+    "stepThreeTitle":"Owner Information",
+    "ownerNameFormInput":"Owner's Name",
+    "ownerNameFormInputPlacholder":"Employee Name",
+    "mobileFormInputPlaceholder":"Enter Employee phone number",
+    "titleFormInput":"Title",
+    "titleFormInputDes":"CEO",
+    "titleFormInputPlaceholder":"Employee's title in the company",
+    "countryRegionFormInputDes":"Saudia Arabia",
+    "cityFormInputDes":"Al Madina",
+    "fullAddressFormInputDes":"1th almadina abd street",
+    "citizenshipFormInputDes":"egyptian",
+    "ownerIdFormInput":"Owner's ID",
+    "ownerIdFormInputDes":"Official-ID / Passport",
+    "checkConfirmFormInput":"I confirm of acting on own behalf or on behalf of registered business, and I commit to updating the beneficial ownership information whenever a change has been made",
+    "checkOwner":"Owner of the Company",
+    "stepFourTitle":"Which package are you interested in?",
+    "yearlyPackage":"Yearly",
+    "discountPriceFormInput":"Discount Price",
+    "selectedBtn":"Selected",
+    "selectBtn":"Select",
+    "submitText":"Once you submit for review our Team will start reviewing all the details, you will be notified through your E-mail within 5-7 business days.",
+    "subSubmitText":"By continuing, you agree to ReachMagnet's Terms of Service and acknowledge that you've read our Privacy Policy.",
+    "submitForReviewBtn":"Submit For Review"
+
+
+
+
+
   },
   "DashboardQutationsTablePage":{
     "headerInputPlaceholder":"Quotation Code",

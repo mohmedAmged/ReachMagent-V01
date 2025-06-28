@@ -1257,7 +1257,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
-                                {t('BuisnessSignUpPage.nextStepBtn')} <i className="bi bi-arrow-right-circle"></i>
+                                {t('BuisnessSignUpPage.nextStepBtn')} <i className={`bi ${Lang ==='ar' ? 'bi-arrow-left-circle' : 'bi-arrow-right-circle'} `}></i>
                               </button>
                             </div>
                           </>
@@ -1274,21 +1274,21 @@ console.log(currentSubActivitiesInsideMainActivity);
                           </div> */}
                             <div className="signUpForm__head col-12 mt-5 mb-3 pt-4">
                               <h4>
-                                Business Registered Address
+                                {t('BuisnessSignUpPage.stepTwoTitle')}
                               </h4>
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_country_id">
-                                Country / Region <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.countryRegionFormInput')} <span className="requiredStar">*</span>
                                 <i title="Egypt" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
                                   id="signUpcompany_country_id"
-                                  className={`form-select signUpInput ${errors.company_country_id ? 'inputError' : ''}`}
+                                  className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.company_country_id ? 'inputError' : ''}`}
                                   {...register('company_country_id')} >
                                   <option value="" disabled>
-                                    Select a Country
+                                    {t('PersonalSignUpPage.countryFormInputPlaceholder')}
                                   </option>
                                   {countries?.map((country) => (
                                     <option key={country.id} value={country.id}>
@@ -1306,15 +1306,15 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_city_id">
-                                City <span className="requiredStar">*</span>
+                                {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
                                 <i title="Cairo" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcompany_city_id"
-                                className={`form-select signUpInput ${errors.company_city_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.company_city_id ? 'inputError' : ''}`}
                                 {...register('company_city_id')} >
                                 <option value="" disabled>
-                                  Select a City
+                                  {t('PersonalSignUpPage.cityFormInputPlaceholder')}
                                 </option>
                                 {currentCitiesInsideCountry?.map((city) => (
                                   <option key={city.cityId} value={city.cityId}>
@@ -1329,15 +1329,15 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_area_id">
-                                Area <span className="requiredStar">*</span>
+                                {t('BuisnessSignUpPage.areaFormInput')} <span className="requiredStar">*</span>
                                 <i title="Al Maadi" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcompany_area_id"
-                                className={`form-select signUpInput ${errors.company_area_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.company_area_id ? 'inputError' : ''}`}
                                 {...register('company_area_id')} >
                                 <option value="" disabled>
-                                  Select an Area
+                                  {t('BuisnessSignUpPage.areaFormInputPlaceholder')}
                                 </option>
                                 {currentAreasInsideCities?.map((area) => (
                                   <option key={area.areaId} value={area.areaId}>
@@ -1352,13 +1352,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_full_address">
-                                Company Full Address  <span className="requiredStar">*</span>
+                                {t('BuisnessSignUpPage.companyFullAddressFormInput')}  <span className="requiredStar">*</span>
                                 <i title="1th cornesh almaadi street" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpcompany_full_address'
-                                placeholder='Street name, City , Zip Code ...'
+                                placeholder={t('BuisnessSignUpPage.companyFullAddressFormInputPlaceholder')}
                                 {...register('company_full_address')}
                                 className={`form-control signUpInput ${errors.company_full_address ? 'inputError' : ''}`}
                               />
@@ -1371,7 +1371,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-12 mb-4">
                               <ul className='d-flex align-items-center gap-3 flex-wrap'>
                                 <li className='d-flex gap-2 flex-wrap'>
-                                  <label className='mapLabel'>Latitude:</label>
+                                  <label className='mapLabel'>{t('BuisnessSignUpPage.latitudeFormInput')}:</label>
                                   <input
                                     type="text"
                                     value={location.lat || ''}
@@ -1385,7 +1385,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   }
                                 </li>
                                 <li className='d-flex gap-2 flex-wrap'>
-                                  <label className='mapLabel'>Longitude:</label>
+                                  <label className='mapLabel'>{t('BuisnessSignUpPage.longitudeFormInput')}:</label>
                                   <input
                                     type="text"
                                     value={location.lng || ''}
@@ -1409,10 +1409,10 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='prevStep__btn' onClick={() => handleChangeStep('prevStep')}>
-                                <i className="bi bi-arrow-left-circle"></i> Prev Step
+                                <i className={`bi ${Lang ==='ar' ? 'bi-arrow-right-circle' : 'bi-arrow-left-circle'} `}></i> {t('BuisnessSignUpPage.prevStepBtn')}
                               </button>
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
-                                Next Step <i className="bi bi-arrow-right-circle"></i>
+                                {t('BuisnessSignUpPage.nextStepBtn')} <i className={`bi ${Lang ==='ar' ? 'bi-arrow-left-circle' : 'bi-arrow-right-circle'} `}></i>
                               </button>
                             </div>
                           </>
@@ -1424,18 +1424,18 @@ console.log(currentSubActivitiesInsideMainActivity);
                           <>
                             <div className="col-lg-12 my-5">
                               <h3 className='signUpForm__head mt-5 text-center'>
-                                Owner Information
+                                {t('BuisnessSignUpPage.stepThreeTitle')}
                               </h3>
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_name">
-                                Owner's Name <span className="requiredStar">*</span>
-                                <i title="Mohamed Fahim" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('BuisnessSignUpPage.ownerNameFormInput')} <span className="requiredStar">*</span>
+                                <i title={t('BuisnessSignUpPage.ownerNameFormInputPlacholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpemployee_name'
-                                placeholder='Employee Name'
+                                placeholder={t('BuisnessSignUpPage.ownerNameFormInputPlacholder')}
                                 {...register('employee_name')}
                                 className={`form-control signUpInput ${errors.employee_name ? 'inputError' : ''}`}
                               />
@@ -1447,13 +1447,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_email">
-                                E-mail <span className="requiredStar">*</span>
+                               {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
                                 <i title="mohamed@gmail.com" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpemployee_email'
-                                placeholder='ex: employee@gmail.com'
+                                placeholder={t('PersonalSignUpPage.emailAddressFormInputPlaceholder')}
                                 {...register('employee_email')}
                                 className={`form-control signUpInput ${errors.employee_email ? 'inputError' : ''}`}
                               />
@@ -1465,7 +1465,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_phone">
-                                Mobile Number <span className="requiredStar"> * </span>
+                                {t('PersonalSignUpPage.mobileNumberFormInput')} <span className="requiredStar"> * </span>
                                 <i title="01055588899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
@@ -1476,7 +1476,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   value={watch("employee_phone_code")}
                                   errors={errors}
                                   inputName="employee_phone_code"
-                                  placeholder="Select a country"
+                                  placeholder={t('PersonalSignUpPage.countryFormInputPlaceholder')}
                                   isFlagDropdown={true}
                                 />
                                 </div>
@@ -1484,7 +1484,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   <input
                                     type='number'
                                     id='signUpemployee_phone'
-                                    placeholder='Enter Employee phone number'
+                                    placeholder={t('BuisnessSignUpPage.mobileFormInputPlaceholder')}
                                     {...register('employee_phone')}
                                     className={`form-control signUpInput ${errors.employee_phone ? 'inputError' : ''}`}
                                   />
@@ -1498,13 +1498,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_title">
-                                Title <span className="requiredStar"> *</span>
-                                <i title="SEO" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('BuisnessSignUpPage.titleFormInput')} <span className="requiredStar"> *</span>
+                                <i title={t('BuisnessSignUpPage.titleFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpemployee_title'
-                                placeholder="Employee's title in the company"
+                                placeholder={t('BuisnessSignUpPage.titleFormInputPlaceholder')}
                                 {...register('employee_title')}
                                 className={`form-control signUpInput ${errors.employee_title ? 'inputError' : ''}`}
                               />
@@ -1516,16 +1516,16 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_country_id">
-                                <span className='fs-6'>(Country / Region)</span> <span className="requiredStar">*</span>
-                                <i title="saudia Arabia" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <span className='fs-6'>({t('PersonalSignUpPage.countryRegionFormInput')})</span> <span className="requiredStar">*</span>
+                                <i title={t('BuisnessSignUpPage.countryRegionFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
                                   id="signUpemployee_country_id"
-                                  className={`form-select signUpInput ${errors.employee_country_id ? 'inputError' : ''}`}
+                                  className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.employee_country_id ? 'inputError' : ''}`}
                                   {...register('employee_country_id')} >
                                   <option value="" disabled>
-                                    Select a Country
+                                    {t('PersonalSignUpPage.countryFormInputPlaceholder')}
                                   </option>
                                   {countries?.map((country) => (
                                     <option key={country.id} value={country.id}>
@@ -1542,15 +1542,15 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_city_id">
-                                City <span className="requiredStar">*</span>
-                                <i title="Al Madina" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
+                                <i title={t('BuisnessSignUpPage.cityFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpemployee_city_id"
-                                className={`form-select signUpInput ${errors.employee_city_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.employee_city_id ? 'inputError' : ''}`}
                                 {...register('employee_city_id')} >
                                 <option value="" disabled>
-                                  Select a City
+                                  {t('PersonalSignUpPage.cityFormInputPlaceholder')}
                                 </option>
                                 {currentEmployeeCitiesInsideCountry?.map((city) => (
                                   <option key={city.cityId} value={city.cityId}>
@@ -1565,13 +1565,13 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_full_address">
-                                Full Address  <span className="requiredStar">*</span>
-                                <i title="1th almadina abd street" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('PersonalSignUpPage.fullAddressFormInput')}  <span className="requiredStar">*</span>
+                                <i title={t('BuisnessSignUpPage.fullAddressFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
                                 id='signUpemployee_full_address'
-                                placeholder='Street name, City , Zip Code ...'
+                                placeholder={t('PersonalSignUpPage.addressLine1FormInputPlaceholder')}
                                 {...register('employee_full_address')}
                                 className={`form-control signUpInput ${errors.employee_full_address ? 'inputError' : ''}`}
                               />
@@ -1583,16 +1583,16 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_citizenship_id">
-                                Citizenship <span className="requiredStar"> *</span>
+                                {t('PersonalSignUpPage.citizenshipFormInput')} <span className="requiredStar"> *</span>
                                 <i title="egyptian" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id='signUpemployee_citizenship_id'
                                 defaultValue={''}
                                 {...register('employee_citizenship_id')}
-                                className={`form-select signUpInput ${errors.employee_citizenship_id ? 'inputError' : ''}`}
+                                className={`form-select signUpInput ${Lang === 'ar' ? 'formSelect_RTL' :''} ${errors.employee_citizenship_id ? 'inputError' : ''}`}
                               >
-                                <option value='' disabled>Select Your Citizenship</option>
+                                <option value='' disabled>{t('PersonalSignUpPage.citizenshipFormInputPlaceholder')}</option>
                                 {
                                   citizenships?.map(el => (
                                     <option key={el?.id} value={el?.id}>
@@ -1609,18 +1609,18 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password">
-                                Password <span className="requiredStar"> *</span>
+                                {t('PersonalSignUpPage.passwordFormInput')} <span className="requiredStar"> *</span>
                                 <i title="Mohamed@123" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <input
                                   type={`${showPassword ? 'text' : 'password'}`}
                                   id='signUpemployee_password'
-                                  placeholder='Min 8: upper, lower, number, symbol.'
+                                  placeholder={t('PersonalSignUpPage.passwordFormInputPlaceholder')}
                                   {...register('employee_password')}
                                   className={`form-control signUpInput ${errors.employee_password ? 'inputError' : ''}`}
                                 />
-                                <div className="leftShowPasssord" onClick={() => setShowPassword(!showPassword)}>
+                                <div className={`${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`}  onClick={() => setShowPassword(!showPassword)}>
                                   {
                                     showPassword ?
                                       <i className="bi bi-eye-slash"></i>
@@ -1637,18 +1637,18 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password_confirmation">
-                                Confirm Password <span className="requiredStar"> *</span>
-                                <i title="Same as Password" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {t('PersonalSignUpPage.ConfirmPasswordFormInput')} <span className="requiredStar"> *</span>
+                                <i title={t('PersonalSignUpPage.ConfirmPasswordFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <input
                                   type={`${showConfirmPassword ? 'text' : 'password'}`}
                                   id='signUpemployee_password_confirmation'
-                                  placeholder='Enter 8-digit password'
+                                  placeholder={t('PersonalSignUpPage.ConfirmPasswordFormInput')}
                                   {...register('employee_password_confirmation')}
                                   className={`form-control signUpInput ${errors.employee_password_confirmation ? 'inputError' : ''}`}
                                 />
-                                <div className="leftShowPasssord" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                <div className={`${Lang === 'ar' ? 'leftShowPasssord_RTL' : 'leftShowPasssord'}`} onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                   {
                                     showConfirmPassword ?
                                       <i className="bi bi-eye-slash"></i>
@@ -1665,7 +1665,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             </div>
                             <div className='col-lg-6'>
                               <label htmlFor="signUpofficial_id_or_passport">
-                                Owner's ID<span className="optional">(Official-ID / Passport)</span><span className="requiredStar"> *</span>
+                                {t('BuisnessSignUpPage.ownerIdFormInput')}<span className="optional">({t('BuisnessSignUpPage.ownerIdFormInputDes')})</span><span className="requiredStar"> *</span>
                                 <i title="" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
@@ -1695,7 +1695,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   <span className="checkmark"></span>
                                 </p>
                                 <p className="col-md-11 p-0 col-sm-10 checkBox-text">
-                                  I confirm of acting on own behalf or on behalf of registered business, and I commit to updating the beneficial ownership information whenever a change has been made
+                                 {t('BuisnessSignUpPage.checkConfirmFormInput')}
                                 </p>
                               </label>
                               {errors.comfirm_policies && <p className='errorMessage'>{errors.comfirm_policies.message}</p>}
@@ -1714,17 +1714,17 @@ console.log(currentSubActivitiesInsideMainActivity);
                                   <span className="checkmark mt-1"></span>
                                 </p>
                                 <p className="col-md-11 p-0 pt-2 col-sm-10 is_benifical_owner checkBox-text">
-                                  Owner of the Company
+                                  {t('BuisnessSignUpPage.checkOwner')}
                                 </p>
                               </label>
                               {errors.is_benifical_owner && <p className='errorMessage'>{errors.is_benifical_owner.message}</p>}
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='prevStep__btn' onClick={() => handleChangeStep('prevStep')}>
-                                <i className="bi bi-arrow-left-circle"></i> Prev Step
+                                <i className={`bi ${Lang ==='ar' ? 'bi-arrow-right-circle' : 'bi-arrow-left-circle'} `}></i> {t('BuisnessSignUpPage.prevStepBtn')}
                               </button>
                               <button type="button" className='nextStep__btn' onClick={() => handleChangeStep('nextStep')}>
-                                Next Step <i className="bi bi-arrow-right-circle"></i>
+                                {t('BuisnessSignUpPage.nextStepBtn')} <i className={`bi ${Lang ==='ar' ? 'bi-arrow-left-circle' : 'bi-arrow-right-circle'} `}></i>
                               </button>
                             </div>
                             {/* <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
@@ -1746,10 +1746,10 @@ console.log(currentSubActivitiesInsideMainActivity);
                         {
                           currentStep === 'Four' &&
                           <div className="col-lg-12 text-center mt-5 signUp__submitBtn">
-                            <input disabled={isSubmitting} type="button" value={'Submit For Review'} onClick={() => handleChangeStep('nextStep')} />
+                            <input disabled={isSubmitting} type="button" value={t('BuisnessSignUpPage.submitForReviewBtn')} onClick={() => handleChangeStep('nextStep')} />
                             <div className="col-12 d-flex justify-content-center align-items-center gap-3 mb-4">
                               <button type="button" className='prevStep__btn' onClick={() => handleChangeStep('prevStep')}>
-                                <i className="bi bi-arrow-left-circle"></i> Prev Step
+                                <i className={`bi ${Lang ==='ar' ? 'bi-arrow-right-circle' : 'bi-arrow-left-circle'} `}></i> {t('BuisnessSignUpPage.prevStepBtn')}
                               </button>
                             </div>
                           </div>
@@ -1758,10 +1758,10 @@ console.log(currentSubActivitiesInsideMainActivity);
                       <div className="col-lg-12 signUpOtherWays text-center pe-4">
                         <div className="serviceTerms">
                           <p className='businessPrivacy'>
-                            Once you submit for review our Team will start reviewing all the details, you will be notified through your E-mail within 5-7 business days.
+                            {t('BuisnessSignUpPage.submitText')}
                           </p>
                           <p>
-                            By continuing, you agree to ReachMagnet's<br />  Terms of Service and acknowledge that you've read our Privacy Policy.
+                            {t('BuisnessSignUpPage.subSubmitText')}
                           </p>
                         </div>
                       </div>

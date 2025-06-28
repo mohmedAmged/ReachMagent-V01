@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './businessRegisterPackages.css';
 import { baseURL } from '../../functions/baseUrl';
+import { Lang } from '../../functions/Token';
+import { useTranslation } from 'react-i18next';
 
 export default function BusinessSignUpPackages({ setValue, watch }) {
+    const { t } = useTranslation();
   const [packs, setPacks] = useState([]);
   const [preferedTimePackage, setPreferedTimePackage] = useState('Yearly');
   const [preferedSelectedPackage, setPreferedSelectedPackage] = useState( watch('prefered_package_id') || null);
@@ -13,6 +16,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
     {
       id: 2,
       name: 'Yearly',
+      renderName:`${t('BuisnessSignUpPage.yearlyPackage')}`
     },
   ];
 
@@ -20,7 +24,11 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
     // Fetch packages from the API
     const fetchPackages = async () => {
       try {
-        const response = await axios.get(`${baseURL}/all-packages`);
+        const response = await axios.get(`${baseURL}/all-packages`, {
+                            headers: {
+                                "Locale" : Lang
+                            }
+                        });
         const apiPackages = response.data.data.packages.map((pack) => ({
           id: pack.id,
           name: pack.name,
@@ -59,7 +67,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
 
   return (
     <div className='business-signUp__packages container text-center my-5 pt-5'>
-      <h4>Which package are you interested in?</h4>
+      <h4>{t('BuisnessSignUpPage.stepFourTitle')}</h4>
       <ul className='preferedTimeForPackage d-flex justify-content-around align-items-center'>
         {arrOfTimePackages.map((pack) => (
           <li
@@ -67,7 +75,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
             onClick={() => setPreferedTimePackage(pack.name)}
             key={pack.id}
           >
-            {pack.name}
+            {pack.renderName}
           </li>
         ))}
       </ul>
@@ -91,7 +99,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
               <p className='price'>{pack.price}</p>
               {pack.discountPrice && (
                 <p className='discount-price'>
-                  Discount Price: {pack.discountPrice}
+                  {t('BuisnessSignUpPage.discountPriceFormInput')}: {pack.discountPrice}
                 </p>
               )}
               <ul
@@ -119,7 +127,7 @@ export default function BusinessSignUpPackages({ setValue, watch }) {
                     : 'notSelectedPackageBtn'
                 }`}
               >
-                {preferedSelectedPackage === pack.id ? 'Selected' : 'Select'}
+                {preferedSelectedPackage === pack.id ? `${t('BuisnessSignUpPage.selectedBtn')}` : `${t('BuisnessSignUpPage.selectBtn')}`}
               </div>
             </div>
           </div>
