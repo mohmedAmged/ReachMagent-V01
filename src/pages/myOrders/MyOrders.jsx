@@ -118,7 +118,7 @@ console.log(allOrders);
                     getAllOrders('?q=sell');
                   } }
                 >
-                  Sell
+                  {t('DashboardQuotationOrdersPage.sellFilterItem')}
                 </button>
                 <button
                   className={`${Lang === 'ar' ? 'cust__btn_RTL' : 'cust__btn'} px-5 ${activeRole === 'Buy' ? 'rolesActiveBtn' : ''}`}
@@ -127,7 +127,7 @@ console.log(allOrders);
                     getAllOrders('?q=buy');
                   } }
                 >
-                  Buy
+                  {t('DashboardQuotationOrdersPage.buyFilterItem')}
                 </button>
               </div>
             }
@@ -181,7 +181,7 @@ console.log(allOrders);
                                       
                                       <td>
                                         <div className={`product__statue ${el?.order_status}`}>
-                                          {el?.order_status}
+                                          {el?.order_status_translated}
                                         </div>
                                       </td>
                                       <td>

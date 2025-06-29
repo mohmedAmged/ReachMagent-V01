@@ -137,7 +137,7 @@ const handleViewFiles = (files) => {
                             <div className="col-lg-6 col-md-6 col-sm-12 ">
                                 <div className="changeOrderStatu__handler ">
                                     <p className={`order__statue ${newData?.order_status}`}>
-                                        {newData?.order_status}
+                                        {newData?.order_status_translated}
                                     </p>
                     {
                         newData?.order_type !== 'buy' && newData?.order_status !== 'Completed'  && loginType !== 'user' && (

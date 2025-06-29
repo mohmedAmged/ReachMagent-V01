@@ -69,7 +69,7 @@ console.log(quotations);
                                 <td>{row?.country === 'N/A' ? 'No Shipping' : row?.country}</td>
                                 <td>
                                     <button className={`${loginType === 'user' ? row?.company_status : row?.user_status} table__statu__btn`}>
-                                        {loginType === 'user' ? row?.company_status : row?.user_status}
+                                        {loginType === 'user' ? row?.company_status_translated : row?.company_status_translated}
                                     </button>
                                 </td>
                             </tr>

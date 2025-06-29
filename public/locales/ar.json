@@ -884,6 +884,8 @@
   },
   "DashboardQuotationOrdersPage":{
     "headerPageText":"طلباتي",
+    "buyFilterItem":"يشتري",
+    "sellFilterItem":"يبيع",
     "tableHeadOrderInfo":"معلومات الطلب",
     "tableHeadDate":"تاريخ",
     "tableHeadRquestedBy":"طلب من",
@@ -1022,5 +1024,12 @@
     "verifyCodeFormInput":"رمز التحقق",
     "verifyBtn":"تحقق",
     "resendCodeBtn":"إعادة إرسال الرمز"
+  },
+    "SingleIndustryPage":{
+    "pageHeaderText":"جميع الصناعات",
+    "filterIndustryText":"تصفية الصناعات",
+    "filterByCountryFormInput":"تصفية حسب الدولة",
+    "filterByCountryFormInputPlaceholder":"اختر الدولة",
+    "moreInfoBtn":"المزيد"
   }
 }

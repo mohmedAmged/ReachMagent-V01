@@ -5,7 +5,9 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import locationIcon from "../../assets/icons/Duotone.png";
 import userIcon from "../../assets/icons/Duotone3.png";
 import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 export default function SubCategoryMainContent({ contentData, handleShow, allowedCountries, setFilterWithCountry, filterWithCountry }) {
+    const { t } = useTranslation();
 console.log(contentData);
 console.log(allowedCountries);
     return (
@@ -13,7 +15,7 @@ console.log(allowedCountries);
             <div className="d-flex justify-content-end d-md-none">
                 <Button variant="" onClick={handleShow} className={'menuButton'}>
                 <i className="bi bi-filter"></i>
-                   filter Indusries
+                  {t('SingleIndustryPage.filterIndustryText')}
                 </Button>
             </div>
             {
@@ -21,7 +23,7 @@ console.log(allowedCountries);
                 <>
                     <div className="catalog__new__input">
                         <label htmlFor="filterByCountry">
-                            Filter by Country
+                            {t('SingleIndustryPage.filterByCountryFormInput')}
                         </label>
                         <select
                             id="filterByCountry"
@@ -29,7 +31,7 @@ console.log(allowedCountries);
                             // value={}
                             onChange={(e) => setFilterWithCountry(e.target.value)}
                         >
-                            <option value="" disabled>Choose Country</option>
+                            <option value="" disabled>{t('SingleIndustryPage.filterByCountryFormInputPlaceholder')}</option>
                             {
                                 allowedCountries?.map((el)=>(
                                     <option key={el?.id} value={el?.code}>
@@ -115,7 +117,7 @@ console.log(allowedCountries);
                                                 to={`/${el?.companySlug}`}
                                             >
                                                 <button className="pageMainBtnStyle">
-                                                    more info
+                                                    {t('SingleIndustryPage.moreInfoBtn')}
                                                 </button>
                                             </NavLink>
                                         </div>
@@ -128,7 +130,7 @@ console.log(allowedCountries);
                     <div className="row container">
                         <div className="col-12">
                             <h1 className=" text-danger fs-3 text-capitalize text-center mt-4">
-                                no company with this filter
+                                {t('AllCompaniesPage.noCompanyText')}
                             </h1>
                         </div>
                     </div>

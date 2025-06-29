@@ -227,7 +227,7 @@ export default function MyNotfications({ token, fireNotification, setFireNotific
                                     </div>
                                 </td>
                                 <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
-                                    {el?.target}
+                                    {el?.title}
                                 </td>
                                 <td className={`${el?.read === false ? 'notifBgGray' : ''}`}>
                                     {el?.date}

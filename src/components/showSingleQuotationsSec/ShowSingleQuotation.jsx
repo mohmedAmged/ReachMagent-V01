@@ -672,7 +672,7 @@ console.log(acceptedSingleQuotations);
                                 <td>
                                     <div className={` tableBtnSingleQuote`}>
                                         <p className={`order__statue ${row?.status}`}>
-                                            {row?.status}
+                                            {row?.status_translated}
                                         </p>
                                     </div>
                                 </td>

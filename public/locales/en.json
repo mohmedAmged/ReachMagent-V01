@@ -889,6 +889,8 @@
   },
     "DashboardQuotationOrdersPage":{
     "headerPageText":"My Orders",
+    "buyFilterItem":"Buy",
+    "sellFilterItem":"Sell",
     "tableHeadOrderInfo":"Order Info",
     "tableHeadDate":"Date",
     "tableHeadRquestedBy":"rquested by",
@@ -1027,5 +1029,12 @@
     "verifyCodeFormInput":"Verification Code",
     "verifyBtn":"Verify",
     "resendCodeBtn":"Resend Code"
+  },
+  "SingleIndustryPage":{
+    "pageHeaderText":"All Industries",
+    "filterIndustryText":"filter Indusries",
+    "filterByCountryFormInput":"Filter by Country",
+    "filterByCountryFormInputPlaceholder":"Choose Country",
+    "moreInfoBtn":"More Info"
   }
 }

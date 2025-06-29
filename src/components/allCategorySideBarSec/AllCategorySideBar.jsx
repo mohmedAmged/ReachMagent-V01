@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Offcanvas } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import styles from './allCategorySideBar.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function AllCategorySideBar({ industries, show, handleClose, subIndustry, fetchAllContentDatafromSub, fetchAllContentData, setFilterWithCountry,filterWithCountry }) {
+    const { t } = useTranslation();
     const { subIndustryID } = useParams();
     console.log(subIndustryID);
     console.log(subIndustry);
@@ -21,7 +23,7 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
         <div className=' position-relative'>
             <Offcanvas show={show} onHide={handleClose} responsive="md" className={styles.sidebarOffcanvas}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>All Industries</Offcanvas.Title>
+                    <Offcanvas.Title>{t('SingleIndustryPage.pageHeaderText')}</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <nav>
