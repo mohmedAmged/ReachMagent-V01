@@ -73,6 +73,7 @@ export default function CompanySettingsForm(
         category_id: '',
         sub_category_id: '',
         about_us: company?.about_us,
+        about_us_ar: company?.about_us_ar,
         logo: '',
         main_type: company?.companyTypes,
         cover: '',
@@ -83,6 +84,7 @@ export default function CompanySettingsForm(
     resolver: zodResolver(UpdateCompanyDataSchema),
   });
 // console.log(allTypesRendered);
+console.log(company);
 
   const [currentBusinessTypes , setCurrentBusinessTypes] = useState(company?.companyTypes || []);
   const filteredTypes = useMemo(
@@ -143,6 +145,7 @@ export default function CompanySettingsForm(
     setValue('email',company?.email);
     setValue('full_address',company?.full_address);
     setValue('about_us',company?.about_us);
+    setValue('about_us_ar',company?.about_us_ar);
     setValue('website_link',company?.website_link);
     setValue('linkedin_link',linkedInLink);
     setValue('founded',company?.founded);
@@ -201,6 +204,9 @@ console.log(watch('about_us'));
   // formData.append('main_type', currentBusinessTypes.map((type) => type.name));
   if (data.about_us) {
     formData.append('about_us', data.about_us);
+  }
+    if (data.about_us_ar) {
+    formData.append('about_us_ar', data.about_us_ar);
   }
   if(imgChanged && data.logo[0]){
     formData.append('logo', data.logo[0]);
@@ -403,7 +409,7 @@ console.log(watch('about_us'));
         }
       </div>
       <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
-        <label htmlFor="dashboardCompanyabout_us">{t('DashboardBussinessSettingsPage.aboutCompanyFormInput')}</label>
+        <label htmlFor="dashboardCompanyabout_us">{t('DashboardBussinessSettingsPage.aboutCompanyEnFormInput')}</label>
         <textarea
           id='dashboardCompanyabout_us'
           className={`form-control signUpInput mt-2 ${errors?.about_us ? 'inputError' : ''}`}
@@ -416,6 +422,22 @@ console.log(watch('about_us'));
           errors?.about_us
           &&
           (<span className='errorMessage'>{errors?.about_us?.message}</span>)
+        }
+      </div>
+      <div className="mt-2 w-100 pe-4 ms-2 profileFormInputItem">
+        <label htmlFor="dashboardCompanyabout_us_ar">{t('DashboardBussinessSettingsPage.aboutCompanyArFormInput')}</label>
+        <textarea
+          id='dashboardCompanyabout_us_ar'
+          className={`form-control signUpInput mt-2 ${errors?.about_us_ar ? 'inputError' : ''}`}
+          {...register('about_us_ar')}
+          rows={7}
+          type="text"
+          disabled={profileUpdateStatus === 'notUpdating'}
+        />
+        {
+          errors?.about_us_ar
+          &&
+          (<span className='errorMessage'>{errors?.about_us_ar?.message}</span>)
         }
       </div>
       <div className={`mt-2 profileFormInputItem w-100 pe-4 ms-2 ${profileUpdateStatus === 'notUpdating' && 'ps-3'}`}>

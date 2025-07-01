@@ -23,8 +23,12 @@ export default function NewServiceForm({ token }) {
     const [currentUserLogin, setCurrentUserLogin] = useState(null);
     const [unAuth, setUnAuth] = useState(false);
     const { id } = useParams();
+   
+    
+    
     const [currSevice, setCurrService] = useState([]);
-
+ console.log(id);
+    console.log(currSevice);
     useEffect(() => {
         const cookiesData = Cookies.get('currentLoginedData');
         if (!currentUserLogin) {
@@ -92,6 +96,7 @@ export default function NewServiceForm({ token }) {
     }, [id]);
 
     const [currentSubCategoriesInsideMainCategory, setCurrentSubCategoriesInsideMainCategory] = useState([]);
+console.log(currentSubCategoriesInsideMainCategory);
 
     useEffect(() => {
         const fetchSubCategories = async () => {
@@ -126,6 +131,7 @@ export default function NewServiceForm({ token }) {
 
         fetchSubCategories();
     }, [formData.category_id, mainCategories]);
+console.log(mainCategories);
 
     useEffect(() => {
         if (currSevice?.slug_en && currSevice?.slug_en === id) {

@@ -115,6 +115,7 @@ export default function BusinessSignUpFormMainSec({ countries, citizenships, ind
   } = useForm({
     defaultValues: {
       company_name: '',
+      company_name_ar:'',
       company_email: '',
       phone_one: '',
       phone_one_code: '',
@@ -571,6 +572,7 @@ const [subActivitiesForSelected, setSubActivitiesForSelected] = useState([]);
         const toastId = toast.loading('Please Wait...');
         const data = {
           company_name: watch('company_name'),
+          company_name_ar: watch('company_name_ar'),
           company_email: watch('company_email'),
           phone_one: watch('phone_one'),
           phone_one_code: watch('phone_one_code'),
@@ -870,9 +872,27 @@ console.log(currentSubActivitiesInsideMainActivity);
                               }
                             </div>
                             <div className="col-lg-6 mb-4">
+                              <label htmlFor="signUpcompany_name_ar">
+                                {t('BuisnessSignUpPage.companyNameArFormInput')} <span className="requiredStar">*</span> 
+                                <i title={t('BuisnessSignUpPage.companyNameArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                              </label>
+                              <input
+                                type='text'
+                                id='signUpcompany_name_ar'
+                                placeholder={t('BuisnessSignUpPage.companyNameArFormInput')}
+                                {...register('company_name_ar')}
+                                className={`form-control signUpInput ${errors.company_name_ar ? 'inputError' : ''}`}
+                              />
+                              {
+                                errors.company_name_ar
+                                &&
+                                (<span className='errorMessage'>{errors.company_name_ar.message}</span>)
+                              }
+                            </div>
+                            <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_email">
                                 {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
-                                <i title={t('PersonalSignUpPage.emailAddressFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.emailAddressFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -959,7 +979,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpregisteration_number">
                                 {t('BuisnessSignUpPage.registrationNumberFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title="123456" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.registrationNumberFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1064,7 +1084,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpcategory_id">
                                 {t('BuisnessSignUpPage.businessActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.businessActivityFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessActivityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpcategory_id"
@@ -1090,7 +1110,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpsub_category_id">
                                 {t('BuisnessSignUpPage.businessSubActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.businessSubActivityFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessSubActivityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1197,7 +1217,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpBusinessdocuments">
                                 {t('BuisnessSignUpPage.companyDocumentsFormInput')} <span className="requiredStar"> * </span>
                                 <span className="optional">({t('BuisnessSignUpPage.businessTypesFormInputMulti')})</span>
-                                <i title={t('BuisnessSignUpPage.companyDocumentsFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.companyDocumentsFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 onChange={handleGettingFile}
@@ -1499,7 +1519,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_title">
                                 {t('BuisnessSignUpPage.titleFormInput')} <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.titleFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.titleFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <input
                                 type='text'
@@ -1517,7 +1537,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_country_id">
                                 <span className='fs-6'>({t('PersonalSignUpPage.countryRegionFormInput')})</span> <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.countryRegionFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.countryRegionFormInputTit')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1543,7 +1563,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_city_id">
                                 {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.cityFormInputDes')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.cityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <select
                                 id="signUpemployee_city_id"

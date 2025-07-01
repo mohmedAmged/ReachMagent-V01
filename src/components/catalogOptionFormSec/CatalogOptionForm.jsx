@@ -18,6 +18,10 @@ export default function CatalogOptionForm({ token, currPage }) {
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
     const { id } = useParams();
+    console.log(id);
+    console.log(currCatalog);
+    
+    
     const [currCatalog, setCurrCatalog] = useState([]);
     const [currService, setCurrService] = useState([]);
     const [currentUserLogin, setCurrentUserLogin] = useState(null);

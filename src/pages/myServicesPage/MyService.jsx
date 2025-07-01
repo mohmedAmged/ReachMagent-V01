@@ -51,6 +51,7 @@ export default function MyService({ token }) {
     const handleDeleteThisService = (id) => {
         deleteService(token, loginType, id);
     };
+console.log(services);
 
     return (
         <>
