@@ -20,6 +20,11 @@ import { useTranslation } from 'react-i18next';
 import { Lang } from '../../functions/Token';
 
 export default function SingleCompanyQuote({ token }) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const { companyName } = useParams();
@@ -463,7 +468,13 @@ console.log(cart);
                                             <div className="singleQuoteInput">
                                                 <label htmlFor="qoutationSelectTheType" className='position-relative'>
                                                     {t('SingleQuotePage.quoteFilteInputType')}
-                                                    <i title={t('SingleQuotePage.quoteFilteInputTypeTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    <i title={t('SingleQuotePage.quoteFilteInputTypeTit')} 
+                                                     onClick={() => toggleTooltip('typeFirst')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                     {activeTooltip === 'typeFirst' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteFilteInputTypeTit')} 
+                                                    </div>
+                                                )}
                                                 </label>
                                                 <select
                                                     className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
@@ -490,7 +501,12 @@ console.log(cart);
                                                     className='position-relative'
                                                 >
                                                     {t('SingleQuotePage.quoteFilteInputCategory')}
-                                                    <i title={t('SingleQuotePage.quoteFilteInputCategoryTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    <i title={t('SingleQuotePage.quoteFilteInputCategoryTit')} onClick={() => toggleTooltip('categoryFirst')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {activeTooltip === 'categoryFirst' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteFilteInputCategoryTit')}
+                                                    </div>
+                                                )}
                                                 </label>
                                                 <select
                                                     className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
@@ -514,7 +530,12 @@ console.log(cart);
                                                     className='position-relative'
                                                 >
                                                     {t('SingleQuotePage.quoteFilteInputSubCategory')}
-                                                    <i title={t('SingleQuotePage.quoteFilteInputSubCategoryTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    <i title={t('SingleQuotePage.quoteFilteInputSubCategoryTit')} onClick={() => toggleTooltip('subCategoryFirst')}  className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {activeTooltip === 'subCategoryFirst' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteFilteInputSubCategoryTit')}
+                                                    </div>
+                                                )}
                                                 </label>
                                                 <select
                                                     value={requestIntries?.sub_category_id}
@@ -541,7 +562,12 @@ console.log(cart);
                                             <div className="singleQuote__searchInput mt-3">
                                                 <h3 className='fs-4 position-relative'>
                                                     {t('SingleQuotePage.quoteFilteInputSearch')}
-                                                    <i title={t('SingleQuotePage.quoteFilteInputSearchTit')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    <i title={t('SingleQuotePage.quoteFilteInputSearchTit')} onClick={() => toggleTooltip('search')} className="bi bi-info-circle ms-2 cursorPointer" style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                    {activeTooltip === 'search' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteFilteInputSearchTit')}
+                                                    </div>
+                                                )}
                                                 </h3>
                                                 <input className='form-control' type="text" placeholder={t('SingleQuotePage.quoteFilteInputSearchPlaceholder')} value={requestIntries?.title} onChange={(event) => setRequestIntries({ ...requestIntries, title: event?.target?.value })} />
                                             </div>
@@ -683,7 +709,12 @@ console.log(cart);
                                                             className='position-relative'
                                                         >
                                                             {t('SingleQuotePage.quoteFilteInputType')}
-                                                            <i title={t('SingleQuotePage.quoteFilteInputTypeTit')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteFilteInputTypeTit')} onClick={() => toggleTooltip('typeSecond')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {activeTooltip === 'typeSecond' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteFilteInputTypeTit')}
+                                                    </div>
+                                                )}
                                                         </label>
                                                         <select
                                                             className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}
@@ -709,7 +740,12 @@ console.log(cart);
                                                             className='position-relative'
                                                         >
                                                             {t('SingleQuotePage.quoteCustomizeProductTilteInput')}
-                                                            <i title={t('SingleQuotePage.quoteCustomizeProductTilteInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductTilteInputTit')} onClick={() => toggleTooltip('title')}  className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {activeTooltip === 'title' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteCustomizeProductTilteInputTit')}
+                                                    </div>
+                                                )}
                                                         </label>
                                                         <input
                                                             id="customProductTitle"
@@ -728,7 +764,12 @@ console.log(cart);
                                                             className='position-relative'
                                                         >
                                                             {t('SingleQuotePage.quoteCustomizeProductQuantityInput')}
-                                                            <i title={t('SingleQuotePage.quoteCustomizeProductQuantityInputTit')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductQuantityInputTit')} onClick={() => toggleTooltip('quantity')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {activeTooltip === 'quantity' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteCustomizeProductQuantityInputTit')}
+                                                    </div>
+                                                )}
                                                         </label>
                                                         <input
                                                             id="customProductQuantity"
@@ -748,7 +789,12 @@ console.log(cart);
                                                             className='position-relative'
                                                         >
                                                             {t('SingleQuotePage.quoteCustomizeProductDescriptionInput')}
-                                                            <i title={t('SingleQuotePage.quoteCustomizeProductDescriptionInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductDescriptionInputTit')} onClick={() => toggleTooltip('Desc')}  className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                             {activeTooltip === 'Desc' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteCustomizeProductDescriptionInputTit')}
+                                                    </div>
+                                                )}
                                                         </label>
                                                         <textarea
                                                             id="customProductDescription"
@@ -766,7 +812,12 @@ console.log(cart);
                                                         <label className=' position-relative'>{t('SingleQuotePage.quoteCustomizeProductUploadInput')} <span className='optional'>
                                                             ({t('SingleQuotePage.quoteCustomizeProductSubUploadInput')})
                                                         </span>
-                                                            <i title={t('SingleQuotePage.quoteCustomizeProductUploadInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            <i title={t('SingleQuotePage.quoteCustomizeProductUploadInputTit')} onClick={() => toggleTooltip('upload')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                            {activeTooltip === 'upload' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteCustomizeProductUploadInputTit')}
+                                                    </div>
+                                                )}
                                                         </label>
                                                         <p style={{
                                                             fontSize:'14px'
@@ -808,7 +859,12 @@ console.log(cart);
 
                                             >
                                                 {t('SingleQuotePage.quoteIncludeShippingInput')}
-                                                <i title={t('SingleQuotePage.quoteIncludeShippingInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                <i title={t('SingleQuotePage.quoteIncludeShippingInputTit')} onClick={() => toggleTooltip('shipping')}  className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                {activeTooltip === 'shipping' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteIncludeShippingInputTit')}
+                                                    </div>
+                                                )}
                                             </label>
                                         </div>
                                         <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
@@ -827,7 +883,12 @@ console.log(cart);
                                                         id="flexCheckDefault2" />
                                                     <label className="form-check-label position-relative" htmlFor="flexCheckDefault2">
                                                         {t('SingleQuotePage.quoteIncludeInsuranceInput')}
-                                                        <i title={t('SingleQuotePage.quoteIncludeInsuranceInput')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        <i title={t('SingleQuotePage.quoteIncludeInsuranceInputTit')} onClick={() => toggleTooltip('Insurance')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {activeTooltip === 'Insurance' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.quoteIncludeInsuranceInputTit')}
+                                                    </div>
+                                                )}
                                                     </label>
                                                 </div>
                                                 <p style={{fontSize:'14px'}} className='ms-4 mb-3 mt-2'>
@@ -854,7 +915,12 @@ console.log(cart);
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="currency" className='position-relative'>
                                                         {t('SingleQuotePage.QuotepreferredCurrInput')}
-                                                        <i title={t('SingleQuotePage.QuotepreferredCurrInput')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        <i title={t('SingleQuotePage.QuotepreferredCurrInputTit')} onClick={() => toggleTooltip('prefferd')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {activeTooltip === 'prefferd' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.QuotepreferredCurrInputTit')}
+                                                    </div>
+                                                )}
                                                     </label>
                                                     <select
                             defaultValue={''}
@@ -873,7 +939,12 @@ console.log(cart);
                                                 <div className="singleQuoteInput">
                                                     <label htmlFor="quotationNote" className='position-relative'>
                                                         {t('SingleQuotePage.QuotepreferredNoteInput')}
-                                                        <i title= {t('SingleQuotePage.QuotepreferredNoteInputTit')} className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        <i title= {t('SingleQuotePage.QuotepreferredNoteInputTit')} onClick={() => toggleTooltip('note')}  className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
+                                                        {activeTooltip === 'note' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('SingleQuotePage.QuotepreferredNoteInputTit')}
+                                                    </div>
+                                                )}
                                                     </label>
                                                     <textarea
                                                         id="quotationNote"

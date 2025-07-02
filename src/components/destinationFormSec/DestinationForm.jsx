@@ -271,7 +271,7 @@ export default function DestinationForm({ distinationData, setDistinationData, c
                         </button> */}
                         <label htmlFor="distinationData" className='position-relative text-capitalize mb-3'>
                            {t('SingleQuotePage.quoteDestinationPickLocationInput')}
-                            <i title={t('SingleQuotePage.quoteDestinationPickLocationInput')} className="bi bi-info-circle ms-2 cursorPointer " style={{fontSize:'16px',position:"absolute", top: '2px'}}></i>
+                            
                         </label>
                         <MapContainer
                             center={userLocation}

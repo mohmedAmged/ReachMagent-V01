@@ -253,7 +253,7 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_en">{t('DashboardNewServiceItemPage.titleENFormInput')}<span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.titleENFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -268,7 +268,7 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_ar">{t('DashboardNewServiceItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewServiceItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.titleARFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -285,7 +285,7 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="category_id">{t('DashboardNewServiceItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.categoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="category_id"
@@ -305,7 +305,7 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="sub_category_id">{t('DashboardNewServiceItemPage.subCategoryFormInput')}<span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.subCategoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="sub_category_id"
@@ -327,7 +327,7 @@ console.log(mainCategories);
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="code"> {t('DashboardNewServiceItemPage.productCodeFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.productCodeFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -342,7 +342,6 @@ console.log(mainCategories);
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="description_en">{t('DashboardNewServiceItemPage.descriptionInEnglishFormInput')}<span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
                         name="description_en"
@@ -356,7 +355,6 @@ console.log(mainCategories);
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="description_ar">{t('DashboardNewServiceItemPage.descriptionInArabicFormInput')}<span className='optional'>({t('DashboardNewServiceItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
                         name="description_ar"
@@ -371,7 +369,6 @@ console.log(mainCategories);
         <div className="upload__image__btn">
         <label htmlFor="tax">
                 {t('DashboardNewServiceItemPage.AddImagesFormInput')}
-                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                 <br />
                 <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewServiceItemPage.AddImagesFormInputPlaceholder')})</span>
             </label>

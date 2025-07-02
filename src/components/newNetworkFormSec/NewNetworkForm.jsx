@@ -153,7 +153,7 @@ export default function NewNetworkForm({token}) {
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
                                         <label htmlFor="name">{t('DashboardNewNetworkItemPage.addCompanyNameFormInput')}<span className="requiredStar"> *</span>
-                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        <i title={t('DashboardNewNetworkItemPage.addCompanyNameFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <input
                                             type="text"
@@ -171,7 +171,7 @@ export default function NewNetworkForm({token}) {
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
                                         <label htmlFor="label">{t('DashboardNewNetworkItemPage.typeOfConnectionFormInput')}<span className="requiredStar"> *</span>
-                                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        <i title={t('DashboardNewNetworkItemPage.typeOfConnectionFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                         </label>
                                         <select
                                             name="label"

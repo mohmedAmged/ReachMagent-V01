@@ -29,27 +29,32 @@ export default function NewCatalogItemForm({ token }) {
         {
             id: 1,
             name: 'Company provides door-to-door shipping for this item',
-            renderName: `${t('DashboardNewCatalogItemPage.doorTodoorType')}`
+            renderName: `${t('DashboardNewCatalogItemPage.doorTodoorType')}`,
+            tooltipText: `${t('DashboardNewCatalogItemPage.doorTodoorTypeTitle')}`
         },
         {
             id: 2,
             name: 'Shippable item',
-            renderName: `${t('DashboardNewCatalogItemPage.shippableItemType')}`
+            renderName: `${t('DashboardNewCatalogItemPage.shippableItemType')}`,
+            tooltipText: `${t('DashboardNewCatalogItemPage.shippableItemTypeTitle')}`
         },
         {
             id: 3,
             name: 'Raw material',
-            renderName: `${t('DashboardNewCatalogItemPage.rawMaterialType')}`
+            renderName: `${t('DashboardNewCatalogItemPage.rawMaterialType')}`,
+            tooltipText: `${t('DashboardNewCatalogItemPage.rawMaterialTypeTitle')}`
         },
         {
             id: 4,
             name: 'Ready to be used',
-            renderName: `${t('DashboardNewCatalogItemPage.readyType')}`
+            renderName: `${t('DashboardNewCatalogItemPage.readyType')}`,
+            tooltipText: `${t('DashboardNewCatalogItemPage.readyTypeTitle')}`
         },
         {
             id: 5,
             name: 'Customization available',
-            renderName: `${t('DashboardNewCatalogItemPage.customizationType')}`
+            renderName: `${t('DashboardNewCatalogItemPage.customizationType')}`,
+            tooltipText: `${t('DashboardNewCatalogItemPage.customizationTypeTitle')}`
         },
     ];
 
@@ -401,7 +406,7 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_en">{t('DashboardNewCatalogItemPage.titleENFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.titleENFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -416,7 +421,7 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_ar">{t('DashboardNewCatalogItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.titleARFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -433,7 +438,7 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="category_id">{t('DashboardNewCatalogItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.categoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="category_id"
@@ -453,7 +458,7 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="sub_category_id">{t('DashboardNewCatalogItemPage.subCategoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.subCategoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="sub_category_id"
@@ -476,7 +481,7 @@ export default function NewCatalogItemForm({ token }) {
                 <div className="catalog__new__input">
                     <label htmlFor="unit_of_measure_id">
                         {t('DashboardNewCatalogItemPage.unitOfMeasureFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.unitOfMeasureFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <select
                         name="unit_of_measure_id"
@@ -496,7 +501,7 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="code">{t('DashboardNewCatalogItemPage.productCodeFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.productCodeFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <input
                         type="text"
@@ -513,7 +518,6 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="description_en">{t('DashboardNewCatalogItemPage.descriptionInEnglishFormInput')} <span className="requiredStar"> *</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
                         name="description_en"
@@ -527,7 +531,6 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="description_ar">{t('DashboardNewCatalogItemPage.descriptionInArabicFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <textarea
                         name="description_ar"
@@ -543,7 +546,6 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="price">{t('DashboardNewCatalogItemPage.priceFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <div className="custom-input-container">
                         <input
@@ -561,7 +563,6 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="tax">{t('DashboardNewCatalogItemPage.TaxFormInput')} % <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                     </label>
                     <div className="custom-input-container">
                         <input
@@ -583,7 +584,6 @@ export default function NewCatalogItemForm({ token }) {
         <div className="upload__image__btn">
             <label htmlFor="tax">
                 {t('DashboardNewCatalogItemPage.AddImagesFormInput')}
-                <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
                 <br />
                 <span style={{color: 'gray', fontSize: '14px'}}>({t('DashboardNewCatalogItemPage.AddImagesFormInputPlaceholder')})</span>
             </label>
@@ -634,7 +634,7 @@ export default function NewCatalogItemForm({ token }) {
                         />
                         <label htmlFor={`type-${type?.id}`} className="form-check-label">
                             {type?.renderName}
-                            <i title='sss' className="bi bi-info-circle ms-1 cursorPointer"></i>
+                            <i title={type?.tooltipText} className="bi bi-info-circle ms-1 cursorPointer"></i>
                         </label>
                     </div>
                 </div>

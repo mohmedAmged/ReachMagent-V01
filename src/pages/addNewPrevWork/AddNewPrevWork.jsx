@@ -160,7 +160,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="title_en">{t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
                                                     type="text"
@@ -176,7 +176,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="title_ar">{t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputPlaceholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
                                                 </label>
                                                 <input
                                                     type="text"
@@ -194,7 +194,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="type_en">{t('DashboardNewPrevWorkItemPage.typeofWorkEnFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.typeofWorkEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    
                                                 </label>
                                                 {/* <select
                                                     name="type_en"
@@ -221,7 +221,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="type_ar">{t('DashboardNewPrevWorkItemPage.typeofWorkArFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.typeofWorkArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    
                                                 </label>
                                                 {/* <select
                                                     name="type_en"
@@ -250,7 +250,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="description_en">{t('DashboardNewPrevWorkItemPage.workDescriptionEnFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.workDescriptionEnFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    
                                                 </label>
                                                 <textarea
                                                     type="text"
@@ -268,7 +268,7 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="description_ar">{t('DashboardNewPrevWorkItemPage.workDescriptionArFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.workDescriptionArFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    
                                                 </label>
                                                 <textarea
                                                     type="text"

@@ -86,7 +86,13 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
-
+.custom-tooltip {
+  max-width: 250px;
+  background: #000;
+  color: #fff;
+  font-size: 0.875rem;
+  padding: 10px;
+}
 /* rtl styles */
 .formSelect_RTL{
         background-position: left .75rem center !important;
