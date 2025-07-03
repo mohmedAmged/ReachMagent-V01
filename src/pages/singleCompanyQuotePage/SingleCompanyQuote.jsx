@@ -470,11 +470,11 @@ console.log(cart);
                                                     {t('SingleQuotePage.quoteFilteInputType')}
                                                     <i title={t('SingleQuotePage.quoteFilteInputTypeTit')} 
                                                      onClick={() => toggleTooltip('typeFirst')}className="bi bi-info-circle ms-2 cursorPointer " style={{ fontSize: '16px', position: "absolute", top: '2px' }}></i>
-                                                     {activeTooltip === 'typeFirst' && (
+                                                    {activeTooltip === 'typeFirst' && (
                                                     <div className="custom-tooltip position-absolute">
                                                     {t('SingleQuotePage.quoteFilteInputTypeTit')} 
                                                     </div>
-                                                )}
+                                                    )}
                                                 </label>
                                                 <select
                                                     className={`form-select w-100 ${Lang === "ar" ? "formSelect_RTL" : ""}`}

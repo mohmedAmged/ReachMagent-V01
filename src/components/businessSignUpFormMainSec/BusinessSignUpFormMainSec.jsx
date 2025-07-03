@@ -59,43 +59,47 @@ const LocationMarker = ({ setLocation, initialPosition }) => {
 };
 
 export default function BusinessSignUpFormMainSec({ countries, citizenships, industries, mainCategories, mainActivities }) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
-  let allTypes = [
-  {
-    id: 1,
-    name: 'Selling Physical Products',
-    renderNam: `${t('BuisnessSignUpPage.typeSellingPhysical')}`
-  },
-  {
-    id: 2,
-    name: 'Manufacturing Products',
-    renderNam: `${t('BuisnessSignUpPage.typeManufacturing')}`
-  },
-  {
-    id: 3,
-    name: 'Selling Digital Products',
-    renderNam: `${t('BuisnessSignUpPage.typeSellingDigital')}`
+    let allTypes = [
+    {
+      id: 1,
+      name: 'Selling Physical Products',
+      renderNam: `${t('BuisnessSignUpPage.typeSellingPhysical')}`
+    },
+    {
+      id: 2,
+      name: 'Manufacturing Products',
+      renderNam: `${t('BuisnessSignUpPage.typeManufacturing')}`
+    },
+    {
+      id: 3,
+      name: 'Selling Digital Products',
+      renderNam: `${t('BuisnessSignUpPage.typeSellingDigital')}`
 
-  },
-  {
-    id: 4,
-    name: 'Service Provider',
-    renderNam: `${t('BuisnessSignUpPage.typeServiceProvider')}`
+    },
+    {
+      id: 4,
+      name: 'Service Provider',
+      renderNam: `${t('BuisnessSignUpPage.typeServiceProvider')}`
 
-  },
-  {
-    id: 5,
-    name: 'Raw Material Supplier',
-    renderNam: `${t('BuisnessSignUpPage.typeRowMaterial')}`
+    },
+    {
+      id: 5,
+      name: 'Raw Material Supplier',
+      renderNam: `${t('BuisnessSignUpPage.typeRowMaterial')}`
 
-  },
-  {
-    id: 6,
-    name: 'Company Offers Customizations',
-    renderNam: `${t('BuisnessSignUpPage.typeCustomizations')}`
+    },
+    {
+      id: 6,
+      name: 'Company Offers Customizations',
+      renderNam: `${t('BuisnessSignUpPage.typeCustomizations')}`
 
-  },
-];
+    },
+    ];
   const loginType = localStorage.getItem('loginType')
   const [initialPosition, setInitialPosition] = useState([0, 0]);
   const [location, setLocation] = useState({ lat: initialPosition[0], lng: initialPosition[1] });
@@ -892,7 +896,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_email">
                                 {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.emailAddressFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.emailAddressFormInputTitle')} onClick={() => toggleTooltip('emailFirst')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                 {activeTooltip === 'emailFirst' && (
+                                        <div className="custom-tooltip position-absolute">
+                                        {t('BuisnessSignUpPage.emailAddressFormInputTitle')} 
+                                        </div>
+                                  )}
                               </label>
                               <input
                                 type='text'
@@ -911,7 +920,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpPhone_numberOne">
                                 {t('BuisnessSignUpPage.firstPhoneNumFormInput')} 
                                 <span className="requiredStar"> *</span>
-                                <i title="01099558877" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <div className="row align-items-center">
                                 <div className="col-md-5 col-sm-12">
@@ -945,7 +954,6 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpPhone_numberTwo">
                                 {t('BuisnessSignUpPage.secondPhoneNumFormInput')}
                                 <span className="optional">({t('PersonalSignUpPage.optionalText')})</span>
-                                <i title="01088998899" className="bi bi-info-circle ms-1 cursorPointer"></i>
                               </label>
                               <div className="row">
                                 <div className="col-md-5 col-sm-12">
@@ -979,7 +987,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpregisteration_number">
                                 {t('BuisnessSignUpPage.registrationNumberFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.registrationNumberFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.registrationNumberFormInputTitle')} onClick={() => toggleTooltip('registerNum')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'registerNum' && (
+                                    <div className="custom-tooltip position-absolute">
+                                    {t('BuisnessSignUpPage.registrationNumberFormInputTitle')}
+                                    </div>
+                                  )}
                               </label>
                               <input
                                 type='text'
@@ -998,7 +1011,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpreferral_code">
                                 {t('BuisnessSignUpPage.referralCodeFormInput')}
                                 <span className="optional"> ({t('PersonalSignUpPage.optionalText')})</span>
-                                <i title="abc123" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.referralCodeFormInputTitle')} onClick={() => toggleTooltip('referralCode')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'referralCode' && (
+                                    <div className="custom-tooltip position-absolute">
+                                    {t('BuisnessSignUpPage.referralCodeFormInputTitle')} 
+                                    </div>
+                                )}
                               </label>
                               <input
                                 type='text'
@@ -1043,7 +1061,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                                 {t('BuisnessSignUpPage.businessTypesFormInput')}
                                 <span className="requiredStar"> * </span>
                                 <span className="optional">({t('BuisnessSignUpPage.businessTypesFormInputMulti')})</span>
-                                <i title="Company Offers Customization" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <select
                                 onChange={handleChangeBusinessType}
@@ -1084,7 +1102,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpcategory_id">
                                 {t('BuisnessSignUpPage.businessActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.businessActivityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessActivityFormInputTitle')} onClick={() => toggleTooltip('activity')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                 {activeTooltip === 'activity' && (
+                                      <div className="custom-tooltip position-absolute">
+                                      {t('BuisnessSignUpPage.businessActivityFormInputTitle')} 
+                                      </div>
+                                  )}
                               </label>
                               <select
                                 id="signUpcategory_id"
@@ -1110,7 +1133,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpsub_category_id">
                                 {t('BuisnessSignUpPage.businessSubActivityFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.businessSubActivityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.businessSubActivityFormInputTitle')}  onClick={() => toggleTooltip('subActivity')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'subActivity' && (
+                                    <div className="custom-tooltip position-absolute">
+                                    {t('BuisnessSignUpPage.businessSubActivityFormInputTitle')} 
+                                    </div>
+                                )}
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1198,7 +1226,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpwebsite_link">
                                {t('BuisnessSignUpPage.websiteLinkFormInput')}
                                 <span className="requiredStar"> *</span>
-                                <i title="https://uiverse.io" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        
                               </label>
                               <input
                                 type='text'
@@ -1217,7 +1245,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                               <label htmlFor="signUpBusinessdocuments">
                                 {t('BuisnessSignUpPage.companyDocumentsFormInput')} <span className="requiredStar"> * </span>
                                 <span className="optional">({t('BuisnessSignUpPage.businessTypesFormInputMulti')})</span>
-                                <i title={t('BuisnessSignUpPage.companyDocumentsFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.companyDocumentsFormInputTitle')} onClick={() => toggleTooltip('documents')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'documents' && (
+                                    <div className="custom-tooltip position-absolute">
+                                    {t('BuisnessSignUpPage.companyDocumentsFormInputTitle')}
+                                    </div>
+                                )}
                               </label>
                               <input
                                 onChange={handleGettingFile}
@@ -1249,7 +1282,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-12 mb-4 position-relative">
                               <label htmlFor="compnayLogo" className=''>
                                 {t('BuisnessSignUpPage.CompanyLogoFormInput')} <span className="requiredStar"> * </span>
-                                <i title="logo.png" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                                 <br/>
                                 <span style={{color:'gray', fontSize:'14px'}} >
                                   ({t('BuisnessSignUpPage.CompanyLogoFormInputrecomedned')})
@@ -1300,7 +1333,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_country_id">
                                 {t('PersonalSignUpPage.countryRegionFormInput')} <span className="requiredStar">*</span>
-                                <i title="Egypt" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                               
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1327,7 +1360,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_city_id">
                                 {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
-                                <i title="Cairo" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <select
                                 id="signUpcompany_city_id"
@@ -1350,7 +1383,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_area_id">
                                 {t('BuisnessSignUpPage.areaFormInput')} <span className="requiredStar">*</span>
-                                <i title="Al Maadi" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <select
                                 id="signUpcompany_area_id"
@@ -1373,7 +1406,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpcompany_full_address">
                                 {t('BuisnessSignUpPage.companyFullAddressFormInput')}  <span className="requiredStar">*</span>
-                                <i title="1th cornesh almaadi street" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <input
                                 type='text'
@@ -1450,7 +1483,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_name">
                                 {t('BuisnessSignUpPage.ownerNameFormInput')} <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.ownerNameFormInputPlacholder')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <input
                                 type='text'
@@ -1468,7 +1501,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_email">
                                {t('PersonalSignUpPage.emailAddressFormInput')} <span className="requiredStar">*</span>
-                                <i title="mohamed@gmail.com" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <input
                                 type='text'
@@ -1486,7 +1519,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_phone">
                                 {t('PersonalSignUpPage.mobileNumberFormInput')} <span className="requiredStar"> * </span>
-                                <i title="01055588899" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                               
                               </label>
                               <div className="row">
                                 <div className="col-md-5 col-sm-12">
@@ -1519,7 +1552,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_title">
                                 {t('BuisnessSignUpPage.titleFormInput')} <span className="requiredStar"> *</span>
-                                <i title={t('BuisnessSignUpPage.titleFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.titleFormInputTitle')} onClick={() => toggleTooltip('title')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                 {activeTooltip === 'title' && (
+                                                                                                                  <div className="custom-tooltip position-absolute">
+                                                                                                                  {t('BuisnessSignUpPage.titleFormInputTitle')} 
+                                                                                                                  </div>
+                                                                                                              )}
                               </label>
                               <input
                                 type='text'
@@ -1537,7 +1575,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_country_id">
                                 <span className='fs-6'>({t('PersonalSignUpPage.countryRegionFormInput')})</span> <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.countryRegionFormInputTit')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.countryRegionFormInputTit')} onClick={() => toggleTooltip('country')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'country' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('BuisnessSignUpPage.countryRegionFormInputTit')} 
+                                                    </div>
+                                                )}
                               </label>
                               <div className="position-relative">
                                 <select
@@ -1563,7 +1606,12 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_city_id">
                                 {t('PersonalSignUpPage.cityFormInput')} <span className="requiredStar">*</span>
-                                <i title={t('BuisnessSignUpPage.cityFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                <i title={t('BuisnessSignUpPage.cityFormInputTitle')} onClick={() => toggleTooltip('city')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                {activeTooltip === 'city' && (
+                                                                                    <div className="custom-tooltip position-absolute">
+                                                                                    {t('BuisnessSignUpPage.cityFormInputTitle')} 
+                                                                                    </div>
+                                                                                )}
                               </label>
                               <select
                                 id="signUpemployee_city_id"
@@ -1604,7 +1652,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_citizenship_id">
                                 {t('PersonalSignUpPage.citizenshipFormInput')} <span className="requiredStar"> *</span>
-                                <i title="egyptian" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <select
                                 id='signUpemployee_citizenship_id'
@@ -1630,7 +1678,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password">
                                 {t('PersonalSignUpPage.passwordFormInput')} <span className="requiredStar"> *</span>
-                                <i title="Mohamed@123" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <div className="position-relative">
                                 <input
@@ -1658,7 +1706,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className="col-lg-6 mb-4">
                               <label htmlFor="signUpemployee_password_confirmation">
                                 {t('PersonalSignUpPage.ConfirmPasswordFormInput')} <span className="requiredStar"> *</span>
-                                <i title={t('PersonalSignUpPage.ConfirmPasswordFormInput')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <div className="position-relative">
                                 <input
@@ -1686,7 +1734,7 @@ console.log(currentSubActivitiesInsideMainActivity);
                             <div className='col-lg-6'>
                               <label htmlFor="signUpofficial_id_or_passport">
                                 {t('BuisnessSignUpPage.ownerIdFormInput')}<span className="optional">({t('BuisnessSignUpPage.ownerIdFormInputDes')})</span><span className="requiredStar"> *</span>
-                                <i title="" className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                
                               </label>
                               <input
                                 type='file'

@@ -17,6 +17,11 @@ import { Lang } from '../../functions/Token';
 import { useTranslation } from 'react-i18next';
 
 export default function NewCatalogItemForm({ token }) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+    
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
     const [unAuth, setUnAuth] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -406,7 +411,12 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_en">{t('DashboardNewCatalogItemPage.titleENFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewCatalogItemPage.titleENFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.titleENFormInputTitle')} onClick={() => toggleTooltip('titleEn')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'titleEn' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.titleENFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"
@@ -421,7 +431,12 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_ar">{t('DashboardNewCatalogItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title={t('DashboardNewCatalogItemPage.titleARFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.titleARFormInputTitle')} onClick={() => toggleTooltip('titleAr')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'titleAr' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.titleARFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"
@@ -438,7 +453,12 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="category_id">{t('DashboardNewCatalogItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewCatalogItemPage.categoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.categoryFormInputTitle')} onClick={() => toggleTooltip('category')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'category' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.categoryFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <select
                         name="category_id"
@@ -458,7 +478,12 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="sub_category_id">{t('DashboardNewCatalogItemPage.subCategoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewCatalogItemPage.subCategoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.subCategoryFormInputTitle')} onClick={() => toggleTooltip('subCategory')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'subCategory' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.subCategoryFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <select
                         name="sub_category_id"
@@ -481,7 +506,12 @@ export default function NewCatalogItemForm({ token }) {
                 <div className="catalog__new__input">
                     <label htmlFor="unit_of_measure_id">
                         {t('DashboardNewCatalogItemPage.unitOfMeasureFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewCatalogItemPage.unitOfMeasureFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.unitOfMeasureFormInputTitle')} onClick={() => toggleTooltip('unitMeasure')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'unitMeasure' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.unitOfMeasureFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <select
                         name="unit_of_measure_id"
@@ -501,7 +531,12 @@ export default function NewCatalogItemForm({ token }) {
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="code">{t('DashboardNewCatalogItemPage.productCodeFormInput')} <span className='optional'>({t('DashboardNewCatalogItemPage.optionalText')})</span>
-                        <i title={t('DashboardNewCatalogItemPage.productCodeFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewCatalogItemPage.productCodeFormInputTitle')} onClick={() => toggleTooltip('code')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'code' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewCatalogItemPage.productCodeFormInputTitle')}
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"
@@ -634,7 +669,12 @@ export default function NewCatalogItemForm({ token }) {
                         />
                         <label htmlFor={`type-${type?.id}`} className="form-check-label">
                             {type?.renderName}
-                            <i title={type?.tooltipText} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                            <i title={type?.tooltipText} onClick={() => toggleTooltip('type')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                            {activeTooltip === 'type' && (
+                            <div className="custom-tooltip position-absolute">
+                                {type?.tooltipText}
+                            </div>
+                            )}
                         </label>
                     </div>
                 </div>

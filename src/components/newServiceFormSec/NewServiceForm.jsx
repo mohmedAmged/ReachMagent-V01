@@ -16,6 +16,11 @@ import { Lang } from '../../functions/Token'
 import { useTranslation } from 'react-i18next'
 
 export default function NewServiceForm({ token }) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
@@ -253,7 +258,12 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_en">{t('DashboardNewServiceItemPage.titleENFormInput')}<span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewServiceItemPage.titleENFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.titleENFormInputTitle')} onClick={() => toggleTooltip('titleEn')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'titleEn' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewServiceItemPage.titleENFormInputTitle')} 
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"
@@ -268,7 +278,12 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="title_ar">{t('DashboardNewServiceItemPage.titleARFormInput')} <span className='optional'>({t('DashboardNewServiceItemPage.optionalText')})</span>
-                        <i title={t('DashboardNewServiceItemPage.titleARFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.titleARFormInputTitle')} onClick={() => toggleTooltip('titleAr')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'titleAr' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewServiceItemPage.titleARFormInputTitle')} 
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"
@@ -285,7 +300,12 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="category_id">{t('DashboardNewServiceItemPage.categoryFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewServiceItemPage.categoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.categoryFormInputTitle')} onClick={() => toggleTooltip('category')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'category' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewServiceItemPage.categoryFormInputTitle')} 
+                        </div>
+                        )}
                     </label>
                     <select
                         name="category_id"
@@ -305,7 +325,12 @@ console.log(mainCategories);
             <div className="col-lg-6">
                 <div className="catalog__new__input">
                     <label htmlFor="sub_category_id">{t('DashboardNewServiceItemPage.subCategoryFormInput')}<span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewServiceItemPage.subCategoryFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.subCategoryFormInputTitle')} onClick={() => toggleTooltip('subCategory')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'subCategory' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewServiceItemPage.subCategoryFormInputTitle')} 
+                        </div>
+                        )}
                     </label>
                     <select
                         name="sub_category_id"
@@ -327,7 +352,12 @@ console.log(mainCategories);
             <div className="col-lg-8">
                 <div className="catalog__new__input">
                     <label htmlFor="code"> {t('DashboardNewServiceItemPage.productCodeFormInput')} <span className="requiredStar"> *</span>
-                        <i title={t('DashboardNewServiceItemPage.productCodeFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        <i title={t('DashboardNewServiceItemPage.productCodeFormInputTitle')} onClick={() => toggleTooltip('code')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                        {activeTooltip === 'code' && (
+                        <div className="custom-tooltip position-absolute">
+                        {t('DashboardNewServiceItemPage.productCodeFormInputTitle')} 
+                        </div>
+                        )}
                     </label>
                     <input
                         type="text"

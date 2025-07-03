@@ -14,6 +14,10 @@ import { Lang } from '../../functions/Token';
 import { useTranslation } from 'react-i18next';
 
 export default function NewNetworkForm({token}) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
@@ -153,7 +157,12 @@ export default function NewNetworkForm({token}) {
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
                                         <label htmlFor="name">{t('DashboardNewNetworkItemPage.addCompanyNameFormInput')}<span className="requiredStar"> *</span>
-                                        <i title={t('DashboardNewNetworkItemPage.addCompanyNameFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        <i title={t('DashboardNewNetworkItemPage.addCompanyNameFormInputTitle')} onClick={() => toggleTooltip('addComp')}className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        {activeTooltip === 'addComp' && (
+                                        <div className="custom-tooltip position-absolute">
+                                        {t('DashboardNewNetworkItemPage.addCompanyNameFormInputTitle')}
+                                        </div>
+                                        )}
                                         </label>
                                         <input
                                             type="text"
@@ -171,7 +180,13 @@ export default function NewNetworkForm({token}) {
                                 <div className="col-lg-6">
                                     <div className="catalog__new__input">
                                         <label htmlFor="label">{t('DashboardNewNetworkItemPage.typeOfConnectionFormInput')}<span className="requiredStar"> *</span>
-                                        <i title={t('DashboardNewNetworkItemPage.typeOfConnectionFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        <i title={t('DashboardNewNetworkItemPage.typeOfConnectionFormInputTitle')}
+                                        onClick={() => toggleTooltip('typeConnect')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                        {activeTooltip === 'typeConnect' && (
+                                        <div className="custom-tooltip position-absolute">
+                                        {t('DashboardNewNetworkItemPage.typeOfConnectionFormInputTitle')}
+                                        </div>
+                                        )}
                                         </label>
                                         <select
                                             name="label"

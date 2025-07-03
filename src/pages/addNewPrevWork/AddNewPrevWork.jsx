@@ -14,6 +14,11 @@ import { Lang } from "../../functions/Token";
 import { useTranslation } from "react-i18next";
 
 export default function AddNewPrevWork({ token }) {
+    const [activeTooltip, setActiveTooltip] = useState(null);
+    
+    const toggleTooltip = (key) => {
+    setActiveTooltip(prev => (prev === key ? null : key));
+    };
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const loginType = localStorage.getItem('loginType');
@@ -160,7 +165,12 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="title_en">{t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputTitle')} onClick={() => toggleTooltip('titleEn')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    {activeTooltip === 'titleEn' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('DashboardNewPrevWorkItemPage.newPreviousWorkEnFormInputTitle')} 
+                                                    </div>
+                                                    )}
                                                 </label>
                                                 <input
                                                     type="text"
@@ -176,7 +186,12 @@ export default function AddNewPrevWork({ token }) {
                                         <div className="col-lg-6">
                                             <div className="catalog__new__input">
                                                 <label htmlFor="title_ar">{t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInput')}<span className="requiredStar"> *</span>
-                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInputTitle')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    <i title={t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInputTitle')} onClick={() => toggleTooltip('titleAr')} className="bi bi-info-circle ms-1 cursorPointer"></i>
+                                                    {activeTooltip === 'titleAr' && (
+                                                    <div className="custom-tooltip position-absolute">
+                                                    {t('DashboardNewPrevWorkItemPage.newPreviousWorkArFormInputTitle')} 
+                                                    </div>
+                                                    )}
                                                 </label>
                                                 <input
                                                     type="text"
