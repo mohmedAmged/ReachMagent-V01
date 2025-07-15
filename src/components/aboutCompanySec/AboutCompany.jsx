@@ -115,7 +115,7 @@ export default function AboutCompany({ company, showCompaniesQuery }) {
                         <h1>{t('SingleCompanyPage.overViewCompanyLocation')}</h1>
                     </div>
                     <div className="aboutCompany__content__info my-3">
-                        <p className='fixed__desc my-3'>{showCompaniesQuery?.companyFullAddress}</p>
+                        <p className='fixed__desc my-3'>{showCompaniesQuery?.companyBranches[0].branchCountry}, {showCompaniesQuery?.companyBranches[0].branchCity}</p>
                         <MapContainer center={initialPosition} zoom={0} style={{ height: '400px', width: '100%', zIndex: '1' }}>
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

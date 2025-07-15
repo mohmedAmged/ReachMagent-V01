@@ -672,7 +672,7 @@ const handleCatalogCategoryClick = (name) => {
                             </div>
                         }
                         {
-                            showCompaniesQuery?.data?.company?.companyFaqs === 0 ?
+                            showCompaniesQuery?.data?.company?.companyFaqs !== 0 ?
                                 <>
                                     <SingleCompanyRectangleSec showCompaniesQuery={showCompaniesQuery?.data?.company} />
                                 </>

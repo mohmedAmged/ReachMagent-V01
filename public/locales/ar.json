@@ -1066,5 +1066,10 @@
     "filterByCountryFormInput":"تصفية حسب الدولة",
     "filterByCountryFormInputPlaceholder":"اختر الدولة",
     "moreInfoBtn":"المزيد"
+  },
+    "SingleCompanyFaqsSec":{
+    "pageHeaderTextPopular":"الاسئلة",
+    "pageHeaderTextQuestions":"الشائعة",
+    "pageSubHeaderText":"ابحث عن الإجابات التي تحتاجها قبل أن تسأل"
   }
 }

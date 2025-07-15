@@ -6,18 +6,20 @@ import 'swiper/css/pagination';
 
 import { Pagination } from 'swiper/modules';
 import './singleCompanyRectangle.css';
+import { useTranslation } from 'react-i18next';
 
 export default function SingleCompanyRectangleSec({showCompaniesQuery}) {
+    const { t } = useTranslation();
   return (
     <div className='singleCompany__rectangleSec'>
       <div className="rectangleBg"></div>
       <div className="container">
         <div className="singleCompany__rectangleSec-head text-center">
           <h3 className='text-capitalize'>
-            {showCompaniesQuery?.companyName} Popular <span>Questions</span>
+            {showCompaniesQuery?.companyName} {t('SingleCompanyFaqsSec.pageHeaderTextPopular')} <span>{t('SingleCompanyFaqsSec.pageHeaderTextQuestions')}</span>
           </h3>
           <p>
-          Find the answers you need before you even ask
+          {t('SingleCompanyFaqsSec.pageSubHeaderText')}
           </p>
         </div>
         <div className="singleCompany__rectangleSec-slider">

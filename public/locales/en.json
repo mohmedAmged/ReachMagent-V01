@@ -1070,5 +1070,10 @@
     "filterByCountryFormInput":"Filter by Country",
     "filterByCountryFormInputPlaceholder":"Choose Country",
     "moreInfoBtn":"More Info"
+  },
+  "SingleCompanyFaqsSec":{
+    "pageHeaderTextPopular":"Popular",
+    "pageHeaderTextQuestions":"Questions",
+    "pageSubHeaderText":"Find the answers you need before you even ask"
   }
 }
