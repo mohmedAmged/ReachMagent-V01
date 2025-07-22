@@ -13,7 +13,7 @@
 .showCompany__Service .product__image img{
     height: 200px !important;
     border-radius: 8px !important;
-    object-fit: cover !important;
+    /* object-fit: cover !important; */
     margin-bottom: 10px;
 }
 .showCompany__Service .sub__info{
