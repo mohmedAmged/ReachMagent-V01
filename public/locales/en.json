@@ -313,6 +313,7 @@
   },
   "DashboardSidebar":{
     "followersItem":"Followers",
+    "chartsItem":"Charts",
     "productCatalogItem":"Product Catalog",
     "serviceItem":"Services",
     "mediaItem":"Media",
@@ -1075,5 +1076,21 @@
     "pageHeaderTextPopular":"Popular",
     "pageHeaderTextQuestions":"Questions",
     "pageSubHeaderText":"Find the answers you need before you even ask"
+  },
+  "DashboaedChartSec":{
+    "QuotationsHeaderText":"Quotations",
+    "QuotationsStatusHeaderText":"Quotation Status Chart",
+    "topCountriesRequest":"Top 5 countries requesting",
+    "numberOfQuotations":"Number of Quotations received",
+    "OrdersHeaderText":"Orders",
+    "OrdersStatusHeaderText":"Orders Status Chart",
+    "ProductsHeaderText":"Products",
+    "topCountriesOrdering":"Top 5 countries ordering",
+    "mostOrderedProduct":"Most ordered product",
+    "followersHeaderText":"Followers",
+    "followersByCountry":"Followers by Country",
+    "followersNumber":"Followers number",
+    "AppointmentsHeaderText":"Appointments",
+    "numberOfBookedAppointments":"Number of booked appointments"
   }
 }

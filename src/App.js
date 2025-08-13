@@ -76,6 +76,7 @@ import PrevWork from './pages/prevWork/PrevWork';
 import AddNewPrevWork from './pages/addNewPrevWork/AddNewPrevWork';
 import BusinessSignUpPackages from './components/businessSignUpPackages/BusinessSignUpPackages';
 import MyPackagesSettings from './components/myPackagesSettingsSec/MyPackagesSettings';
+import MyCompanyCharts from './pages/myCompanyCharts/MyCompanyCharts';
 
 
 function App() {
@@ -233,6 +234,7 @@ function App() {
         <Route path='/user-verification' element={<UserVirificationSec token={token} />} />
 
         {/* Profile Routes */}
+        <Route path='/profile/charts' element={<MyCompanyCharts  token={token} loginType={loginType}/>} />
         <Route path='/profile/followers' element={<CompanyFollowers loginType={loginType} token={token} />} />
 
         <Route path='/profile/packages-settings' element={<MyPackagesSettings token={token} />} />

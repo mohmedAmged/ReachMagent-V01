@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { Lang } from '../../functions/Token';
 
 export default function MyNavBar({ scrollToggle, token, loginType, totalCartItemsInCart, totalWishlistItems, fireMessage, setFireNotification, fireNotification }) {
-      const { t } = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate()
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const profileData = Cookies.get('currentLoginedData');
@@ -364,7 +364,8 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
     }}
     aria-label="Close"
     className='nav-link nav__link__style nav__profileData'
-    to='/profile/profile-settings'
+    // to='/profile/profile-settings'
+    to={`${loginType === 'user' ? '/profile/profile-settings' : '/profile/charts'}`}
     title='Profile'
 >
     <img
@@ -479,7 +480,8 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
         }
     }}
     className='nav-link nav__link__style nav__profileData'
-    to='/profile/profile-settings'
+    // to='/profile/profile-settings'
+    to={`${loginType === 'user' ? '/profile/profile-settings' : '/profile/charts'}`}
     title='Profile'
 >
     <img

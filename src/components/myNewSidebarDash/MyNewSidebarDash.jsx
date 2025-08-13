@@ -76,7 +76,10 @@ export default function MyNewSidebarDash({ token }) {
     let sidebarItems = [
         // { title: "Profile", link: "/profile", icon: icon1 },
         ShowStatus === 'all' && 
+        { title: "Charts", link: "/profile/charts", icon: icon5, renderName:`${t('DashboardSidebar.chartsItem')}` },
+        ShowStatus === 'all' && 
         { title: "Followers", link: "/profile/followers", icon: icon11, renderName:`${t('DashboardSidebar.followersItem')}` },
+        
         ShowStatus === 'all' && 
         { title: "Product Catalog", link: "/profile/catalog", icon: icon2, renderName:`${t('DashboardSidebar.productCatalogItem')}` },
         ShowStatus === 'all' && 

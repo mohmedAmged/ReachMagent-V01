@@ -314,6 +314,7 @@
   },
     "DashboardSidebar":{
     "followersItem":"المُتابِعون",
+    "chartsItem":"الرسوم البيانية",
     "productCatalogItem":"كتالوج المنتجات",
     "serviceItem":"الخدمات",
     "mediaItem":"الوسائط",
@@ -1071,5 +1072,21 @@
     "pageHeaderTextPopular":"الاسئلة",
     "pageHeaderTextQuestions":"الشائعة",
     "pageSubHeaderText":"ابحث عن الإجابات التي تحتاجها قبل أن تسأل"
+  },
+    "DashboaedChartSec":{
+    "QuotationsHeaderText":"عروض الاسعار",
+    "QuotationsStatusHeaderText":"مخطط حالة عروض الاسعار",
+    "topCountriesRequest":"أعلى 5 دول تطلب",
+    "numberOfQuotations":"عدد عروض الأسعار المستلمة",
+    "OrdersHeaderText":"الطلبات",
+    "OrdersStatusHeaderText":"مخطط حالة الطلبات",
+    "ProductsHeaderText":"المنتجات",
+    "topCountriesOrdering":"أعلى 5 دول في الطلب",
+    "mostOrderedProduct":"المنتج الأكثر طلبا",
+    "followersHeaderText":"المتابعون",
+    "followersByCountry":"المتابعون حسب الدولة",
+    "followersNumber":"عدد المتابعين",
+    "AppointmentsHeaderText":"المواعيد",
+    "numberOfBookedAppointments":"عدد المواعيد المحجوزة"
   }
 }

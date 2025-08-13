@@ -95,7 +95,7 @@ console.log(newData);
                                       onClick={() => {
                                         scrollToTop();
                                       }}
-                                      className={'nav-link'} to={`/show-company/${el?.companySlug}`}>
+                                      className={'nav-link'} to={`/${el?.companySlug}`}>
                                       <img src={el?.companyLogo} alt="newImg" />
                                     </NavLink>
                                   </div>
