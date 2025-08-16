@@ -671,6 +671,12 @@ const handleCatalogCategoryClick = (name) => {
                                 }
                             </div>
                         }
+                        
+                        {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
+
+
+                        <SingleCompanyNewsSec newData={newData} companyId={companyId} token={token} />
+                        {/* <SingleCompanyAffiliate /> */}
                         {
                             showCompaniesQuery?.data?.company?.companyFaqs?.length !== 0 ?
                                 <>
@@ -679,11 +685,6 @@ const handleCatalogCategoryClick = (name) => {
                                 :
                                 ''
                         }
-                        {/* <ReadyToBuySec fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} showCompaniesQuery={showCompaniesQuery} companies={showCompaniesQuery?.data?.company} secMAinTitle={`Ready-To-Buy From ${showCompaniesQuery?.data?.company?.companyName}`} /> */}
-
-
-                        <SingleCompanyNewsSec newData={newData} companyId={companyId} token={token} />
-                        {/* <SingleCompanyAffiliate /> */}
                         {
                             token &&
                             <BookAppointMentFrom show={show} handleClose={handleClose} token={token} companyId={companyId} company={showCompaniesQuery?.data} />

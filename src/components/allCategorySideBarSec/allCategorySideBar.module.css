@@ -45,6 +45,10 @@
     border-left: 1px solid #000;
     margin-left: 10px;
 }
+.subIndustryContainerAr{
+    border-right: 1px solid #000;
+    margin-right: 10px;
+}
 .subIndustryItem{
     list-style: disc;
     padding-left: 5px;

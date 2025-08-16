@@ -9,6 +9,7 @@ import { GetAllMainCategoriesStore } from '../../store/AllMainCategories';
 import { useActivePackageStore } from '../../store/ActivePackageStore';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../functions/Token';
+import LanguageSelector from '../languageSelectorSec/LanguageSelector';
 
 
 export default function MainContentHeader({ isSidebarExpanded, search, placeholder, currentUserLogin, filteration, setFilteration, name, inputType }) {
@@ -74,6 +75,9 @@ export default function MainContentHeader({ isSidebarExpanded, search, placehold
                     <NavLink className='btn btn-outline-success p-2 ms-2' to='/'>
                         <i className="bi bi-box-arrow-left "></i>
                         <span className={`${Lang === 'ar' ? "me-2" : "ms-2"}`}>{t('DashboardMainHeader.backToHomeBtn')}</span>
+                    </NavLink>
+                    <NavLink className='nav-link nav__link__style'>
+                        <LanguageSelector />
                     </NavLink>
                 </div>
 

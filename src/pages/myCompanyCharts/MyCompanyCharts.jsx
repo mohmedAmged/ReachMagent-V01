@@ -27,7 +27,7 @@ export default function MyCompanyCharts({ token, loginType }) {
     labels: ["Pending", "Approved", "Rejected"],
     datasets: [
       {
-        data: [10, 5, 2],
+        data: [5, 10, 2],
         backgroundColor: ["#f6c23e", "#1cc88a", "#e74a3b"],
       },
     ],

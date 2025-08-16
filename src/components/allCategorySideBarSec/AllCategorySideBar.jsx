@@ -3,6 +3,7 @@ import { Offcanvas } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import styles from './allCategorySideBar.module.css';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function AllCategorySideBar({ industries, show, handleClose, subIndustry, fetchAllContentDatafromSub, fetchAllContentData, setFilterWithCountry,filterWithCountry }) {
     const { t } = useTranslation();
@@ -55,7 +56,7 @@ export default function AllCategorySideBar({ industries, show, handleClose, subI
 
                                 {/* Sub-Industries */}
                                 {subIndustryID === el?.slug?.toString() && subIndustry?.length > 0 && (
-                                    <div  className={`ps-4 mb-3 ${styles.subIndustryContainer} link-underline`}>
+                                    <div  className={` mb-3 ${Lang === 'ar'? `${styles.subIndustryContainerAr} pe-4` : `${styles.subIndustryContainer} ps-4`} link-underline`}>
                                         <ul>
                                         {subIndustry.map((sub) => (
                                             <li

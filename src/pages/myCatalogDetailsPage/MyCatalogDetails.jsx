@@ -94,7 +94,7 @@ export default function MyCatalogDetails({ token }) {
                             toast.error(err, { duration: 4000 });
                         });
 
-                        setActiveItem('Options');
+                        setActiveItem(`${t('singleCatalogPage.filterbarOptions')}`);
                         setTimeout(() => {
                             if (optionsRef.current) {
                                 optionsRef.current.scrollIntoView({ behavior: 'smooth' });
