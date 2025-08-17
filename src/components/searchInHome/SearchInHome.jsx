@@ -305,7 +305,7 @@ export default function SearchInHome() {
             {
                 currentData?.catalogs?.length !== 0 &&
                 (
-                    <div className="row my-5">
+                    <div className="row ">
                         <h2>
                             {t('GeneralSearchPage.generalSearchCatalogTit')}
                         </h2>
@@ -341,7 +341,7 @@ export default function SearchInHome() {
             {
                 currentData?.services?.length !== 0 &&
                 (
-                    <div className="row  my-5">
+                    <div className="row  ">
                         <h2>
                             {t('GeneralSearchPage.generalSearchServicesTit')}
                         </h2>

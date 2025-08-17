@@ -220,7 +220,7 @@ console.log(company);
                                                     </h3>
                                                 </div>
                                                 <div className="view__profile__btn">
-                                                    <NavLink to={`/show-company/${company?.id}`} target='_blank' className={'nav-link'}>
+                                                    <NavLink to={`/${company?.slug}`} target='_blank' className={'nav-link'}>
                                                     <button>
                                                        {t('DashboardBussinessSettingsPage.viewCompanyProfile')}
                                                     </button>

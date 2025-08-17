@@ -20,11 +20,11 @@ export default function LanguageSelector() {
             onClick={handleChange}
             className="d-inline-flex align-items-center fw-medium px-3 py-2 text-dark rounded btn btn-light"
         >
-            <img
+            {/* <img
             src={t("lang")=== 'En' ? americaIcon : egIcon}
             alt="Language"
             className="object-fit-cover me-2"
-            />
+            /> */}
             {t("lang")}
         </button>
 
@@ -39,13 +39,13 @@ export default function LanguageSelector() {
                 className="px-3 py-2 hover-bg-light cursor-pointer"
                 style={{ cursor: "pointer" }}
                 >
-                <img
+                {/* <img
                 style={{width:'15px', height:'15px'}}
                     src={americaIcon}
                     alt="English"
                     className="inline-block me-2"
 
-                />
+                /> */}
                 English
                 </li>
                 <li
@@ -56,12 +56,12 @@ export default function LanguageSelector() {
                 className="px-3 py-2 hover-bg-light cursor-pointer"
                 style={{ cursor: "pointer" }}
                 >
-                <img
+                {/* <img
                 style={{width:'15px', height:'15px'}}
                     src={egIcon}
                     alt="Arabic"
                     className="inline-block me-2"
-                />
+                /> */}
                 العربية
                 </li>
             </ul>
