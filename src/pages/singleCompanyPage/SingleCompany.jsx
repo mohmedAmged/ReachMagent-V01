@@ -27,11 +27,18 @@ import { baseURL } from '../../functions/baseUrl'
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader'
 import { Lang } from '../../functions/Token'
 import { useTranslation } from 'react-i18next'
+import Cookies from "js-cookie";
 
 export default function SingleCompany({ token }) {
     const { t } = useTranslation();
+    const cookiesData = Cookies.get("currentLoginedData");
+    const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
+    console.log(currentUserLogin);
+    const currentLoginCompany = currentUserLogin?.companySlug
     const [loading, setLoading] = useState(true);
     const { companyId } = useParams();
+    console.log(companyId);
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -215,7 +222,10 @@ const handleCatalogCategoryClick = (name) => {
                     :
                     (<div className='singleCompany__handler'>
                         <HeroOnlyCover companyCover={showCompaniesQuery?.data?.company?.companyCover} />
-                        <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} />
+                        <CompanyInfoCard handleShow={handleShow} showCompaniesQuery={showCompaniesQuery?.data?.company} token={token} 
+                        currentLoginCompany={currentLoginCompany}
+                        currentSlug={companyId}
+                        />
                         <div className='my-5'>
                             <ProductDetailsFilterationBar items={items} onItemClick={handleItemClick} secondFilter={false}/>
                         </div>

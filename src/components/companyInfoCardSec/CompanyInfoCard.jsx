@@ -11,7 +11,7 @@ import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
 
-export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token }) {
+export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token, currentLoginCompany, currentSlug }) {
     const { t } = useTranslation();
     const [error, setError] = useState(null);
     const loginType = localStorage.getItem('loginType')
@@ -140,7 +140,13 @@ console.log(showCompaniesQuery);
                                 {showCompaniesQuery?.can_book_with_company === true ? 
                                 <p style={{backgroundColor:'#e8e8e8', padding:'2px 5px', borderRadius:'5px', textTransform:'capitalize', color:'#8c64ee'}}>
                                     premuim
+                                    {currentLoginCompany === currentSlug &&
+                                        <span className='ms-2'>
+                                        (owner)
+                                    </span>
+                                    }
                                 </p>
+                                
                                 :
                                 <img src={verfuIcon} alt="icon" />
                             }
@@ -204,7 +210,8 @@ console.log(showCompaniesQuery);
                                                 </p>
                                             </NavLink>
                                         </button>
-                                        { showCompaniesQuery?.can_chat &&
+                                        { currentLoginCompany !== currentSlug && 
+                                        showCompaniesQuery?.can_chat &&
                                             <button onClick={handleNavigation} className='btn__companyActions online__btn'>
                                             <NavLink className={'nav-link'}
                                             >
@@ -290,7 +297,8 @@ console.log(showCompaniesQuery);
                                         </div>
                                     </div> */}
                                     <div className="company__boxInfo mt-2">
-                                        <div className="companyFollow__btn">
+                                        {currentLoginCompany !== currentSlug && 
+                                            <div className="companyFollow__btn">
                                             {
                                                 token ? (
                                                     // Check if loginType is 'user' and verified
@@ -342,6 +350,7 @@ console.log(showCompaniesQuery);
                                                 )
                                             }
                                         </div>
+                                        }
                                     </div>
                                 </div>
 
@@ -349,7 +358,8 @@ console.log(showCompaniesQuery);
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-12">
-                        <div className="companyQutation__btn">
+                        {currentLoginCompany !== currentSlug &&
+                            <div className="companyQutation__btn">
                             { showCompaniesQuery?.can_make_quotation &&
                                 <>
                                     {
@@ -442,6 +452,7 @@ console.log(showCompaniesQuery);
                             }
 
                         </div>
+                        }
                     </div>
                 </div>
 
