@@ -210,6 +210,7 @@ function App() {
         />} />
 
         <Route path='/all-insights' element={<MyCompaniesInsights token={token} />} />
+        <Route path='/all-insights/:compInsightsSlug' element={<MyCompaniesInsights token={token} />} />
 
         {/* <Route path='/my-wishlist' element={<MyWishList fetchCartItems={fetchCartItems} wishlistItems={wishlistItems} token={token} />} /> */}
 

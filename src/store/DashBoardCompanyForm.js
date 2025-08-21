@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { baseURL } from '../functions/baseUrl';
 import toast from 'react-hot-toast';
-import { Lang } from '../functions/Token';
+import { Lang, Token } from '../functions/Token';
 
 export const useDashBoardFormDataStore = create((set, get) => ({
     loading: true,
@@ -14,7 +14,7 @@ export const useDashBoardFormDataStore = create((set, get) => ({
     showModal: false,
     lastFetched: null,
 
-    fetchFormData: async (token, loginType, page = 1) => {
+    fetchFormData: async ( loginType, page = 1) => {
         const { lastFetched } = get();
         const now = Date.now();
         const threeMinutes = 3 * 60 * 1000;
@@ -27,7 +27,7 @@ export const useDashBoardFormDataStore = create((set, get) => ({
         set({ loading: true, unAuth: false });
         try {
             const response = await axios.get(`${baseURL}/${loginType}/all-form-data?page=${page}&t=${now}`, {
-                headers: { Authorization: `Bearer ${token}`, "Locale": Lang },
+                headers: { Authorization: `Bearer ${Token}`, "Locale": Lang },
             });
             set({
                 formData: response?.data?.data?.formData,
@@ -44,13 +44,13 @@ export const useDashBoardFormDataStore = create((set, get) => ({
         }
     },
 
-    deleteFormData: async (token, loginType, id) => {
+    deleteFormData: async ( loginType, id) => {
         try {
             const response = await axios.delete(`${baseURL}/${loginType}/delete-form-data/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${Token}`,
                 },
             });
             toast.success(response?.data?.message);

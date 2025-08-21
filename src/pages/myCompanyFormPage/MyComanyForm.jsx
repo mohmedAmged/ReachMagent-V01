@@ -40,12 +40,13 @@ export default function MyCompanyForm({ token }) {
     }, [cookiesData, currentUserLogin]);
 
     useEffect(() => {
-        fetchFormData(token, loginType, currentPage);
+        fetchFormData( loginType, currentPage);
     }, [token, loginType, currentPage]);
 
     const handlePageChange = (newPage) => setCurrentPage(newPage);
 
     const handleDeleteFormData = (id) => deleteFormData(token, loginType, id);
+console.log(formData);
 
     return (
         <>

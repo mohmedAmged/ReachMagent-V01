@@ -58,6 +58,8 @@ export default function CompanyContact({ token, companyId, company }) {
       })();
     };
   }, [companyId, formId, token]);
+console.log(formInputs);
+console.log(companyId);
 
   const onSubmit = async (data) => {
     data.company_id = companyId;

@@ -1,11 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { useLocation, useNavigate, NavLink } from 'react-router-dom';
+import { useLocation, useNavigate, NavLink, useParams } from 'react-router-dom';
 import MyLoader from '../../components/myLoaderSec/MyLoader';
 import { scrollToTop } from '../../functions/scrollToTop';
 import { useInsightsStore } from '../../store/AllInsightsPageActions';
 import MyNewLoader from '../../components/myNewLoaderSec/MyNewLoader';
 
 export default function MyCompaniesInsights({ token }) {
+    const { compInsightsSlug } = useParams();
+    console.log(compInsightsSlug);
+    const convertToUnderscore = (str) => {
+    return str.replace(/\s+/g, '-');
+    };
     const navigate = useNavigate();
     const location = useLocation();
     const initialized = useRef(false);
@@ -58,7 +63,14 @@ export default function MyCompaniesInsights({ token }) {
     useEffect(() => {
         fetchAllCompanyAllowed(token);
     }, [token, fetchAllCompanyAllowed]);
+console.log(allowedCompany);
 
+ const filteredPosts = compInsightsSlug
+    ? allPosts?.filter((post) => post?.company_slug === compInsightsSlug)
+    : allPosts;
+    const filteredCompanies = compInsightsSlug
+        ? allowedCompany?.filter((company) => convertToUnderscore(company?.name?.toLowerCase()) === compInsightsSlug?.toLowerCase())
+        : allowedCompany;
     return (
         <>
             {loading ? (
@@ -80,7 +92,7 @@ export default function MyCompaniesInsights({ token }) {
                                                 onChange={handleInputChange}
                                             >
                                                 <option value="" disabled>Select a company</option>
-                                                {allowedCompany?.map((company) => (
+                                                {filteredCompanies?.map((company) => (
                                                     <option key={company?.id} value={company?.id}>{company?.name}</option>
                                                 ))}
                                             </select>
@@ -112,13 +124,13 @@ export default function MyCompaniesInsights({ token }) {
                             </div>
                             <div className="col-lg-9 col-md-8 ">
                                 <div className="allContentPosts__handler">
-                                    {allPosts?.length === 0 ? (
+                                    {filteredPosts?.length === 0 ? (
                                         <div className='text-danger fs-3 text-capitalize text-center mt-4'>
                                             No insights
                                         </div>
                                     ) : (
                                         <div className="row">
-                                            {allPosts?.map((el) => (
+                                            {filteredPosts?.map((el) => (
                                                 <div key={el?.id} className="col-lg-6 d-flex justify-content-center mb-3">
                                                     <div className="news__card p-3">
                                                         <div className="headOfNews__card d-flex justify-content-between align-items-start">

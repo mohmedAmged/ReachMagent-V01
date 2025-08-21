@@ -119,7 +119,7 @@ console.log(newData);
                     }
                   </Swiper>
                   <div className="showAllBtn d-flex justify-content-end align-items-center">
-                    <NavLink className={'nav-link'} to={'/all-insights'}>
+                    <NavLink className={'nav-link'} to={`/all-insights/${companyId}`}>
                       {t('SingleCompanyPage.companyNewsAllInsights')}
                       <i className="bi bi-arrow-bar-right"></i>
                     </NavLink>
