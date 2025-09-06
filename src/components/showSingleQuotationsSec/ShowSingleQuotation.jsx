@@ -830,9 +830,10 @@ console.log(acceptedSingleQuotations);
                                                             }
                                                             {
                                                                 (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-4'>
-                                                                        {t('DashboardSingleQuotationPage.shippingCostInfo')}
-                                                                    </h5>
+                                    <h5 className='mb-4'>
+                                        {t('DashboardSingleQuotationPage.shippingCostInfo')}
+                                        <span className="optional"> {t('DashboardSingleQuotationPage.specifiedIncludingTax')}</span>
+                                    </h5>
                                                                     :
                                                                     ''
                                                             }
@@ -857,7 +858,7 @@ console.log(acceptedSingleQuotations);
                                                                             </>
                                                                         ) : (
                                                                             <>
-                                                                                {newData?.extras_note === 'N/A' ? `${t('DashboardSingleQuotationPage.specifiedInNotesInfo')}` : newData?.extras_note}
+                                                                                {newData?.extras_note === 'N/A' ? `${t('DashboardSingleQuotationPage.specifiedIncludingTax')}` : newData?.extras_note}
 
                                                                             </>
                                                                         )
@@ -882,28 +883,28 @@ console.log(acceptedSingleQuotations);
                                                                     {newData?.currency_symbol} {newData?.tax}
                                                                 </h5>
                                                             }
-                                                            {
-                                                                (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
-                                                                    <h5 className='mb-3'>
-                                                                        <input
-                                                                            defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
-                                                                            name='shipping_price'
-                                                                            type="number"
-                                                                            id='quotationShippingPrice'
-                                                                            className='form-control w-50'
-                                                                            maxLength={4}
-                                                                            disabled={
-                                                                                !isOneClickQuotation ?
-                                                                                    loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
-                                                                                    :
-                                                                                    fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
-                                                                            }
-                                                                            onChange={handleChangeInput}
-                                                                        />
-                                                                    </h5>
-                                                                    :
-                                                                    ''
-                                                            }
+                        {
+                            (newData?.include_shipping === 'Yes' || isOneClickQuotation) ?
+                                <h5 className='mb-3'>
+                                    <input
+                                        defaultValue={newData?.shipping_price === 'N/A' ? 0 : newData?.shipping_price}
+                                        name='shipping_price'
+                                        type="number"
+                                        id='quotationShippingPrice'
+                                        className='form-control w-50'
+                                        maxLength={4}
+                                        disabled={
+                                            !isOneClickQuotation ?
+                                                loginType === 'user' || newData?.company_status !== 'Pending' || newData?.quotation_type !== 'sell'
+                                                :
+                                                fullData?.quotation_type === 'sell' ? newData?.company_status !== 'Pending' : newData?.company_status === 'Pending'
+                                        }
+                                        onChange={handleChangeInput}
+                                    />
+                                </h5>
+                                :
+                                ''
+                        }
                                                             <h5 className='mb-4'>
                                                                 <input
                                                                     defaultValue={newData?.services === 'N/A' ? 0 : newData?.services}

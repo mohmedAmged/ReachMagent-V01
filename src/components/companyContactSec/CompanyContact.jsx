@@ -6,6 +6,7 @@ import axios from 'axios';
 import { baseURL } from '../../functions/baseUrl';
 import FranchiseSec from '../franchiseSecc/FranchiseSec';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../functions/Token';
 
 export default function CompanyContact({ token, companyId, company }) {
   const { t } = useTranslation();
@@ -41,7 +42,8 @@ export default function CompanyContact({ token, companyId, company }) {
           company_id: companyId
         }, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Locale': Lang
           }
         }).then((response) => {
           setFormInputs(response?.data?.data);
@@ -311,7 +313,7 @@ console.log(companyId);
                       type='submit'
                       id="submitCompanyFormBtn"
                       name='submitCompanyFormBtn'
-                      value={isSubmitting ? 'Sending ...' : 'Submit'}
+                      value={isSubmitting ? `${t('SingleCompanyPage.companyContactSendingBtn')}` : `${t('SingleCompanyPage.companyContactSubmitBtn')}`}
                       disabled={isSubmitting}
                     />
                   </form>

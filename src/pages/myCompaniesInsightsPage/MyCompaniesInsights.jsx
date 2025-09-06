@@ -71,6 +71,8 @@ console.log(allowedCompany);
     const filteredCompanies = compInsightsSlug
         ? allowedCompany?.filter((company) => convertToUnderscore(company?.name?.toLowerCase()) === compInsightsSlug?.toLowerCase())
         : allowedCompany;
+        console.log(allPosts);
+        
     return (
         <>
             {loading ? (
@@ -139,7 +141,7 @@ console.log(allowedCompany);
                                                                     <NavLink
                                                                         onClick={() => scrollToTop()}
                                                                         className='nav-link'
-                                                                        to={`/show-company/${el?.company_id}`}
+                                                                        to={`/${el?.company_slug}`}
                                                                     >
                                                                         <img src={el?.company_logo} alt="newImg" />
                                                                     </NavLink>

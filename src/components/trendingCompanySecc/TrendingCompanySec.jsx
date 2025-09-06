@@ -12,10 +12,13 @@ export default function TrendingCompanySec({ companies, token }) {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
     });
+console.log(currentFollowedCompanies);
 
     useEffect(() => {
         if (!Cookies.get('CurrentFollowedCompanies') && companies) {
             const firstCompany = companies[0] ? companies[0] : ''
+            console.log(firstCompany);
+            
             if (firstCompany?.followed !== undefined) {
                 const filteredCompanies = companies?.filter(company => company?.followed === true);
                 setCurrentFollowedCompanies([...currentFollowedCompanies, ...filteredCompanies]);

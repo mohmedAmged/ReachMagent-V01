@@ -10,17 +10,17 @@ import toast from 'react-hot-toast'
 import { scrollToTop } from '../../functions/scrollToTop';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
-
 export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token, currentLoginCompany, currentSlug }) {
     const { t } = useTranslation();
     const [error, setError] = useState(null);
     const loginType = localStorage.getItem('loginType')
+    
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
     });
     const navigate = useNavigate();
-
+    
     const handleToggleFollowCompany = async (id) => {
         const currentCompanyWantedToFollow = {
             company_id: `${id}`
@@ -43,6 +43,9 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token,
                     id: toastId,
                     duration: 1000
                 });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2200);
             })
             .catch(() => {
                 toast.error(`Something Went Wrong Please try Again Later!`, {
@@ -120,7 +123,6 @@ export default function CompanyInfoCard({ handleShow, showCompaniesQuery, token,
             [field]: !prevState[field],
         }));
     };
-console.log(showCompaniesQuery);
 
     return (
         <div className='container'>
@@ -316,8 +318,9 @@ console.log(showCompaniesQuery);
                                                             {t('SingleCompanyPage.infoCardFollowBtn')}
                                                         </button>
                                                     ) : (
-                                                        currentFollowedCompanies ? (
-                                                            currentFollowedCompanies.find(el => +el?.companyId === +showCompaniesQuery?.companyId) ? (
+                                                        currentFollowedCompanies ? 
+                                                        (
+                                                            currentFollowedCompanies.find(el => +el?.companyId === +showCompaniesQuery?.companyId) || showCompaniesQuery?.followed === true ? (
                                                                 <button
                                                                     className='pageMainBtnStyle unFollowCompanyBtn'
                                                                     onClick={() => handleToggleFollowCompany(+showCompaniesQuery?.companyId)}

@@ -32,7 +32,7 @@
     "productCountName":"products",
     "serviceCountName":"services",
     "btnFollowCompany":"+ follow",
-    "btnUnFollowCompany":"unFollow"
+    "btnUnFollowCompany":"unfollow"
   },
   "oneClickQuotationHome":{
     "header":"One-click Quotation",
@@ -127,7 +127,9 @@
     "companyNewsAllInsights":"All Insights",
     "companyContactSecHead":"Contact Form",
     "companyContactSecSubHead":"From general Inqueries to booking appointements",
-    "companyContactSecBtn":"Login To Continue"
+    "companyContactSecBtn":"Login To Continue",
+    "companyContactSubmitBtn":"Submit",
+    "companyContactSendingBtn":"Sending ..."
   },
   "GeneralSearchPage":{
     "generalSearchHead":"General Search",
@@ -655,6 +657,7 @@
     "shippingCostInfo":"Shipping cost",
     "extraInfo":"Extra",
     "specifiedInNotesInfo":"(Specified in notes)",
+    "specifiedIncludingTax":"(Including Tax)",
     "totalPriceInfo":"Total Price",
     "havingProblemTextInfo":"Having a problem?",
     "chatNowTextInfo":"Chat Now!",

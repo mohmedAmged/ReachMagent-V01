@@ -128,7 +128,9 @@
     "companyNewsAllInsights":"جميع الاعلانات",
     "companyContactSecHead":"تواصل معنا",
     "companyContactSecSubHead":"من الاستفسارات العامة إلى حجز المواعيد",
-    "companyContactSecBtn":"تسجيل الدخول للمتابعة"
+    "companyContactSecBtn":"تسجيل الدخول للمتابعة",
+    "companyContactSubmitBtn":"تقديم",
+    "companyContactSendingBtn":"جارٍ الإرسال..."
   },
     "GeneralSearchPage":{
     "generalSearchHead":"بحث عام",
@@ -651,6 +653,7 @@
     "shippingCostInfo":"تكلفة الشحن",
     "extraInfo":"إضافي",
     "specifiedInNotesInfo":"(محدد في الملاحظات)",
+    "specifiedIncludingTax":"(شامل الضريبة)",
     "totalPriceInfo":"السعر الإجمالي",
     "havingProblemTextInfo":"هل تواجه مشكلة؟",
     "chatNowTextInfo":"الدردشة الآن!",

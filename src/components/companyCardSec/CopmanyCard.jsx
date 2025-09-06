@@ -48,6 +48,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
         setExpandedDesc(!expandedDesc);
       };
       console.log(companySlug);
+      console.log(companyId);
       
     return (
         <div className='companyCard__item'>
