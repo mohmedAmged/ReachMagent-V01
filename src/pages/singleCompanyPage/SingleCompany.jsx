@@ -237,7 +237,7 @@ const handleCatalogCategoryClick = (name) => {
                                 }
                                 {
                                     activeItem === `${t('SingleCompanyPage.filterbarServices')}` &&
-                                    <div className='ms-4'>
+                                    <div className='ms-5'>
                                     <div className="contactCompany-type">
                                         <ul  className='d-flex flex-wrap mb-3'>
                                             {serviceCategoryItems?.map((el, index) => {
@@ -320,12 +320,12 @@ const handleCatalogCategoryClick = (name) => {
                                     <div className='ms-4'>
                                     {/* <ProductDetailsFilterationBar items={catalogCategoryItems} onItemClick={handleCatalogCategoryClick} secondFilter={true}/> */}
                                     <div className="contactCompany-type">
-                                        <ul className='mb-3 d-flex flex-wrap'>
+                                        <ul style={{ boxShadow: "0px 4px 4px 3px #0000001A", background: "#fff", borderRadius: "8px", width: "90%",  gap:"12px"}} className='mb-3 d-flex flex-wrap'>
                                             {catalogCategoryItems?.map((el, index) => {
                                             return (
                                                 <li key={index} onClick={() => {
                                                 handleCatalogCategoryClick(el?.name);
-                                                }} className={` me-2 ${el.active ? 'contactCompany-type-active' : ''}`}>
+                                                }} className={`  ${el.active ? 'contactCompany-type-active' : ''}`}>
                                                 {el?.name}
                                                 </li>
                                             )
