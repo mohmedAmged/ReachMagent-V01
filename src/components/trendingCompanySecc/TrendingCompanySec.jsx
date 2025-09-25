@@ -8,6 +8,11 @@ import { scrollToTop } from '../../functions/scrollToTop'
 import { useTranslation } from 'react-i18next'
 export default function TrendingCompanySec({ companies, token }) {
     const { t } = useTranslation();
+        const cookiesData = Cookies.get("currentLoginedData");
+        const currentUserLogin = cookiesData ? JSON.parse(cookiesData) : null;
+    console.log(currentUserLogin);
+    const currentLoginCompany = currentUserLogin?.companySlug
+
     const [currentFollowedCompanies, setCurrentFollowedCompanies] = useState(() => {
         const cookieValue = Cookies.get('CurrentFollowedCompanies');
         return cookieValue ? JSON.parse(cookieValue) : [];
@@ -42,6 +47,7 @@ console.log(companies);
                                     <div key={el?.companyId} className="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
                                         <CopmanyCard
                                             // ************* dynamic info
+                                            currentLoginCompany={currentLoginCompany}
                                             currentFollowedCompanies={currentFollowedCompanies}
                                             setCurrentFollowedCompanies={setCurrentFollowedCompanies}
                                             token={token}

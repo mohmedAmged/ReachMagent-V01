@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 
-export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrentFollowedCompanies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId, companySlug }) {
+export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrentFollowedCompanies , coverImg, companyProfile, companyName, companyUser, productsCount, dealsCount, ownerCount, cardDesc, companyId, companySlug, currentLoginCompany }) {
     const { t } = useTranslation();
     const loginType = localStorage.getItem('loginType');
     const navigate = useNavigate();
@@ -103,7 +103,7 @@ export default function CopmanyCard({ token ,currentFollowedCompanies,setCurrent
                     </div>
                 </div>
                 {
-                    
+                    currentLoginCompany !== companySlug &&
                     <div className="card__actions">
                         {
                             token ? (

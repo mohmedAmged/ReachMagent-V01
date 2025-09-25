@@ -226,6 +226,17 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                             >
                                  {t('navLinks.aboutUs')}
                             </NavLink>
+                                {/* view in demo */}
+                            <NavLink
+                                onClick={() => {
+                                    scrollToTop();
+                                }}
+                                aria-label="Close"
+                                className={`nav-link nav__link__style`}
+                                to={`/documentation`}
+                            >
+                                {t('navLinks.documentation')}
+                            </NavLink>
                             {/* <NavLink
                                 onClick={() => {
                                     scrollToTop();
@@ -513,6 +524,17 @@ export default function MyNavBar({ scrollToggle, token, loginType, totalCartItem
                                     className={`nav-link nav__link__style`}
                                     to={`/About-ReachMagnet`}>
                                     {t('navLinks.aboutUs')}
+                                </NavLink>
+                                {/* view in demo */}
+                                <NavLink
+                                    onClick={() => {
+                                        scrollToTop();
+                                        closeOffcanvas();
+                                    }}
+                                    aria-label="Close"
+                                    className={`nav-link nav__link__style`}
+                                    to={`/documentation`}>
+                                    {t('navLinks.documentation')}
                                 </NavLink>
                                 {/* <NavLink
                                     onClick={() => {

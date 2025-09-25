@@ -77,6 +77,7 @@ import AddNewPrevWork from './pages/addNewPrevWork/AddNewPrevWork';
 import BusinessSignUpPackages from './components/businessSignUpPackages/BusinessSignUpPackages';
 import MyPackagesSettings from './components/myPackagesSettingsSec/MyPackagesSettings';
 import MyCompanyCharts from './pages/myCompanyCharts/MyCompanyCharts';
+import Documentation from './pages/myDocumentationPage/DocumentationPage';
 
 
 function App() {
@@ -198,6 +199,8 @@ function App() {
 
         <Route path='/contact-us' element={<MyContactUs token={token} />} />
         <Route path='/all-companies' element={<MyAllCompanies token={token} />} />
+        {/* view in demo */}
+        <Route path='/documentation' element={<Documentation token={token} />} />
         <Route path='/:companyId' element={<SingleCompany token={token} />} />
         <Route path='/:companyId/catalog-details/:catalogId' element={<MyCatalogDetails token={token} />} />
         <Route path='/:companyId/service-details/:servId' element={<MyServiceDetails token={token} />} />
